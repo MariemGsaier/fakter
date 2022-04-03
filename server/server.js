@@ -17,7 +17,7 @@ db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and Resync Db");
   initial();
 });
-
+//roles
 function initial() {
   Role.create({
     id: 1,
