@@ -4,7 +4,7 @@ module.exports = {
   PASSWORD: "mariem",
   DB: "fakterdb",
   dialect: "postgres",
-  pool: {
+  pool: { 
     max: 5,
     min: 0,
     acquire: 30000,
