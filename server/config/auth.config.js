@@ -1,5 +1,4 @@
 module.exports = {
   secret: "fakter-secret-key",
-  jwtExpiration: 3600, // 1 hour
-  jwtRefreshExpiration: 86400, // 24 hours
+  jwtExpiration: 7200, // 2 hours
 };
