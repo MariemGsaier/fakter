@@ -19,6 +19,10 @@ import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { TooltipsComponent } from './tooltips/tooltips.component'
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -38,12 +42,16 @@ import { TooltipsComponent } from './tooltips/tooltips.component'
     SlideToggleComponent,
     ButtonsComponent,
     TooltipsComponent,
+    LoginComponent,
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,
     FeatherModule.pick(allIcons),
     DemoFlexyModule,
-    FormsModule
+    FormsModule,
+    RouterModule
   ],
   exports: [
     AlertsComponent,
