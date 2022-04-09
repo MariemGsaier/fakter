@@ -45,7 +45,6 @@ import { MatCardModule } from '@angular/material/card';
     SlideToggleComponent,
     ButtonsComponent,
     TooltipsComponent,
-
     LoginComponent,
     HomeComponent,
     ProfileComponent,
@@ -56,11 +55,9 @@ import { MatCardModule } from '@angular/material/card';
     CommonModule,
     FeatherModule.pick(allIcons),
     DemoFlexyModule,
-
     FormsModule,
     RouterModule,
     MatCardModule
-
   ],
   exports: [
     AlertsComponent,

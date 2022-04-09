@@ -16,11 +16,16 @@ import { DemoFlexyModule } from './demo-flexy-module'
 // Modules
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ComponentsModule } from './components/components.module';
+import { SimpleComponent } from './layouts/simple/simple.component';
+import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FullComponent
+    FullComponent,
+    SimpleComponent,
+    BoardAdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,13 +35,11 @@ import { ComponentsModule } from './components/components.module';
     DemoFlexyModule,
     DashboardModule,
     ComponentsModule,
-
     FormsModule,
     HttpClientModule,
     MatCardModule 
-
   ],
-  providers: [],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
