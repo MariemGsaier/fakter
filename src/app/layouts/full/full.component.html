@@ -1,3 +1,4 @@
+<div *ngIf="isLoggedIn">
 <mat-sidenav-container class="sidenav-container">
 
   <!-- Sidebar -->
@@ -57,29 +58,33 @@
       <button mat-icon-button class="ms-4 me-4" (click)="search=!search">
         <i-feather name="search" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
       </button>
+
+
       <div class="ms-auto">
         <button mat-button class="fs-16 pt-4 pb-4 ps-8 pe-8 text-light-muted" [matMenuTriggerFor]="menu">
-          <img src="assets/images/user2.webp" class="rounded-circle" alt="">
+          <img src="assets/images/user2.png" class="rounded-circle" alt="">
           <span class="fw-light ms-8 text-secondary">Hi,</span>
-          <span class="fw-bold ms-8">Julia</span>
+          <span class="fw-bold ms-8">{{ username }}</span>
           <i-feather name="chevron-down" class="feather-base mt-n2"></i-feather>
         </button>
         <mat-menu #menu="matMenu" class="profile-dropdown">
           <div class="p-16 mb-4">
-            <button mat-menu-item class="fs-16">Edit Profile</button>
-            <button mat-menu-item class="fs-16">Account</button>
-            <button mat-menu-item class="fs-16">Change Password</button>
-            <button mat-menu-item class="fs-16">My Settings</button>
+            <button mat-menu-item class="fs-16" routerLink="/admin">Admin Board</button>
+            <button mat-menu-item class="fs-16" routerLink="/profile">Account</button>
           </div>
-
+    
           <hr>
-
+    
           <div class="p-16">
-            <button mat-button class="btn btn-info w-100">Logout</button>
+            <button mat-button class="btn btn-info w-100" (click)="logout()">Logout</button>
           </div>
-
+    
         </mat-menu>
       </div>
+
+
+
+
     </mat-toolbar>
 
     <!-- Content -->
@@ -89,9 +94,7 @@
       </div>
     </div>
 
-    <p class="text-center pb-24 fs-16">© 2022 All rights reserved by <a
-        href="https://www.wrappixel.com/templates/category/free-angular-templates/" target="_blank"
-        class="text-indigo">Wrappixel.com</a></p>
+    <p class="text-center pb-24 fs-16">© 2022 All rights reserved by Fakter</p>
 
   </mat-sidenav-content>
 
@@ -107,4 +110,21 @@
   <button mat-icon-button (click)="search=!search">
     <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
   </button>
+</div>
+</div>
+
+<div style="height: 100vh; display: flex; justify-content: center; align-items: center; text-align: center;" *ngIf="!isLoggedIn">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="mb-32">Attention !</h4>
+  
+      <div *ngFor="let alerts of alerts"
+        class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
+        role="alert">
+        <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
+        {{ alerts.message }}
+      </div>
+  
+    </div>
+  </div>
 </div>

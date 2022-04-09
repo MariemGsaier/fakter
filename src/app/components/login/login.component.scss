@@ -1,0 +1,31 @@
+.mat-card-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background-color: #008c20
+}
+
+#card-container {
+    max-width: 70%;
+}
+
+#card-inside {
+    background-color: #ffffff;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-body .mb-32 {
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+#button {
+    background-color: #008c20
+}
