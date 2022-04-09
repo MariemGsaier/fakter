@@ -8,10 +8,10 @@ import { ChipsComponent } from "./components/chips/chips.component";
 import { ExpansionComponent } from "./components/expansion/expansion.component";
 import { FormsComponent } from "./components/forms/forms.component";
 import { GridListComponent } from "./components/grid-list/grid-list.component";
-// import { HomeComponent } from "./components/home/home.component";
-// import { LoginComponent } from "./components/login/login.component";
-// import { MenuComponent } from "./components/menu/menu.component";
-// import { ProfileComponent } from "./components/profile/profile.component";
+import { HomeComponent } from "./components/home/home.component";
+import { LoginComponent } from "./components/login/login.component";
+import { MenuComponent } from "./components/menu/menu.component";
+import { ProfileComponent } from "./components/profile/profile.component";
 import { ProgressSnipperComponent } from "./components/progress-snipper/progress-snipper.component";
 import { ProgressComponent } from "./components/progress/progress.component";
 import { SlideToggleComponent } from "./components/slide-toggle/slide-toggle.component";
@@ -24,18 +24,18 @@ import { UserDetailsComponent } from "./components/user-details/user-details.com
 import { ProductComponent } from "./dashboard/dashboard-components/product/product.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FullComponent } from "./layouts/full/full.component";
-// import { SimpleComponent } from "./layouts/simple/simple.component";
+import { SimpleComponent } from "./layouts/simple/simple.component";
 
 const routes: Routes = [
-  // {
-  //   path: "",
-  //   component: SimpleComponent,
-  //   children: [
-  //     { path: "", redirectTo: "/home", pathMatch: "full" },
-  //     { path: "home", component: HomeComponent },
-  //     { path: "login", component: LoginComponent },
-  //   ],
-  // },
+  {
+    path: "",
+    component: SimpleComponent,
+    children: [
+      { path: "", redirectTo: "/home", pathMatch: "full" },
+      { path: "home", component: HomeComponent },
+      { path: "login", component: LoginComponent },
+    ],
+  },
   {
     path: "",
     component: FullComponent,

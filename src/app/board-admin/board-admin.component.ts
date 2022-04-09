@@ -1,22 +1,7 @@
 import { Component, OnInit } from "@angular/core";
+import { User } from "../models/user.model";
+import { GestUserService } from "../services/gest-user.service";
 import { UserService } from "../services/user.service";
-export interface PeriodicElement {
-  id: number;
-  name: string;
-  work: string;
-  project: string;
-  priority: string;
-  badge: string;
-  budget: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, name: 'Deep Javiya', work: 'Frontend Devloper', project: 'Flexy Angular', priority: 'Low', badge: 'badge-info', budget: '$3.9k' },
-  { id: 2, name: 'Nirav Joshi', work: 'Project Manager', project: 'Hosting Press HTML', priority: 'Medium', badge: 'badge-primary', budget: '$24.5k' },
-  { id: 3, name: 'Sunil Joshi', work: 'Web Designer', project: 'Elite Admin', priority: 'High', badge: 'badge-danger', budget: '$12.8k' },
-  { id: 4, name: 'Maruti Makwana', work: 'Backend Devloper', project: 'Material Pro', priority: 'Critical', badge: 'badge-success', budget: '$2.4k' },
-];
-
 
 @Component({
   selector: "app-board-admin",
@@ -24,10 +9,14 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ["./board-admin.component.scss"],
 })
 export class BoardAdminComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'assigned', 'name', 'priority', 'budget'];
-  dataSource = ELEMENT_DATA;
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'password'];
   content?: string;
-  constructor(private userService: UserService) { }
+
+  users?: User[];
+  currentUser: User = {};
+  currentIndex = -1;
+  username = '';
+  constructor(private userService: UserService, private gestUserService: GestUserService) { }
   ngOnInit(): void {
     this.userService.getAdminBoard().subscribe(
       data => {
@@ -37,5 +26,56 @@ export class BoardAdminComponent implements OnInit {
         this.content = JSON.parse(err.error).message;
       }
     );
+
+    this.retrieveUsers();
+  }
+
+  retrieveUsers(): void {
+    this.gestUserService.getAll()
+      .subscribe(
+        data => {
+          this.users = data;
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  refreshList(): void {
+    this.retrieveUsers();
+    this.currentUser = {};
+    this.currentIndex = -1;
+  }
+
+  setActiveUser(user: User, index: number): void {
+    this.currentUser = user;
+    this.currentIndex = index;
+  }
+
+  removeAllUsers(): void {
+    this.gestUserService.deleteAll()
+      .subscribe(
+        response => {
+          console.log(response);
+          this.refreshList();
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  searchName(): void {
+    this.currentUser = {};
+    this.currentIndex = -1;
+    this.gestUserService.findByKeyword(this.username)
+      .subscribe(
+        data => {
+          this.users = data;
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        });
   }
 }
