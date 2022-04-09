@@ -1,8 +1,11 @@
-import { NgModule } from '@angular/core';
+import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
-import { FormsModule } from '@angular/forms'
+
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { MatCardModule } from '@angular/material/card';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +30,11 @@ import { ComponentsModule } from './components/components.module';
     DemoFlexyModule,
     DashboardModule,
     ComponentsModule,
-    FormsModule
+
+    FormsModule,
+    HttpClientModule,
+    MatCardModule 
+
   ],
   providers: [],
   bootstrap: [AppComponent]

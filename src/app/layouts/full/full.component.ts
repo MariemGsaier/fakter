@@ -114,6 +114,27 @@ export class FullComponent {
       icon: "layers",
       menu: "Slide Toggle",
     },
-  ]
+  ];
+
+  // ngOnInit(): void {
+  //   this.isLoggedIn = !!this.tokenStorageService.getToken();
+  //   if (this.isLoggedIn) {
+  //     const user = this.tokenStorageService.getUser();
+  //     this.roles = user.role;
+  //     this.showAdminBoard = this.roles.includes("ROLE_ADMIN");
+  //     this.username = user.username;
+  //   }
+  // }
+
+  alerts: alerts[] = [
+    {
+      border: "alert-border-warning",
+      background: "alert-warning",
+      color: "alert-text-warning",
+      icon: "alert-triangle",
+      iconColor: "text-warning",
+      message: "Vous n'êtes pas authentifié ! veuillez vous-connectez.",
+    },
+  ];
 
 }

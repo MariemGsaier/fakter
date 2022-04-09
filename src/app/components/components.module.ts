@@ -19,6 +19,13 @@ import { SliderComponent } from './slider/slider.component';
 import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { TooltipsComponent } from './tooltips/tooltips.component'
+import { LoginComponent } from './login/login.component';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
+import { RouterModule } from '@angular/router';
+import { AddUserComponent } from './add-user/add-user.component';
+import { UserDetailsComponent } from './user-details/user-details.component';
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -38,12 +45,22 @@ import { TooltipsComponent } from './tooltips/tooltips.component'
     SlideToggleComponent,
     ButtonsComponent,
     TooltipsComponent,
+
+    LoginComponent,
+    HomeComponent,
+    ProfileComponent,
+    AddUserComponent,
+    UserDetailsComponent
   ],
   imports: [
     CommonModule,
     FeatherModule.pick(allIcons),
     DemoFlexyModule,
-    FormsModule
+
+    FormsModule,
+    RouterModule,
+    MatCardModule
+
   ],
   exports: [
     AlertsComponent,
@@ -60,6 +77,7 @@ import { TooltipsComponent } from './tooltips/tooltips.component'
     SliderComponent,
     SlideToggleComponent,
     ButtonsComponent,
+    MatCardModule
   ]
 })
 export class ComponentsModule { }
