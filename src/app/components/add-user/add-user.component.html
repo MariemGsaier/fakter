@@ -4,28 +4,35 @@
       <form>
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Nom d'utilisateur</mat-label>
-          <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required [(ngModel)]="user.username">
+          <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required [(ngModel)]="user.username" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
   
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Email</mat-label>
-          <input matInput type="email" placeholder="Entrez l'email" required [(ngModel)]="user.email">
+          <input matInput type="email" placeholder="Entrez l'email" required [(ngModel)]="user.email" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
 
         <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Role</mat-label>
-            <input matInput type="role" placeholder="Entrez le role" required [(ngModel)]="user.role">
+            <input matInput type="role" placeholder="Entrez le role" required [(ngModel)]="user.role" [ngModelOptions]="{standalone: true}">
           </mat-form-field>
   
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Mot de passe</mat-label>
-          <input matInput type="password" placeholder="Entrez le mot de passe" required [(ngModel)]="user.password">
+          <input matInput type="password" placeholder="Entrez le mot de passe" required [(ngModel)]="user.password" [ngModelOptions]="{standalone: true}">
         </mat-form-field>
   
-        <button mat-button class="btn btn-info fw-normal" (click)="saveUser()" type="submit">Confirmer</button>
-        <div *ngIf="submitted">
-            <h4>User was submitted successfully!</h4>
-            <button class="btn btn-success" (click)="newUser()">Ajouter</button>
+        <button mat-button class="btn btn-success fw-normal" (click)="saveUser()" type="submit">Confirmer</button>
+
+              <div *ngIf="submitted">
+                <br>
+            <div *ngFor="let alerts of alerts"
+              class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
+              role="alert">
+              <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
+              {{ alerts.message }}
+              <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
+            </div>
           </div>
       </form>
     </div>

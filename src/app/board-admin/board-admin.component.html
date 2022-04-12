@@ -1,55 +1,177 @@
+<button mat-icon-button class="ms-4 me-4" (click)="search = !search">
+  <i-feather
+    name="search"
+    class="mt-n3 text-light-muted feather-base text-dark"
+  ></i-feather>
+</button>
+<!-- Search Box -->
+<div *ngIf="search" class="search-section d-flex align-items-center">
+  <mat-form-field class="w-100" color="primary" appearance="legacy">
+    <mat-label class="fs-16">Recherchez içi</mat-label>
+    <input matInput [(ngModel)]="username" />
+  </mat-form-field>
+  <button mat-icon-button (click)="searchName()">
+    <i-feather
+      name="x-circle"
+      class="mt-n3 text-light-muted feather-base text-dark"
+    ></i-feather>
+  </button>
+</div>
 <mat-card class="w-100">
   <mat-card-content>
-    <button mat-button class="btn btn-info fw-normal" routerLink="/add" type="submit">Ajouter</button>
+    <button
+      mat-button
+      class="btn btn-info fw-normal"
+      routerLink="/add"
+      type="submit"
+      style="float: right"
+    >
+      Ajouter
+    </button>
     <h4 class="mb-56">Gérez vos utilisateurs</h4>
 
     <div class="table-responsive">
-      <table mat-table *ngFor="let user of users; let i = index"
-      [class.active]="i == currentIndex"
-      (click)="setActiveUser(user, i)" class="text-nowrap w-100">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        (click)="setActiveUser($event)"
+        class="text-nowrap w-100"
+      >
 
-        <!-- Id Column -->
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef> Id </th>
-          <td mat-cell class="fw-medium" *matCellDef="let user"> {{ user.id }} </td>
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      
+        <ng-container>
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell class="fw-medium" *matCellDef="let user">
+              {{ user.id }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Nom d'utilisateur</th>
+            <td mat-cell *matCellDef="let user">
+              <p class="mb-0 fw-medium">{{ user.username }}</p>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let user">
+              <p class="mb-0 fw-medium">{{ user.email }}</p>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <td mat-cell *matCellDef="let user">
+              <span>{{ user.role }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="password">
+            <th mat-header-cell *matHeaderCellDef>Mot de passe</th>
+            <td mat-cell *matCellDef="let user">
+              <p class="mb-0 fw-medium op-5">{{ user.password }}</p>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </ng-container>
-
-        <!-- Assigned Column -->
-        <ng-container matColumnDef="username">
-          <th mat-header-cell *matHeaderCellDef> Nom d'utilisateur </th>
-          <td mat-cell *matCellDef="let user">
-            <p class="mb-0 fw-medium">{{ user.username }}</p>
-          </td>
-        </ng-container>
-
-        <!-- Project Column -->
-        <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef> Email </th>
-          <td mat-cell *matCellDef="let user">
-            <p class="mb-0 fw-medium op-5">{{ user.email }}</p>
-          </td>
-        </ng-container>
-
-        <!-- Priority Column -->
-        <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef> Role </th>
-          <td mat-cell *matCellDef="let user">
-            <span class="badge {{user.badge}} rounded-pill">{{ user.role }}</span>
-          </td>
-        </ng-container>
-
-        <!-- Budget Column -->
-        <ng-container matColumnDef="password">
-          <th mat-header-cell *matHeaderCellDef> Mot de passe </th>
-          <td mat-cell *matCellDef="let user">
-            <p class="mb-0 fw-medium">{{ user.password }}</p>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
     </div>
-    
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="w-100" *ngIf="currentUser.id">
+  <mat-card-content>
+    <form>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Nom d'utilisateur</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Entrez le nom d'utilisateur"
+          id="username"
+          [(ngModel)]="currentUser.username"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="Entrez l'email"
+          required
+          id="email"
+          [(ngModel)]="currentUser.email"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Role</mat-label>
+        <input
+          matInput
+          type="role"
+          placeholder="Entrez le role"
+          required
+          id="role"
+          [(ngModel)]="currentUser.role"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Mot de passe</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Entrez le mot de passe"
+          required
+          id="password"
+          [(ngModel)]="currentUser.password"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+      <div>
+        <button
+          mat-button
+          class="btn btn-danger fw-normal"
+          (click)="deleteUser()"
+          type="submit"
+        >
+          Supprimer
+        </button>
+        &nbsp;
+        <button
+          mat-button
+          class="btn btn-success fw-normal"
+          (click)="updateUser()"
+          type="submit"
+        >
+          Modifier
+        </button>
+        <p>{{ message }}</p>
+      </div>
+    </form>
   </mat-card-content>
 </mat-card>

@@ -24,7 +24,6 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RouterModule } from '@angular/router';
 import { AddUserComponent } from './add-user/add-user.component';
-import { UserDetailsComponent } from './user-details/user-details.component';
 import { MatCardModule } from '@angular/material/card';
 
 
@@ -48,8 +47,7 @@ import { MatCardModule } from '@angular/material/card';
     LoginComponent,
     HomeComponent,
     ProfileComponent,
-    AddUserComponent,
-    UserDetailsComponent
+    AddUserComponent
   ],
   imports: [
     CommonModule,
@@ -74,7 +72,8 @@ import { MatCardModule } from '@angular/material/card';
     SliderComponent,
     SlideToggleComponent,
     ButtonsComponent,
-    MatCardModule
+    MatCardModule,
+    CommonModule
   ]
 })
 export class ComponentsModule { }
