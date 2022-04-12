@@ -20,7 +20,6 @@ import { SnackbarComponent } from "./components/snackbar/snackbar.component";
 import { TabsComponent } from "./components/tabs/tabs.component";
 import { ToolbarComponent } from "./components/toolbar/toolbar.component";
 import { TooltipsComponent } from "./components/tooltips/tooltips.component";
-import { UserDetailsComponent } from "./components/user-details/user-details.component";
 import { ProductComponent } from "./dashboard/dashboard-components/product/product.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FullComponent } from "./layouts/full/full.component";
@@ -60,7 +59,6 @@ const routes: Routes = [
       { path: "button", component: ButtonsComponent },
       { path: "profile", component: ProfileComponent },
       { path: "admin", component: BoardAdminComponent },
-      { path: "users/:id", component: UserDetailsComponent },
       { path: "add", component: AddUserComponent },
     ],
   },
