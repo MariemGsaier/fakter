@@ -11,9 +11,8 @@ exports.adminBoard = (req, res) => {
 const db = require("../models");
 const user = db.user;
 const Op = db.Sequelize.Op;
-// Create and Save a new Tutorial
-// exports.create = (req, res) => {};
-// Retrieve all Tutorials from the database.
+
+// fetch all user from the database.
 exports.findAll = (req, res) => {
   const username = req.query.username;
   var condition = username
@@ -30,27 +29,8 @@ exports.findAll = (req, res) => {
       });
     });
 };
-// Find a single user with a username
-// exports.findOne = (req, res) => {
-//   const id = req.params.username;
-//   user.findByPk(username)
-//     .then((data) => {
-//       if (data) {
-//         res.send(data);
-//       } else {
-//         res.status(404).send({
-//           message: `Cannot find user with username=${username}.`,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error fetching user with username=" + username,
-//       });
-//     });
-// };
 
-// Update a Tutorial by the id in the request
+// Update a user by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
   user
@@ -74,7 +54,7 @@ exports.update = (req, res) => {
       });
     });
 };
-// Delete a Tutorial with the specified id in the request
+// Delete a user with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
   user
@@ -114,13 +94,13 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-exports.findByKeyword = (req, res) => {
-  const kw = req.params.kw;
-  var condition = username ? { username: { [Op.iLike]: `%${kw}%` } } : null;
+exports.search = (req, res) => {
+  const { term }  = req.params;
+  // term = term.toLowerCase();
   user
-    .findAll({ where: { condition } })
-    .then((data) => {
-      res.send(data);
+    .findAll({ where: { username: { [Op.like]: `%${term}%` } } })
+    .then((users) => {
+      res.send(users);
     })
     .catch((err) => {
       res.status(500).send({
@@ -130,22 +110,5 @@ exports.findByKeyword = (req, res) => {
 };
 
 
-// Find a single user with a username
-// exports.findOne = (req, res) => {
-//   const id = req.params.username;
-//   user.findByPk(username)
-//     .then((data) => {
-//       if (data) {
-//         res.send(data);
-//       } else {
-//         res.status(404).send({
-//           message: `Cannot find user with username=${username}.`,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       res.status(500).send({
-//         message: "Error fetching user with username=" + username,
-//       });
-//     });
-// };
+
+
