@@ -1,16 +1,21 @@
-<button mat-icon-button class="ms-4 me-4" (click)="search = !search">
-  <i-feather
-    name="search"
-    class="mt-n3 text-light-muted feather-base text-dark"
-  ></i-feather>
-</button>
 <!-- Search Box -->
 <div *ngIf="search" class="search-section d-flex align-items-center">
   <mat-form-field class="w-100" color="primary" appearance="legacy">
     <mat-label class="fs-16">Recherchez içi</mat-label>
     <input matInput [(ngModel)]="username" />
   </mat-form-field>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      
+    </li>
+  </ul>
   <button mat-icon-button (click)="searchName()">
+    <i-feather
+      name="corner-down-left"
+      class="mt-n3 text-light-muted feather-base text-dark"
+    ></i-feather>
+  </button>
+  <button mat-icon-button (click)="search = !search">
     <i-feather
       name="x-circle"
       class="mt-n3 text-light-muted feather-base text-dark"
@@ -19,7 +24,7 @@
 </div>
 <mat-card class="w-100">
   <mat-card-content>
-    <button
+        <button
       mat-button
       class="btn btn-info fw-normal"
       routerLink="/add"
@@ -28,13 +33,19 @@
     >
       Ajouter
     </button>
+    <button mat-button class="btn btn-danger fw-normal" [disabled]="isDisabled" style="float: right; margin-right: 0.142%">Supprimer</button>
+    <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
+      <i-feather
+        name="search"
+        class="mt-n3 text-light-muted feather-base text-dark"
+      ></i-feather>
+    </button>
     <h4 class="mb-56">Gérez vos utilisateurs</h4>
 
     <div class="table-responsive">
       <table
         mat-table
         [dataSource]="dataSource"
-        (click)="setActiveUser($event)"
         class="text-nowrap w-100"
       >
 
@@ -78,21 +89,26 @@
           </ng-container>
 
           <ng-container matColumnDef="role">
-            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <th mat-header-cell *matHeaderCellDef>Rôle</th>
             <td mat-cell *matCellDef="let user">
               <span>{{ user.role }}</span>
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="password">
-            <th mat-header-cell *matHeaderCellDef>Mot de passe</th>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let user">
-              <p class="mb-0 fw-medium op-5">{{ user.password }}</p>
+              <span><button mat-button class="btn btn-success fw-normal" style="margin-right: 1%;" type="submit" [(ngModel)]="currentUser">
+                Modifier
+              </button></span>
+              <span><button mat-button class="btn btn-danger fw-normal" type="submit" [(ngModel)]="currentUser">
+                Supprimer
+              </button></span>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
         </ng-container>
       </table>
     </div>
