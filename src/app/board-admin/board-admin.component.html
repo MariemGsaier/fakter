@@ -33,7 +33,7 @@
     >
       Ajouter
     </button>
-    <button mat-button class="btn btn-danger fw-normal" [disabled]="isDisabled" style="float: right; margin-right: 0.142%">Supprimer</button>
+    <button mat-button class="btn btn-danger fw-normal" style="float: right; margin-right: 0.142%" (click)="removeAllUsers()">Supprimer Tout</button>
     <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
       <i-feather
         name="search"
@@ -48,23 +48,6 @@
         [dataSource]="dataSource"
         class="text-nowrap w-100"
       >
-
-      <ng-container matColumnDef="select">
-        <th mat-header-cell *matHeaderCellDef>
-          <mat-checkbox (change)="$event ? masterToggle() : null"
-                        [checked]="selection.hasValue() && isAllSelected()"
-                        [indeterminate]="selection.hasValue() && !isAllSelected()"
-                        [aria-label]="checkboxLabel()">
-          </mat-checkbox>
-        </th>
-        <td mat-cell *matCellDef="let row">
-          <mat-checkbox (click)="$event.stopPropagation()"
-                        (change)="$event ? selection.toggle(row) : null"
-                        [checked]="selection.isSelected(row)"
-                        [aria-label]="checkboxLabel(row)">
-          </mat-checkbox>
-        </td>
-      </ng-container>
       
         <ng-container>
           <ng-container matColumnDef="id">
@@ -97,25 +80,25 @@
 
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let user">
-              <span><button mat-button class="btn btn-success fw-normal" style="margin-right: 1%;" type="submit" [(ngModel)]="currentUser">
+            <td mat-cell *matCellDef="let user; let i = index" [class.active]="i == currentIndex" (click)="setActiveUser(user, i)">
+              <span><button mat-button class="btn btn-success fw-normal" style="margin-right: 1%;" type="submit" name="modifier">
                 Modifier
               </button></span>
-              <span><button mat-button class="btn btn-danger fw-normal" type="submit" [(ngModel)]="currentUser">
+              <span><button mat-button class="btn btn-danger fw-normal" type="submit" name="supprimer" (click)="deleteUser()">
                 Supprimer
               </button></span>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </ng-container>
       </table>
     </div>
   </mat-card-content>
 </mat-card>
 
-<mat-card class="w-100" *ngIf="currentUser.id">
+<mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -156,35 +139,16 @@
         />
       </mat-form-field>
 
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Mot de passe</mat-label>
-        <input
-          matInput
-          type="password"
-          placeholder="Entrez le mot de passe"
-          required
-          id="password"
-          [(ngModel)]="currentUser.password"
-          [ngModelOptions]="{ standalone: true }"
-        />
-      </mat-form-field>
       <div>
-        <button
-          mat-button
-          class="btn btn-danger fw-normal"
-          (click)="deleteUser()"
-          type="submit"
-        >
-          Supprimer
-        </button>
         &nbsp;
         <button
           mat-button
           class="btn btn-success fw-normal"
           (click)="updateUser()"
           type="submit"
+          style="float: right"
         >
-          Modifier
+          Confirmer
         </button>
         <p>{{ message }}</p>
       </div>
