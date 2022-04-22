@@ -22,13 +22,15 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
 import { SearchUser } from './pipes/search-user.pipe';
 
+
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
     SimpleComponent,
     BoardAdminComponent,
-    SearchUser
+    SearchUser,
+    
   ],
   imports: [
     BrowserModule,

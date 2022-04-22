@@ -5,6 +5,8 @@ import { AddUserComponent } from "./components/add-user/add-user.component";
 import { AlertsComponent } from "./components/alerts/alerts.component";
 import { AddArticleComponent } from "./components/articles/add-article/add-article.component";
 import { ArticlesComponent } from "./components/articles/articles.component";
+import { ClientComponent } from "./components/client/client.component";
+import { AddClientComponent } from "./components/client/add-client/add-client.component";
 import { ButtonsComponent } from "./components/buttons/buttons.component";
 import { ChipsComponent } from "./components/chips/chips.component";
 import { ExpansionComponent } from "./components/expansion/expansion.component";
@@ -63,7 +65,8 @@ const routes: Routes = [
       { path: "admin", component: BoardAdminComponent },
       { path: "add", component: AddUserComponent },
       { path: "articles", component: ArticlesComponent },
-      { path: "add-article", component: AddArticleComponent },
+      { path: "clients", component: ClientComponent },
+      { path: "add-client", component: AddClientComponent },
     ],
   },
 

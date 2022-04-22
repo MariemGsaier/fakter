@@ -59,6 +59,11 @@ export class FullComponent implements OnInit {
       icon: "box",
       menu: "Articles",
     },
+    {
+      link: "/clients",
+      icon: "user",
+      menu: "Clients",
+    },
   ];
 
   ngOnInit(): void {
