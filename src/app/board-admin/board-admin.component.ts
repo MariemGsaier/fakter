@@ -1,4 +1,3 @@
-import { SelectionModel } from "@angular/cdk/collections";
 import { Component, OnInit } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,9 +11,8 @@ import { UserService } from "../services/user.service";
   styleUrls: ["./board-admin.component.scss"],
 })
 export class BoardAdminComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'username', 'email', 'role', 'action'];
+  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'action'];
   dataSource = new MatTableDataSource<User>();
-  selection = new SelectionModel<User>(true, []);
   content?: string;
   currentUser: User = {
     username: '',
@@ -27,38 +25,8 @@ export class BoardAdminComponent implements OnInit {
   username = '';
   term = '';
   search: boolean = false;
-  isDisabled: boolean = true;
+  disabelModif: boolean = false;
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-/** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    if (this.isAllSelected()) {
-      this.selection.clear();
-      return;
-    }
-
-    this.selection.select(...this.dataSource.data);
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: User): string {
-    if (!row) {
-      this.isDisabled = false;
-      console.log("hh", this.isDisabled)
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-      this.isDisabled = true;
-      console.log(this.isDisabled)
-    
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-    
-  }
 
   constructor(private userService: UserService, private gestUserService: GestUserService, private route: ActivatedRoute,
     private router: Router) { }
@@ -99,6 +67,7 @@ export class BoardAdminComponent implements OnInit {
     this.currentUser = user;
     console.log(user)
     this.currentIndex = index;
+    this.disabelModif = true;
   }
 
   removeAllUsers(): void {
@@ -134,6 +103,7 @@ export class BoardAdminComponent implements OnInit {
       .subscribe(
         response => {
           console.log(response);
+          this.disabelModif = false;
           this.message = response.message ? response.message : 'This user was updated successfully!';
         },
         error => {
@@ -145,7 +115,7 @@ export class BoardAdminComponent implements OnInit {
       .subscribe(
         response => {
           console.log(response);
-          this.router.navigate(['/users']);
+          this.router.navigate(['/admin']);
         },
         error => {
           console.log(error);

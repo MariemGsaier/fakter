@@ -26,6 +26,7 @@ import { RouterModule } from '@angular/router';
 import { AddUserComponent } from './add-user/add-user.component';
 import { MatCardModule } from '@angular/material/card';
 import { ArticlesComponent } from './articles/articles.component';
+import { AddArticleComponent } from './articles/add-article/add-article.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { ArticlesComponent } from './articles/articles.component';
     HomeComponent,
     ProfileComponent,
     AddUserComponent,
-    ArticlesComponent
+    ArticlesComponent,
+    AddArticleComponent
   ],
   imports: [
     CommonModule,
