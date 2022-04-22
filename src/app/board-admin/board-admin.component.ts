@@ -12,21 +12,22 @@ import { UserService } from "../services/user.service";
   styleUrls: ["./board-admin.component.scss"],
 })
 export class BoardAdminComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'password'];
+  displayedColumns: string[] = ['select', 'id', 'username', 'email', 'role', 'action'];
   dataSource = new MatTableDataSource<User>();
   selection = new SelectionModel<User>(true, []);
   content?: string;
   currentUser: User = {
     username: '',
     email: '',
-    role: '',
-    password: ''
+    role: ''
   };
   message = '';
   users?: User[];
   currentIndex = -1;
   username = '';
+  term = '';
   search: boolean = false;
+  isDisabled: boolean = true;
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -48,9 +49,15 @@ export class BoardAdminComponent implements OnInit {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: User): string {
     if (!row) {
+      this.isDisabled = false;
+      console.log("hh", this.isDisabled)
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
+      this.isDisabled = true;
+      console.log(this.isDisabled)
+    
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    
   }
 
   constructor(private userService: UserService, private gestUserService: GestUserService, private route: ActivatedRoute,
@@ -88,10 +95,10 @@ export class BoardAdminComponent implements OnInit {
     this.currentIndex = -1;
   }
 
-  setActiveUser(user: any): void {
+  setActiveUser(user: any, index: number): void {
     this.currentUser = user;
-    console.log(user);
-    //this.currentIndex = index;
+    console.log(user)
+    this.currentIndex = index;
   }
 
   removeAllUsers(): void {
@@ -109,10 +116,11 @@ export class BoardAdminComponent implements OnInit {
   searchName(): void {
     this.currentUser = {};
     this.currentIndex = -1;
-    this.gestUserService.findByKeyword(this.username)
+    this.gestUserService.search(this.username)
       .subscribe(
         data => {
           this.users = data;
+          console.log(this.users);
           console.log(data);
         },
         error => {

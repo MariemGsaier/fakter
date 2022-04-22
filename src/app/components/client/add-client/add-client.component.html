@@ -1,0 +1,49 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="mb-32">Ajoutez un client</h4>
+        <form>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Nom </mat-label>
+                <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Numéro de téléphone</mat-label>
+                <input matInput type="text" placeholder="Entrez l'email" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Adresse</mat-label>
+                <input matInput type="number" placeholder="Entrez le role" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Courriel</mat-label>
+                <input matInput type="number" placeholder="Entrez le mot de passe" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Numéro de compte bancaire</mat-label>
+                <input matInput type="number" placeholder="Entrez le mot de passe" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Durée de paiement </mat-label>
+                <input matInput type="number" placeholder="Entrez le mot de passe" required>
+            </mat-form-field>
+
+            <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
+
+            <div>
+                <br>
+                <div *ngFor="let alerts of alerts"
+                    class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
+                    role="alert">
+                    <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
+                    {{ alerts.message }}
+                    <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

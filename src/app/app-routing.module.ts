@@ -3,6 +3,9 @@ import { RouterModule, Routes } from "@angular/router";
 import { BoardAdminComponent } from "./board-admin/board-admin.component";
 import { AddUserComponent } from "./components/add-user/add-user.component";
 import { AlertsComponent } from "./components/alerts/alerts.component";
+import { ArticlesComponent } from "./components/articles/articles.component";
+import { ClientComponent } from "./components/client/client.component";
+import { AddClientComponent } from "./components/client/add-client/add-client.component";
 import { ButtonsComponent } from "./components/buttons/buttons.component";
 import { ChipsComponent } from "./components/chips/chips.component";
 import { ExpansionComponent } from "./components/expansion/expansion.component";
@@ -60,6 +63,10 @@ const routes: Routes = [
       { path: "profile", component: ProfileComponent },
       { path: "admin", component: BoardAdminComponent },
       { path: "add", component: AddUserComponent },
+      { path: "articles", component: ArticlesComponent },
+      { path: "clients", component: ClientComponent },
+      { path: "add-client", component: AddClientComponent },
+
     ],
   },
 
