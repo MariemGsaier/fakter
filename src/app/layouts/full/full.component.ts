@@ -51,19 +51,27 @@ export class FullComponent implements OnInit {
   sidebarMenu: sidebarMenu[] = [
     {
       link: "/dashboard",
-      icon: "bar-chart-2",
+      icon: "dashboard",
       menu: "Dashboard",
     },
     {
       link: "/articles",
-      icon: "box",
+      icon: "article",
       menu: "Articles",
     },
     {
       link: "/clients",
-      icon: "user",
+      icon: "people",
       menu: "Clients",
+      
     },
+    {
+      link: "/",
+      icon: "business",
+      menu: "Société",
+      
+    },
+    
   ];
 
   ngOnInit(): void {
