@@ -2,6 +2,8 @@ import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
+import { MatIconModule } from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select'
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -45,11 +47,8 @@ import { MatTooltip } from '@angular/material/tooltip';
     HttpClientModule,
     MatCardModule ,
     MatFormFieldModule,
-    MatFormField,
-    MatCardContent,
-    MatCard,
-    MatTooltip,
-    MatLabel
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

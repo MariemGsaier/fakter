@@ -26,10 +26,13 @@ import { RouterModule } from '@angular/router';
 import { AddUserComponent } from './add-user/add-user.component';
 import { MatCardModule } from '@angular/material/card';
 import { ArticlesComponent } from './articles/articles.component';
-
+import { AddArticleComponent } from './articles/add-article/add-article.component';
 import { ClientComponent } from './client/client.component';
 import { AddClientComponent } from './client/add-client/add-client.component';
-import { AddArticleComponent } from './articles/add-article/add-article.component';
+import { SocietyAccountsComponent } from './society-accounts/society-accounts.component';
+import { AddAccountComponent } from './society-accounts/add-account/add-account.component';
+import { SocietiesComponent } from './societies/societies.component';
+import { AddSocietyComponent } from './societies/add-society/add-society.component';
 
 
 @NgModule({
@@ -57,6 +60,11 @@ import { AddArticleComponent } from './articles/add-article/add-article.componen
     AddArticleComponent,
     ClientComponent,
     AddClientComponent,
+    AddArticleComponent,
+    SocietyAccountsComponent,
+    AddAccountComponent,
+    SocietiesComponent,
+    AddSocietyComponent
   ],
   imports: [
     CommonModule,

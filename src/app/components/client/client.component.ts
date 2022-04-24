@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SelectionModel } from "@angular/cdk/collections";
-import { MatTableDataSource } from "@angular/material/table";
+
 
 interface alerts {
   border: string;

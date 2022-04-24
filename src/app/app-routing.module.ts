@@ -28,6 +28,9 @@ import { ProductComponent } from "./dashboard/dashboard-components/product/produ
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FullComponent } from "./layouts/full/full.component";
 import { SimpleComponent } from "./layouts/simple/simple.component";
+import { AddAccountComponent } from "./components/society-accounts/add-account/add-account.component";
+import { SocietyAccountsComponent } from "./components/society-accounts/society-accounts.component";
+
 
 const routes: Routes = [
   {
@@ -68,6 +71,9 @@ const routes: Routes = [
       { path: "add-articles", component: AddArticleComponent },
       { path: "clients", component: ClientComponent },
       { path: "add-client", component: AddClientComponent },
+      { path: "add-account", component: AddAccountComponent },
+      { path: "bankaccounts", component: SocietyAccountsComponent }
+      
     ],
   },
 
