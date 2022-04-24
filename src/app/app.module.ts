@@ -5,8 +5,8 @@ import { allIcons } from 'angular-feather/icons';
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCard, MatCardContent, MatCardModule } from '@angular/material/card';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +21,7 @@ import { SimpleComponent } from './layouts/simple/simple.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
 import { SearchUser } from './pipes/search-user.pipe';
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -43,7 +44,12 @@ import { SearchUser } from './pipes/search-user.pipe';
     FormsModule,
     HttpClientModule,
     MatCardModule ,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatFormField,
+    MatCardContent,
+    MatCard,
+    MatTooltip,
+    MatLabel
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

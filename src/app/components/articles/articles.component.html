@@ -1,9 +1,81 @@
-<button
-  mat-button
-  class="btn btn-info fw-normal"
-  routerLink="/add-article"
-  type="submit"
-  style="float: right"
->
-  Ajouter Article
-</button>
+<mat-card class="w-100">
+  <mat-card-content>
+      <button mat-button class="btn btn-info fw-normal " routerLink="/add-article" type="submit" style="float: right">
+          Ajouter
+      </button>
+      <button mat-button class="btn btn-danger  fw-normal" 
+          style="float: right; margin-right: 0.142%">Supprimer Tout</button>
+      <h4 class="mb-56">Gérez vos articles</h4>
+
+      <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+
+              <!-- Id Column -->
+              <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef> Id </th>
+                  <td mat-cell class="fw-medium" *matCellDef="let element"> {{element.id}} </td>
+              </ng-container>
+
+              <!-- Assigned Column -->
+              <ng-container matColumnDef="nom">
+                  <th mat-header-cell *matHeaderCellDef> Nom article </th>
+                  <td mat-cell *matCellDef="let element">
+                      <p class="mb-0 fw-medium">{{ element.nom }}</p>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="type_article">
+                  <th mat-header-cell *matHeaderCellDef> Type de article </th>
+                  <td mat-cell *matCellDef="let element">
+                      <p class="mb-0 fw-medium">{{ element.type_article }}</p>
+                  </td>
+              </ng-container>
+
+              <!-- Project Column -->
+              <ng-container matColumnDef="prix">
+                  <th mat-header-cell *matHeaderCellDef> Prix de vente </th>
+                  <td mat-cell *matCellDef="let element">
+                      <p class="mb-0 fw-medium op-5">{{element.prix}}</p>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="taxe">
+                  <th mat-header-cell *matHeaderCellDef> Taxe de vente </th>
+                  <td mat-cell *matCellDef="let element">
+                      <p class="mb-0 fw-medium op-5">{{element.taxe}}</p>
+                  </td>
+              </ng-container>
+
+              <!-- Priority Column -->
+              <ng-container matColumnDef="cout">
+                  <th mat-header-cell *matHeaderCellDef> Coût </th>
+                  <td mat-cell *matCellDef="let element">
+                     <p class="mb-0 fw-medium">{{element.cout}}</p>
+                  </td>
+              </ng-container>
+
+              <!-- Budget Column -->
+              <ng-container matColumnDef="unité mesure">
+                  <th mat-header-cell *matHeaderCellDef> Unié de mesure </th>
+                  <td mat-cell *matCellDef="let element">
+                      <p class="mb-0 fw-medium">{{element.unite}}</p>
+                  </td>
+              </ng-container>
+              <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let user"> 
+                      
+                  <button mat-raised-button class="btn btn-success fw-normal btnw"  style="margin-right: 1%;" type="submit" >
+                      <mat-icon>edit</mat-icon> 
+                  </button>
+                      <button mat-raised-button class="btn btn-danger fw-normal btnw" style="margin-right: 1%;" type="submit">
+                          <mat-icon>delete</mat-icon>
+                      </button>
+                      
+                  </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+      </div>
+  </mat-card-content>
+</mat-card>

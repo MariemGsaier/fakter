@@ -29,6 +29,7 @@ import { ArticlesComponent } from './articles/articles.component';
 
 import { ClientComponent } from './client/client.component';
 import { AddClientComponent } from './client/add-client/add-client.component';
+import { AddArticleComponent } from './articles/add-article/add-article.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { AddClientComponent } from './client/add-client/add-client.component';
     ProfileComponent,
     AddUserComponent,
     ArticlesComponent,
+    AddArticleComponent,
     ClientComponent,
     AddClientComponent,
   ],
