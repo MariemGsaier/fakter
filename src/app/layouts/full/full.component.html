@@ -27,10 +27,7 @@
                 class="sidebar-menu fs-16 w-100 d-flex align-items-center"
                 [routerLinkActive]="routerActive"
               >
-                <i-feather
-                  name="user"
-                  class="feather-base me-16"
-                ></i-feather>
+               <mat-icon class="feather-base me-16">person</mat-icon> 
                 <span class="ps-4">Espace Admin</span>
               </a>
             </li>
@@ -47,10 +44,7 @@
                 class="sidebar-menu fs-16 w-100 d-flex align-items-center"
                 [routerLinkActive]="routerActive"
               >
-                <i-feather
-                  name="{{ sidenav.icon }}"
-                  class="feather-base me-16"
-                ></i-feather>
+                <mat-icon class="feather-base me-16">{{ sidenav.icon }}</mat-icon>
                 <span class="ps-4">{{ sidenav.menu }}</span>
               </a>
             </li>
@@ -82,7 +76,7 @@
             class="fs-16 pt-4 pb-4 ps-8 pe-8 text-light-muted"
             [matMenuTriggerFor]="menu"
           >
-          <span><i-feather name="user" class="feather-base" ></i-feather></span>
+          <span><mat-icon style="margin-top:10px;">person</mat-icon></span>
             <span class="fw-light ms-8 text-secondary">Bienvenue,</span>
             <span class="fw-bold ms-8">{{ username }}</span>
             <i-feather
@@ -93,7 +87,7 @@
           <mat-menu #menu="matMenu" class="profile-dropdown">
             <div class="p-16 mb-4">
               <button mat-menu-item class="fs-16" routerLink="/profile">
-                Account
+                Ton compte
               </button>
             </div>
 
