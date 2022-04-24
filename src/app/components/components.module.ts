@@ -29,6 +29,10 @@ import { ArticlesComponent } from './articles/articles.component';
 import { AddArticleComponent } from './articles/add-article/add-article.component';
 import { ClientComponent } from './client/client.component';
 import { AddClientComponent } from './client/add-client/add-client.component';
+import { SocietyAccountsComponent } from './society-accounts/society-accounts.component';
+import { AddAccountComponent } from './society-accounts/add-account/add-account.component';
+import { SocietiesComponent } from './societies/societies.component';
+import { AddSocietyComponent } from './societies/add-society/add-society.component';
 
 
 @NgModule({
@@ -55,7 +59,11 @@ import { AddClientComponent } from './client/add-client/add-client.component';
     ArticlesComponent,
     ClientComponent,
     AddClientComponent,
-    AddArticleComponent
+    AddArticleComponent,
+    SocietyAccountsComponent,
+    AddAccountComponent,
+    SocietiesComponent,
+    AddSocietyComponent
   ],
   imports: [
     CommonModule,

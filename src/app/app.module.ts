@@ -2,7 +2,8 @@ import { NgModule , CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import {MatSelectModule} from '@angular/material/select'
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -45,7 +46,8 @@ import { SearchUser } from './pipes/search-user.pipe';
     HttpClientModule,
     MatCardModule ,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
