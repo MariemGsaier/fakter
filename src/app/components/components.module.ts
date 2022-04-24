@@ -57,6 +57,7 @@ import { AddSocietyComponent } from './societies/add-society/add-society.compone
     ProfileComponent,
     AddUserComponent,
     ArticlesComponent,
+    AddArticleComponent,
     ClientComponent,
     AddClientComponent,
     AddArticleComponent,

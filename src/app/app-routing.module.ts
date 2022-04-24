@@ -68,6 +68,7 @@ const routes: Routes = [
       { path: "admin", component: BoardAdminComponent },
       { path: "add", component: AddUserComponent },
       { path: "articles", component: ArticlesComponent },
+      { path: "add-articles", component: AddArticleComponent },
       { path: "clients", component: ClientComponent },
       { path: "add-client", component: AddClientComponent },
       { path: "add-account", component: AddAccountComponent },
