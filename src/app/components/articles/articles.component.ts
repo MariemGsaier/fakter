@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+interface alerts {
+  border: string;
+  background: string;
+  color: string;
+  icon: string;
+  iconColor: string;
+  message: string;
+}
 export interface PeriodicElement {
   id: number;
   nom: string;
@@ -23,8 +31,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./articles.component.scss']
 })
 export class ArticlesComponent implements OnInit {
-
-  displayedColumns: string[] = ['id', 'nom', 'type_article', 'prix', 'taxe', 'cout', 'unite','actions'];
+  displayedColumns: string[] = ['id', 'nom','type_article', 'prix', 'taxe', 'cout', 'unite','actions'];
   dataSource = ELEMENT_DATA;
   // dataSource = new MatTableDataSource<Client>();
   // content?: string;
@@ -40,11 +47,19 @@ export class ArticlesComponent implements OnInit {
   term = '';
   search: boolean = false;
   isDisabled: boolean = true;
-
-  constructor(private route: ActivatedRoute,
+  constructor( private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
   }
-
+  alerts: alerts[] = [
+    {
+      border: "alert-border-success",
+      background: "alert-success",
+      color: "alert-text-success",
+      icon: "check-circle",
+      iconColor: "text-success",
+      message: "Client ajouté avec succès",
+    },
+  ]
 }
