@@ -1,1 +1,48 @@
-<p>add-society works!</p>
+<div class="card">
+    <div class="card-body">
+        <h4 class="mb-32">Ajoutez une société</h4>
+        <form>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Nom de la société </mat-label>
+                <input matInput type="text" placeholder="Veuillez entrer le numéro de compte" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>RIB </mat-label>
+                <input matInput type="text" placeholder="Veuillez entrer le RIB" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Nom de la Banque</mat-label>
+                <input matInput type="text" placeholder="Veuillez entrer le nom de la banque" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>BIC</mat-label>
+                <input matInput type="text" placeholder="Veuillez entrer le BIC" required>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>Titulaire du compte </mat-label>
+                <input matInput type="text" placeholder="Veuillez entrer le titulaire de compte" required>
+            </mat-form-field>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+                <mat-label>IBAN </mat-label>
+                <input matInput type="text" placeholder="Veuillez entrer le IBAN">
+            </mat-form-field>
+
+            <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
+
+            <div>
+                <br>
+                <div *ngFor="let alerts of alerts"
+                    class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
+                    role="alert">
+                    <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
+                    {{ alerts.message }}
+                    <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
