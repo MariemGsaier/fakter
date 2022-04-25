@@ -57,6 +57,7 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     ProfileComponent,
     AddUserComponent,
     ArticlesComponent,
+    AddArticleComponent,
     ClientComponent,
     AddClientComponent,
     AddArticleComponent,

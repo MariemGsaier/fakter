@@ -29,8 +29,13 @@ import { FullComponent } from "./layouts/full/full.component";
 import { SimpleComponent } from "./layouts/simple/simple.component";
 import { AddAccountComponent } from "./components/society-accounts/add-account/add-account.component";
 import { SocietyAccountsComponent } from "./components/society-accounts/society-accounts.component";
+
 import { FacturesComponent } from "./components/factures/factures.component";
 import { AddFactureComponent } from "./components/factures/add-facture/add-facture.component";
+
+import { AddSocietyComponent } from "./components/societies/add-society/add-society.component";
+import { SocietiesComponent } from "./components/societies/societies.component";
+
 
 
 const routes: Routes = [
@@ -66,14 +71,20 @@ const routes: Routes = [
       { path: "button", component: ButtonsComponent },
       { path: "profile", component: ProfileComponent },
       { path: "admin", component: BoardAdminComponent },
-      { path: "add", component: AddUserComponent },
+      { path: "add-user", component: AddUserComponent },
       { path: "articles", component: ArticlesComponent },
+      { path: "add-article", component: AddArticleComponent },
       { path: "clients", component: ClientComponent },
       { path: "add-client", component: AddClientComponent },
       { path: "add-account", component: AddAccountComponent },
       { path: "bankaccounts", component: SocietyAccountsComponent },
+
       { path: "factures", component: FacturesComponent },
       {path: "add-facture", component: AddFactureComponent}
+
+      { path: "societe", component: SocietiesComponent },
+      { path: "add-societe", component: AddSocietyComponent },
+
       
     ],
   },
