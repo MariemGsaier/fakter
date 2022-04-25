@@ -19,10 +19,10 @@ export interface PeriodicElement {
   unite: string;
 }
 const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, nom: 'Deep Javiya', type_article: '23145698', prix: 222, taxe: 222, cout: 12, unite: '12' },
-  { id: 2, nom: 'Nirav Joshi', type_article: '23145698 ', prix: 222, taxe: 222, cout: 12, unite: '12' },
-  { id: 3, nom: 'Sunil Joshi', type_article: ' 23145698', prix: 222, taxe: 222, cout: 12, unite: '12' },
-  { id: 4, nom: 'Maruti Makwana', type_article: '23145698 ', prix: 222, taxe: 222, cout: 12, unite: '12' },
+  { id: 1, nom: 'Deep Javiya', type_article: '23145698', prix: 222, taxe: 20, cout: 500, unite: '12' },
+  { id: 2, nom: 'Nirav Joshi', type_article: '23145698 ', prix: 222, taxe: 19, cout: 500, unite: '15' },
+  { id: 3, nom: 'Sunil Joshi', type_article: ' 23145698', prix: 222, taxe: 17, cout: 500, unite: '20' },
+  { id: 4, nom: 'Maruti Makwana', type_article: '23145698 ', prix: 222, taxe: 0, cout: 500, unite: '30' },
 ];
 
 @Component({
