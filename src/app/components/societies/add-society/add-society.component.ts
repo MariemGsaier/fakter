@@ -28,7 +28,7 @@ export class AddSocietyComponent implements OnInit {
       color: "alert-text-success",
       icon: "check-circle",
       iconColor: "text-success",
-      message: "compte ajouté avec succès",
+      message: "société ajouté avec succès",
     },
   ]
 }

@@ -1,48 +1,69 @@
 <div class="card">
     <div class="card-body">
-        <h4 class="mb-32">Ajoutez une société</h4>
-        <form>
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-                <mat-label>Nom de la société </mat-label>
-                <input matInput type="text" placeholder="Veuillez entrer le numéro de compte" required>
-            </mat-form-field>
+      <h4 class="mb-32">Ajoutez une société</h4>
+      <form>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Nom de la société</mat-label>
+          <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required>
+        </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Numéro de téléphone</mat-label>
+          <input matInput type="text" placeholder="Entrez l'email" required>
+        </mat-form-field>
 
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-                <mat-label>RIB </mat-label>
-                <input matInput type="text" placeholder="Veuillez entrer le RIB" required>
-            </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Adresse</mat-label>
+            <input matInput type="text" placeholder="Entrez le role" required>
+          </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Courriel</mat-label>
+          <input matInput type="email" placeholder="Entrez le mot de passe" required>
+        </mat-form-field>
 
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-                <mat-label>Nom de la Banque</mat-label>
-                <input matInput type="text" placeholder="Veuillez entrer le nom de la banque" required>
-            </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Siteweb</mat-label>
+            <input matInput type="text" placeholder="Entrez le mot de passe" required>
+          </mat-form-field>
 
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-                <mat-label>BIC</mat-label>
-                <input matInput type="text" placeholder="Veuillez entrer le BIC" required>
-            </mat-form-field>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Type de la société</mat-label>
+            <input matInput type="text" placeholder="Entrez le mot de passe" required>
+          </mat-form-field>
 
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-                <mat-label>Titulaire du compte </mat-label>
-                <input matInput type="text" placeholder="Veuillez entrer le titulaire de compte" required>
-            </mat-form-field>
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-                <mat-label>IBAN </mat-label>
-                <input matInput type="text" placeholder="Veuillez entrer le IBAN">
-            </mat-form-field>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Numéro RCS</mat-label>
+            <input matInput type="number" placeholder="Entrez le mot de passe" required>
+          </mat-form-field>
 
-            <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>TVA</mat-label>
+            <input matInput type="number" placeholder="Entrez le mot de passe" required>
+          </mat-form-field>
 
-            <div>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Timbre Fiscale</mat-label>
+            <input matInput type="number" placeholder="Entrez le mot de passe" required>
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Image</mat-label>
+            <input matInput type="text" placeholder="Entrez le mot de passe" required>
+          </mat-form-field>
+  
+        <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
+
+              <div>
                 <br>
-                <div *ngFor="let alerts of alerts"
-                    class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
-                    role="alert">
-                    <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
-                    {{ alerts.message }}
-                    <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
-                </div>
+            <div *ngFor="let alerts of alerts"
+              class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
+              role="alert">
+              <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
+              {{ alerts.message }}
+              <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
             </div>
-        </form>
+          </div>
+      </form>
     </div>
-</div>
+  </div>
