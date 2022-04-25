@@ -71,6 +71,12 @@ export class FullComponent implements OnInit {
       menu: "Société",
       
     },
+    {
+      link: "/factures",
+      icon: "file_copy",
+      menu: "Factures",
+      
+    },
     
   ];
 

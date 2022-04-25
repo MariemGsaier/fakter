@@ -20,7 +20,6 @@ import { SlideToggleComponent } from './slide-toggle/slide-toggle.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { TooltipsComponent } from './tooltips/tooltips.component'
 import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RouterModule } from '@angular/router';
 import { AddUserComponent } from './add-user/add-user.component';
@@ -33,6 +32,8 @@ import { SocietyAccountsComponent } from './society-accounts/society-accounts.co
 import { AddAccountComponent } from './society-accounts/add-account/add-account.component';
 import { SocietiesComponent } from './societies/societies.component';
 import { AddSocietyComponent } from './societies/add-society/add-society.component';
+import { FacturesComponent } from './factures/factures.component';
+import { AddFactureComponent } from './factures/add-facture/add-facture.component';
 
 
 @NgModule({
@@ -53,7 +54,6 @@ import { AddSocietyComponent } from './societies/add-society/add-society.compone
     ButtonsComponent,
     TooltipsComponent,
     LoginComponent,
-    HomeComponent,
     ProfileComponent,
     AddUserComponent,
     ArticlesComponent,
@@ -64,7 +64,9 @@ import { AddSocietyComponent } from './societies/add-society/add-society.compone
     SocietyAccountsComponent,
     AddAccountComponent,
     SocietiesComponent,
-    AddSocietyComponent
+    AddSocietyComponent,
+    FacturesComponent,
+    AddFactureComponent
   ],
   imports: [
     CommonModule,
