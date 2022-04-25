@@ -1,0 +1,69 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="mb-32">Créer une facture</h4>
+        <form>
+            <mat-grid-list cols="2" rowHeight="5:1">
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                        <mat-label>Numéro de facture </mat-label>
+                        <input matInput type="text" placeholder="Veuillez entrer le numéro de facture" required>
+                    </mat-form-field>
+
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                        <mat-label>Vendeur</mat-label>
+                        <mat-select name="vendeur" required>
+                            <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur.value">
+                                {{vendeur.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                        <mat-label>Devise</mat-label>
+                        <mat-select name="devise" required>
+                            <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur.value">
+                                {{vendeur.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline" >
+                        <mat-label>Date de facturation</mat-label>
+                        <input matInput [matDatepicker]="picker" required>
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                        <mat-label>Durée de paiement</mat-label>
+                        <mat-select name="dp" required>
+                            <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur.value">
+                                {{vendeur.viewValue}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                        <mat-label>Date d'échéance</mat-label>
+                        <input matInput [matDatepicker]="picker" required>
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </mat-grid-tile>
+               
+            </mat-grid-list>
+           
+            <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
+        </form>
+       
+    </div>
+</div>

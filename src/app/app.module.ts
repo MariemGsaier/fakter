@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FeatherModule } from 'angular-feather';
 import { allIcons } from 'angular-feather/icons';
 import { MatIconModule } from '@angular/material/icon';
-import {MatSelectModule} from '@angular/material/select'
+import { MatSelectModule } from '@angular/material/select'
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -47,7 +48,8 @@ import { SearchUser } from './pipes/search-user.pipe';
     MatCardModule ,
     MatFormFieldModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

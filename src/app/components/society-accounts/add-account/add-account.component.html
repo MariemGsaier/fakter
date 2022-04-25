@@ -22,7 +22,7 @@
                 <input matInput type="text" placeholder="Veuillez entrer le BIC" required>
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field class="w-100 fs-16" appearance="outline">
                 <mat-label>Devise</mat-label>
                 <mat-select  name="devise" required>
                     <mat-option *ngFor="let devise of devises" [value]="devise.value">
