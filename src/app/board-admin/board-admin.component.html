@@ -142,11 +142,19 @@
       <div>
         &nbsp;
         <button
+        mat-button
+        class="btn btn-danger fw-normal"
+        type="submit"
+        style="float: right"
+      >
+        Annuler
+      </button>
+        <button
           mat-button
           class="btn btn-success fw-normal"
           (click)="updateUser()"
           type="submit"
-          style="float: right"
+          style="float: right; margin-right: 0.3%;"
         >
           Confirmer
         </button>
