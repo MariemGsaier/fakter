@@ -80,7 +80,7 @@ const routes: Routes = [
       { path: "bankaccounts", component: SocietyAccountsComponent },
 
       { path: "factures", component: FacturesComponent },
-      {path: "add-facture", component: AddFactureComponent}
+      {path: "add-facture", component: AddFactureComponent},
 
       { path: "societe", component: SocietiesComponent },
       { path: "add-societe", component: AddSocietyComponent },
