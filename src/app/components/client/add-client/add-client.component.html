@@ -6,55 +6,67 @@
                 <mat-grid-tile>
                     <mat-form-field class="w-100 fs-16" appearance="outline">
                         <mat-label>Nom </mat-label>
-                        <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required>
+                        <input matInput type="text" placeholder="Veuillez entrer le nom du client" required  [(ngModel)]="client.nom_client" [ngModelOptions]="{ standalone: true }">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>
                     <mat-form-field class="w-100 fs-16" appearance="outline">
                         <mat-label>Numéro de téléphone</mat-label>
-                        <input matInput type="text" placeholder="Entrez l'email" required>
+                        <input matInput type="text" placeholder="Veuillez entrer le numéro de téléphone du client" required [(ngModel)]="client.numtel_client" [ngModelOptions]="{ standalone: true }">
                     </mat-form-field>
                 </mat-grid-tile>
                
                 <mat-grid-tile>
                     <mat-form-field class="w-100 fs-16" appearance="outline">
                         <mat-label>Adresse</mat-label>
-                        <input matInput type="number" placeholder="Entrez le role" required>
+                        <input matInput type="text" placeholder="Veuillez entrer l'adresse du client" required [(ngModel)]="client.adresse_client" [ngModelOptions]="{ standalone: true }">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>
                     <mat-form-field class="w-100 fs-16" appearance="outline">
                         <mat-label>Courriel</mat-label>
-                        <input matInput type="number" placeholder="Entrez le mot de passe" required>
+                        <input matInput type="email" placeholder="Veuillez entrer le courriel du client" required [(ngModel)]="client.courriel_client" [ngModelOptions]="{ standalone: true }">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                        <mat-label>Site web</mat-label>
+                        <input matInput type="text" placeholder="Veuillez entrer le site web du client s'il existe"  [(ngModel)]="client.siteweb_client" [ngModelOptions]="{ standalone: true }">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>
                     <mat-form-field class="w-100 fs-16" appearance="outline">
                         <mat-label>Numéro de compte bancaire</mat-label>
-                        <input matInput type="number" placeholder="Entrez le mot de passe" required>
+                        <input matInput type="text" placeholder="Veuillez entrer le numéro du compte bancaire du client" required [(ngModel)]="client.numcomptebancaire_client" [ngModelOptions]="{ standalone: true }">
                     </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>
                     <mat-form-field class="w-100 fs-16" appearance="outline">
                         <mat-label>Durée de paiement </mat-label>
-                        <input matInput type="number" placeholder="Entrez le mot de passe" required>
+                        <input matInput type="number" placeholder="Veuillez entrer le mot de passe" required [(ngModel)]="client.dureepaiement_client" [ngModelOptions]="{ standalone: true }">
                     </mat-form-field>
                 </mat-grid-tile>
-            
-
-            
             </mat-grid-list>
-            <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
             <div>
-                <br>
-                <div *ngFor="let alerts of alerts"
-                    class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
-                    role="alert">
-                    <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
-                    {{ alerts.message }}
-                    <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
+                &nbsp;
+            <button mat-button class="btn btn-success fw-normal" (click)="saveClient()" type="submit">Confirmer</button></div>
+            <div *ngIf="submitted">
+                <br />
+                <div
+                  *ngFor="let alerts of alerts"
+                  class="alert {{ alerts.background }} {{
+                    alerts.color
+                  }} d-flex fs-14 align-items-center rounded mb-16"
+                  role="alert"
+                >
+                  <i-feather
+                    name="{{ alerts.icon }}"
+                    class="{{ alerts.iconColor }} feather-base me-12"
+                  ></i-feather>
+                  {{ alerts.message }}
+                  <button mat-button class="btn btn-success" (click)="newClient()" style="margin-left: 63%;">Ajouter un autre client</button> 
                 </div>
-            </div>
+              </div>
         </form>
     </div>
 </div>
