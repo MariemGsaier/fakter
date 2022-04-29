@@ -11,7 +11,7 @@ import { TabsComponent } from './tabs/tabs.component';
 import { ExpansionComponent } from './expansion/expansion.component';
 import { ChipsComponent } from './chips/chips.component';
 import { ProgressComponent } from './progress/progress.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProgressSnipperComponent } from './progress-snipper/progress-snipper.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
@@ -73,6 +73,7 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     FeatherModule.pick(allIcons),
     DemoFlexyModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     MatCardModule
   ],
