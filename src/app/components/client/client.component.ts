@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Client } from 'src/app/models/client.model';
+import { ClientService } from 'src/app/services/client.service';
+import { MatTableDataSource } from "@angular/material/table";
 
 
 interface alerts {
@@ -10,21 +13,8 @@ interface alerts {
   iconColor: string;
   message: string;
 }
-export interface PeriodicElement {
-  id: number;
-  nom: string;
-  numtel: string;
-  adresse: string;
-  courriel: string;
-  nbc: string;
-  dp: number;
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, nom: 'Deep Javiya', numtel: '23145698', adresse: 'ben arous', courriel: 'test@gmail.com', nbc: '123456789', dp: 12 },
-  { id: 2, nom: 'Nirav Joshi', numtel: '23145698 ', adresse: 'ben arous', courriel: 'test@gmail.com', nbc: '123456789', dp: 15 },
-  { id: 3, nom: 'Sunil Joshi', numtel: ' 23145698', adresse: 'ben arous', courriel: 'test@gmail.com', nbc: '123456789', dp: 20 },
-  { id: 4, nom: 'Maruti Makwana', numtel: '23145698 ', adresse: 'ben arous', courriel: 'test@gmail.com', nbc: '123456789', dp: 30 },
-];
+
+
 
 @Component({
   selector: 'app-client',
@@ -32,28 +22,89 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./client.component.scss']
 })
 export class ClientComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'nom', 'numtel', 'adresse', 'courriel', 'nbc', 'dp','actions'];
-  dataSource = ELEMENT_DATA;
-  // dataSource = new MatTableDataSource<Client>();
+  displayedColumns: string[] = [ 'nom', 'numtel', 'adresse', 'courriel','siteweb' ,'nbc', 'dp','actions'];
+  dataSource = new MatTableDataSource<Client>();
   // content?: string;
-  // currentClient: Client = {
-  //   username: '',
-  //   email: '',
-  //   role: ''
-  // };
+  currentClient: Client = {
+    nom_client: '',
+    adresse_client: '',
+    numtel_client: 0,
+    courriel_client: '',
+    siteweb_client: '',
+    numcomptebancaire_client: 0,
+    dureepaiement_client: 0
+  };
+  disabelModif: boolean = false;
   message = '';
-  // clients?: Client[];
+  clients?: Client[];
   currentIndex = -1;
-  nom = '';
-  term = '';
-  search: boolean = false;
-  isDisabled: boolean = true;
-
+ 
     constructor( private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router , private clientService: ClientService) { }
 
   ngOnInit(): void {
+    this.fetchClients();
   }
+  fetchClients(): void {
+    this.clientService.getAll()
+  
+    .subscribe(
+      data => {
+        this.clients = data;
+        this.dataSource.data = this.clients;
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      });}
+
+  refreshList(): void {
+    this.fetchClients();
+    this.currentClient = {};
+    this.currentIndex = -1;
+  }
+  setActiveClient(client: Client, index: number): void {
+    this.currentClient = client;
+    console.log(client);
+    this.currentIndex = index;
+    this.disabelModif = true;
+    
+  }
+  removeAllClients(): void {
+    this.clientService.deleteAll()
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          this.refreshList();
+        },
+        error: (e) => console.error(e)
+      });
+  }
+  
+  updateClient(): void {
+    this.message = '';
+    this.clientService.update(this.currentClient.id, this.currentClient)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.disabelModif = false;
+          this.message = response.message ? response.message : 'This client was updated successfully!';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+  deleteClient(client : Client): void {
+    this.clientService.delete(client.id)
+    .subscribe({
+      next: (res) => {
+        console.log(res);
+        this.refreshList();
+      },
+      error: (e) => console.error(e)
+    });
+  }
+
   alerts: alerts[] = [
     {
       border: "alert-border-success",

@@ -6,73 +6,75 @@
             <mat-icon>add</mat-icon>
         </button>
         <button mat-button class="btn btn-danger  fw-normal" 
-            style="float: right; margin-right: 0.142%">Supprimer Tout</button>
+            style="float: right; margin-right: 0.142%" (click)="removeAllClients()">Supprimer Tout</button>
         <h4 class="mb-56">Gérez vos clients</h4>
 
         <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
 
                 <!-- Id Column -->
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef> Id </th>
-                    <td mat-cell class="fw-medium" *matCellDef="let element"> {{element.id}} </td>
-                </ng-container>
+               
 
                 <!-- Assigned Column -->
                 <ng-container matColumnDef="nom">
                     <th mat-header-cell *matHeaderCellDef> Nom  </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{ element.nom }}</p>
+                    <td mat-cell *matCellDef="let client">
+                        <p class="mb-0 fw-medium">{{ client.nom_client }}</p>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="numtel">
                     <th mat-header-cell *matHeaderCellDef> Numéro de téléphone </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{ element.numtel }}</p>
+                    <td mat-cell *matCellDef="let client">
+                        <p class="mb-0 fw-medium">{{ client.numtel_client }}</p>
                     </td>
                 </ng-container>
 
                 <!-- Project Column -->
                 <ng-container matColumnDef="adresse">
                     <th mat-header-cell *matHeaderCellDef> Adresse </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium ">{{element.adresse}}</p>
+                    <td mat-cell *matCellDef="let client">
+                        <p class="mb-0 fw-medium ">{{client.adresse_client}}</p>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="courriel">
                     <th mat-header-cell *matHeaderCellDef> Courriel </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium ">{{element.courriel}}</p>
+                    <td mat-cell *matCellDef="let client">
+                        <p class="mb-0 fw-medium ">{{client.courriel_client}}</p>
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="siteweb">
+                    <th mat-header-cell *matHeaderCellDef> Siteweb </th>
+                    <td mat-cell *matCellDef="let client">
+                        <p class="mb-0 fw-medium ">{{client.siteweb_client}}</p>
                     </td>
                 </ng-container>
 
                 <!-- Priority Column -->
                 <ng-container matColumnDef="nbc">
                     <th mat-header-cell *matHeaderCellDef> Numéro du compte bancaire </th>
-                    <td mat-cell *matCellDef="let element">
-                       <p class="mb-0 fw-medium">{{element.nbc}}</p>
+                    <td mat-cell *matCellDef="let client">
+                       <p class="mb-0 fw-medium">{{client.numcomptebancaire_client}}</p>
                     </td>
                 </ng-container>
 
                 <!-- Budget Column -->
                 <ng-container matColumnDef="dp">
                     <th mat-header-cell *matHeaderCellDef> Durée de paiement </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.dp}}</p>
+                    <td mat-cell *matCellDef="let client">
+                        <p class="mb-0 fw-medium">{{client.dureepaiement_client}}</p>
                     </td>
                 </ng-container>
-                <ng-container matColumnDef="actions">
+                <ng-container matColumnDef="actions" >
                     <th mat-header-cell *matHeaderCellDef>Actions</th>
-                    <td mat-cell *matCellDef="let user"> 
-                        
-                    <button mat-button class="btn btn-success fw-normal btnw"  style="margin-right: 1%;" type="submit" >
-                        <mat-icon>edit</mat-icon> 
-                    </button>
-                        <button mat-button class="btn btn-danger fw-normal btnw" style="margin-right: 1%;" type="submit">
-                            <mat-icon>delete</mat-icon>
+                      <td mat-cell *matCellDef="let client; let i = index" [class.active]="i == currentIndex"  > 
+                        <button mat-button class="btn btn-success fw-normal btnw"  style="margin-right: 1%;" type="submit" (click)="setActiveClient(client, i)" >
+                            <mat-icon>edit</mat-icon> 
                         </button>
-                        
-                    </td>
+                            <button mat-button class="btn btn-danger fw-normal btnw" style="margin-right: 1%;" type="submit" (click)="deleteClient(client)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td> 
                 </ng-container>
 
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -81,3 +83,108 @@
         </div>
     </mat-card-content>
 </mat-card>
+<mat-card class="w-100" *ngIf="disabelModif">
+    <mat-card-content>
+      <form>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Nom </mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Veuillez entrer votre modification"
+            id="username"
+            [(ngModel)]="currentClient.nom_client"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Veuillez entrer votre modification"
+            required
+            id="adr"
+            [(ngModel)]="currentClient.adresse_client"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Role</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Veuillez entrer votre modification"
+            required
+            id="numtel"
+            [(ngModel)]="currentClient.numtel_client"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Role</mat-label>
+            <input
+              matInput
+              type="email"
+              placeholder="Veuillez entrer votre modification"
+              required
+              id="cour"
+              [(ngModel)]="currentClient.courriel_client"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Role</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Veuillez entrer votre modification"
+              required
+              id="siteweb"
+              [(ngModel)]="currentClient.siteweb_client"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Role</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Veuillez entrer votre modification"
+              required
+              id="nbc"
+              [(ngModel)]="currentClient.numcomptebancaire_client"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Role</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="Veuillez entrer votre modification"
+              required
+              id="dp"
+              [(ngModel)]="currentClient.dureepaiement_client"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+  
+        <div>
+          &nbsp;
+          <button
+            mat-button
+            class="btn btn-success fw-normal"
+            (click)="updateClient()"
+            type="submit"
+            style="float: right"
+          >
+            Confirmer
+          </button>
+          <p>{{ message }}</p>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
