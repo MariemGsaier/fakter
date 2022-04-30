@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Article } from 'src/app/models/article.model';
+import { ArticleService } from 'src/app/services/article.service';
+import { MatTableDataSource } from "@angular/material/table";
+
 
 interface alerts {
   border: string;
@@ -9,21 +13,6 @@ interface alerts {
   iconColor: string;
   message: string;
 }
-export interface PeriodicElement {
-  id: number;
-  nom: string;
-  type_article: string;
-  prix: number;
-  taxe: number;
-  cout: number;
-  unite: string;
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, nom: 'Deep Javiya', type_article: '23145698', prix: 222, taxe: 20, cout: 500, unite: '12' },
-  { id: 2, nom: 'Nirav Joshi', type_article: '23145698 ', prix: 222, taxe: 19, cout: 500, unite: '15' },
-  { id: 3, nom: 'Sunil Joshi', type_article: ' 23145698', prix: 222, taxe: 17, cout: 500, unite: '20' },
-  { id: 4, nom: 'Maruti Makwana', type_article: '23145698 ', prix: 222, taxe: 0, cout: 500, unite: '30' },
-];
 
 @Component({
   selector: 'app-articles',
@@ -31,27 +20,94 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./articles.component.scss']
 })
 export class ArticlesComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'nom','type_article', 'prix', 'taxe', 'cout', 'unite','actions'];
-  dataSource = ELEMENT_DATA;
-  // dataSource = new MatTableDataSource<Client>();
-  // content?: string;
-  // currentClient: Client = {
-  //   username: '',
-  //   email: '',
-  //   role: ''
-  // };
+  displayedColumns: string[] = ['ref_article', 'image', 'nom','type_article', 'prix', 'taxe', 'cout', 'unite','description','actions'];
+  dataSource = new MatTableDataSource<Article>();
+  currentArticle: Article = {
+    ref_article: '',
+    image: '',
+    nom_article: '',
+    type_article: '',
+    prix_vente: 0,
+    taxe_vente: 0,
+    cout: 0,
+    unite_mesure: 0,
+    description: '',
+  };
   message = '';
-  // clients?: Client[];
+  articles?: Article[];
   currentIndex = -1;
-  nom = '';
-  term = '';
-  search: boolean = false;
-  isDisabled: boolean = true;
+  disabelModif: boolean = false;
+
   constructor( private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router, private articleService: ArticleService) { }
 
   ngOnInit(): void {
+    this.fetchArticles();
   }
+
+  fetchArticles(): void {
+    this.articleService.getAll()
+  
+    .subscribe(
+      data => {
+        this.articles = data;
+        this.dataSource.data = this.articles;
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      });}
+
+      refreshList(): void {
+        this.fetchArticles();
+        this.currentArticle = {};
+        this.currentIndex = -1;
+      }
+
+      setActiveArticle(article: Article, index: number): void {
+        this.currentArticle = article;
+        console.log(article);
+        this.currentIndex = index;
+        this.disabelModif = true;
+        
+      }
+
+      removeAllArticles(): void {
+        this.articleService.deleteAll()
+          .subscribe({
+            next: (res) => {
+              console.log(res);
+              this.refreshList();
+            },
+            error: (e) => console.error(e)
+          });
+      }
+
+      updateArticle(): void {
+        this.message = '';
+        this.articleService.update(this.currentArticle.id, this.currentArticle)
+          .subscribe(
+            response => {
+              console.log(response);
+              this.disabelModif = false;
+              this.message = response.message ? response.message : 'This article was updated successfully!';
+            },
+            error => {
+              console.log(error);
+            });
+      }
+
+      deleteArticle(article : Article): void {
+        this.articleService.delete(article.id)
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            this.refreshList();
+          },
+          error: (e) => console.error(e)
+        });
+      }
+
   alerts: alerts[] = [
     {
       border: "alert-border-success",

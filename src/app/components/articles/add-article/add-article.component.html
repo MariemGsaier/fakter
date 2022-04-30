@@ -1,95 +1,75 @@
 <div class="card">
-  <div class="card-body">
-    <h4 class="mb-32">Ajoutez un article</h4>
-    <form>
-      <mat-grid-list cols="2" rowHeight="5:1">
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Nom de l'article</mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Entrez le nom d'utilisateur"
-              required
-            />
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Type de l'article</mat-label>
-            <input matInput type="text" placeholder="Entrez l'email" required />
-          </mat-form-field>
-        </mat-grid-tile>
-
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
+    <div class="card-body">
+      <h4 class="mb-32">Ajoutez un article</h4>
+      <form>
+        <mat-grid-list cols="2" rowHeight="5:1">
+          <mat-grid-tile>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+              <mat-label>Référence article</mat-label>
+              <input matInput type="text" placeholder="Entrez la référence de l'article" required [(ngModel)]="article.ref_article" [ngModelOptions]="{ standalone: true }">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field class="w-100 fs-16" appearance="outline">
+              <mat-label>Image</mat-label>
+              <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required [(ngModel)]="article.image" [ngModelOptions]="{ standalone: true }">
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Nom article</mat-label>
+          <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required [(ngModel)]="article.nom_article" [ngModelOptions]="{ standalone: true }">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Type article</mat-label>
+          <input matInput type="text" placeholder="Entrez l'email" required [(ngModel)]="article.type_article" [ngModelOptions]="{ standalone: true }">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Prix de vente</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le role"
-              required
-            />
+            <input matInput type="number" placeholder="Entrez le role" required [(ngModel)]="article.prix_vente" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
-
         <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Taxe de vente</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le mot de passe"
-              required
-            />
-          </mat-form-field>
-        </mat-grid-tile>
-
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Taxe de vente</mat-label>
+          <input matInput type="number" placeholder="Entrez le mot de passe" required [(ngModel)]="article.taxe_vente" [ngModelOptions]="{ standalone: true }">
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Coût</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le mot de passe"
-              required
-            />
+            <input matInput type="number" placeholder="Entrez le mot de passe" required [(ngModel)]="article.cout" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
-
         <mat-grid-tile>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Unié de mesure</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le mot de passe"
-              required
-            />
+            <input matInput type="number" placeholder="Entrez le mot de passe" required [(ngModel)]="article.unite_mesure" [ngModelOptions]="{ standalone: true }">
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Description</mat-label>
+            <input matInput type="text" placeholder="Entrez le mot de passe" required [(ngModel)]="article.description" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
-      <button mat-button class="btn btn-success fw-normal" type="submit">
-        Confirmer
-      </button>
+        <button mat-button class="btn btn-success fw-normal" (click)="saveArticle()" type="submit">Confirmer</button>
 
-      <div>
-        <br />
-        <div
-          *ngFor="let alerts of alerts"
-          class="alert {{ alerts.background }} {{
-            alerts.color
-          }} d-flex fs-14 align-items-center rounded mb-16"
-          role="alert"
-        >
-          <i-feather
-            name="{{ alerts.icon }}"
-            class="{{ alerts.iconColor }} feather-base me-12"
-          ></i-feather>
-          {{ alerts.message }}
-          <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
-        </div>
-      </div>
-    </form>
+              <div *ngIf="submitted">
+                <br>
+            <div *ngFor="let alerts of alerts"
+              class="alert {{ alerts.background }} {{ alerts.color }} d-flex fs-14 align-items-center rounded mb-16"
+              role="alert">
+              <i-feather name="{{ alerts.icon }}" class="{{ alerts.iconColor }} feather-base me-12"></i-feather>
+              {{ alerts.message }}
+              <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
+            </div>
+          </div>
+      </form>
+    </div>
   </div>
-</div>
