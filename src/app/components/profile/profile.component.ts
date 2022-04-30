@@ -13,10 +13,15 @@ export class ProfileComponent implements OnInit {
     email: '',
     role: ''
   };
+  user: User = {
+    username: '',
+    email: '',
+    role: ''
+  };
   users?: User[];
   message = '';
-  currentIndex = -1;
-  disabelModif: boolean = false;
+  disabelModifDetails: boolean = false;
+  disabelModifPassword: boolean = false;
 
   constructor(private gestUserService: GestUserService, private token: TokenStorageService) { }
 
@@ -24,11 +29,12 @@ export class ProfileComponent implements OnInit {
     this.currentUser = this.token.getUser();
   }
 
-  setActiveUser(user: any, index: number): void {
-    this.currentUser = user;
-    console.log(user)
-    this.currentIndex = index;
-    this.disabelModif = true;
+  editDetails(): void{
+    this.disabelModifDetails = true;
+  }
+
+  editPassword(): void{
+    this.disabelModifPassword = true;
   }
 
   updateUser(): void {
@@ -37,7 +43,8 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         response => {
           console.log(response);
-          this.disabelModif = false;
+          this.disabelModifDetails = false;
+          this.reloadPage();
           this.message = response.message ? response.message : 'Your profile is updated successfully!';
         },
         error => {
@@ -45,8 +52,34 @@ export class ProfileComponent implements OnInit {
         });
   }
 
-  annuler(): void {
-    this.disabelModif = false;
+  updatePassword(): void {
+    const data = {
+      password: this.user.password
+    };
+    this.message = '';
+    this.gestUserService.update(this.currentUser.id, this.user.password)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.disabelModifPassword = false;
+          this.reloadPage();
+          this.message = response.message ? response.message : 'The password was updated successfully!';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  annulerDetails(): void {
+    this.disabelModifDetails = false;
+  }
+
+  annulerPassword(): void {
+    this.disabelModifPassword = false;
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 
 }
