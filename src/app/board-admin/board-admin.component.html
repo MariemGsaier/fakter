@@ -31,7 +31,7 @@
       type="submit"
       style="float: right"
     >
-      Ajouter
+    <mat-icon>add</mat-icon>
     </button>
     <button mat-button class="btn btn-danger fw-normal" style="float: right; margin-right: 0.142%" (click)="removeAllUsers()">Supprimer Tout</button>
     <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
@@ -49,13 +49,6 @@
         class="text-nowrap w-100"
       >
       
-        <ng-container>
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Id</th>
-            <td mat-cell class="fw-medium" *matCellDef="let user">
-              {{ user.id }}
-            </td>
-          </ng-container>
 
           <ng-container matColumnDef="username">
             <th mat-header-cell *matHeaderCellDef>Nom d'utilisateur</th>
@@ -79,20 +72,19 @@
           </ng-container>
 
           <ng-container matColumnDef="action">
-            <th mat-header-cell *matHeaderCellDef>Action</th>
-            <td mat-cell *matCellDef="let user; let i = index" [class.active]="i == currentIndex" (click)="setActiveUser(user, i)">
-              <span><button mat-button class="btn btn-success fw-normal" style="margin-right: 1%;" type="submit" name="modifier">
-                Modifier
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let user; let i = index" [class.active]="i == currentIndex">
+              <span><button mat-button class="btn btn-success fw-normal btnw" style="margin-right: 1%;" type="submit" name="modifier" (click)="setActiveUser(user, i)">
+                <mat-icon>edit</mat-icon>
               </button></span>
-              <span><button mat-button class="btn btn-danger fw-normal" type="submit" name="supprimer" (click)="deleteUser()">
-                Supprimer
+              <span><button mat-button class="btn btn-danger fw-normal btnw" type="submit" name="supprimer" (click)="deleteUser(user)">
+                <mat-icon>delete</mat-icon>
               </button></span>
             </td>
           </ng-container>
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </ng-container>
       </table>
     </div>
   </mat-card-content>
@@ -127,7 +119,7 @@
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Role</mat-label>
+        <mat-label>Rôle</mat-label>
         <input
           matInput
           type="role"
@@ -143,6 +135,15 @@
         &nbsp;
         <button
           mat-button
+          class="btn btn-danger fw-normal"
+          (click)="annuler()"
+          type="submit"
+          style="float: right; margin-left: 0.3%;"
+        >
+          Annuler
+        </button>
+        <button
+          mat-button
           class="btn btn-success fw-normal"
           (click)="updateUser()"
           type="submit"
@@ -150,6 +151,7 @@
         >
           Confirmer
         </button>
+        
         <p>{{ message }}</p>
       </div>
     </form>

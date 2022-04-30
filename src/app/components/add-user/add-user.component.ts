@@ -11,6 +11,12 @@ interface alerts {
   message: string;
 }
 
+interface role {
+  value: string;
+  viewValue: string;
+
+}
+
 @Component({
   selector: 'app-add-user',
   templateUrl: './add-user.component.html',
@@ -24,6 +30,12 @@ export class AddUserComponent implements OnInit {
     password: ''
   };
   submitted = false;
+
+  roles: role[] = [
+    {value: 'admin', viewValue: 'admin'},
+    {value: 'user', viewValue: 'user'},
+  ];
+  
 
   constructor(private gestUserService: GestUserService) { }
 
