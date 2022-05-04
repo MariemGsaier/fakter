@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { ActivatedRoute, Router } from '@angular/router';
+import { animationFrameScheduler } from "rxjs";
 import { User } from "../models/user.model";
 import { GestUserService } from "../services/gest-user.service";
 import { UserService } from "../services/user.service";
@@ -11,7 +12,7 @@ import { UserService } from "../services/user.service";
   styleUrls: ["./board-admin.component.scss"],
 })
 export class BoardAdminComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'username', 'email', 'role', 'action'];
+  displayedColumns: string[] = ['username', 'email', 'role', 'action'];
   dataSource = new MatTableDataSource<User>();
   content?: string;
   currentUser: User = {
@@ -104,21 +105,28 @@ export class BoardAdminComponent implements OnInit {
         response => {
           console.log(response);
           this.disabelModif = false;
+          this.retrieveUsers();
           this.message = response.message ? response.message : 'This user was updated successfully!';
         },
         error => {
           console.log(error);
         });
   }
-  deleteUser(): void {
+  deleteUser(user: User): void {
     this.gestUserService.delete(this.currentUser.id)
       .subscribe(
         response => {
           console.log(response);
-          this.router.navigate(['/admin']);
+          this.disabelModif = false;
+          this.refreshList();
         },
         error => {
           console.log(error);
         });
   }
+  annuler(): void {
+    this.disabelModif = false;
+  }
 }
+
+  

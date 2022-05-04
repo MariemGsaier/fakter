@@ -103,6 +103,6 @@ export class FullComponent implements OnInit {
 
   logout(): void {
     this.tokenStorageService.signOut();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
 }

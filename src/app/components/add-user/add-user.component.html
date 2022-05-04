@@ -2,6 +2,8 @@
   <div class="card-body">
     <h4 class="mb-32">Ajoutez un utilisateur</h4>
     <form>
+      <mat-grid-list cols="2" rowHeight="5:1">
+        <mat-grid-tile>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom d'utilisateur</mat-label>
         <input
@@ -13,7 +15,8 @@
           [ngModelOptions]="{ standalone: true }"
         />
       </mat-form-field>
-
+    </mat-grid-tile>
+    <mat-grid-tile>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Email</mat-label>
         <input
@@ -25,19 +28,18 @@
           [ngModelOptions]="{ standalone: true }"
         />
       </mat-form-field>
-
+    </mat-grid-tile>
+    <mat-grid-tile>
       <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Role</mat-label>
-        <input
-          matInput
-          type="role"
-          placeholder="Entrez le role"
-          required
-          [(ngModel)]="user.role"
-          [ngModelOptions]="{ standalone: true }"
-        />
+        <mat-label>Rôle</mat-label>
+        <mat-select name="vendeur" required>
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+              {{role.viewValue}}
+          </mat-option>
+      </mat-select>
       </mat-form-field>
-
+    </mat-grid-tile>
+    <mat-grid-tile>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Mot de passe</mat-label>
         <input
@@ -49,6 +51,22 @@
           [ngModelOptions]="{ standalone: true }"
         />
       </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Confirmer mot de passe</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Entrez le mot de passe"
+          required
+          [(ngModel)]="user.password"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+    </mat-grid-tile>
+               
+  </mat-grid-list>
       <div>
         &nbsp;
         <button
@@ -61,6 +79,7 @@
           Confirmer
         </button>
       </div>
+      &nbsp;
       <div *ngIf="submitted">
         <br />
         <div
@@ -75,7 +94,7 @@
             class="{{ alerts.iconColor }} feather-base me-12"
           ></i-feather>
           {{ alerts.message }}
-          <!-- <button mat-button class="btn btn-success" (click)="newUser()" style="float: right;">Ajouter un autre utilisateur</button> -->
+          <button mat-button class="btn btn-info" (click)="newUser()" style="margin-left: 53%;">Ajouter un autre utilisateur</button>
         </div>
       </div>
     </form>

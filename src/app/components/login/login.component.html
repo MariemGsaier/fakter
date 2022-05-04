@@ -1,4 +1,4 @@
-<mat-card class="mat-card-container">
+<mat-card class="mat-card-container" *ngIf="!isLoggedIn">
   <mat-card-content>
     <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center">
       <div fxLayout="column" id="card-container">
@@ -12,7 +12,7 @@
                 fxFlex.xl="30%"
                 fxFlex.sm="20%"
                 fxFlex.xs="30%"
-                style="float: left; margin-top: -9%; margin-left: -5%;"
+                style="float: left; margin-top: -9%; margin-left: -5%"
                 alt=""
               />
             </div>
@@ -24,7 +24,7 @@
           </div>
           <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center">
             <div fxLayout="column">
-              <div class="card" id="card-inside" style="margin-bottom: 0;">
+              <div class="card" id="card-inside" style="margin-bottom: 0">
                 <div class="card-body">
                   <h4 class="mb-31">Connectez-vous</h4>
                   <form
@@ -101,12 +101,49 @@
                       </div>
                     </div>
                   </form>
-                  <div class="alert alert-success" *ngIf="isLoggedIn">
-                    Logged in as {{ username }}.
-                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card
+  class="mat-card-container"
+  style="text-align: center"
+  *ngIf="isLoggedIn"
+>
+  <mat-card-content>
+    <div fxFlex="100" fxLayoutAlign="space-around center">
+      <div id="card-container">
+        <div class="card">
+          <div class="card-body">
+            <div>
+              <img
+                src="\assets\images\logo-white.png"
+                fxFlex.md="20%"
+                fxFlex.lg="15%"
+                fxFlex.xl="30%"
+                fxFlex.sm="20%"
+                fxFlex.xs="30%"
+                style="float: left; margin-top: -9%; margin-left: -5%"
+                alt=""
+              />
+            </div>
+            <div>
+            <h4 class="mb-32">
+              <div>{{ username }}, vous êtes déjà connecté(e).</div>
+              <br />
+              <div>
+                Voulez-vous <strong><a routerLink="/login" (click)="logout()" style="text-decoration: underline">vous déconnecter</a></strong>,
+              ou retournez vers
+                <strong ><a routerLink="/dashboard" style="text-decoration: underline">le tableau de bord</a></strong> ?
+              </div>
+            </h4>
+          </div>
           </div>
         </div>
       </div>
