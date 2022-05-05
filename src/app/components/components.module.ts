@@ -36,6 +36,7 @@ import { FacturesComponent } from './factures/factures.component';
 import { AddFactureComponent } from './factures/add-facture/add-facture.component';
 
 
+
 @NgModule({
   declarations: [
     AlertsComponent,
