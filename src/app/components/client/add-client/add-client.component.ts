@@ -2,15 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Client } from 'src/app/models/client.model';
 import { ClientService } from 'src/app/services/client.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
-interface alerts {
-  border: string;
-  background: string;
-  color: string;
-  icon: string;
-  iconColor: string;
-  message: string;
-}
+
 
 @Component({
   selector: 'app-add-client',
@@ -45,37 +39,32 @@ export class AddClientComponent implements OnInit {
       dureepaiement_client: this.client.dureepaiement_client,
     };
     this.clientService.create(data)
-      .subscribe(
-        res => {
-          console.log(res);
+    .subscribe({
+      next: (res) => {
+        console.log(res);
           this.submitted = true;
-          // this.router.navigate(['/clients']);
+          Swal.fire({
+            title: 'Ajouté avec succés !',
+            icon: 'success', 
+            confirmButtonColor: '#00c292',
+            confirmButtonText: 'Ajouter un autre client',
+
+          }
+          ) 
+          .then((result) => {
+            if (result.isConfirmed) {
+           this.newClient();
+            }
+          })
         },
-        error => console.error(error)
-      );
-  }
+        error: (e) => console.error(e)
+      } );
+    }
+  
   newClient(): void {
     this.submitted = false;
-    this.client = {
-      nom_client: '',
-      adresse_client: '',
-      numtel_client: 0,
-      courriel_client: '',
-      siteweb_client: '',
-      numcomptebancaire_client: 0,
-      dureepaiement_client: 0,
-     
-    };
+    window.location.reload();
   }
-  alerts: alerts[] = [
-    {
-      border: "alert-border-success",
-      background: "alert-success",
-      color: "alert-text-success",
-      icon: "check-circle",
-      iconColor: "text-success",
-      message: "Client ajouté avec succès",
-    },
-  ]
+  
 
 }
