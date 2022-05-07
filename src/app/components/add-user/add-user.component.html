@@ -32,8 +32,7 @@
     <mat-grid-tile>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Rôle</mat-label>
-        <mat-select name="vendeur" required [(ngModel)]="user.role"
-        [ngModelOptions]="{ standalone: true }">
+        <mat-select name="vendeur" required [(ngModel)]="user.role" [ngModelOptions]="{ standalone: true }">
           <mat-option *ngFor="let role of roles" [value]="role.value">
               {{role.viewValue}}
           </mat-option>

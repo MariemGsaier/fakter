@@ -1,25 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-
-export interface PeriodicElement {
-  id: number;
-  nom: string;
-  numtel: string;
-  adresse: string;
-  courriel: string;
-  siteweb: string;
-  typesociete: string;
-  numRCS: string;
-  tva: string;
-  timbrefisc: string;
-  image: string;
-}
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, nom: 'Deep Javiya', numtel: '23145698', adresse: 'ben arous', courriel: 'test@gmail.com', siteweb:'///', typesociete: '123456789', numRCS:'123568', tva :'10%', timbrefisc: '12', image:'ff' },
-  { id: 2, nom: 'Nirav Joshi', numtel: '23145698 ', adresse: 'ben arous', courriel: 'test@gmail.com', siteweb:'///', typesociete: '123456789', numRCS:'123568', tva :'10', timbrefisc: '15', image:'ff' },
-  { id: 3, nom: 'Sunil Joshi', numtel: ' 23145698', adresse: 'ben arous', courriel: 'test@gmail.com', siteweb:'///', typesociete: '123456789', numRCS:'123568', tva :'7%', timbrefisc: '20', image:'ff' },
-  { id: 4, nom: 'Maruti Makwana', numtel: '23145698 ', adresse: 'ben arous', courriel: 'test@gmail.com', siteweb:'///', typesociete: '123456789',numRCS:'123568', tva :'10', timbrefisc: '30', image:'ff' },
-];
+import { Societe } from 'src/app/models/societe.model';
+import { SocieteService } from 'src/app/services/societe.service';
 
 @Component({
   selector: 'app-societies',
@@ -27,11 +9,75 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./societies.component.scss']
 })
 export class SocietiesComponent implements OnInit {
-displayedColumns: string[] = ['id', 'nom', 'numtel', 'adresse', 'courriel', 'siteweb', 'typesociete','numRCS','tva','timbrefisc','image','actions'];
-  dataSource = ELEMENT_DATA;
-  constructor(private route: ActivatedRoute,private router: Router) { }
+  currentSociete: Societe = {
+    nom_societe: '',
+    logo: '',
+    numtel: 0,
+    adresse: '',
+    courriel: '',
+    siteweb: '',
+    type_societe: '',
+    num_rcs: '',
+    timbre_fiscale: 0
+  };
+  societe: Societe = {
+    nom_societe: '',
+    logo: '',
+    numtel: 0,
+    adresse: '',
+    courriel: '',
+    siteweb: '',
+    type_societe: '',
+    num_rcs: '',
+    timbre_fiscale: 0
+  };
+  societes?: Societe[];
+  message = '';
+  disabelModif: boolean = false;
+
+  constructor(private societeService: SocieteService, private route: ActivatedRoute,private router: Router) { }
 
   ngOnInit(): void {
+    this.message = '';
+    this.getSociete(this.route.snapshot.params['id']);
   }
 
+  edit(): void{
+    this.disabelModif = true;
+  }
+
+  getSociete(id: string): void {
+    this.societeService.get(id)
+      .subscribe(
+        (data: Societe) => {
+          this.currentSociete = data;
+          console.log(data);
+        },
+        (error: any) => {
+          console.log(error);
+        });
+  }
+
+  updateSociete(): void {
+    this.message = '';
+    this.societeService.update(this.currentSociete.id, this.currentSociete)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.disabelModif = false;
+          this.reloadPage();
+          this.message = response.message ? response.message : 'Your societe is updated successfully!';
+        },
+        error => {
+          console.log(error);
+        });
+  }
+
+  annuler(): void {
+    this.disabelModif = false;
+  }
+
+  reloadPage(): void {
+    window.location.reload();
+  }
 }
