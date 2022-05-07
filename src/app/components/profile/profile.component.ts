@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { GestUserService } from 'src/app/services/gest-user.service';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
