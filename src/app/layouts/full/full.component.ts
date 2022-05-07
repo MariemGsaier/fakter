@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { map, shareReplay } from "rxjs/operators";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import { Router } from "@angular/router";
+import { SocieteService } from "src/app/services/societe.service";
 
 interface sidebarMenu {
   link: string;
@@ -30,6 +31,7 @@ export class FullComponent implements OnInit {
   isLoggedIn = false;
   showAdminBoard = false;
   username?: string;
+  nom_societe?: string;
 
   search: boolean = false;
 
@@ -43,7 +45,8 @@ export class FullComponent implements OnInit {
   constructor(
     private router: Router,
     private tokenStorageService: TokenStorageService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private societeService: SocieteService
   ) {}
 
   routerActive: string = "activelink";
@@ -63,12 +66,6 @@ export class FullComponent implements OnInit {
       link: "/clients",
       icon: "people",
       menu: "Clients",
-      
-    },
-    {
-      link: "/societe",
-      icon: "business",
-      menu: "Société",
       
     },
     {
@@ -93,6 +90,14 @@ export class FullComponent implements OnInit {
       this.roles = user.role;
       this.showAdminBoard = this.roles.includes("admin");
       this.username = user.username;
+      this.societeService.get(1).subscribe(
+        (data: any) => {
+          this.nom_societe = data.nom_societe;
+          console.log(data);
+        },
+        (error: any) => {
+          console.log(error);
+        });
     }
   }
 

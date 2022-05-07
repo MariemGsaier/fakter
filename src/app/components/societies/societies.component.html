@@ -1,115 +1,203 @@
-<!-- Daily Activity -->
 <mat-card class="w-100">
     <mat-card-content>
-
-        <button mat-button class="btn btn-info fw-normal btnw" routerLink="/add-societe" type="submit"
-            style="float: right">
-            <mat-icon>add</mat-icon>
-        </button>
-        <button mat-button class="btn btn-danger  fw-normal" style="float: right; margin-right: 0.142%">Supprimer
-            Tout</button>
-        <h4 class="mb-56">Gérez vos Sociétés</h4>
-
-        <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-
-                <!-- Id Column -->
-                <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef> Id </th>
-                    <td mat-cell class="fw-medium" *matCellDef="let element"> {{element.id}} </td>
-                </ng-container>
-
-                <!-- Assigned Column -->
-                <ng-container matColumnDef="nom">
-                    <th mat-header-cell *matHeaderCellDef> Nom </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{ element.nom }}</p>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="numtel">
-                    <th mat-header-cell *matHeaderCellDef> Numéro de téléphone </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{ element.numtel }}</p>
-                    </td>
-                </ng-container>
-
-                <!-- Project Column -->
-                <ng-container matColumnDef="adresse">
-                    <th mat-header-cell *matHeaderCellDef> Adresse </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium op-5">{{element.adresse}}</p>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="courriel">
-                    <th mat-header-cell *matHeaderCellDef> Courriel </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium op-5">{{element.courriel}}</p>
-                    </td>
-                </ng-container>
-
-                <!-- Priority Column -->
-                <ng-container matColumnDef="siteweb">
-                    <th mat-header-cell *matHeaderCellDef> Site web </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.siteweb}}</p>
-                    </td>
-                </ng-container>
-
-                <!-- Budget Column -->
-                <ng-container matColumnDef="typesociete">
-                    <th mat-header-cell *matHeaderCellDef> Type de société </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.typesociete}}</p>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="numRCS">
-                    <th mat-header-cell *matHeaderCellDef> Numéro RCS </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.numRCS}}</p>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="tva">
-                    <th mat-header-cell *matHeaderCellDef> TVA </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.tva}}</p>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="timbrefisc">
-                    <th mat-header-cell *matHeaderCellDef> Timbre fiscale </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.timbrefisc}}</p>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="image">
-                    <th mat-header-cell *matHeaderCellDef> Image </th>
-                    <td mat-cell *matCellDef="let element">
-                        <p class="mb-0 fw-medium">{{element.image}}</p>
-                    </td>
-                </ng-container>
-
-                <ng-container matColumnDef="actions">
-                    <th mat-header-cell *matHeaderCellDef>Actions</th>
-                    <td mat-cell *matCellDef="let user">
-
-                        <button mat-button class="btn btn-success fw-normal btnw" style="margin-right: 1%;"
-                            type="submit">
-                            <mat-icon>edit</mat-icon>
-                        </button>
-                        <button mat-button class="btn btn-danger fw-normal btnw" style="margin-right: 1%;"
-                            type="submit">
-                            <mat-icon>delete</mat-icon>
-                        </button>
-
-                    </td>
-                </ng-container>
-
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-            </table>
-        </div>
+      <div class="container" *ngIf="currentSociete.id">
+        <button
+        mat-button
+        class="btn btn-info fw-normal"
+        (click)="edit()"
+        type="submit"
+        style="float: right"
+      >
+      <mat-icon>edit</mat-icon>
+      </button>
+        <header class="jumbotron">
+          <h3>
+            Détails généraux
+          </h3>
+        </header>
+        <p>
+          <mat-icon style="font-size: 20px; float: left;">business</mat-icon><strong>Nom de société:</strong>
+          {{ currentSociete.nom_societe }}
+        </p>
+        <p>
+          <mat-icon style="font-size: 20px; float: left;">image</mat-icon><strong>Logo:</strong>
+          {{ currentSociete.logo }}
+        </p>
+        <p>
+          <mat-icon style="font-size: 20px; float: left;">phone</mat-icon><strong>Numéro de téléphone:</strong>
+          {{ currentSociete.numtel }}
+        </p>
+        <p>
+            <mat-icon style="font-size: 20px; float: left;">place</mat-icon><strong>Adresse:</strong>
+            {{ currentSociete.adresse }}
+          </p>
+          <p>
+            <mat-icon style="font-size: 20px; float: left;">email</mat-icon><strong>Courriel:</strong>
+            {{ currentSociete.courriel }}
+          </p>
+          <p>
+            <mat-icon style="font-size: 20px; float: left;">website</mat-icon><strong>Siteweb:</strong>
+            {{ currentSociete.siteweb }}
+          </p>
+          <p>
+            <mat-icon style="font-size: 20px; float: left;">details</mat-icon><strong>Type de société:</strong>
+            {{ currentSociete.type_societe }}
+          </p>
+          <p>
+            <mat-icon style="font-size: 20px; float: left;">account_balance</mat-icon><strong>Numéro RCS:</strong>
+            {{ currentSociete.num_rcs }}
+          </p>
+          <p>
+            <mat-icon style="font-size: 20px; float: left;">gradient</mat-icon><strong>Timbre fiscale:</strong>
+            {{ currentSociete.timbre_fiscale }}
+          </p>
+      </div>
+      <ng-template #loggedOut> Veuillez vous connecter. </ng-template>
     </mat-card-content>
-</mat-card>
+  </mat-card>
+  
+  <mat-card class="w-100" *ngIf="disabelModif">
+    <mat-card-content>
+      <form>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Nom de société</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Entrez le nom de la société"
+            id="nom_societe"
+            [(ngModel)]="currentSociete.nom_societe"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Logo</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Entrez le logo"
+            required
+            id="logo"
+            [(ngModel)]="currentSociete.logo"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Numéro téléphone</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le logo"
+              required
+              id="numtel"
+              [(ngModel)]="currentSociete.numtel"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Adresse</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez l'adresse'"
+              required
+              id="adresse"
+              [(ngModel)]="currentSociete.adresse"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Courriel</mat-label>
+            <input
+              matInput
+              type="email"
+              placeholder="Entrez le courriel"
+              required
+              id="courriel"
+              [(ngModel)]="currentSociete.courriel"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Siteweb</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le siteweb"
+              required
+              id="siteweb"
+              [(ngModel)]="currentSociete.siteweb"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Type de société</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le type de société"
+              required
+              id="type_societe"
+              [(ngModel)]="currentSociete.type_societe"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Numéro RCS</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le numéro RCS"
+              required
+              id="num_rcs"
+              [(ngModel)]="currentSociete.num_rcs"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Timbre fiscale</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="Entrez le logo"
+              required
+              id="timbre_fiscale"
+              [(ngModel)]="currentSociete.timbre_fiscale"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </mat-form-field>
+  
+        <div>
+          &nbsp;
+          <button
+            mat-button
+            class="btn btn-danger fw-normal"
+            (click)="annuler()"
+            type="submit"
+            style="float: right; margin-left: 0.3%;"
+          >
+            Annuler
+          </button>
+          <button
+            mat-button
+            class="btn btn-success fw-normal"
+            (click)="updateSociete()"
+            type="submit"
+            style="float: right"
+          >
+            Confirmer
+          </button>
+          
+          <p>{{ message }}</p>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>

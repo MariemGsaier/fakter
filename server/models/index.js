@@ -23,5 +23,4 @@ db.commande.belongsTo(db.client, { foreignKey: 'id_client' },{ as: "client" });
 db.client.hasMany(db.commande, { foreignKey: 'id_client' },{ as: "commandes" });
 
 db.article = require("../models/article.model.js")(sequelize, Sequelize);
-
 module.exports = db;
