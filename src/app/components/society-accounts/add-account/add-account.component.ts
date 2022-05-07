@@ -62,6 +62,8 @@ export class AddAccountComponent implements OnInit {
             icon: 'success', 
             confirmButtonColor: '#00c292',
             confirmButtonText: 'Ajouter un autre compte',
+            cancelButtonColor: "#e46a76",
+            cancelButtonText: "Quitter",
 
           }
           ) 

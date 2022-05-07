@@ -39,6 +39,7 @@ export class SocietyAccountsComponent implements OnInit {
   message = "";
   bankaccounts?: Bankaccount[];
   currentIndex = -1;
+  search: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -146,6 +147,8 @@ export class SocietyAccountsComponent implements OnInit {
     })
    
   }
-
+  filterData($event : any){
+    this.dataSource.filter = $event.target.value;
+  }
   
 }

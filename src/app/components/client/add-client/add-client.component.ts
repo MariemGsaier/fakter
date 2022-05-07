@@ -18,8 +18,7 @@ export class AddClientComponent implements OnInit {
   numtel_client: 0,
   courriel_client: '',
   siteweb_client: '',
-  numcomptebancaire_client: 0,
-  dureepaiement_client: 0
+  numcomptebancaire_client: 0
   };
   submitted = false;
 
@@ -35,8 +34,7 @@ export class AddClientComponent implements OnInit {
       numtel_client: this.client.numtel_client,
       courriel_client: this.client.courriel_client,
       siteweb_client: this.client.siteweb_client,
-      numcomptebancaire_client: this.client.numcomptebancaire_client,
-      dureepaiement_client: this.client.dureepaiement_client,
+      numcomptebancaire_client: this.client.numcomptebancaire_client
     };
     this.clientService.create(data)
     .subscribe({
@@ -48,6 +46,8 @@ export class AddClientComponent implements OnInit {
             icon: 'success', 
             confirmButtonColor: '#00c292',
             confirmButtonText: 'Ajouter un autre client',
+            cancelButtonColor: "#e46a76",
+            cancelButtonText: "Quitter",
 
           }
           ) 

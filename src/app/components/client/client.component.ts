@@ -13,6 +13,8 @@ import Swal from "sweetalert2";
   styleUrls: ["./client.component.scss"],
 })
 export class ClientComponent implements OnInit {
+  searchTerm : any;
+  search: boolean = false;
   displayedColumns: string[] = [
     "nom",
     "numtel",
@@ -20,7 +22,6 @@ export class ClientComponent implements OnInit {
     "courriel",
     "siteweb",
     "nbc",
-    "dp",
     "actions",
   ];
   dataSource = new MatTableDataSource<Client>();
@@ -32,7 +33,6 @@ export class ClientComponent implements OnInit {
     courriel_client: "",
     siteweb_client: "",
     numcomptebancaire_client: 0,
-    dureepaiement_client: 0,
   };
   disabelModif: boolean = false;
   message = "";
@@ -133,4 +133,8 @@ export class ClientComponent implements OnInit {
       }
     });
   }
+  filterData($event : any){
+    this.dataSource.filter = $event.target.value;
+  }
+
 }
