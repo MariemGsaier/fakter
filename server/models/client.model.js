@@ -17,10 +17,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       numcomptebancaire_client: {
         type: Sequelize.BIGINT,
-      },
-      dureepaiement_client: {
-        type: Sequelize.BIGINT,
-      },
+      }
     });
     return Client;
   };

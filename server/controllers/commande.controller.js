@@ -10,8 +10,9 @@ exports.allAccess = (req, res) => {
   
   const db = require("../models");
   const commande = db.commande;
+  const client = db.client;
   const Op = db.Sequelize.Op;
-  // Create and Save a new client
+  // Create 
     exports.create = (req, res) => {
       // Validate request
       if (!req.body.date_cmd) {
@@ -21,12 +22,14 @@ exports.allAccess = (req, res) => {
         return;
       }
       // Create a Tutorial
-      const clt = {
+      const cmd = {
         date_cmd: req.body.date_cmd,
-      };
+        id_client: req.body.id_client,
+      }; 
       // Save client in the database
-      client
-      .create(clt)
+      if(client.findByPk(id_client)){
+        commande
+      .create(cmd)
         .then(data => {
           res.send(data);
           console.log("ajout avec succés");
@@ -37,14 +40,16 @@ exports.allAccess = (req, res) => {
               err.message || "Some error occurred while creating the client."
           });
         });
+      }
+      
   };
   // fetch all clients from the database.
   exports.findAll = (req, res) => {
-    const nom_client = req.query.nom_client;
-    var condition = nom_client
-      ? { nom_client: { [Op.iLike]: `%${nom_client}%` } }
+    const date_cmd = req.query.date_cmd;
+    var condition = date_cmd
+      ? { date_cmd: { [Op.iLike]: `%${date_cmd}%` } }
       : null;
-    client
+    commande
       .findAll({ where: condition })
       .then((data) => {
         res.send(data);

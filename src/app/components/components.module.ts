@@ -34,6 +34,8 @@ import { SocietiesComponent } from './societies/societies.component';
 import { AddSocietyComponent } from './societies/add-society/add-society.component';
 import { FacturesComponent } from './factures/factures.component';
 import { AddFactureComponent } from './factures/add-facture/add-facture.component';
+import { CommandesComponent } from './commandes/commandes.component';
+import { AddCommandeComponent } from './commandes/add-commande/add-commande.component';
 
 
 
@@ -67,7 +69,9 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     SocietiesComponent,
     AddSocietyComponent,
     FacturesComponent,
-    AddFactureComponent
+    AddFactureComponent,
+    CommandesComponent,
+    AddCommandeComponent
   ],
   imports: [
     CommonModule,

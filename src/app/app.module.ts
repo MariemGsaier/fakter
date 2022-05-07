@@ -5,7 +5,7 @@ import { allIcons } from 'angular-feather/icons';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select'
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import Swal from 'sweetalert2';
+
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -38,6 +38,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     SearchUser,
     
     
+    
   ],
   imports: [
     BrowserModule,
@@ -55,8 +56,6 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatIconModule,
     MatSelectModule,
     MatDatepickerModule,
-    
-    
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

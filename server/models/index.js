@@ -19,8 +19,8 @@ db.client = require("../models/client.model.js")(sequelize, Sequelize);
 db.comptebancaire = require("../models/comptebancaire.model.js")(sequelize, Sequelize);
 db.commande = require("../models/commande.model")(sequelize, Sequelize);
 // add user id foreign key to all projects
-db.commande.belongsTo(db.client, { foreignKey: 'id_client' });
-db.client.hasMany(db.commande, { foreignKey: 'id_client' });
+db.commande.belongsTo(db.client, { foreignKey: 'id_client' },{ as: "client" });
+db.client.hasMany(db.commande, { foreignKey: 'id_client' },{ as: "commandes" });
 
 db.article = require("../models/article.model.js")(sequelize, Sequelize);
 module.exports = db;
