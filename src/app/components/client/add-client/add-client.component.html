@@ -50,23 +50,6 @@
             <div>
                 &nbsp;
             <button mat-button class="btn btn-success fw-normal" (click)="saveClient()" type="submit">Confirmer</button></div>
-            <div *ngIf="submitted">
-                <br />
-                <div
-                  *ngFor="let alerts of alerts"
-                  class="alert {{ alerts.background }} {{
-                    alerts.color
-                  }} d-flex fs-14 align-items-center rounded mb-16"
-                  role="alert"
-                >
-                  <i-feather
-                    name="{{ alerts.icon }}"
-                    class="{{ alerts.iconColor }} feather-base me-12"
-                  ></i-feather>
-                  {{ alerts.message }}
-                  <button mat-button class="btn btn-success" (click)="newClient()" style="margin-left: 63%;">Ajouter un autre client</button> 
-                </div>
-              </div>
         </form>
     </div>
 </div>
