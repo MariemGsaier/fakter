@@ -29,12 +29,11 @@ import { FullComponent } from "./layouts/full/full.component";
 import { SimpleComponent } from "./layouts/simple/simple.component";
 import { AddAccountComponent } from "./components/society-accounts/add-account/add-account.component";
 import { SocietyAccountsComponent } from "./components/society-accounts/society-accounts.component";
-
 import { FacturesComponent } from "./components/factures/factures.component";
 import { AddFactureComponent } from "./components/factures/add-facture/add-facture.component";
-
 import { AddSocietyComponent } from "./components/societies/add-society/add-society.component";
 import { SocietiesComponent } from "./components/societies/societies.component";
+import { CommandesComponent } from "./components/commandes/commandes.component";
 
 
 
@@ -78,13 +77,11 @@ const routes: Routes = [
       { path: "add-client", component: AddClientComponent },
       { path: "add-account", component: AddAccountComponent },
       { path: "bankaccounts", component: SocietyAccountsComponent },
-
       { path: "factures", component: FacturesComponent },
-      {path: "add-facture", component: AddFactureComponent}
-
+      {path: "add-facture", component: AddFactureComponent},
       { path: "societe", component: SocietiesComponent },
       { path: "add-societe", component: AddSocietyComponent },
-
+      {path:"commandes",component: CommandesComponent}
       
     ],
   },

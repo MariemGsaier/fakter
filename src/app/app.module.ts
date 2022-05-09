@@ -6,7 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select'
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
-import { FormsModule } from '@angular/forms';
+
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCard, MatCardContent, MatCardModule } from '@angular/material/card';
 import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
@@ -35,6 +37,8 @@ import { MatTooltip } from '@angular/material/tooltip';
     BoardAdminComponent,
     SearchUser,
     
+    
+    
   ],
   imports: [
     BrowserModule,
@@ -45,12 +49,13 @@ import { MatTooltip } from '@angular/material/tooltip';
     DashboardModule,
     ComponentsModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     MatCardModule ,
     MatFormFieldModule,
     MatIconModule,
     MatSelectModule,
-    MatDatepickerModule
+    MatDatepickerModule,
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

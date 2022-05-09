@@ -11,7 +11,7 @@ import { TabsComponent } from './tabs/tabs.component';
 import { ExpansionComponent } from './expansion/expansion.component';
 import { ChipsComponent } from './chips/chips.component';
 import { ProgressComponent } from './progress/progress.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { ProgressSnipperComponent } from './progress-snipper/progress-snipper.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
@@ -34,6 +34,9 @@ import { SocietiesComponent } from './societies/societies.component';
 import { AddSocietyComponent } from './societies/add-society/add-society.component';
 import { FacturesComponent } from './factures/factures.component';
 import { AddFactureComponent } from './factures/add-facture/add-facture.component';
+import { CommandesComponent } from './commandes/commandes.component';
+import { AddCommandeComponent } from './commandes/add-commande/add-commande.component';
+
 
 
 @NgModule({
@@ -66,13 +69,16 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     SocietiesComponent,
     AddSocietyComponent,
     FacturesComponent,
-    AddFactureComponent
+    AddFactureComponent,
+    CommandesComponent,
+    AddCommandeComponent
   ],
   imports: [
     CommonModule,
     FeatherModule.pick(allIcons),
     DemoFlexyModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     MatCardModule
   ],

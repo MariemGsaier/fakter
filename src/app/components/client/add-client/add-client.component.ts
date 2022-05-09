@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Client } from 'src/app/models/client.model';
+import { ClientService } from 'src/app/services/client.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
-interface alerts {
-  border: string;
-  background: string;
-  color: string;
-  icon: string;
-  iconColor: string;
-  message: string;
-}
+
 
 @Component({
   selector: 'app-add-client',
@@ -15,21 +12,59 @@ interface alerts {
   styleUrls: ['./add-client.component.scss']
 })
 export class AddClientComponent implements OnInit {
+  client: Client = {
+  nom_client: '',
+  adresse_client: '',
+  numtel_client: 0,
+  courriel_client: '',
+  siteweb_client: '',
+  numcomptebancaire_client: 0
+  };
+  submitted = false;
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,
+    private router: Router, private clientService: ClientService) { }
 
   ngOnInit(): void {
   }
+  saveClient(): void {
+    const data = {
+      nom_client: this.client.nom_client,
+      adresse_client: this.client.adresse_client,
+      numtel_client: this.client.numtel_client,
+      courriel_client: this.client.courriel_client,
+      siteweb_client: this.client.siteweb_client,
+      numcomptebancaire_client: this.client.numcomptebancaire_client
+    };
+    this.clientService.create(data)
+    .subscribe({
+      next: (res) => {
+        console.log(res);
+          this.submitted = true;
+          Swal.fire({
+            title: 'Ajouté avec succés !',
+            icon: 'success', 
+            confirmButtonColor: '#00c292',
+            confirmButtonText: 'Ajouter un autre client',
+            cancelButtonColor: "#e46a76",
+            cancelButtonText: "Quitter",
 
-  alerts: alerts[] = [
-    {
-      border: "alert-border-success",
-      background: "alert-success",
-      color: "alert-text-success",
-      icon: "check-circle",
-      iconColor: "text-success",
-      message: "Client ajouté avec succès",
-    },
-  ]
+          }
+          ) 
+          .then((result) => {
+            if (result.isConfirmed) {
+           this.newClient();
+            }
+          })
+        },
+        error: (e) => console.error(e)
+      } );
+    }
+  
+  newClient(): void {
+    this.submitted = false;
+    window.location.reload();
+  }
+  
 
 }
