@@ -1,26 +1,26 @@
 module.exports = (sequelize, Sequelize) => {
     const Client = sequelize.define("client", {
-      nom_client: {
+      code_identifcation:{
         type: Sequelize.STRING,
       },
-      adresse_client: {
+      nom: {
         type: Sequelize.STRING,
       },
-      numtel_client: {
+      adresse: {
+        type: Sequelize.STRING,
+      },
+      numtel: {
         type: Sequelize.BIGINT,
       },
-      courriel_client: {
+      courriel: {
         type: Sequelize.STRING,
       },
-      siteweb_client: {
+      siteweb: {
         type: Sequelize.STRING,
       },
-      numcomptebancaire_client: {
-        type: Sequelize.BIGINT,
-      },
-      dureepaiement_client: {
-        type: Sequelize.BIGINT,
-      },
+      créé_par: {
+        type: Sequelize.STRING,
+      }
     });
     return Client;
   };

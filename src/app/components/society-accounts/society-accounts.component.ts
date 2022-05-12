@@ -1,11 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Bankaccount } from "src/app/models/bankaccount.model";
 import { BankaccountService } from "src/app/services/bankaccount.service";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
-
-
+import { MatPaginator } from "@angular/material/paginator";
 
 @Component({
   selector: "app-society-accounts",
@@ -30,7 +29,7 @@ export class SocietyAccountsComponent implements OnInit {
     rib: 0,
     tit_compte: "",
     bic: "",
-    iban: 0,
+    iban: "",
     devise: "",
     nom_banque: "",
   };
@@ -39,6 +38,7 @@ export class SocietyAccountsComponent implements OnInit {
   message = "";
   bankaccounts?: Bankaccount[];
   currentIndex = -1;
+  search: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -46,13 +46,15 @@ export class SocietyAccountsComponent implements OnInit {
     private BankaccountService: BankaccountService
   ) {}
 
+  @ViewChild("Paginator") paginator!: MatPaginator;
+
   ngOnInit(): void {
     this.fetchBankAccounts();
+    this.dataSource.paginator = this.paginator;
   }
 
   fetchBankAccounts(): void {
-    this.BankaccountService.getAll()
-    .subscribe({
+    this.BankaccountService.getAll().subscribe({
       next: (data) => {
         this.bankaccounts = data;
         this.dataSource.data = this.bankaccounts;
@@ -75,15 +77,15 @@ export class SocietyAccountsComponent implements OnInit {
 
   removeAllBankAccounts(): void {
     Swal.fire({
-      title: 'Êtes-vous sûr de tout supprimer ? ',
+      title: "Êtes-vous sûr de tout supprimer ? ",
       text: "Vous ne serez pas capable de restaurer !",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#00c292',
-      cancelButtonColor: '#e46a76',
-      confirmButtonText: 'Oui',
-      cancelButtonText: 'Annuler'
-    }) .then((result) => {
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
       if (result.isConfirmed) {
         this.BankaccountService.deleteAll().subscribe({
           next: (res) => {
@@ -95,11 +97,8 @@ export class SocietyAccountsComponent implements OnInit {
           },
           error: (e) => console.error(e),
         });
-
       }
-
-    })
-  
+    });
   }
 
   updateBankAccount(): void {
@@ -121,14 +120,14 @@ export class SocietyAccountsComponent implements OnInit {
 
   deleteBankAccount(bankaccount: Bankaccount): void {
     Swal.fire({
-      title: 'Êtes-vous sûr de le supprimer ? ',
+      title: "Êtes-vous sûr de le supprimer ? ",
       text: "Vous ne serez pas capable de le récupérer !",
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#00c292',
-      cancelButtonColor: '#e46a76',
-      confirmButtonText: 'Oui',
-      cancelButtonText: 'Annuler'
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
         this.BankaccountService.delete(bankaccount.id).subscribe({
@@ -141,11 +140,12 @@ export class SocietyAccountsComponent implements OnInit {
           },
           error: (e) => console.error(e),
         });
-        
       }
-    })
-   
+    });
   }
-
-  
+  filterData($event: any) {
+    $event.target.value.trim();
+    $event.target.value.toLowerCase();
+    this.dataSource.filter = $event.target.value;
+  }
 }

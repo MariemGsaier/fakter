@@ -37,6 +37,7 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
 
 
 
+
 @NgModule({
   declarations: [
     AlertsComponent,
@@ -67,7 +68,7 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     SocietiesComponent,
     AddSocietyComponent,
     FacturesComponent,
-    AddFactureComponent
+    AddFactureComponent,
   ],
   imports: [
     CommonModule,

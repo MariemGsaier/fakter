@@ -1,6 +1,25 @@
-
 <mat-card class="w-100">
   <mat-card-content>
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input
+          matInput
+          placeholder="Veuillez taper un mot clé"
+          autocomplete="off"
+          (keyup)="filterData($event)"
+        />
+      </mat-form-field>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"></li>
+      </ul>
+      <button mat-icon-button (click)="search = !search">
+        <i-feather
+          name="x-circle"
+          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
+        ></i-feather>
+      </button>
+    </div>
     <button
       mat-button
       class="btn btn-info fw-normal btnw"
@@ -18,12 +37,23 @@
     >
       Supprimer Tout
     </button>
+    <button
+      mat-icon-button
+      class="ms-4 me-4"
+      style="float: right"
+      (click)="search = !search"
+    >
+      <i-feather
+        name="search"
+        class="mt-n3 text-light-muted feather-base text-dark"
+      ></i-feather>
+    </button>
     <h4 class="mb-56">Gérez vos comptes banncaires</h4>
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
         <ng-container matColumnDef="numcompte">
-          <th mat-header-cell *matHeaderCellDef>numéro de compte</th>
+          <th mat-header-cell *matHeaderCellDef>Numéro de compte</th>
           <td mat-cell *matCellDef="let account">
             <p class="mb-0 fw-medium">{{ account.num_compte }}</p>
           </td>
@@ -46,7 +76,7 @@
         <ng-container matColumnDef="bic">
           <th mat-header-cell *matHeaderCellDef>BIC</th>
           <td mat-cell *matCellDef="let account">
-            <p class="mb-0 fw-medium ">{{ account.bic }}</p>
+            <p class="mb-0 fw-medium">{{ account.bic }}</p>
           </td>
         </ng-container>
 
@@ -60,7 +90,7 @@
         <ng-container matColumnDef="nombanque">
           <th mat-header-cell *matHeaderCellDef>Nom de la banque</th>
           <td mat-cell *matCellDef="let account">
-            <p class="mb-0 fw-medium ">{{ account.nom_banque }}</p>
+            <p class="mb-0 fw-medium">{{ account.nom_banque }}</p>
           </td>
         </ng-container>
 
@@ -70,9 +100,13 @@
             <p class="mb-0 fw-medium">{{ account.iban }}</p>
           </td>
         </ng-container>
-        <ng-container matColumnDef="actions">
+        <ng-container matColumnDef="actions" stickyEnd>
           <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let account; let i = index" [class.active]="i == currentIndex" >
+          <td
+            mat-cell
+            *matCellDef="let account; let i = index"
+            [class.active]="i == currentIndex"
+          >
             <button
               mat-button
               class="btn btn-success fw-normal btnw"
@@ -97,6 +131,13 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <mat-paginator
+        #paginator
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 20]"
+        [showFirstLastButtons]="true"
+      >
+      </mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>
@@ -141,42 +182,41 @@
         />
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
-          <mat-label>BIC</mat-label>
-          <input
-            matInput
-            type="email"
-            placeholder="Veuillez entrer votre modification"
-            required
-            id="cour"
-            [(ngModel)]="currentBankAccount.bic"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </mat-form-field>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
-          <mat-label>IBAN</mat-label>
-          <input
-            matInput
-            type="text"
-            placeholder="Veuillez entrer votre modification"
-            required
-            id="siteweb"
-            [(ngModel)]="currentBankAccount.iban"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </mat-form-field>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
-          <mat-label>Nom de la banque</mat-label>
-          <input
-            matInput
-            type="text"
-            placeholder="Veuillez entrer votre modification"
-            required
-            id="nbc"
-            [(ngModel)]="currentBankAccount.nom_banque"
-            [ngModelOptions]="{ standalone: true }"
-          />
-        </mat-form-field>
-       
+        <mat-label>BIC</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="Veuillez entrer votre modification"
+          required
+          id="cour"
+          [(ngModel)]="currentBankAccount.bic"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>IBAN</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Veuillez entrer votre modification"
+          required
+          id="siteweb"
+          [(ngModel)]="currentBankAccount.iban"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Nom de la banque</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Veuillez entrer votre modification"
+          required
+          id="nbc"
+          [(ngModel)]="currentBankAccount.nom_banque"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
 
       <div>
         &nbsp;

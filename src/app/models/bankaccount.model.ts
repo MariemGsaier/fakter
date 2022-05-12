@@ -4,7 +4,7 @@ export class Bankaccount {
   rib?: number;
   tit_compte?: string;
   bic?: string;
-  iban?: number;
+  iban?: string;
   devise?: string;
   nom_banque?: string;
 }
