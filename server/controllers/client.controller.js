@@ -27,7 +27,6 @@ const Op = db.Sequelize.Op;
       numtel_client: req.body.numtel_client ,
       courriel_client: req.body.courriel_client ,
       siteweb_client: req.body.siteweb_client ,
-      numcomptebancaire_client: req.body.numcomptebancaire_client ,
       dureepaiement_client: req.body.dureepaiement_client
     };
     // Save client in the database

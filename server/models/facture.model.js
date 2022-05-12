@@ -1,8 +1,8 @@
 module.exports = (sequelize, Sequelize) => {
-    const Article = sequelize.define("article", {
+    const Facture = sequelize.define("facture", {
       ref_article: {
         type: Sequelize.STRING,
-      },
+      }, 
       image: {
         type: Sequelize.STRING,
       },
@@ -32,6 +32,6 @@ module.exports = (sequelize, Sequelize) => {
         },
 
     });
-    return Article;
+    return Facture;
   };
   

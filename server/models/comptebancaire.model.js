@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
       },
       iban: {
-        type: Sequelize.BIGINT,
+        type: Sequelize.STRING,
       },
       devise: {
         type: Sequelize.STRING,
