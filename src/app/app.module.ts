@@ -5,6 +5,7 @@ import { allIcons } from 'angular-feather/icons';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select'
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { AngularIbanModule } from 'angular-iban';
 
 
 
@@ -56,6 +57,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatIconModule,
     MatSelectModule,
     MatDatepickerModule,
+    AngularIbanModule
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

@@ -1,9 +1,10 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Client } from "src/app/models/client.model";
 import { ClientService } from "src/app/services/client.service";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
+import { MatPaginator } from "@angular/material/paginator";
 
 
 
@@ -21,7 +22,6 @@ export class ClientComponent implements OnInit {
     "adresse",
     "courriel",
     "siteweb",
-    "nbc",
     "actions",
   ];
   dataSource = new MatTableDataSource<Client>();
@@ -32,7 +32,6 @@ export class ClientComponent implements OnInit {
     numtel_client: 0,
     courriel_client: "",
     siteweb_client: "",
-    numcomptebancaire_client: 0,
   };
   disabelModif: boolean = false;
   message = "";
@@ -45,8 +44,15 @@ export class ClientComponent implements OnInit {
     private clientService: ClientService
   ) {}
 
+  @ViewChild("Paginator") paginator!: MatPaginator;
+
   ngOnInit(): void {
     this.fetchClients();
+    // this.dataSource.paginator = this.paginator;
+  }
+    
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
   fetchClients(): void {
     this.clientService
@@ -134,6 +140,8 @@ export class ClientComponent implements OnInit {
     });
   }
   filterData($event : any){
+    $event.target.value.trim();
+    $event.target.value.toLowerCase();
     this.dataSource.filter = $event.target.value;
   }
 

@@ -1,9 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import { Bankaccount } from "src/app/models/bankaccount.model";
 import { BankaccountService } from "src/app/services/bankaccount.service";
-import { ActivatedRoute, Router } from '@angular/router';
-import Swal from 'sweetalert2';
-;
+import { ActivatedRoute, Router } from "@angular/router";
+import Swal from "sweetalert2";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from "@angular/forms";
+import {ValidatorService} from 'angular-iban';
 
 interface devise {
   value: string;
@@ -11,37 +18,82 @@ interface devise {
 }
 
 @Component({
-  selector: 'app-add-account',
-  templateUrl: './add-account.component.html',
-  styleUrls: ['./add-account.component.scss']
+  selector: "app-add-account",
+  templateUrl: "./add-account.component.html",
+  styleUrls: ["./add-account.component.scss"],
 })
-  
-
-
 export class AddAccountComponent implements OnInit {
-
   BankAccount: Bankaccount = {
-    num_compte: 0,
-    rib: 0,
+    num_compte: undefined,
+    rib: undefined,
     tit_compte: "",
     bic: "",
-    iban: 0,
+    iban: "",
     devise: "",
     nom_banque: "",
   };
+  bankAccForm: FormGroup = new FormGroup({
+    numCompte: new FormControl(""),
+    rib: new FormControl(""),
+    titCompte: new FormControl(""),
+    bic: new FormControl(""),
+    iban: new FormControl(""),
+    nomBanque: new FormControl(""),
+  });
+
+
+ 
   submitted = false;
 
   devises: devise[] = [
-    {value: 'euro', viewValue: 'Euro'},
-    {value: 'dollar', viewValue: 'Dollar'},
-    {value: 'TND', viewValue: 'TND'},
+    { value: "euro", viewValue: "Euro" },
+    { value: "dollar", viewValue: "Dollar" },
+    { value: "TND", viewValue: "TND" },
   ];
 
-  constructor(private route: ActivatedRoute,private router: Router, private bankAccountService: BankaccountService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private bankAccountService: BankaccountService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
+    this.bankAccForm = this.formBuilder.group({
+      rib: ["", [Validators.required, Validators.pattern("/^[A-Za-z0-9]+$/")]],
+      titCompte: ["", [Validators.required, Validators.pattern("/^[a-zA-Z ]*$/")]],
+      numcompte: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern(" /^\d+$/"),
+          Validators.minLength(14),
+          Validators.maxLength(34),
+        ],
+      ],
+      bic: ["", [Validators.required, Validators.pattern("/^[A-Za-z0-9]+$/")], Validators.minLength(8),Validators.maxLength(11),],
+      iban: [
+        Validators.required,
+        ValidatorService.validateIban
+      ],
+      nomBanque: ["", [Validators.required, Validators.pattern("/^[a-zA-Z ]*$/")]],
+    });
   }
-  
+  get f(): { [key: string]: AbstractControl } {
+    return this.bankAccForm.controls;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.bankAccForm.invalid) {
+      return;
+    }
+  }
+  onReset(): void {
+    this.submitted = false;
+    this.bankAccForm.reset();
+  }
+
   saveBankAccount(): void {
     const data = {
       num_compte: this.BankAccount.num_compte,
@@ -52,36 +104,34 @@ export class AddAccountComponent implements OnInit {
       devise: this.BankAccount.devise,
       nom_banque: this.BankAccount.nom_banque,
     };
-    this.bankAccountService.create(data)
-      .subscribe({
+    if (!this.bankAccForm.invalid) {
+      this.bankAccountService.create(data).subscribe({
         next: (res) => {
           console.log(res);
           this.submitted = true;
           Swal.fire({
-            title: 'Ajouté avec succés !',
-            icon: 'success', 
-            confirmButtonColor: '#00c292',
-            confirmButtonText: 'Ajouter un autre compte',
+            title: "Ajout avec succés !",
+            text: "Vous pouvez ajouter un autre compte ou quitter.",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
             cancelButtonColor: "#e46a76",
+            confirmButtonText: "Ajouter un autre compte",
             cancelButtonText: "Quitter",
-
-          }
-          ) 
-          .then((result) => {
+          }).then((result) => {
             if (result.isConfirmed) {
-           this.newBankAccount();
+              this.newBankAccount();
+            } else {
+              this.router.navigate(["/bankaccounts"]);
             }
-          })
+          });
         },
-        error: (e) => console.error(e)
+        error: (e) => console.error(e),
       });
+    }
   }
   newBankAccount(): void {
     this.submitted = false;
     window.location.reload();
-    
-    
   }
-  
-
 }

@@ -33,7 +33,7 @@ import { FacturesComponent } from "./components/factures/factures.component";
 import { AddFactureComponent } from "./components/factures/add-facture/add-facture.component";
 import { AddSocietyComponent } from "./components/societies/add-society/add-society.component";
 import { SocietiesComponent } from "./components/societies/societies.component";
-import { CommandesComponent } from "./components/commandes/commandes.component";
+
 
 
 
@@ -81,7 +81,6 @@ const routes: Routes = [
       {path: "add-facture", component: AddFactureComponent},
       { path: "societe", component: SocietiesComponent },
       { path: "add-societe", component: AddSocietyComponent },
-      {path:"commandes",component: CommandesComponent}
       
     ],
   },
