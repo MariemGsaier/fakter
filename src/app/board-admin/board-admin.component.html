@@ -71,7 +71,7 @@
             </td>
           </ng-container>
 
-          <ng-container matColumnDef="action">
+          <ng-container matColumnDef="action" stickyEnd>
             <th mat-header-cell *matHeaderCellDef>Actions</th>
             <td mat-cell *matCellDef="let user; let i = index" [class.active]="i == currentIndex">
               <span><button mat-button class="btn btn-success fw-normal btnw" style="margin-right: 1%;" type="submit" name="modifier" (click)="setActiveUser(user, i)">

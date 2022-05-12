@@ -113,7 +113,7 @@ export class BoardAdminComponent implements OnInit {
         });
   }
   deleteUser(user: User): void {
-    this.gestUserService.delete(this.currentUser.id)
+    this.gestUserService.delete(user.id)
       .subscribe(
         response => {
           console.log(response);
