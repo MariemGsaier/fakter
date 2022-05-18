@@ -2,6 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const Client = sequelize.define("client", {
       code_identifcation:{
         type: Sequelize.STRING,
+        primaryKey: true
       },
       nom: {
         type: Sequelize.STRING,
@@ -16,9 +17,6 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
       },
       siteweb: {
-        type: Sequelize.STRING,
-      },
-      créé_par: {
         type: Sequelize.STRING,
       }
     });
