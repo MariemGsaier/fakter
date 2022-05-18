@@ -17,8 +17,6 @@ export class SocietyAccountsComponent implements OnInit {
     "rib",
     "nombanque",
     "bic",
-    "devise",
-    "titcompte",
     "iban",
     "actions",
   ];
@@ -27,10 +25,8 @@ export class SocietyAccountsComponent implements OnInit {
   currentBankAccount: Bankaccount = {
     num_compte: 0,
     rib: 0,
-    tit_compte: "",
     bic: "",
     iban: "",
-    devise: "",
     nom_banque: "",
   };
 

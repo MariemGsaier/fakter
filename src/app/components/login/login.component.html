@@ -20,11 +20,22 @@
               <h4 class="mb-32">
                 Connectez-vous pour gérer vos factures plus facilement.
               </h4>
+              
             </div>
+            <div><img
+              src="\assets\images\loginImg.png"
+              fxFlex.md="35%"
+              fxFlex.lg="30%"
+              fxFlex.xl="45%"
+              fxFlex.sm="35%"
+              fxFlex.xs="45%"
+              style="margin-left: 220px;"
+              alt=""
+            /></div>
           </div>
-          <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center">
-            <div fxLayout="column">
-              <div class="card" id="card-inside" style="margin-bottom: 0">
+          <div fxFlex="100" >
+            <div >
+              <div class="card" id="card-inside" style="margin-bottom: 0;height: 363px;">
                 <div class="card-body">
                   <h4 class="mb-31">Connectez-vous</h4>
                   <form
@@ -97,7 +108,7 @@
                         role="alert"
                         *ngIf="f.submitted && isLoginFailed"
                       >
-                        Login failed: {{ errorMessage }}
+                        La connexion a échoué: {{ errorMessage }}
                       </div>
                     </div>
                   </form>
@@ -105,7 +116,11 @@
               </div>
             </div>
           </div>
+        
         </div>
+        <div style="text-align: center; margin-top: 100px;"><p class="text-center pb-24 fs-16">
+          © 2022 All rights reserved by Fakter
+        </p></div>
       </div>
     </div>
   </mat-card-content>

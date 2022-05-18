@@ -1,37 +1,36 @@
 module.exports = (sequelize, Sequelize) => {
-    const Facture = sequelize.define("facture", {
-      ref_article: {
-        type: Sequelize.STRING,
-      }, 
-      image: {
-        type: Sequelize.STRING,
-      },
-      nom_article: {
-        type: Sequelize.STRING,
-      },
-      type_article: {
-        type: Sequelize.STRING,
-      },
-      prix_vente: {
-        type: Sequelize.FLOAT,
-      },
-      taxe_vente: {
-        type: Sequelize.BIGINT,
-      },
-      cout: {
-        type: Sequelize.FLOAT,
-      },
-      unite_mesure: {
-        type: Sequelize.FLOAT,
-      },
-      description: {
-          type: Sequelize.STRING,
-        },
-        créé_par: {
-          type: Sequelize.STRING,
-        },
-
-    });
-    return Facture;
-  };
-  
+  const Facture = sequelize.define("facture", {
+    reference: {
+      type: Sequelize.STRING,
+      primaryKey: true
+    },
+    vendeur: {
+      type: Sequelize.STRING,
+    },
+    date_facturation: {
+      type: Sequelize.DATE,
+    },
+    date_echeance: {
+      type: Sequelize.DATE,
+    },
+    etat_facture: {
+      type: Sequelize.BOOLEAN,
+    },
+    etat_echeance: {
+      type: Sequelize.BOOLEAN,
+    },
+    total_ht: {
+      type: Sequelize.FLOAT,
+    },
+    total_chiffres: {
+      type: Sequelize.FLOAT,
+    },
+    total_lettres: {
+      type: Sequelize.FLOAT,
+    },
+    total_devise: {
+      type: Sequelize.FLOAT,
+    }
+  });
+  return Facture;
+};

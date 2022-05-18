@@ -59,12 +59,6 @@
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="titcompte">
-          <th mat-header-cell *matHeaderCellDef>Titulaire du compte</th>
-          <td mat-cell *matCellDef="let account">
-            <p class="mb-0 fw-medium">{{ account.tit_compte }}</p>
-          </td>
-        </ng-container>
 
         <ng-container matColumnDef="rib">
           <th mat-header-cell *matHeaderCellDef>RIB</th>
@@ -77,13 +71,6 @@
           <th mat-header-cell *matHeaderCellDef>BIC</th>
           <td mat-cell *matCellDef="let account">
             <p class="mb-0 fw-medium">{{ account.bic }}</p>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="devise">
-          <th mat-header-cell *matHeaderCellDef>Devise</th>
-          <td mat-cell *matCellDef="let account">
-            <p class="mb-0 fw-medium">{{ account.devise }}</p>
           </td>
         </ng-container>
 
@@ -169,18 +156,6 @@
         />
       </mat-form-field>
 
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Titulaire du compte</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer votre modification"
-          required
-          id="numtel"
-          [(ngModel)]="currentBankAccount.tit_compte"
-          [ngModelOptions]="{ standalone: true }"
-        />
-      </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>BIC</mat-label>
         <input

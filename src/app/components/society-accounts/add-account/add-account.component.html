@@ -15,11 +15,11 @@
               type="text"
               placeholder="Veuillez entrer le numéro de compte"
               formControlName="numcompte"
-              [ngClass]="{ 'is-invalid': submitted && f['numcompte'].errors }"
+              [ngClass]="{ 'is-invalid':  f['numcompte'].errors }"
               [(ngModel)]="BankAccount.num_compte"
             />
             <mat-error
-              *ngIf="submitted && f['numcompte'].errors"
+              *ngIf="f['numcompte'].errors"
               class="text-danger"
             >
               <div *ngIf="f['numcompte'].errors['required']">
@@ -45,10 +45,10 @@
               type="text"
               placeholder="Veuillez entrer le RIB"
               formControlName="rib"
-              [ngClass]="{ 'is-invalid': submitted && f['rib'].errors }"
+              [ngClass]="{ 'is-invalid':  f['rib'].errors }"
               [(ngModel)]="BankAccount.rib"
             />
-            <mat-error *ngIf="submitted && f['rib'].errors" class="text-danger">
+            <mat-error *ngIf="f['rib'].errors" class="text-danger">
               <div *ngIf="f['rib'].errors['required']">
                 Le champ RIB est obligatoire
               </div>
@@ -70,11 +70,11 @@
               type="text"
               placeholder="Veuillez entrer le nom de la banque"
               formControlName="nomBanque"
-              [ngClass]="{ 'is-invalid': submitted && f['nomBanque'].errors }"
+              [ngClass]="{ 'is-invalid':  f['nomBanque'].errors }"
               [(ngModel)]="BankAccount.nom_banque"
             />
             <mat-error
-              *ngIf="submitted && f['nomBanque'].errors"
+              *ngIf=" f['nomBanque'].errors"
               class="text-danger"
             >
               <div *ngIf="f['nomBanque'].errors['required']">
@@ -94,10 +94,10 @@
               type="text"
               placeholder="Veuillez entrer le BIC"
               formControlName="bic"
-              [ngClass]="{ 'is-invalid': submitted && f['bic'].errors }"
+              [ngClass]="{ 'is-invalid':  f['bic'].errors }"
               [(ngModel)]="BankAccount.bic"
             />
-            <mat-error *ngIf="submitted && f['bic'].errors" class="text-danger">
+            <mat-error *ngIf=" f['bic'].errors" class="text-danger">
               <div *ngIf="f['bic'].errors['required']">
                 Le champ BIC est obligatoire
               </div>
@@ -114,49 +114,6 @@
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>
-          <mat-form-field
-            class="w-100 fs-16"
-            appearance="outline"
-            style="margin-right: 16px"
-          >
-            <mat-label>Devise</mat-label>
-            <mat-select
-              name="devise"
-              required
-              [(ngModel)]="BankAccount.devise"
-              [ngModelOptions]="{ standalone: true }"
-            >
-              <mat-option *ngFor="let devise of devises" [value]="devise.value">
-                {{ devise.viewValue }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Titulaire du compte </mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Veuillez entrer le titulaire de compte"
-              formControlName="titCompte"
-              [ngClass]="{ 'is-invalid': submitted && f['titCompte'].errors }"
-              [(ngModel)]="BankAccount.tit_compte"
-            />
-            <mat-error
-              *ngIf="submitted && f['titCompte'].errors"
-              class="text-danger"
-            >
-              <div *ngIf="f['titCompte'].errors['required']">
-                Le champ Titulaire du compte est obligatoire
-              </div>
-              <span *ngIf="f['titCompte'].errors['pattern']"
-                >Le Titulaire du compte saisi est invalide</span
-              >
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>IBAN </mat-label>
             <input
@@ -164,11 +121,11 @@
               type="text"
               placeholder="Veuillez entrer le IBAN"
               formControlName="iban"
-              [ngClass]="{ 'is-invalid': submitted && f['iban'].errors }"
+              [ngClass]="{ 'is-invalid':  f['iban'].errors }"
               [(ngModel)]="BankAccount.iban"
             />
             <mat-error
-              *ngIf="submitted && f['iban'].errors"
+              *ngIf=" f['iban'].errors"
               class="text-danger"
             >
               <div *ngIf="f['iban'].errors['required']">

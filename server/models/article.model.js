@@ -26,11 +26,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       description: {
           type: Sequelize.STRING,
-        },
-        créé_par: {
-          type: Sequelize.STRING,
-        },
-
+        }
     });
     return Article;
   };
