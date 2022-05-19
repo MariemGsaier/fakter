@@ -26,16 +26,13 @@ export class AddAccountComponent implements OnInit {
   BankAccount: Bankaccount = {
     num_compte: undefined,
     rib: undefined,
-    tit_compte: "",
     bic: "",
     iban: "",
-    devise: "",
     nom_banque: "",
   };
   bankAccForm: FormGroup = new FormGroup({
     numCompte: new FormControl(""),
     rib: new FormControl(""),
-    titCompte: new FormControl(""),
     bic: new FormControl(""),
     iban: new FormControl(""),
     nomBanque: new FormControl(""),
@@ -45,11 +42,7 @@ export class AddAccountComponent implements OnInit {
  
   submitted = false;
 
-  devises: devise[] = [
-    { value: "euro", viewValue: "Euro" },
-    { value: "dollar", viewValue: "Dollar" },
-    { value: "TND", viewValue: "TND" },
-  ];
+
 
   constructor(
     private route: ActivatedRoute,
@@ -61,7 +54,6 @@ export class AddAccountComponent implements OnInit {
   ngOnInit(): void {
     this.bankAccForm = this.formBuilder.group({
       rib: ["", [Validators.required, Validators.pattern("/^[A-Za-z0-9]+$/")]],
-      titCompte: ["", [Validators.required, Validators.pattern("/^[a-zA-Z ]*$/")]],
       numcompte: [
         "",
         [
@@ -76,10 +68,11 @@ export class AddAccountComponent implements OnInit {
         Validators.required,
         ValidatorService.validateIban
       ],
-      nomBanque: ["", [Validators.required, Validators.pattern("/^[a-zA-Z ]*$/")]],
+      nomBanque: ["", [Validators.required,Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
     });
   }
   get f(): { [key: string]: AbstractControl } {
+    console.log(this.bankAccForm.controls);
     return this.bankAccForm.controls;
   }
 
@@ -98,10 +91,8 @@ export class AddAccountComponent implements OnInit {
     const data = {
       num_compte: this.BankAccount.num_compte,
       rib: this.BankAccount.rib,
-      tit_compte: this.BankAccount.tit_compte,
       bic: this.BankAccount.bic,
       iban: this.BankAccount.iban,
-      devise: this.BankAccount.devise,
       nom_banque: this.BankAccount.nom_banque,
     };
     if (!this.bankAccForm.invalid) {

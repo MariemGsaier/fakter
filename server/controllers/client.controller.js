@@ -11,25 +11,23 @@ exports.adminBoard = (req, res) => {
 const db = require("../models");
 const client = db.client;
 const Op = db.Sequelize.Op;
-// Create and Save a new client
+// Créer et enregistrer un client
   exports.create = (req, res) => {
-    // Validate request
-    if (!req.body.nom_client) {
+    if (!req.body.code_identifcation) {
       res.status(400).send({
-        message: "Content can not be empty!"
+        message: "contenu vide !"
       });
       return;
     }
-    // Create a Tutorial
     const clt = {
-      nom_client: req.body.nom_client,
-      adresse_client: req.body.adresse_client,
-      numtel_client: req.body.numtel_client ,
-      courriel_client: req.body.courriel_client ,
-      siteweb_client: req.body.siteweb_client ,
-      dureepaiement_client: req.body.dureepaiement_client
-    };
-    // Save client in the database
+      code_identifcation: req.body.code_identifcation,
+      nom: req.body.nom,
+      adresse: req.body.adresse,
+      numtel: req.body.numtel,
+      courriel: req.body.courriel ,
+      siteweb: req.body.siteweb 
+   };
+
     client
     .create(clt)
       .then(data => {
@@ -39,15 +37,15 @@ const Op = db.Sequelize.Op;
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while creating the client."
+            err.message || "une erreur est survenue lors de la création du client."
         });
       });
 };
-// fetch all clients from the database.
+// Lister les clients
 exports.findAll = (req, res) => {
-  const nom_client = req.query.nom_client;
-  var condition = nom_client
-    ? { nom_client: { [Op.iLike]: `%${nom_client}%` } }
+  const  code_identifcation = req.query. code_identifcation;
+  var condition =  code_identifcation
+    ? {  code_identifcation: { [Op.iLike]: `%${ code_identifcation}%` } }
     : null;
   client
     .findAll({ where: condition })
@@ -56,12 +54,12 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while fetching users.",
+        message: err.message || "une erreur est survenue lors de l'affichage.",
       });
     });
 };
 
-// Update a client by the id in the request
+// Modifier un client
 exports.update = (req, res) => {
   const id = req.params.id;
   client
@@ -71,11 +69,11 @@ exports.update = (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "user was updated successfully.",
+          message: "Le client est mis à jour avec succés.",
         });
       } else {
         res.send({
-          message: `Cannot update client with id=${id}. Maybe client was not found or req.body is empty!`,
+          message: `erreur de mise à jour du client avec id=${id}. peut etre le client est inexistant  ou le corps de la requête est vide!`,
         });
       }
     })
@@ -95,17 +93,17 @@ exports.delete = (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "client was deleted successfully!",
+          message: "Le client est supprimé avec succés!",
         });
       } else {
         res.send({
-          message: `Cannot delete client with id=${id}. Maybe client was not found!`,
+          message: `Echec de suppression du client  avec id=${id}. Peut être qu'il est inexistant !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Could not delete client with id=" + id,
+        message: "Echec de suppression du client avec id=" + id,
       });
     });
 };
@@ -117,12 +115,12 @@ exports.deleteAll = (req, res) => {
       truncate: false,
     })
     .then((nums) => {
-      res.send({ message: `${nums} clients were deleted successfully!` });
+      res.send({ message: `${nums} Tous les clients sont supprimés avec succés !` });
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all clients.",
+          err.message || "Une erreur est survenue lors de la suppression des clients.",
       });
     });
 };

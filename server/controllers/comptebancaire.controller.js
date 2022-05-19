@@ -11,12 +11,11 @@ exports.allAccess = (req, res) => {
   const db = require("../models");
   const comptebancaire = db.comptebancaire;
   const Op = db.Sequelize.Op;
-  // Create 
+  // Créer et enregistrer un compte bancaire
     exports.create = (req, res) => {
-      // Validate request
       if (!req.body.num_compte) {
         res.status(400).send({
-          message: "Content can not be empty!"
+          message: "Contenu vide !"
         });
         return;
       }
@@ -24,13 +23,10 @@ exports.allAccess = (req, res) => {
       const compteb = {
         num_compte: req.body.num_compte,
         rib: req.body.rib,
-        tit_compte: req.body.tit_compte ,
         bic: req.body.bic ,
         iban: req.body.iban ,
-        devise: req.body.devise ,
         nom_banque: req.body.nom_banque
       };
-      // Save 
       comptebancaire
       .create(compteb)
         .then(data => {
@@ -44,7 +40,7 @@ exports.allAccess = (req, res) => {
           });
         });
   };
-  // fetch 
+  // Lister les comptes bancaires
   exports.findAll = (req, res) => {
     const num_compte = req.query.num_compte;
     var condition = num_compte
@@ -62,7 +58,7 @@ exports.allAccess = (req, res) => {
       });
   };
   
-  // Update 
+  // Modifier un compte bancaire 
   exports.update = (req, res) => {
     const id = req.params.id;
     comptebancaire
@@ -72,11 +68,11 @@ exports.allAccess = (req, res) => {
       .then((num) => {
         if (num == 1) {
           res.send({
-            message: "Compte bancaire mis à jour avec succés.",
+            message: "Le compte bancaire est mis à jour avec succés.",
           });
         } else {
           res.send({
-            message: `erreur de mise à jour de du compte d' id=${id}. peut etre le compte n'existe pas ou le corps de la requête est vide!`,
+            message: `erreur de mise à jour de du compte avec id=${id}. peut etre le compte est inexistant  ou le corps de la requête est vide!`,
           });
         }
       })
@@ -86,7 +82,7 @@ exports.allAccess = (req, res) => {
         });
       });
   };
-  // Delete 
+  // Supprimer un compte bancaire 
   exports.delete = (req, res) => {
     const id = req.params.id;
     comptebancaire
@@ -100,17 +96,17 @@ exports.allAccess = (req, res) => {
           });
         } else {
           res.send({
-            message: `Cannot delete client with id=${id}. Maybe client was not found!`,
+            message: `Echec de suppression du compte bancaire avec id=${id}. Peut être qu'il est inexistant !`,
           });
         }
       })
       .catch((err) => {
         res.status(500).send({
-          message: "Could not delete client with id=" + id,
+          message: "Echec de suppression du compte bancaire avec id=" + id,
         });
       });
   };
-  // Delete all 
+  // Supprimer Tout
   exports.deleteAll = (req, res) => {
     comptebancaire
       .destroy({
@@ -118,12 +114,12 @@ exports.allAccess = (req, res) => {
         truncate: false,
       })
       .then((nums) => {
-        res.send({ message: `${nums} clients were deleted successfully!` });
+        res.send({ message: `${nums} Tous les comptes bancaires sont supprimés avec succés !` });
       })
       .catch((err) => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all clients.",
+            err.message || "Une erreur est survenue lors de la suppression des comptes bancaires",
         });
       });
   };

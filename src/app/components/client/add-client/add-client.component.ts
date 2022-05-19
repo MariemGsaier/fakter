@@ -6,7 +6,10 @@ import Swal from 'sweetalert2';
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 
-
+interface CodeId {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-add-client',
@@ -16,11 +19,12 @@ import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from
 export class AddClientComponent implements OnInit {
   
   client: Client = {
-  nom_client: '',
-  adresse_client: '',
-  numtel_client: undefined,
-  courriel_client: '',
-  siteweb_client: '',
+  code_identification:'',
+  nom: '',
+  adresse: '',
+  numtel: undefined,
+  courriel: '',
+  siteweb: '',
 
   };
   clientForm: FormGroup = new FormGroup({
@@ -33,6 +37,14 @@ export class AddClientComponent implements OnInit {
     
   });
   submitted = false;
+
+  codesId: CodeId[] = [
+    {value: 'cin', viewValue: 'CIN'},
+    {value: 'numPasseport', viewValue: 'Numéro du passeport'},
+    {value: 'codeTva', viewValue: 'Code de TVA'},
+    {value: 'numRcs', viewValue: 'Numéro du RCS'},
+    {value: 'matriculeFisc', viewValue: 'Matricule fiscale'},
+  ];
  
 
   constructor(private route: ActivatedRoute,
@@ -46,7 +58,7 @@ export class AddClientComponent implements OnInit {
         email: ['', [Validators.required, Validators.email]],
         phone: ['', [ Validators.required,Validators.pattern("^[0-9]*$")]],
         website: ['', Validators.pattern("^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$")],
-        nomclt: ['', [Validators.required]],
+        nomclt: ['', [Validators.required,Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
         adresse: ['', Validators.required]
       }
        
@@ -55,7 +67,9 @@ export class AddClientComponent implements OnInit {
 
   
   get f(): { [key: string]: AbstractControl } {
+    console.log(this.clientForm.controls);
     return this.clientForm.controls;
+    
   }
 
   onSubmit(): void {
@@ -71,11 +85,11 @@ export class AddClientComponent implements OnInit {
 
   saveClient(): void {
     const data = {
-      nom_client: this.client.nom_client,
-      adresse_client: this.client.adresse_client,
-      numtel_client: this.client.numtel_client,
-      courriel_client: this.client.courriel_client,
-      siteweb_client: this.client.siteweb_client,
+      nom: this.client.nom,
+      adresse: this.client.adresse,
+      numtel: this.client.numtel,
+      courriel: this.client.courriel,
+      siteweb: this.client.siteweb,
     };
     if (!(this.clientForm.invalid)) {
       this.clientService.create(data)

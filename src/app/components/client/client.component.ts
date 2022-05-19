@@ -17,6 +17,7 @@ export class ClientComponent implements OnInit {
   searchTerm : any;
   search: boolean = false;
   displayedColumns: string[] = [
+    "code_identification",
     "nom",
     "numtel",
     "adresse",
@@ -27,16 +28,19 @@ export class ClientComponent implements OnInit {
   dataSource = new MatTableDataSource<Client>();
   // content?: string;
   currentClient: Client = {
-    nom_client: "",
-    adresse_client: "",
-    numtel_client: 0,
-    courriel_client: "",
-    siteweb_client: "",
+    code_identification:"",
+    nom: "",
+    adresse: "",
+    numtel: undefined,
+    courriel: "",
+    siteweb: "",
   };
   disabelModif: boolean = false;
   message = "";
   clients?: Client[];
   currentIndex = -1;
+
+
 
   constructor(
     private route: ActivatedRoute,

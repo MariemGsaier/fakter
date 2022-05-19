@@ -19,4 +19,8 @@ db.client = require("../models/client.model.js")(sequelize, Sequelize);
 db.comptebancaire = require("../models/comptebancaire.model.js")(sequelize, Sequelize);
 db.societe = require("../models/societe.model.js")(sequelize, Sequelize);
 db.article = require("../models/article.model.js")(sequelize, Sequelize);
+db.facture = require("../models/facture.model")(sequelize, Sequelize);
+db.devise = require("../models/devise.model")(sequelize, Sequelize);
+db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
+
 module.exports = db;
