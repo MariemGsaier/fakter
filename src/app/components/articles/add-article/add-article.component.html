@@ -6,7 +6,7 @@
           <mat-grid-tile>
             <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
               <mat-label>Référence article</mat-label>
-              <input matInput type="text" placeholder="Entrez la référence de l'article" required [(ngModel)]="article.ref_article" [ngModelOptions]="{ standalone: true }">
+              <input matInput type="text" placeholder="Entrez la référence de l'article" required [(ngModel)]="article.reference_art" [ngModelOptions]="{ standalone: true }">
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile>
@@ -43,12 +43,6 @@
         <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
             <mat-label>Coût</mat-label>
             <input matInput type="number" placeholder="Entrez le coût" required [(ngModel)]="article.cout" [ngModelOptions]="{ standalone: true }">
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Unié de mesure</mat-label>
-            <input matInput type="number" placeholder="Entrez l'unité de mesure'" required [(ngModel)]="article.unite_mesure" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>

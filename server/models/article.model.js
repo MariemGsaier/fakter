@@ -1,5 +1,9 @@
 module.exports = (sequelize, Sequelize) => {
   const Article = sequelize.define("article", {
+    reference_art: {
+      type: Sequelize.STRING,
+      primaryKey: true
+    },
     image: {
       type: Sequelize.STRING,
     },

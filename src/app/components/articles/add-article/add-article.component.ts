@@ -21,25 +21,23 @@ interface alerts {
 })
 export class AddArticleComponent implements OnInit {
   form: FormGroup = new FormGroup({
-    ref_article: new FormControl(''),
+    reference_art: new FormControl(''),
     image: new FormControl(''),
     nom_article: new FormControl(''),
     type_article: new FormControl(''),
     prix_vente: new FormControl(''),
     taxe_vente: new FormControl(''),
     cout: new FormControl(''),
-    unite_mesure: new FormControl(''),
     description: new FormControl('')
   });
   article: Article = {
-    ref_article: "",
+    reference_art: "",
     image: "",
     nom_article: "",
     type_article: "",
     prix_vente: 0,
     taxe_vente: 0,
     cout: 0,
-    unite_mesure: 0,
     description: "",
   };
   submitted = false;
@@ -54,7 +52,7 @@ export class AddArticleComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.formBuilder.group(
       {
-        ref_article: [
+        reference_art: [
           '',
           [
             Validators.required,
@@ -73,7 +71,6 @@ export class AddArticleComponent implements OnInit {
         prix_vente: ['', Validators.required],
         taxe_vente: ['', Validators.required],
         cout: ['', Validators.required],
-        unite_mesure: ['', Validators.required],
         description: ['', Validators.required]
       },
       {
@@ -84,14 +81,13 @@ export class AddArticleComponent implements OnInit {
 
   saveArticle(): void {
     const data = {
-      ref_article: this.article.ref_article,
+      reference_art: this.article.reference_art,
       image: this.article.image,
       nom_article: this.article.nom_article,
       type_article: this.article.type_article,
       prix_vente: this.article.prix_vente,
       taxe_vente: this.article.taxe_vente,
       cout: this.article.cout,
-      unite_mesure: this.article.unite_mesure,
       description: this.article.description,
     };
     this.articleService.create(data).subscribe(
@@ -107,14 +103,13 @@ export class AddArticleComponent implements OnInit {
   newArticle(): void {
     this.submitted = false;
     this.article = {
-      ref_article: '',
+      reference_art: '',
       image: '',
       nom_article: '',
       type_article: '',
       prix_vente: 0,
       taxe_vente: 0,
       cout: 0,
-      unite_mesure: 0,
       description:'',
      
     };
