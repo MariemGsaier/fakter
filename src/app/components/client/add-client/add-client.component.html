@@ -4,19 +4,19 @@
         <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
             <mat-grid-list cols="2" rowHeight="5:1">
                 <mat-grid-tile>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field class="w-100 fs-16" style="margin-right: 16px;" appearance="outline" >
                         <mat-label>Type du code d'identification </mat-label>
-                        <mat-select>
-                          <mat-option *ngFor="let codeId of codesId" [value]="codeId.value">
+                        <mat-select required>
+                          <mat-option *ngFor="let codeId of codesId" [value]="codeId.value" >
                             {{codeId.viewValue}}
                           </mat-option>
                         </mat-select>
                       </mat-form-field>
                 </mat-grid-tile>
                 <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px;">
+                    <mat-form-field class="w-100 fs-16" appearance="outline" >
                         <mat-label>Code d'identification  </mat-label>
-                        <input matInput type="text" placeholder="Veuillez entrer le nom du client" required   [(ngModel)]="client.code_identification">
+                        <input matInput type="text" placeholder="Veuillez entrer le nom du client" required   [(ngModel)]="client.code_identification" [ngModelOptions]=" {standalone: true}">
                         
                     </mat-form-field>
                 </mat-grid-tile>
