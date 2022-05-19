@@ -39,15 +39,15 @@ export class SocietiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.message = '';
-    this.getSociete(this.route.snapshot.params['id']);
+    // this.getSociete(this.route.snapshot.params['id']);
   }
 
   edit(): void{
     this.disabelModif = true;
   }
 
-  getSociete(id: string): void {
-    this.societeService.get(id)
+  getSociete(): void {
+    this.societeService.get(1)
       .subscribe(
         (data: Societe) => {
           this.currentSociete = data;

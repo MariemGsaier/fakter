@@ -4,61 +4,56 @@
       <form>
         <mat-grid-list cols="2" rowHeight="5:1">
           <mat-grid-tile>
-            <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
               <mat-label>Référence article</mat-label>
-              <input matInput type="text" placeholder="Entrez la référence de l'article" required [(ngModel)]="article.ref_article" [ngModelOptions]="{ standalone: true }">
+              <input matInput type="text" placeholder="Entrez la référence de l'article" required [(ngModel)]="article.reference_art" [ngModelOptions]="{ standalone: true }">
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile>
             <mat-form-field class="w-100 fs-16" appearance="outline">
               <mat-label>Image</mat-label>
-              <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required [(ngModel)]="article.image" [ngModelOptions]="{ standalone: true }">
+              <input matInput type="text" placeholder="Entrez l'image de l'article" required [(ngModel)]="article.image" [ngModelOptions]="{ standalone: true }">
             </mat-form-field>
           </mat-grid-tile>
           <mat-grid-tile>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
           <mat-label>Nom article</mat-label>
-          <input matInput type="text" placeholder="Entrez le nom d'utilisateur" required [(ngModel)]="article.nom_article" [ngModelOptions]="{ standalone: true }">
+          <input matInput type="text" placeholder="Entrez le nom de l'article" required [(ngModel)]="article.nom_article" [ngModelOptions]="{ standalone: true }">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Type article</mat-label>
-          <input matInput type="text" placeholder="Entrez l'email" required [(ngModel)]="article.type_article" [ngModelOptions]="{ standalone: true }">
+          <input matInput type="text" placeholder="Entrez le d'article" required [(ngModel)]="article.type_article" [ngModelOptions]="{ standalone: true }">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
             <mat-label>Prix de vente</mat-label>
-            <input matInput type="number" placeholder="Entrez le role" required [(ngModel)]="article.prix_vente" [ngModelOptions]="{ standalone: true }">
+            <input matInput type="number" placeholder="Entrez le prix de vente" required [(ngModel)]="article.prix_vente" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Taxe de vente</mat-label>
-          <input matInput type="number" placeholder="Entrez le mot de passe" required [(ngModel)]="article.taxe_vente" [ngModelOptions]="{ standalone: true }">
+          <input matInput type="number" placeholder="Entrez la taxe de vente" required [(ngModel)]="article.taxe_vente" [ngModelOptions]="{ standalone: true }">
         </mat-form-field>
       </mat-grid-tile>
       <mat-grid-tile>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
             <mat-label>Coût</mat-label>
-            <input matInput type="number" placeholder="Entrez le mot de passe" required [(ngModel)]="article.cout" [ngModelOptions]="{ standalone: true }">
+            <input matInput type="number" placeholder="Entrez le coût" required [(ngModel)]="article.cout" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Unié de mesure</mat-label>
-            <input matInput type="number" placeholder="Entrez le mot de passe" required [(ngModel)]="article.unite_mesure" [ngModelOptions]="{ standalone: true }">
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
             <mat-label>Description</mat-label>
-            <input matInput type="text" placeholder="Entrez le mot de passe" required [(ngModel)]="article.description" [ngModelOptions]="{ standalone: true }">
+            <input matInput type="text" placeholder="Entrez la description" required [(ngModel)]="article.description" [ngModelOptions]="{ standalone: true }">
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
-        <button mat-button class="btn btn-success fw-normal" (click)="saveArticle()" type="submit">Confirmer</button>
+      &nbsp;
+        <button mat-button class="btn btn-success fw-normal" style="float: right" (click)="saveArticle()" type="submit">Confirmer</button>
 
               <div *ngIf="submitted">
                 <br>

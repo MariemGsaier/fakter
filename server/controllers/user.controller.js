@@ -11,6 +11,7 @@ exports.adminBoard = (req, res) => {
 const db = require("../models");
 const user = db.user;
 const Op = db.Sequelize.Op;
+var bcrypt = require("bcryptjs");
 
 // fetch all user from the database.
 exports.findAll = (req, res) => {
@@ -30,9 +31,36 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Find a single user with an id
+exports.findOne = (req, res) => {
+  const id = req.params.id;
+  user.findByPk(id)
+    .then(data => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find user with id=${id}.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving user with id=" + id
+      });
+    });
+};
+
 // Update a user by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
+  // const pass = req.body.password
+  // console.log('check body for pass', pass)
+  // // if (pass != null) {
+  // //   pass: bcrypt.hashSync(req.body.password, 8),
+  // // }
+  console.log('id', id)
+  console.log('rrr', req.body)
   user
     .update(req.body, {
       where: { id: id },
@@ -49,11 +77,42 @@ exports.update = (req, res) => {
       }
     })
     .catch((err) => {
+      console.log('errror', err)
       res.status(500).send({
         message: "Error updating user with id=" + id,
       });
     });
+
 };
+
+exports.passCheck = (req, res) => {
+  console.log('ttt', req.params)
+  console.log('ttt', req.body)
+  user.findOne({
+    where: {
+      id: (req.params.id),
+    },
+  })
+    .then((user) => {
+      var passwordIsValid = bcrypt.compareSync(
+        req.body.password,
+        user.password
+      );
+      if (!passwordIsValid) {
+        return res.status(200).send({
+          message: false,
+        });
+      } else {
+        return res.status(200).send({
+          message: true,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({ message: err.message });
+    });
+};
+
 // Delete a user with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;

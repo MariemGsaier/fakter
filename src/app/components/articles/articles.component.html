@@ -1,34 +1,67 @@
 <mat-card class="w-100">
   <mat-card-content>
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input
+          matInput
+          placeholder="Veuillez taper un mot clé"
+          autocomplete="off"
+          (keyup)="filterData($event)"
+        />
+      </mat-form-field>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item"></li>
+      </ul>
+      <button mat-icon-button (click)="search = !search">
+        <i-feather
+          name="x-circle"
+          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
+        ></i-feather>
+      </button>
+    </div>
     <button
       mat-button
-      class="btn btn-info fw-normal"
+      class="btn btn-info fw-normal disabled"
       routerLink="/add-article"
       type="submit"
       style="float: right"
+      [disabled]="showObserverBoard"
     >
       <mat-icon>add</mat-icon>
     </button>
     <button
       mat-button
-      class="btn btn-danger fw-normal"
+      class="btn btn-danger fw-normal disabled"
       style="float: right; margin-right: 0.142%"
       (click)="removeAllArticles()"
+      [disabled]="showObserverBoard"
     >
       Supprimer Tout
+    </button>
+    <button
+      mat-icon-button
+      class="ms-4 me-4"
+      style="float: right"
+      (click)="search = !search"
+    >
+      <i-feather
+        name="search"
+        class="mt-n3 text-light-muted feather-base text-dark"
+      ></i-feather>
     </button>
     <h4 class="mb-56">Gérez vos articles</h4>
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-        <!-- Id Column -->
-        <ng-container matColumnDef="ref_article">
-          <th mat-header-cell *matHeaderCellDef>Référence article</th>
+        
+        <ng-container matColumnDef="reference_art">
+          <th mat-header-cell *matHeaderCellDef>Référence</th>
           <td mat-cell class="fw-medium" *matCellDef="let article">
-            {{ article.ref_article }}
+            {{ article.reference_art }}
           </td>
         </ng-container>
-
+        
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Image</th>
           <td mat-cell class="fw-medium" *matCellDef="let article">
@@ -54,13 +87,13 @@
         <ng-container matColumnDef="prix">
           <th mat-header-cell *matHeaderCellDef>Prix de vente</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium op-5">{{ article.prix_vente }}</p>
+            <p class="mb-0 fw-medium">{{ article.prix_vente }}</p>
           </td>
         </ng-container>
         <ng-container matColumnDef="taxe">
           <th mat-header-cell *matHeaderCellDef>Taxe de vente</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium op-5">{{ article.taxe_vente }}</p>
+            <p class="mb-0 fw-medium">{{ article.taxe_vente }}</p>
           </td>
         </ng-container>
 
@@ -72,30 +105,23 @@
           </td>
         </ng-container>
 
-        <!-- Budget Column -->
-        <ng-container matColumnDef="unite">
-          <th mat-header-cell *matHeaderCellDef>Unié de mesure</th>
-          <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.unite_mesure }}</p>
-          </td>
-        </ng-container>
-
         <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef>Description</th>
             <td mat-cell *matCellDef="let article">
               <p class="mb-0 fw-medium">{{ article.description }}</p>
             </td>
           </ng-container>
-        <ng-container matColumnDef="actions">
+        <ng-container matColumnDef="actions" stickyEnd>
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td
             mat-cell
-            *matCellDef="let article; let i = index"
+            *matCellDef="let article; let i = index;"
             [class.active]="i == currentIndex"
           >
             <button
               mat-button
-              class="btn btn-success fw-normal btnw"
+              [disabled]="showObserverBoard"
+              class="btn btn-success fw-normal btnw disabled"
               style="margin-right: 1%"
               type="submit"
               (click)="setActiveArticle(article, i)"
@@ -104,7 +130,8 @@
             </button>
             <button
               mat-button
-              class="btn btn-danger fw-normal btnw"
+              [disabled]="showObserverBoard"
+              class="btn btn-danger fw-normal btnw disabled"
               style="margin-right: 1%"
               type="submit"
               (click)="deleteArticle(article)"
@@ -117,23 +144,29 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <mat-paginator
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20,30,50,100]"
+      >
+      </mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Référence article </mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Veuillez entrer votre modification"
-              id="ref"
-              [(ngModel)]="currentArticle.ref_article"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Référence </mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Veuillez entrer votre modification"
+          id="reference_art"
+          [(ngModel)]="currentArticle.reference_art"
+          [ngModelOptions]="{ standalone: true }"
+        />
+      </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Image </mat-label>
             <input
@@ -207,18 +240,6 @@
         />
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Unité de mesure</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="Veuillez entrer votre modification"
-          required
-          id="unite"
-          [(ngModel)]="currentArticle.unite_mesure"
-          [ngModelOptions]="{ standalone: true }"
-        />
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Description</mat-label>
         <input
           matInput
@@ -233,6 +254,15 @@
 
       <div>
         &nbsp;
+        <button
+          mat-button
+          class="btn btn-danger fw-normal"
+          (click)="annuler()"
+          type="submit"
+          style="float: right; margin-left: 0.3%;"
+        >
+          Annuler
+        </button>
         <button
           mat-button
           class="btn btn-success fw-normal"
