@@ -2,18 +2,20 @@
   <mat-card-content>
     <button
       mat-button
-      class="btn btn-info fw-normal"
+      class="btn btn-info fw-normal disabled"
       routerLink="/add-article"
       type="submit"
       style="float: right"
+      [disabled]="showObserverBoard"
     >
       <mat-icon>add</mat-icon>
     </button>
     <button
       mat-button
-      class="btn btn-danger fw-normal"
+      class="btn btn-danger fw-normal disabled"
       style="float: right; margin-right: 0.142%"
       (click)="removeAllArticles()"
+      [disabled]="showObserverBoard"
     >
       Supprimer Tout
     </button>
@@ -21,14 +23,7 @@
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-        <!-- Id Column -->
-        <ng-container matColumnDef="ref_article">
-          <th mat-header-cell *matHeaderCellDef>Référence article</th>
-          <td mat-cell class="fw-medium" *matCellDef="let article">
-            {{ article.ref_article }}
-          </td>
-        </ng-container>
-
+        
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Image</th>
           <td mat-cell class="fw-medium" *matCellDef="let article">
@@ -90,12 +85,13 @@
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td
             mat-cell
-            *matCellDef="let article; let i = index"
+            *matCellDef="let article; let i = index;"
             [class.active]="i == currentIndex"
           >
             <button
               mat-button
-              class="btn btn-success fw-normal btnw"
+              [disabled]="showObserverBoard"
+              class="btn btn-success fw-normal btnw disabled"
               style="margin-right: 1%"
               type="submit"
               (click)="setActiveArticle(article, i)"
@@ -104,7 +100,8 @@
             </button>
             <button
               mat-button
-              class="btn btn-danger fw-normal btnw"
+              [disabled]="showObserverBoard"
+              class="btn btn-danger fw-normal btnw disabled"
               style="margin-right: 1%"
               type="submit"
               (click)="deleteArticle(article)"
@@ -123,17 +120,6 @@
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Référence article </mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Veuillez entrer votre modification"
-              id="ref"
-              [(ngModel)]="currentArticle.ref_article"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Image </mat-label>
             <input

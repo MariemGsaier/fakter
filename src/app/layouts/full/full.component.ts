@@ -30,6 +30,7 @@ export class FullComponent implements OnInit {
   private roles: string[] = [];
   isLoggedIn = false;
   showAdminBoard = false;
+  showObserverBoard = false;
   username?: string;
   nom_societe?: string;
 
@@ -89,6 +90,7 @@ export class FullComponent implements OnInit {
       const user = this.tokenStorageService.getUser();
       this.roles = user.role;
       this.showAdminBoard = this.roles.includes("admin");
+      this.showObserverBoard = this.roles.includes("observer");
       this.username = user.username;
       this.societeService.get(1).subscribe(
         (data: any) => {

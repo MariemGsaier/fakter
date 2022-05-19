@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Article } from 'src/app/models/article.model';
 import { ArticleService } from 'src/app/services/article.service';
 import { MatTableDataSource } from "@angular/material/table";
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 
 interface alerts {
@@ -20,7 +21,7 @@ interface alerts {
   styleUrls: ['./articles.component.scss']
 })
 export class ArticlesComponent implements OnInit {
-  displayedColumns: string[] = ['ref_article', 'image', 'nom','type_article', 'prix', 'taxe', 'cout', 'unite','description','actions'];
+  displayedColumns: string[] = ['image', 'nom','type_article', 'prix', 'taxe', 'cout', 'unite','description','actions'];
   dataSource = new MatTableDataSource<Article>();
   currentArticle: Article = {
     ref_article: '',
@@ -37,12 +38,21 @@ export class ArticlesComponent implements OnInit {
   articles?: Article[];
   currentIndex = -1;
   disabelModif: boolean = false;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showObserverBoard = true;
 
   constructor( private route: ActivatedRoute,
-    private router: Router, private articleService: ArticleService) { }
+    private router: Router, private articleService: ArticleService, private tokenStorageService: TokenStorageService,) { }
 
   ngOnInit(): void {
     this.fetchArticles();
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.role;
+      this.showObserverBoard = this.roles.includes("observer");
+    }
   }
 
   fetchArticles(): void {

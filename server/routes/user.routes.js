@@ -29,6 +29,8 @@ module.exports = function (app) {
   router.get("/:term", controller.search);
   // Update a Tutorial with id
   router.put("/:id", controller.update);
+  // Update user password with id
+  router.post("/pass/:id", controller.passCheck);
   // Delete a Tutorial with id
   router.delete("/:id", controller.delete);
   // Create a new Tutorial

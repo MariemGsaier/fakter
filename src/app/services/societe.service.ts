@@ -16,7 +16,7 @@ export class SocieteService {
     return this.http.get<Societe[]>(baseUrl);
   }
   get(id: any): any {
-    return this.http.get(`${baseUrl}/${1}`);
+    return this.http.get(`${baseUrl}/${id}`);
   }
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);

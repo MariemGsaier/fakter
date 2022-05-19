@@ -43,6 +43,7 @@ export class AddUserComponent implements OnInit {
   roles: role[] = [
     {value: 'admin', viewValue: 'admin'},
     {value: 'user', viewValue: 'user'},
+    {value: 'observer', viewValue: 'observer'},
   ];
   
 

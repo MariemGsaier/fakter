@@ -49,12 +49,12 @@
               type="text"
               placeholder="Entrez le nom d'utilisateur"
               formControlName="username"
-              [ngClass]="{ 'is-invalid': submitted && f1['username'].errors }"
+              [ngClass]="{ 'is-invalid':  f1['username'].errors }"
               id="username"
               [(ngModel)]="currentUser.username"
             />
             <div
-              *ngIf="submitted && f1['username'].errors"
+              *ngIf=" f1['username'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f1['username'].errors['required']">
@@ -74,14 +74,14 @@
               matInput
               type="email"
               formControlName="email"
-              [ngClass]="{ 'is-invalid': submitted && f1['email'].errors }"
+              [ngClass]="{ 'is-invalid':  f1['email'].errors }"
               placeholder="Entrez l'email"
               required
               id="email"
               [(ngModel)]="currentUser.email"
             />
             <div
-              *ngIf="submitted && f1['email'].errors"
+              *ngIf=" f1['email'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f1['email'].errors['required']">
@@ -106,7 +106,6 @@
         <button
           mat-button
           class="btn btn-success fw-normal"
-          (click)="updateUser()"
           type="submit"
           style="float: right"
         >
@@ -145,7 +144,7 @@
 
 <mat-card class="w-100" *ngIf="disabelModifPassword">
   <mat-card-content>
-    <form [formGroup]="form2" (ngSubmit)="onSubmit2()">
+    <form [formGroup]="form2" (submit)="onSubmit2()">
       <mat-grid-list cols="2" rowHeight="5:1">
         <mat-grid-tile>
           <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
@@ -158,14 +157,14 @@
               [(ngModel)]="currentPassword"
               [ngModelOptions]="{ standalone: true }"
               required
-              id="current_password"
+              id="currentPassword"
             />
             <mat-error
-              *ngIf="submitted && f2['current_password'].errors"
+              *ngIf="f2['currentPassword'].errors"
               class="invalid-feedback"
             >
-              <div *ngIf="f2['current_password'].errors['required']">
-                La saisie du mot de passe actuel est obligatoire
+              <div *ngIf="f2['currentPassword'].errors['required']">
+                Le mot de passe actuel est obligatoire
               </div>
             </mat-error>
           </mat-form-field>
@@ -178,24 +177,24 @@
               type="password"
               class="form-control"
               formControlName="password"
-              [ngClass]="{ 'is-invalid': submitted && f2['password'].errors }"
+              [ngClass]="{ 'is-invalid':  f2['password'].errors }"
               placeholder="Veuillez entrer le nouveau mot de passe"
               [(ngModel)]="user.password"
               required
               id="password"
             />
             <mat-error
-              *ngIf="submitted && f2['password'].errors"
+              *ngIf="f2['password'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f2['password'].errors['required']">
-                Le mot de passe est obligatoire
+                Le nouveau mot de passe est obligatoire
               </div>
               <div *ngIf="f2['password'].errors['minlength']">
                 Le mot de passe doit avoir au moins 6 caractères
               </div>
               <div *ngIf="f2['password'].errors['pattern']">
-                Le mot de passe doit contenir des miniscule, des majuscules des
+                Le nouveau mot de passe doit contenir des miniscule, des majuscules des
                 chiffres, et des caractères spéciaux
               </div>
             </mat-error>
@@ -210,21 +209,21 @@
               class="form-control"
               formControlName="confirmPassword"
               [ngClass]="{
-                'is-invalid': submitted && f2['confirmPassword'].errors
+                'is-invalid':  f2['confirmPassword'].errors
               }"
               placeholder="Confirmez le mot de passe"
               required
-              id="confirm_password"
+              id="confirmPassword"
             />
             <mat-error
-              *ngIf="submitted && f2['confirmPassword'].errors"
+              *ngIf="f2['confirmPassword'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f2['confirmPassword'].errors['required']">
                 La confirmation de mot de passe est obligatoire
               </div>
               <div *ngIf="f2['confirmPassword'].errors['matching']">
-                La confirmation mot de passe n'est pas compatible
+                La confirmation du nouveau mot de passe n'est pas compatible
               </div>
             </mat-error>
           </mat-form-field>
@@ -236,7 +235,7 @@
           mat-button
           class="btn btn-danger fw-normal"
           (click)="annulerPassword()"
-          type="submit"
+          type="button"
           style="float: right; margin-left: 0.3%"
         >
           Annuler
@@ -244,7 +243,7 @@
         <button
           mat-button
           class="btn btn-success fw-normal"
-          (click)="updatePassword()"
+          (click)="onSubmit2()"
           type="submit"
           style="float: right"
         >
