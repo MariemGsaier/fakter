@@ -1,5 +1,4 @@
 export class Client {
-  id?: any;
   code_identification?: string;
   nom?: string;
   adresse?: string;

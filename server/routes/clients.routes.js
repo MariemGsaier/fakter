@@ -23,9 +23,9 @@ module.exports = function (app) {
     // fetch all clients
     router.get("/", controllerclt.findAll);
     // Update a client with id
-    router.put("/:id", controllerclt.update);
+    router.put("/:code_identification", controllerclt.update);
     // Delete a client with id
-    router.delete("/:id", controllerclt.delete);
+    router.delete("/:code_identification", controllerclt.delete);
     // Create a new client
     router.delete("/", controllerclt.deleteAll);
     app.use("/api/clients", router);

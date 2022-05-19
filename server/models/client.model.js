@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
     const Client = sequelize.define("client", {
-      code_identifcation:{
+      code_identification:{
         type: Sequelize.STRING,
         primaryKey: true
       },

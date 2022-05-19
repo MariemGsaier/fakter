@@ -13,6 +13,7 @@ exports.allAccess = (req, res) => {
   const Op = db.Sequelize.Op;
   // Créer et enregistrer un compte bancaire
     exports.create = (req, res) => {
+      console.log(req.body);
       if (!req.body.num_compte) {
         res.status(400).send({
           message: "Contenu vide !"
@@ -27,6 +28,7 @@ exports.allAccess = (req, res) => {
         iban: req.body.iban ,
         nom_banque: req.body.nom_banque
       };
+  
       comptebancaire
       .create(compteb)
         .then(data => {
