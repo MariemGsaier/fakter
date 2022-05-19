@@ -29,8 +29,22 @@ isAdmin = (req, res, next) => {
   });
 };
 
+isObserver = (req, res, next) => {
+  User.findByPk(req.userId).then((user) => {
+    if (user.role === "observer") {
+      next();
+      return;
+    }
+    res.status(403).send({
+      message: "Require Observer Role!",
+    });
+    return;
+  });
+};
+
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
+  isObserver: this.isObserver,
 };
 module.exports = authJwt;

@@ -26,6 +26,8 @@ require("./routes/user.routes")(app);
 require("./routes/clients.routes")(app);
 require("./routes/articles.routes")(app);
 require("./routes/comptesbancaire.routes")(app);
+require("./routes/societes.routes")(app);
+require("./routes/factures.routes")(app);
 
 
 // set port, listen for requests

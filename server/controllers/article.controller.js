@@ -22,14 +22,13 @@ exports.allAccess = (req, res) => {
       }
       // Create an article
       const art = {
-        ref_article: req.body.ref_article,
+        reference_art: req.body.reference_art,
         image: req.body.image,
         nom_article: req.body.nom_article ,
         type_article: req.body.type_article ,
         prix_vente: req.body.prix_vente ,
         taxe_vente: req.body.taxe_vente ,
         cout: req.body.cout,
-        unite_mesure: req.body.unite_mesure,
         description: req.body.description
       };
       // Save article in the database

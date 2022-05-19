@@ -1,18 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Article } from 'src/app/models/article.model';
 import { ArticleService } from 'src/app/services/article.service';
 import { MatTableDataSource } from "@angular/material/table";
+import { TokenStorageService } from 'src/app/services/token-storage.service';
+import Swal from "sweetalert2";
+import { MatPaginator } from "@angular/material/paginator";
 
-
-interface alerts {
-  border: string;
-  background: string;
-  color: string;
-  icon: string;
-  iconColor: string;
-  message: string;
-}
 
 @Component({
   selector: 'app-articles',
@@ -20,30 +14,46 @@ interface alerts {
   styleUrls: ['./articles.component.scss']
 })
 export class ArticlesComponent implements OnInit {
-  displayedColumns: string[] = ['ref_article', 'image', 'nom','type_article', 'prix', 'taxe', 'cout', 'unite','description','actions'];
+  searchTerm : any;
+  search: boolean = false;
+  displayedColumns: string[] = ['reference_art','image', 'nom','type_article', 'prix', 'taxe', 'cout', 'description','actions'];
   dataSource = new MatTableDataSource<Article>();
   currentArticle: Article = {
-    ref_article: '',
+    reference_art: '',
     image: '',
     nom_article: '',
     type_article: '',
     prix_vente: 0,
     taxe_vente: 0,
     cout: 0,
-    unite_mesure: 0,
     description: '',
   };
   message = '';
   articles?: Article[];
   currentIndex = -1;
   disabelModif: boolean = false;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showObserverBoard = true;
 
   constructor( private route: ActivatedRoute,
-    private router: Router, private articleService: ArticleService) { }
+    private router: Router, private articleService: ArticleService, private tokenStorageService: TokenStorageService,) { }
+
+    @ViewChild("Paginator") paginator!: MatPaginator;
 
   ngOnInit(): void {
     this.fetchArticles();
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.role;
+      this.showObserverBoard = this.roles.includes("observer");
+    }
   }
+
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  // }
 
   fetchArticles(): void {
     this.articleService.getAll()
@@ -108,14 +118,13 @@ export class ArticlesComponent implements OnInit {
         });
       }
 
-  alerts: alerts[] = [
-    {
-      border: "alert-border-success",
-      background: "alert-success",
-      color: "alert-text-success",
-      icon: "check-circle",
-      iconColor: "text-success",
-      message: "Client ajouté avec succès",
-    },
-  ]
+      annuler(): void {
+        this.disabelModif = false;
+      }
+
+      filterData($event : any){
+        $event.target.value.trim();
+        $event.target.value.toLowerCase();
+        this.dataSource.filter = $event.target.value;
+      }
 }

@@ -11,14 +11,14 @@
     >
       <div class="p-16">
         <div class="mb-16">
-          <a href="/dashboard" class="d-flex align-items-center">
-              <img src="assets/images/logo-black.png" alt="" 
-              fxFlex.md="20%"
-              fxFlex.lg="80%"
-              fxFlex.xl="30%"
-              fxFlex.sm="20%"
-              fxFlex.xs="30%"
-              style="margin-top: -34%; margin-left: 8.5%; margin-bottom: -35%;"/>
+          <a href="/" class="d-flex align-items-center">
+            <img src="assets/images/logo-black.png" alt="" 
+            fxFlex.md="50%"
+            fxFlex.lg="80%"
+            fxFlex.xl="30%"
+            fxFlex.sm="80%"
+            fxFlex.xs="30%"
+            style="margin-top: -34%; margin-left: 8.5%; margin-bottom: -35%;"/>
           </a>
         </div>
         <div class="pt-8" *ngIf="showAdminBoard">
@@ -139,7 +139,7 @@
     align-items: center;
     text-align: center;
   "
-  *ngIf="!showAdminBoard || !isLoggedIn"
+  *ngIf="!isLoggedIn"
 >
   <div class="card">
     <div class="card-body">

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { GestUserService } from 'src/app/services/gest-user.service';
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { Validation } from 'src/app/validation/validation';
 
 interface alerts {
   border: string;
@@ -23,6 +25,13 @@ interface role {
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
+  form: FormGroup = new FormGroup({
+    username: new FormControl(''),
+    email: new FormControl(''),
+    role: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl('')
+  });
   user: User = {
     username: '',
     email: '',
@@ -34,12 +43,38 @@ export class AddUserComponent implements OnInit {
   roles: role[] = [
     {value: 'admin', viewValue: 'admin'},
     {value: 'user', viewValue: 'user'},
+    {value: 'observer', viewValue: 'observer'},
   ];
   
 
-  constructor(private gestUserService: GestUserService) { }
+  constructor(private formBuilder: FormBuilder, private gestUserService: GestUserService) { }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group(
+      {
+        username: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[a-zA-Z0-9]+$/)
+          ]
+        ],
+        email: ['', [Validators.required, Validators.email]],
+        role: ['', Validators.required],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(6),
+            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)
+          ]
+        ],
+        confirmPassword: ['', Validators.required]
+      },
+      {
+        validators: [Validation.match('password', 'confirmPassword')]
+      }
+    );
   }
   alerts: alerts[] = [
     {
@@ -51,6 +86,25 @@ export class AddUserComponent implements OnInit {
       message: "Utilisateur ajouté avec succès",
     },
   ]
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+
+    if (this.form.invalid) {
+      return;
+    }
+
+    console.log(JSON.stringify(this.form.value, null, 2));
+  }
+
+  onReset(): void {
+    this.submitted = false;
+    this.form.reset();
+  }
 
   saveUser(): void {
     const data = {
