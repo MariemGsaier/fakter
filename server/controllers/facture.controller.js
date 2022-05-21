@@ -1,17 +1,42 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
+const db = require("../models");
+const facture = db.facture;
+const Op = db.Sequelize.Op;
+
+exports.create = (req, res) => {
+  if (!req.body.reference) {
+    res.status(400).send({
+      message: "contenu vide !",
+    });
+    return;
+  }
+  const fact = {
+    reference: req.body.reference,
+    vendeur: req.body.vendeur,
+    date_facturation: req.body.date_facturation,
+    date_echeance: req.body.date_echeance,
+    etat_facture: req.body.courriel,
+    etat_echeance: req.body.etat_echeance,
+    total_ht: req.body.etat_echeance,
+    total_chiffres:req.body.etat_echeance,
+    total_lettres:req.body.etat_echeance,
+    total_devise:req.body.etat_echeance,
+  };
+
+  facture
+    .create(fact)
+    .then((data) => {
+      res.send(data);
+      console.log("ajout avec succés");
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "une erreur est survenue lors de la création du client.",
+      });
+    });
 };
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-  
-  const db = require("../models");
-  const facture = db.facture;
-  const Op = db.Sequelize.Op;
-  
+
 // fetch all factures from the database.
 exports.findAll = (req, res) => {
   const reference = req.query.reference;

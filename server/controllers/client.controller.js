@@ -1,13 +1,3 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
 const db = require("../models");
 const client = db.client;
 const Op = db.Sequelize.Op;
@@ -62,6 +52,7 @@ exports.findAll = (req, res) => {
 // Modifier un client
 exports.update = (req, res) => {
   const code_identification  = req.params.code_identification ;
+ 
   client
     .update(req.body, {
       where: { code_identification : code_identification  },
@@ -69,7 +60,7 @@ exports.update = (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Le client est mis à jour avec succés.",
+          message: "Le client est mis à jour avec succés." 
         });
       } else {
         res.send({

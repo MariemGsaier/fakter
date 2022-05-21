@@ -10,22 +10,16 @@ module.exports = function (app) {
       );
       next();
     });
-    app.get("/api/test/all", controllercb.allAccess);
-    app.get("/api/test/user", [authJwt.verifyToken], controllercb.userBoard);
-    app.get(
-      "/api/test/admin",
-      [authJwt.verifyToken, authJwt.isAdmin],
-      controllercb.adminBoard
-    );
+  
   
     // Create 
      router.post("/create", controllercb.create);
     // fetch all 
     router.get("/", controllercb.findAll);
     // Update  with id
-    router.put("/:id", controllercb.update);
+    router.put("/:num_compte", controllercb.update);
     // Delete  with id
-    router.delete("/:id", controllercb.delete);
+    router.delete("/:num_compte", controllercb.delete);
     // Create 
     router.delete("/", controllercb.deleteAll);
     app.use("/api/bankaccounts", router);

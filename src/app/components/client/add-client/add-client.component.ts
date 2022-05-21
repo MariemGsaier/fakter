@@ -111,6 +111,9 @@ export class AddClientComponent implements OnInit {
               if (result.isConfirmed) {
              this.newClient();
               }
+              else {
+                this.router.navigate(["/clients"]);
+              }
             })
           },
           error: (e) => console.error(e)

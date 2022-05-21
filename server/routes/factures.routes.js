@@ -11,14 +11,9 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/test/all", controllerfct.allAccess);
-  app.get("/api/test/user", [authJwt.verifyToken], controllerfct.userBoard);
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controllerfct.adminBoard
-  );
 
+//créer une facture 
+router.post("/create", controllerfct.create);
   // fetch all societes
   router.get("/", controllerfct.findAll);
   // Update a societe with id

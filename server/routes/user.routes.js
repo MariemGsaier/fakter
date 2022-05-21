@@ -25,8 +25,6 @@ module.exports = function (app) {
   router.get("/", controller.findAll);
   // Retrieve a single user with id
   router.get("/:id", controller.findOne);
-  // Retrieve users by keyword
-  router.get("/:term", controller.search);
   // Update a Tutorial with id
   router.put("/:id", controller.update);
   // Update user password with id

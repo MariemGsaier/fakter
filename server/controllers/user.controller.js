@@ -153,20 +153,7 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-exports.search = (req, res) => {
-  const { term }  = req.params;
-  // term = term.toLowerCase();
-  user
-    .findAll({ where: { username: { [Op.like]: `%${term}%` } } })
-    .then((users) => {
-      res.send(users);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while fetching users.",
-      });
-    });
-};
+
 
 
 
