@@ -197,6 +197,15 @@
         &nbsp;
         <button
           mat-button
+          class="btn btn-danger fw-normal"
+          (click)="annuler()"
+          type="submit"
+          style="float: right; margin-left: 0.3%;"
+        >
+          Annuler
+        </button>
+        <button
+          mat-button
           class="btn btn-success fw-normal"
           (click)="updateBankAccount()"
           type="submit"

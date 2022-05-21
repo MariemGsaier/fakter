@@ -24,7 +24,7 @@ export class SocietyAccountsComponent implements OnInit {
 
   currentBankAccount: Bankaccount = {
     num_compte: 0,
-    rib: 0,
+    rib: "",
     bic: "",
     iban: "",
     nom_banque: "",
@@ -100,7 +100,7 @@ export class SocietyAccountsComponent implements OnInit {
   updateBankAccount(): void {
     this.message = "";
     this.BankaccountService.update(
-      this.currentBankAccount.id,
+      this.currentBankAccount.num_compte,
       this.currentBankAccount
     ).subscribe({
       next: (res) => {
@@ -126,7 +126,7 @@ export class SocietyAccountsComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.BankaccountService.delete(bankaccount.id).subscribe({
+        this.BankaccountService.delete(bankaccount.num_compte).subscribe({
           next: (res) => {
             console.log(res);
             this.message = res.message
@@ -143,5 +143,9 @@ export class SocietyAccountsComponent implements OnInit {
     $event.target.value.trim();
     $event.target.value.toLowerCase();
     this.dataSource.filter = $event.target.value;
+  }
+
+  annuler(): void {
+    this.disabelModif = false;
   }
 }

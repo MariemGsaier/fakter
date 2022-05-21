@@ -26,7 +26,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.FLOAT,
     },
     total_lettres: {
-      type: Sequelize.FLOAT,
+      type: Sequelize.STRING,
     },
     total_devise: {
       type: Sequelize.FLOAT,

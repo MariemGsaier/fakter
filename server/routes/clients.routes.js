@@ -10,13 +10,6 @@ module.exports = function (app) {
       );
       next();
     });
-    app.get("/api/test/all", controllerclt.allAccess);
-    app.get("/api/test/user", [authJwt.verifyToken], controllerclt.userBoard);
-    app.get(
-      "/api/test/admin",
-      [authJwt.verifyToken, authJwt.isAdmin],
-      controllerclt.adminBoard
-    );
   
     // Create a new client
      router.post("/create", controllerclt.create);
