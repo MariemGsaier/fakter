@@ -1,26 +1,16 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
 const db = require("../models");
 const client = db.client;
 const Op = db.Sequelize.Op;
 // Créer et enregistrer un client
   exports.create = (req, res) => {
-    if (!req.body.code_identifcation) {
+    if (!req.body.code_identification) {
       res.status(400).send({
         message: "contenu vide !"
       });
       return;
     }
     const clt = {
-      code_identifcation: req.body.code_identifcation,
+      code_identification: req.body.code_identification,
       nom: req.body.nom,
       adresse: req.body.adresse,
       numtel: req.body.numtel,
@@ -43,9 +33,9 @@ const Op = db.Sequelize.Op;
 };
 // Lister les clients
 exports.findAll = (req, res) => {
-  const  code_identifcation = req.query. code_identifcation;
-  var condition =  code_identifcation
-    ? {  code_identifcation: { [Op.iLike]: `%${ code_identifcation}%` } }
+  const  code_identification = req.query. code_identification;
+  var condition =  code_identification
+    ? {  code_identification: { [Op.iLike]: `%${ code_identification}%` } }
     : null;
   client
     .findAll({ where: condition })
@@ -61,34 +51,35 @@ exports.findAll = (req, res) => {
 
 // Modifier un client
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const code_identification  = req.params.code_identification ;
+ 
   client
     .update(req.body, {
-      where: { id: id },
+      where: { code_identification : code_identification  },
     })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Le client est mis à jour avec succés.",
+          message: "Le client est mis à jour avec succés." 
         });
       } else {
         res.send({
-          message: `erreur de mise à jour du client avec id=${id}. peut etre le client est inexistant  ou le corps de la requête est vide!`,
+          message: `erreur de mise à jour du client avec codeid=${code_identification }. peut etre le client est inexistant  ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating client with id=" + id,
+        message: "Error updating client with id=" + code_identification ,
       });
     });
 };
 // Delete a client with the specified id in the request
 exports.delete = (req, res) => {
-  const id = req.params.id;
+  const code_identification = req.params.code_identification ;
   client
     .destroy({
-      where: { id: id },
+      where: { code_identification : code_identification  },
     })
     .then((num) => {
       if (num == 1) {
@@ -97,13 +88,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression du client  avec id=${id}. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression du client  avec codeid=${code_identification }. Peut être qu'il est inexistant !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Echec de suppression du client avec id=" + id,
+        message: "Echec de suppression du client avec codeid=" + code_identification ,
       });
     });
 };

@@ -53,17 +53,17 @@ export class AddAccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.bankAccForm = this.formBuilder.group({
-      rib: ["", [Validators.required, Validators.pattern("/^[A-Za-z0-9]+$/")]],
+      rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
       numcompte: [
         "",
         [
           Validators.required,
-          Validators.pattern(" /^\d+$/"),
-          Validators.minLength(14),
-          Validators.maxLength(34),
+          Validators.pattern("^[a-zA-Z0-9]+$"),
+          Validators.minLength(5),
+          Validators.maxLength(17),
         ],
       ],
-      bic: ["", [Validators.required, Validators.pattern("/^[A-Za-z0-9]+$/")], Validators.minLength(8),Validators.maxLength(11),],
+      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")], Validators.minLength(8),Validators.maxLength(11),],
       iban: [
         Validators.required,
         ValidatorService.validateIban

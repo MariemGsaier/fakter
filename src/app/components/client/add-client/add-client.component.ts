@@ -67,7 +67,6 @@ export class AddClientComponent implements OnInit {
 
   
   get f(): { [key: string]: AbstractControl } {
-    console.log(this.clientForm.controls);
     return this.clientForm.controls;
     
   }
@@ -85,6 +84,7 @@ export class AddClientComponent implements OnInit {
 
   saveClient(): void {
     const data = {
+      code_identification: this.client.code_identification,
       nom: this.client.nom,
       adresse: this.client.adresse,
       numtel: this.client.numtel,
@@ -110,6 +110,9 @@ export class AddClientComponent implements OnInit {
             .then((result) => {
               if (result.isConfirmed) {
              this.newClient();
+              }
+              else {
+                this.router.navigate(["/clients"]);
               }
             })
           },

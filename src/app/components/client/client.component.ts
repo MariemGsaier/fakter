@@ -33,7 +33,7 @@ export class ClientComponent implements OnInit {
     adresse: "",
     numtel: undefined,
     courriel: "",
-    siteweb: "",
+    siteweb: ""
   };
   disabelModif: boolean = false;
   message = "";
@@ -109,7 +109,7 @@ export class ClientComponent implements OnInit {
   updateClient(): void {
     this.message = "";
     this.clientService
-      .update(this.currentClient.id, this.currentClient)
+      .update(this.currentClient.code_identification, this.currentClient)
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -133,7 +133,7 @@ export class ClientComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.clientService.delete(client.id).subscribe({
+        this.clientService.delete(client.code_identification).subscribe({
           next: (res) => {
             console.log(res);
             this.refreshList();
