@@ -89,8 +89,8 @@ export class FullComponent implements OnInit {
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.roles = user.role;
-      this.showAdminBoard = this.roles.includes("admin");
-      this.showObserverBoard = this.roles.includes("observer");
+      this.showAdminBoard = this.roles.includes("Super Administrateur");
+      this.showObserverBoard = this.roles.includes("Observateur");
       this.username = user.username;
       this.societeService.get(1).subscribe(
         (data: any) => {

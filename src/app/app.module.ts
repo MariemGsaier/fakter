@@ -6,13 +6,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select'
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { AngularIbanModule } from 'angular-iban';
+import { FileUploadModule } from "ng2-file-upload";
 
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { MatCard, MatCardContent, MatCardModule } from '@angular/material/card';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,7 +28,6 @@ import { SimpleComponent } from './layouts/simple/simple.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
 import { SearchUser } from './pipes/search-user.pipe';
-import { MatTooltip } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -36,8 +36,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     FullComponent,
     SimpleComponent,
     BoardAdminComponent,
-    SearchUser,
-    
+    SearchUser
     
     
   ],
@@ -57,7 +56,8 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatIconModule,
     MatSelectModule,
     MatDatepickerModule,
-    AngularIbanModule
+    AngularIbanModule,
+    FileUploadModule,
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]
