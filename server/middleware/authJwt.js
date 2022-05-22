@@ -18,12 +18,12 @@ const verifyToken = (req, res, next) => {
 };
 isAdmin = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
-    if (user.role === "admin") {
+    if (user.role === "Super Administrateur") {
       next();
       return;
     }
     res.status(403).send({
-      message: "Require Admin Role!",
+      message: "Il faut un rôle de Super Administrateur!",
     });
     return;
   });
@@ -31,12 +31,12 @@ isAdmin = (req, res, next) => {
 
 isObserver = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
-    if (user.role === "observer") {
+    if (user.role === "Observateur") {
       next();
       return;
     }
     res.status(403).send({
-      message: "Require Observer Role!",
+      message: "Il faut un rôle d'Observateur !",
     });
     return;
   });

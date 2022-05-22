@@ -24,19 +24,21 @@ db.devise = require("../models/devise.model")(sequelize, Sequelize);
 db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
 
 db.comptebancaire.belongsTo(db.societe, {
-  foreignKey: "num_compte",
+  foreignKey: "id_societe",
   as: "societe"
 });
 db.societe.hasMany(db.comptebancaire, {
+  foreignKey: "id_societe",
   as: "comptes"
 });
 
 db.facture.belongsTo(db.user, {
-  foreignKey: "reference",
-  as: "facture"
+  foreignKey: "id_user",
+  as: "user"
 });
 db.user.hasMany(db.facture, {
-  as: "user"
+  foreignKey: "id_user",
+  as: "factures"
 });
 
 db.facture.belongsToMany(db.article, {
@@ -47,7 +49,7 @@ db.facture.belongsToMany(db.article, {
 db.article.belongsToMany(db.facture, {
   through: "ligne_facture",
   as: "facture",
-  foreignKey: "reference_art",
+  foreignKey: "id",
 });
 
 module.exports = db;

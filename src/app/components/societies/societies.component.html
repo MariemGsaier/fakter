@@ -15,42 +15,57 @@
             Détails généraux
           </h3>
         </header>
-        <p>
-          <mat-icon style="font-size: 20px; float: left;">business</mat-icon><strong>Nom de société:</strong>
-          {{ currentSociete.nom_societe }}
-        </p>
-        <p>
-          <mat-icon style="font-size: 20px; float: left;">image</mat-icon><strong>Logo:</strong>
-          {{ currentSociete.logo }}
-        </p>
-        <p>
-          <mat-icon style="font-size: 20px; float: left;">phone</mat-icon><strong>Numéro de téléphone:</strong>
-          {{ currentSociete.numtel }}
-        </p>
-        <p>
-            <mat-icon style="font-size: 20px; float: left;">place</mat-icon><strong>Adresse:</strong>
-            {{ currentSociete.adresse }}
-          </p>
-          <p>
-            <mat-icon style="font-size: 20px; float: left;">email</mat-icon><strong>Courriel:</strong>
-            {{ currentSociete.courriel }}
-          </p>
-          <p>
-            <mat-icon style="font-size: 20px; float: left;">website</mat-icon><strong>Siteweb:</strong>
-            {{ currentSociete.siteweb }}
-          </p>
-          <p>
-            <mat-icon style="font-size: 20px; float: left;">details</mat-icon><strong>Type de société:</strong>
-            {{ currentSociete.type_societe }}
-          </p>
-          <p>
-            <mat-icon style="font-size: 20px; float: left;">account_balance</mat-icon><strong>Numéro RCS:</strong>
-            {{ currentSociete.num_rcs }}
-          </p>
-          <p>
-            <mat-icon style="font-size: 20px; float: left;">gradient</mat-icon><strong>Timbre fiscale:</strong>
-            {{ currentSociete.timbre_fiscale }}
-          </p>
+        <mat-list>
+          <h3 mat-subheader>Nom société</h3>
+          <mat-list-item >
+            <mat-icon mat-list-icon>business</mat-icon>
+             <h5 mat-line style="font-weight: 34%;">{{ currentSociete.nom_societe }}</h5>
+             <p mat-line class="demo-2"> Tunsie </p>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Numéro de téléphone</h3>
+          <mat-list-item >
+            <mat-icon mat-list-icon>phone</mat-icon>
+             <h4 mat-line>{{ currentSociete.numtel }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Adresse</h3>
+          <mat-list-item >
+             <mat-icon mat-list-icon>note</mat-icon>
+             <h4 mat-line>{{ currentSociete.adresse }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Email</h3>
+          <mat-list-item >
+             <mat-icon mat-list-icon>email</mat-icon>
+             <h4 mat-line>{{ currentSociete.courriel }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Siteweb</h3>
+          <mat-list-item >
+             <mat-icon mat-list-icon>website</mat-icon>
+             <h4 mat-line>{{ currentSociete.siteweb }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Type société</h3>
+          <mat-list-item >
+             <mat-icon mat-list-icon>details</mat-icon>
+             <h4 mat-line>{{ currentSociete.type_societe }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Numéro RCS</h3>
+          <mat-list-item >
+             <mat-icon mat-list-icon>account_balance</mat-icon>
+             <h4 mat-line>{{ currentSociete.num_rcs }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Timbre fiscal</h3>
+          <mat-list-item >
+             <mat-icon mat-list-icon>gradient</mat-icon>
+             <h4 mat-line>{{ currentSociete.timbre_fiscale }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+       </mat-list>
       </div>
       <ng-template #loggedOut> Veuillez vous connecter. </ng-template>
     </mat-card-content>

@@ -57,13 +57,13 @@
                         #username="ngModel"
                         placeholder="Entrez votre nom d'utilisateur"
                       />
-                      <div
+                      <mat-error
                         class="alert alert-danger"
                         role="alert"
                         *ngIf="username.errors && f.submitted"
                       >
                         Username is required!
-                      </div>
+                      </mat-error>
                     </mat-form-field>
 
                     <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -79,7 +79,7 @@
                         #password="ngModel"
                         placeholder="Entrez votre mot de passe"
                       />
-                      <div
+                      <mat-error
                         class="alert alert-danger"
                         role="alert"
                         *ngIf="password.errors && f.submitted"
@@ -90,7 +90,7 @@
                         <div *ngIf="password?.errors?.['minlength']">
                           Password must be at least 6 characters
                         </div>
-                      </div>
+                      </mat-error>
                     </mat-form-field>
 
                     <button

@@ -4,15 +4,10 @@ import { Article } from "src/app/models/article.model";
 import { ArticleService } from "src/app/services/article.service";
 import { Validation } from 'src/app/validation/validation';
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
+import {  FileUploader } from 'ng2-file-upload';
 
-interface alerts {
-  border: string;
-  background: string;
-  color: string;
-  icon: string;
-  iconColor: string;
-  message: string;
-}
+const URL = 'http://localhost:4000/api/upload';
 
 @Component({
   selector: "app-add-article",
@@ -20,8 +15,9 @@ interface alerts {
   styleUrls: ["./add-article.component.scss"],
 })
 export class AddArticleComponent implements OnInit {
+  title = 'ng8fileupload';
+  public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
   form: FormGroup = new FormGroup({
-    reference_art: new FormControl(''),
     image: new FormControl(''),
     nom_article: new FormControl(''),
     type_article: new FormControl(''),
@@ -31,13 +27,12 @@ export class AddArticleComponent implements OnInit {
     description: new FormControl('')
   });
   article: Article = {
-    reference_art: "",
     image: "",
     nom_article: "",
     type_article: "",
-    prix_vente: 0,
-    taxe_vente: 0,
-    cout: 0,
+    prix_vente: undefined,
+    taxe_vente: undefined,
+    cout: undefined,
     description: "",
   };
   submitted = false;
@@ -50,6 +45,12 @@ export class AddArticleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+         console.log('ImageUpload:uploaded:', item, status, response);
+         alert('File uploaded successfully');
+    };
+
     this.form = this.formBuilder.group(
       {
         reference_art: [
@@ -81,7 +82,6 @@ export class AddArticleComponent implements OnInit {
 
   saveArticle(): void {
     const data = {
-      reference_art: this.article.reference_art,
       image: this.article.image,
       nom_article: this.article.nom_article,
       type_article: this.article.type_article,
@@ -94,7 +94,23 @@ export class AddArticleComponent implements OnInit {
       (res) => {
         console.log(res);
         this.submitted = true;
-        this.router.navigate(['/articles']);
+        Swal.fire({
+          title: "Ajout avec succés !",
+          text: "Vous pouvez ajouter un autre article ou quitter.",
+          icon: "success",
+          showCancelButton: true,
+          confirmButtonColor: "#00c292",
+          cancelButtonColor: "#e46a76",
+          confirmButtonText: "Ajouter un autre atricle",
+          cancelButtonText: "Quitter",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+         this.newArticle();
+          } else if (!(result.isConfirmed)) {
+            this.router.navigate(['/articles'])
+          }
+        })
       },
       (error) => console.error(error)
     );
@@ -102,27 +118,7 @@ export class AddArticleComponent implements OnInit {
 
   newArticle(): void {
     this.submitted = false;
-    this.article = {
-      reference_art: '',
-      image: '',
-      nom_article: '',
-      type_article: '',
-      prix_vente: 0,
-      taxe_vente: 0,
-      cout: 0,
-      description:'',
-     
-    };
+    window.location.reload();
   }
 
-  alerts: alerts[] = [
-    {
-      border: "alert-border-success",
-      background: "alert-success",
-      color: "alert-text-success",
-      icon: "check-circle",
-      iconColor: "text-success",
-      message: "article ajouté avec succès",
-    },
-  ];
 }

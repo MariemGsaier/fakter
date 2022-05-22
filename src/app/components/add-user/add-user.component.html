@@ -1,7 +1,7 @@
 <div class="card">
   <div class="card-body">
     <h4 class="mb-32">Ajoutez un utilisateur</h4>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
       <mat-grid-list cols="2" rowHeight="5:1">
         <mat-grid-tile>
           <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
@@ -16,14 +16,14 @@
               [(ngModel)]="user.username"
             />
             <mat-error
-              *ngIf="submitted && f['username'].errors"
+              *ngIf="f['username'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f['username'].errors['required']">
                 Le nom d'utilisateur est obligatoire
               </div>
               <div *ngIf="f['username'].errors['pattern']">
-                Le nom d'utilisateur ne peut pas contenir des caractères spéciaux
+                Le nom d'utilisateur ne peut contenir que des lettres et des chiffres
               </div>
             </mat-error>
           </mat-form-field>
@@ -41,7 +41,7 @@
               [(ngModel)]="user.email"
             />
             <mat-error
-              *ngIf="submitted && f['email'].errors"
+              *ngIf="f['email'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f['email'].errors['required']">L'email  est obligatoire</div>
@@ -55,14 +55,15 @@
             <mat-select
               name="role"
               required
+              formControlName="role"
+              [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
               [(ngModel)]="user.role"
-              [ngModelOptions]="{ standalone: true }"
             >
               <mat-option *ngFor="let role of roles" [value]="role.value">
                 {{ role.viewValue }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="submitted && f['role'].errors" class="invalid-feedback">
+            <mat-error *ngIf="f['role'].errors" class="invalid-feedback">
               <div *ngIf="f['role'].errors['required']">Le role est obligatoire</div>
             </mat-error>
           </mat-form-field>
@@ -80,7 +81,7 @@
               [(ngModel)]="user.password"
             />
             <mat-error
-              *ngIf="submitted && f['password'].errors"
+              *ngIf="f['password'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f['password'].errors['required']">
@@ -109,7 +110,7 @@
               required
             />
             <mat-error
-              *ngIf="submitted && f['confirmPassword'].errors"
+              *ngIf="f['confirmPassword'].errors"
               class="invalid-feedback"
             >
               <div *ngIf="f['confirmPassword'].errors['required']">
