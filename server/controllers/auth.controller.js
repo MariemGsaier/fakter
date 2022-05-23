@@ -37,7 +37,7 @@ exports.signin = (req, res) => {
         expiresIn: config.jwtExpiration,
       });
       if (!user) {
-        return res.status(404).send({ message: "User Not found." });
+        return res.status(404).send({ message: "User Not found or username is invalid!" });
       } else if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,
