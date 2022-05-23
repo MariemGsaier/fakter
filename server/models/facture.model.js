@@ -2,7 +2,6 @@ module.exports = (sequelize, Sequelize) => {
   const Facture = sequelize.define("facture", {
     reference: {
       type: Sequelize.STRING,
-      primaryKey: true
     },
     vendeur: {
       type: Sequelize.STRING,
@@ -14,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
     },
     etat_facture: {
-      type: Sequelize.BOOLEAN,
+      type: Sequelize.STRING,
     },
     etat_echeance: {
       type: Sequelize.BOOLEAN,

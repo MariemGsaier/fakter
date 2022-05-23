@@ -4,10 +4,10 @@ export class Facture {
   vendeur?: string;
   date_facturation?: Date;
   date_echeance?: Date;
-  etat_facture?: boolean;
+  etat_facture?: string;
   etat_echeance?: boolean;
   total_ht?: number;
   total_chiffres?: number;
-  total_lettres?: number;
+  total_lettres?: string;
   total_devise?: number;
 }

@@ -5,6 +5,14 @@ import { BankaccountService } from "src/app/services/bankaccount.service";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from "@angular/forms";
+import { ValidatorService } from "angular-iban";
 
 @Component({
   selector: "app-society-accounts",
@@ -20,6 +28,8 @@ export class SocietyAccountsComponent implements OnInit {
     "iban",
     "actions",
   ];
+
+
   dataSource = new MatTableDataSource<Bankaccount>();
 
   currentBankAccount: Bankaccount = {
@@ -30,6 +40,16 @@ export class SocietyAccountsComponent implements OnInit {
     nom_banque: "",
   };
 
+  bankAccForm: FormGroup = new FormGroup({
+    numCompte: new FormControl(""),
+    rib: new FormControl(""),
+    bic: new FormControl(""),
+    iban: new FormControl(""),
+    nomBanque: new FormControl(""),
+  });
+
+  submitted = false;
+
   disabelModif: boolean = false;
   message = "";
   bankaccounts?: Bankaccount[];
@@ -39,7 +59,8 @@ export class SocietyAccountsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private BankaccountService: BankaccountService
+    private BankaccountService: BankaccountService,
+    private formBuilder: FormBuilder
   ) {}
 
   @ViewChild("Paginator") paginator!: MatPaginator;
@@ -47,6 +68,40 @@ export class SocietyAccountsComponent implements OnInit {
   ngOnInit(): void {
     this.fetchBankAccounts();
     this.dataSource.paginator = this.paginator;
+    this.bankAccForm = this.formBuilder.group({
+      rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
+      numcompte: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("^[a-zA-Z0-9]+$"),
+          Validators.minLength(5),
+          Validators.maxLength(17),
+        ],
+      ],
+      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")], Validators.minLength(8),Validators.maxLength(11),],
+      iban: [
+        Validators.required,
+        ValidatorService.validateIban
+      ],
+      nomBanque: ["", [Validators.required,Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
+    });
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    console.log(this.bankAccForm.controls);
+    return this.bankAccForm.controls;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.bankAccForm.invalid) {
+      return;
+    }
+  }
+  onReset(): void {
+    this.submitted = false;
+    this.bankAccForm.reset();
   }
 
   fetchBankAccounts(): void {
@@ -98,19 +153,24 @@ export class SocietyAccountsComponent implements OnInit {
   }
 
   updateBankAccount(): void {
-    this.message = "";
-    this.BankaccountService.update(
-      this.currentBankAccount.num_compte,
-      this.currentBankAccount
-    ).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.disabelModif = false;
-        this.message = res.message
-          ? res.message
-          : "This bank account was updated successfully!";
-      },
-      error: (e) => console.error(e),
+    Swal.fire({
+      title: "Le compte bancaire est mis à jour avec succés ! ",
+      icon: "success",
+      confirmButtonColor: "#00c292",
+      confirmButtonText: "Ok",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.BankaccountService.update(
+          this.currentBankAccount.num_compte,
+          this.currentBankAccount
+        ).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.disabelModif = false;
+          },
+          error: (e) => console.error(e),
+        });
+      }
     });
   }
 

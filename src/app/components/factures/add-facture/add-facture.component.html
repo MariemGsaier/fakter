@@ -1,69 +1,321 @@
+<mat-stepper [linear]=true #stepper>
 <div class="card">
-    <div class="card-body">
-        <h4 class="mb-32">Créer une facture</h4>
-        <form>
-            <mat-grid-list cols="2" rowHeight="5:1">
-                <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline">
-                        <mat-label>Numéro de facture </mat-label>
-                        <input matInput type="text" placeholder="Veuillez entrer le numéro de facture" required>
-                    </mat-form-field>
+  <div class="card-body">
+    <mat-step  label="Brouillon" state="brouillon">
+    <div style="margin-top: 15px;">
+      <p>Facture client</p>
+      <h3>Brouillon</h3>
+    </div>
+    <form >
+      <mat-grid-list cols="2" rowHeight="5:1">
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Client </mat-label>
+            <mat-select name="devise" required>
+              <mat-option *ngFor="let client of clients" [value]="client.value">
+                {{ client.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Vendeur</mat-label>
+            <mat-select name="devise" required>
+              <mat-option
+                *ngFor="let vendeur of vendeurs"
+                [value]="vendeur.value"
+              >
+                {{ vendeur.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Date de facturation</mat-label>
+            <input matInput [matDatepicker]="picker1" required />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Date d'échéance</mat-label>
+            <input matInput [matDatepicker]="picker2" required />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Devise</mat-label>
+            <mat-select name="devise" required>
+              <mat-option *ngFor="let devise of devises" [value]="devise.value">
+                {{ devise.viewValue }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Numéro du bon de commande</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Veuillez entrer le numéro du bon de commande"
+              required
+            />
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Compte bancaire du bénificiaire</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Veuillez entrer le numéro du bon de commande"
+              required
+            />
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+    <mat-card class="w-100">
+    <mat-card-content>
+      <h4 class="mb-56">Ligne de facture</h4>
 
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline">
-                        <mat-label>Vendeur</mat-label>
-                        <mat-select name="vendeur" required>
-                            <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur.value">
-                                {{vendeur.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline">
-                        <mat-label>Devise</mat-label>
-                        <mat-select name="devise" required>
-                            <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur.value">
-                                {{vendeur.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline" >
-                        <mat-label>Date de facturation</mat-label>
-                        <input matInput [matDatepicker]="picker" required>
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+          <!-- Id Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell class="fw-medium" *matCellDef="let element">
+              {{ element.id }}
+            </td>
+          </ng-container>
 
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline">
-                        <mat-label>Durée de paiement</mat-label>
-                        <mat-select name="dp" required>
-                            <mat-option *ngFor="let vendeur of vendeurs" [value]="vendeur.value">
-                                {{vendeur.viewValue}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </mat-grid-tile>
-                <mat-grid-tile>
-                    <mat-form-field class="w-100 fs-16" appearance="outline">
-                        <mat-label>Date d'échéance</mat-label>
-                        <input matInput [matDatepicker]="picker" required>
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                </mat-grid-tile>
-               
-            </mat-grid-list>
-           
-            <button mat-button class="btn btn-success fw-normal" type="submit">Confirmer</button>
-        </form>
+          <!-- Assigned Column -->
+          <ng-container matColumnDef="assigned">
+            <th mat-header-cell *matHeaderCellDef>Assigned</th>
+            <td mat-cell *matCellDef="let element">
+              <p class="mb-0 fw-medium">{{ element.name }}</p>
+              <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
+            </td>
+          </ng-container>
+
+          <!-- Project Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Project</th>
+            <td mat-cell *matCellDef="let element">
+              <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
+            </td>
+          </ng-container>
+
+          <!-- Priority Column -->
+          <ng-container matColumnDef="priority">
+            <th mat-header-cell *matHeaderCellDef>Priority</th>
+            <td mat-cell *matCellDef="let element">
+              <span class="badge {{ element.badge }} rounded-pill">{{
+                element.priority
+              }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Budget Column -->
+          <ng-container matColumnDef="budget">
+            <th mat-header-cell *matHeaderCellDef>Budget</th>
+            <td mat-cell *matCellDef="let element">
+              <p class="mb-0 fw-medium">{{ element.budget }}</p>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <p style="float: right; margin-top: 15px">
+          <strong>Total :</strong> 123dt
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div style="margin-top: -10px; margin-right: 43px">
+    <button
+      mat-button
+      class="btn btn-danger fw-normal"
+      type="submit"
+      style="float: right; margin-left: 0.3%"
+    >
+      Annuler
+    </button>
+    <button
+      mat-button
+      class="btn btn-success fw-normal"
+      type="submit"
+      style="float: right"
+    >
+      Sauvegarder
+    </button>
+    <button mat-button class="btn btn-info fw-normal "
+    style="float: left ;margin-left:25px;"  matStepperNext>Confirmer Etape</button>
+   
+</div>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Ouvert" state="ouvert">
+      <div style="margin-top: 15px;">
+        <p>Facture client</p>
+        <h3>Fac/2022/0001</h3>
+      </div>
+      <mat-grid-list cols="2" rowHeight="7:1">
+        <mat-grid-tile>
+          <p style="margin-left: -510px"><strong>Client</strong></p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <p style="margin-left: -510px"><strong>Vendeur</strong></p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <p style="margin-left: -450px"><strong>Date d'échéance</strong></p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <p style="margin-left: -440px"><strong>Date de facturation</strong></p>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <p style="margin-left: -343px"><strong>Numéro du bon de commande</strong></p>
+        </mat-grid-tile>
+      </mat-grid-list>
+      <mat-card class="w-100">
+        <mat-card-content>
+          <h4 class="mb-56">Ligne de facture</h4>
+    
+          <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+              <!-- Id Column -->
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef>Id</th>
+                <td mat-cell class="fw-medium" *matCellDef="let element">
+                  {{ element.id }}
+                </td>
+              </ng-container>
+    
+              <!-- Assigned Column -->
+              <ng-container matColumnDef="assigned">
+                <th mat-header-cell *matHeaderCellDef>Assigned</th>
+                <td mat-cell *matCellDef="let element">
+                  <p class="mb-0 fw-medium">{{ element.name }}</p>
+                  <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
+                </td>
+              </ng-container>
+    
+              <!-- Project Column -->
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Project</th>
+                <td mat-cell *matCellDef="let element">
+                  <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
+                </td>
+              </ng-container>
+    
+              <!-- Priority Column -->
+              <ng-container matColumnDef="priority">
+                <th mat-header-cell *matHeaderCellDef>Priority</th>
+                <td mat-cell *matCellDef="let element">
+                  <span class="badge {{ element.badge }} rounded-pill">{{
+                    element.priority
+                  }}</span>
+                </td>
+              </ng-container>
+    
+              <!-- Budget Column -->
+              <ng-container matColumnDef="budget">
+                <th mat-header-cell *matHeaderCellDef>Budget</th>
+                <td mat-cell *matCellDef="let element">
+                  <p class="mb-0 fw-medium">{{ element.budget }}</p>
+                </td>
+              </ng-container>
+    
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+            <p style="float: right; margin-top: 15px">
+              <strong>Total :</strong> 123dt
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div style="margin-top: -10px; margin-right: 43px">
+        <button
+          mat-button
+          class="btn btn-danger fw-normal"
+          type="submit"
+          style="float: right; margin-left: 0.3%"
+        >
+          Annuler
+        </button>
+        <button
+          mat-button
+          class="btn btn-success fw-normal"
+          type="submit"
+          style="float: right"
+        >
+          Sauvegarder
+        </button>
+        <button mat-button class="btn btn-info fw-normal "
+        style="float: left ;margin-left:25px;"  matStepperNext>Confirmer Etape</button>
+        <button mat-button class="btn btn-warning
+         fw-normal "
+        style="margin-left: 5px" >Envoyer et imprimer </button>
+        
        
     </div>
+    </mat-step>
+    <mat-step label="Payé" state="payé">
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+    <ng-template matStepperIcon="brouillon">
+      <mat-icon>drafts</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="ouvert">
+      <mat-icon>description</mat-icon>
+    </ng-template>
+    <ng-template matStepperIcon="payé">
+      <mat-icon>done_all</mat-icon>
+    </ng-template>
+    </div>
 </div>
+
+</mat-stepper>

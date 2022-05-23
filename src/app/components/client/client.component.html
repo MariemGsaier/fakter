@@ -153,8 +153,12 @@
           placeholder="Veuillez entrer votre modification"
           id="username"
           [(ngModel)]="currentClient.nom"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="nomclt"  [ngClass]="{ 'is-invalid': submitted && f['nomclt'].errors }"
         />
+        <mat-error *ngIf="f['nomclt'].errors" class="text-danger">
+          <div *ngIf="f['nomclt'].errors['required']">Le champ nom est obligatoire</div>
+          <span *ngIf="f['nomclt'].errors['pattern']">Le nom saisi est invalide</span>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -166,8 +170,12 @@
           required
           id="adr"
           [(ngModel)]="currentClient.adresse"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="adresse" [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }"
         />
+        <mat-error *ngIf="f['adresse'].errors" class="text-danger">
+          <div *ngIf="f['adresse'].errors['required']">le champ adresse est obligatoire</div>
+          <div *ngIf="f['adresse'].errors['pattern']">l'adresse est invalide</div>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -179,8 +187,12 @@
           required
           id="numtel"
           [(ngModel)]="currentClient.numtel"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="phone"  [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
         />
+        <mat-error *ngIf="f['phone'].errors" class="text-danger">
+          <div *ngIf="f['phone'].errors['required']">Le champ numéro de téléphone est obligatoire</div>
+          <div *ngIf="f['phone'].errors['pattern']">Le numéro de téléphone saisi est invalide</div>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Courriel</mat-label>
@@ -191,8 +203,12 @@
           required
           id="cour"
           [(ngModel)]="currentClient.courriel"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" 
         />
+        <mat-error *ngIf="submitted && f['email'].errors" class="text-danger">
+          <div *ngIf="f['email'].errors['required']">Le champ courriel est obligatoire</div>
+          <span *ngIf="f['email'].errors['email']">Le courriel saisi est invalide</span>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Site web</mat-label>
@@ -203,11 +219,23 @@
           required
           id="siteweb"
           [(ngModel)]="currentClient.siteweb"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="website" [ngClass]="{ 'is-invalid': submitted && f['website'].errors }"
         />
+        <mat-error *ngIf="f['website'].errors" class="text-danger">
+          <div *ngIf="f['website'].errors['pattern']">le site web saisi est invalide</div>
+        </mat-error>
       </mat-form-field>
       <div>
         &nbsp;
+        <button
+          mat-button
+          class="btn btn-danger fw-normal"
+          (click)="annuler()"
+          type="submit"
+          style="float: right; margin-left: 0.3%"
+        >
+          Annuler
+        </button>
         <button
           mat-button
           class="btn btn-success fw-normal"

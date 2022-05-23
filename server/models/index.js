@@ -24,6 +24,17 @@ db.devise = require("../models/devise.model")(sequelize, Sequelize);
 db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
 
 
+
+
+db.facture.belongsTo(db.client,{
+  foreignKey: "code_client",
+  as: "client"
+})
+db.client.hasMany(db.facture,{
+  foreignKey: "code_client",
+  as: "factures"
+})
+
 db.comptebancaire.belongsTo(db.societe, {
   foreignKey: "id_societe",
   as: "societe"
@@ -80,5 +91,18 @@ db.devise.hasMany(db.comptebancaire,{
   as: "comptes bancaires"
 
 })
+
+db.devise.belongsToMany(db.dateDevise, {
+  through: "valeurDevise",
+  as: "dates",
+  foreignKey: "nom_devise",
+});
+
+db.dateDevise.belongsToMany(db.devise, {
+  through: "valeurDevise",
+  as: "devises",
+  foreignKey: "date_devise",
+});
+
 
 module.exports = db;
