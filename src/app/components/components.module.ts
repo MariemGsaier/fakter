@@ -38,6 +38,9 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
 
 
 
+
+
+
 @NgModule({
   declarations: [
     AlertsComponent,
@@ -69,6 +72,8 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     AddSocietyComponent,
     FacturesComponent,
     AddFactureComponent,
+ 
+
   ],
   imports: [
     CommonModule,
@@ -77,7 +82,8 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    MatCardModule
+    MatCardModule,
+   
   ],
   exports: [
     AlertsComponent,
@@ -95,7 +101,8 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     SlideToggleComponent,
     ButtonsComponent,
     MatCardModule,
-    CommonModule
+    CommonModule,
+  
   ]
 })
 export class ComponentsModule { }

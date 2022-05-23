@@ -19,11 +19,11 @@ export class FacturesComponent implements OnInit {
     vendeur: '',
     date_facturation: new Date (),
     date_echeance: new Date (),
-    etat_facture: false,
+    etat_facture: "",
     etat_echeance: false,
     total_ht: 0,
     total_chiffres: 0,
-    total_lettres: 0,
+    total_lettres: "",
     total_devise: 0
   };
   message = '';

@@ -15,6 +15,9 @@ export class FactureService {
   getAll(): Observable<Facture[]> {
     return this.http.get<Facture[]>(baseUrl);
   }
+  create(data: any): Observable<any> {
+    return this.http.post(createUrl, data);
+  }
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, data);
   }

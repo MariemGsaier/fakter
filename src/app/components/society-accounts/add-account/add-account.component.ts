@@ -12,10 +12,7 @@ import {
 } from "@angular/forms";
 import {ValidatorService} from 'angular-iban';
 
-interface devise {
-  value: string;
-  viewValue: string;
-}
+
 
 @Component({
   selector: "app-add-account",
@@ -38,11 +35,8 @@ export class AddAccountComponent implements OnInit {
     nomBanque: new FormControl(""),
   });
 
-
  
   submitted = false;
-
-
 
   constructor(
     private route: ActivatedRoute,

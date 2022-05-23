@@ -59,7 +59,6 @@
           </td>
         </ng-container>
 
-
         <ng-container matColumnDef="rib">
           <th mat-header-cell *matHeaderCellDef>RIB</th>
           <td mat-cell *matCellDef="let account">
@@ -130,7 +129,7 @@
 </mat-card>
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
-    <form>
+    <form [formGroup]="bankAccForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Numéro de compte </mat-label>
         <input
@@ -139,8 +138,19 @@
           placeholder="Veuillez entrer votre modification"
           id="username"
           [(ngModel)]="currentBankAccount.num_compte"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="numcompte"
+          [ngClass]="{ 'is-invalid': f['numcompte'].errors }"
         />
+        <mat-error *ngIf="f['numcompte'].errors" class="text-danger">
+          <div *ngIf="f['numcompte'].errors['required']">
+            Le champ Numéro de compte est obligatoire
+          </div>
+          <div *ngIf="f['numcompte'].errors['pattern']">
+            Le numéro de compte saisi est invalide
+          </div>
+          <div *ngIf="f['numcompte'].errors['maxlength']">Max 34</div>
+          <div *ngIf="f['numcompte'].errors['minlength']">Min 14</div>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -152,8 +162,17 @@
           required
           id="adr"
           [(ngModel)]="currentBankAccount.rib"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="rib"
+          [ngClass]="{ 'is-invalid': f['rib'].errors }"
         />
+        <mat-error *ngIf="f['rib'].errors" class="text-danger">
+          <div *ngIf="f['rib'].errors['required']">
+            Le champ RIB est obligatoire
+          </div>
+          <div *ngIf="f['rib'].errors['pattern']">
+            Le RIB saisi est invalide
+          </div>
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -165,8 +184,23 @@
           required
           id="cour"
           [(ngModel)]="currentBankAccount.bic"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="bic"
+          [ngClass]="{ 'is-invalid': f['bic'].errors }"
         />
+        <mat-error *ngIf="f['bic'].errors" class="text-danger">
+          <div *ngIf="f['bic'].errors['required']">
+            Le champ BIC est obligatoire
+          </div>
+          <div *ngIf="f['bic'].errors['pattern']">
+            Le BIC saisi est invalide
+          </div>
+          <div *ngIf="f['bic'].errors['maxlength']">
+            Le numéro de compte saisi doit avoir 8 caractères au minimum
+          </div>
+          <div *ngIf="f['bic'].errors['minlength']">
+            Le numéro de compte saisi peut avoir 11 caractères au maximum
+          </div>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>IBAN</mat-label>
@@ -177,8 +211,17 @@
           required
           id="siteweb"
           [(ngModel)]="currentBankAccount.iban"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="iban"
+          [ngClass]="{ 'is-invalid': f['iban'].errors }"
         />
+        <mat-error *ngIf="f['iban'].errors" class="text-danger">
+          <div *ngIf="f['iban'].errors['required']">
+            Le champ IBAN est obligatoire
+          </div>
+          <span *ngIf="f['iban'].errors['iban']"
+            >Le IBAN saisi est invalide</span
+          >
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom de la banque</mat-label>
@@ -189,8 +232,17 @@
           required
           id="nbc"
           [(ngModel)]="currentBankAccount.nom_banque"
-          [ngModelOptions]="{ standalone: true }"
+          formControlName="nomBanque"
+          [ngClass]="{ 'is-invalid': f['nomBanque'].errors }"
         />
+        <mat-error *ngIf="f['nomBanque'].errors" class="text-danger">
+          <div *ngIf="f['nomBanque'].errors['required']">
+            Le champ nom de banque est obligatoire
+          </div>
+          <div *ngIf="f['nomBanque'].errors['pattern']">
+            Le nom de banque saisi est invalide
+          </div>
+        </mat-error>
       </mat-form-field>
 
       <div>
@@ -200,7 +252,7 @@
           class="btn btn-danger fw-normal"
           (click)="annuler()"
           type="submit"
-          style="float: right; margin-left: 0.3%;"
+          style="float: right; margin-left: 0.3%"
         >
           Annuler
         </button>
