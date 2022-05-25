@@ -33,6 +33,7 @@ db.client.hasMany(db.facture,{
   foreignKey: "code_client",
   as: "factures"
 })
+
 db.comptebancaire.belongsTo(db.societe, {
   foreignKey: "id_societe",
   as: "societe"
