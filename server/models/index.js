@@ -33,6 +33,36 @@ db.client.hasMany(db.facture,{
   foreignKey: "code_client",
   as: "factures"
 })
+db.comptebancaire.belongsTo(db.societe, {
+  foreignKey: "id_societe",
+  as: "societe"
+});
+db.societe.hasMany(db.comptebancaire, {
+  foreignKey: "id_societe",
+  as: "comptes"
+});
+
+db.facture.belongsTo(db.user, {
+  foreignKey: "id_user",
+  as: "user"
+});
+db.user.hasMany(db.facture, {
+  foreignKey: "id_user",
+  as: "factures"
+});
+
+db.facture.belongsToMany(db.article, {
+  through: "ligne_facture",
+  as: "article",
+  foreignKey: "reference",
+});
+db.article.belongsToMany(db.facture, {
+  through: "ligne_facture",
+  as: "facture",
+  foreignKey: "id",
+});
+
+
 db.facture.belongsTo(db.comptebancaire,{
   foreignKey: "id_compte",
   as: "compte"

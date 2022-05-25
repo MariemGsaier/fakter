@@ -39,12 +39,7 @@
     >
       Supprimer Tout
     </button>
-    <button
-      mat-icon-button
-      class="ms-4 me-4"
-      style="float: right"
-      (click)="search = !search"
-    >
+    <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
       <i-feather
         name="search"
         class="mt-n3 text-light-muted feather-base text-dark"
@@ -54,14 +49,7 @@
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-        
-        <ng-container matColumnDef="reference_art">
-          <th mat-header-cell *matHeaderCellDef>Référence</th>
-          <td mat-cell class="fw-medium" *matCellDef="let article">
-            {{ article.reference_art }}
-          </td>
-        </ng-container>
-        
+                
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Image</th>
           <td mat-cell class="fw-medium" *matCellDef="let article">
@@ -125,6 +113,7 @@
               style="margin-right: 1%"
               type="submit"
               (click)="setActiveArticle(article, i)"
+              href="#update_card"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -153,20 +142,9 @@
     </div>
   </mat-card-content>
 </mat-card>
-<mat-card class="w-100" *ngIf="disabelModif">
+<mat-card id="update_card" class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Référence </mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer votre modification"
-          id="reference_art"
-          [(ngModel)]="currentArticle.reference_art"
-          [ngModelOptions]="{ standalone: true }"
-        />
-      </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Image </mat-label>
             <input

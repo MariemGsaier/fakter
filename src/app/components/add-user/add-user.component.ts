@@ -3,20 +3,14 @@ import { User } from 'src/app/models/user.model';
 import { GestUserService } from 'src/app/services/gest-user.service';
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Validation } from 'src/app/validation/validation';
+import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 
-interface alerts {
-  border: string;
-  background: string;
-  color: string;
-  icon: string;
-  iconColor: string;
-  message: string;
-}
+
 
 interface role {
   value: string;
   viewValue: string;
-
 }
 
 @Component({
@@ -25,50 +19,38 @@ interface role {
   styleUrls: ['./add-user.component.scss']
 })
 export class AddUserComponent implements OnInit {
-  form: FormGroup = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    role: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl('')
-  });
   user: User = {
     username: '',
     email: '',
     role: '',
     password: ''
   };
+
+  userForm: FormGroup = new FormGroup({
+    username: new FormControl(''),
+    email: new FormControl(''),
+    role: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl('')
+  });
   submitted = false;
 
   roles: role[] = [
-    {value: 'admin', viewValue: 'admin'},
-    {value: 'user', viewValue: 'user'},
-    {value: 'observer', viewValue: 'observer'},
+    {value: 'Super Administrateur', viewValue: 'Super administrateur'},
+    {value: 'Administrateur', viewValue: 'Administrateur'},
+    {value: 'Observateur', viewValue: 'Observateur'},
   ];
   
 
-  constructor(private formBuilder: FormBuilder, private gestUserService: GestUserService) { }
+  constructor(private route: ActivatedRoute, private router: Router,private formBuilder: FormBuilder, private gestUserService: GestUserService) { }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group(
+    this.userForm = this.formBuilder.group(
       {
-        username: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(/^[a-zA-Z0-9]+$/)
-          ]
-        ],
-        email: ['', [Validators.required, Validators.email]],
+        username: ['',[Validators.required, Validators.pattern(/^[a-zA-Z0-9][a-zA-Z ]+$/)]],
+        email: ['', [Validators.required, Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
         role: ['', Validators.required],
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(6),
-            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)
-          ]
-        ],
+        password: ['',[Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9!@#$%^&*() ]+$/)]],
         confirmPassword: ['', Validators.required]
       },
       {
@@ -76,61 +58,63 @@ export class AddUserComponent implements OnInit {
       }
     );
   }
-  alerts: alerts[] = [
-    {
-      border: "alert-border-success",
-      background: "alert-success",
-      color: "alert-text-success",
-      icon: "check-circle",
-      iconColor: "text-success",
-      message: "Utilisateur ajouté avec succès",
-    },
-  ]
 
   get f(): { [key: string]: AbstractControl } {
-    return this.form.controls;
+    return this.userForm.controls;
   }
 
   onSubmit(): void {
     this.submitted = true;
 
-    if (this.form.invalid) {
+    if (this.userForm.invalid) {
       return;
     }
-
-    console.log(JSON.stringify(this.form.value, null, 2));
   }
 
   onReset(): void {
     this.submitted = false;
-    this.form.reset();
+    this.userForm.reset();
   }
 
   saveUser(): void {
     const data = {
       username: this.user.username,
       email: this.user.email,
-      password: this.user.password,
-      role: this.user.role
+      role: this.user.role,
+      password: this.user.password
     };
-    this.gestUserService.create(data)
-    .subscribe(
-      response => {
-        console.log(response);
-        this.submitted = true;
-      },
-      error => {
-        console.log(error);
-      });
+    if (!(this.userForm.invalid)) {
+      this.gestUserService.create(data)
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+            this.submitted = true;
+            Swal.fire({
+              title: "Ajout avec succés !",
+              text: "Vous pouvez ajouter un autre utilisateur ou quitter.",
+              icon: "success",
+              showCancelButton: true,
+              confirmButtonColor: "#00c292",
+              cancelButtonColor: "#e46a76",
+              confirmButtonText: "Ajouter un autre utilisateur",
+              cancelButtonText: "Quitter",
+            })
+            .then((result) => {
+              if (result.isConfirmed) {
+             this.newUser();
+              } else if (!(result.isConfirmed)) {
+                this.router.navigate(['/admin'])
+              }
+            })
+          },
+          error: (e) => console.error(e)
+        } );
+
+    }
 }
 newUser(): void {
   this.submitted = false;
-  this.user = {
-    username: '',
-    email: '',
-    password: '',
-    role: ''
-  };
+  window.location.reload();
 }
 
 }

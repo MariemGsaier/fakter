@@ -1,4 +1,3 @@
-
 module.exports = function (app) {
     const controllerclt = require("../controllers/client.controller")
     const { authJwt } = require("../middleware");

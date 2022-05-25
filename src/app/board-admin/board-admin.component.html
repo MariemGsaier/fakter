@@ -1,24 +1,21 @@
 <!-- Search Box -->
 <div *ngIf="search" class="search-section d-flex align-items-center">
   <mat-form-field class="w-100" color="primary" appearance="legacy">
-    <mat-label class="fs-16">Recherchez içi</mat-label>
-    <input matInput [(ngModel)]="username" />
+    <mat-label class="fs-16">Recherchez ici</mat-label>
+    <input
+      matInput
+      placeholder="Veuillez taper un mot clé"
+      autocomplete="off"
+      (keyup)="filterData($event)"
+    />
   </mat-form-field>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item">
-      
-    </li>
+    <li class="list-group-item"></li>
   </ul>
-  <button mat-icon-button (click)="searchName()">
-    <i-feather
-      name="corner-down-left"
-      class="mt-n3 text-light-muted feather-base text-dark"
-    ></i-feather>
-  </button>
   <button mat-icon-button (click)="search = !search">
     <i-feather
       name="x-circle"
-      class="mt-n3 text-light-muted feather-base text-dark"
+      class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
     ></i-feather>
   </button>
 </div>
@@ -86,49 +83,63 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <mat-paginator
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20,30,50,100]"
+      >
+      </mat-paginator>
     </div>
   </mat-card-content>
 </mat-card>
 
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
-    <form>
+    <form [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom d'utilisateur</mat-label>
         <input
           matInput
           type="text"
           placeholder="Entrez le nom d'utilisateur"
+          formControlName="username"
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
           id="username"
           [(ngModel)]="currentUser.username"
-          [ngModelOptions]="{ standalone: true }"
         />
+      <mat-error *ngIf="f['username'].errors" class="invalid-feedback">
+      <div *ngIf="f['username'].errors['pattern']">
+        Le nom d'utilisateur est invalide
+      </div>
+    </mat-error>
       </mat-form-field>
-
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Email</mat-label>
         <input
           matInput
           type="email"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
           placeholder="Entrez l'email"
-          required
           id="email"
           [(ngModel)]="currentUser.email"
-          [ngModelOptions]="{ standalone: true }"
         />
+        <mat-error *ngIf="f['email'].errors" class="invalid-feedback">
+        <div *ngIf="f['email'].errors['pattern']">L'email  est invalide</div>
+      </mat-error>
       </mat-form-field>
-
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Rôle</mat-label>
-        <input
-          matInput
-          type="role"
-          placeholder="Entrez le role"
-          required
-          id="role"
-          [(ngModel)]="currentUser.role"
-          [ngModelOptions]="{ standalone: true }"
-        />
+        <mat-select
+              name="role"
+              required
+              [(ngModel)]="currentUser.role"
+              [ngModelOptions]="{ standalone: true }"
+            >
+              <mat-option *ngFor="let role of roles" [value]="role.value">
+                {{ role.viewValue }}
+              </mat-option>
+            </mat-select>
       </mat-form-field>
 
       <div>

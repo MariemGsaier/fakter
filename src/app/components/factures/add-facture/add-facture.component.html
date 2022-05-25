@@ -1,4 +1,4 @@
-<mat-stepper [linear]=true #stepper>
+<mat-stepper [linear]=false #stepper>
 <div class="card">
   <div class="card-body">
     <mat-step  label="Brouillon" state="brouillon">
@@ -6,7 +6,7 @@
       <p>Facture client</p>
       <h3>Brouillon</h3>
     </div>
-    <form >
+    <form [formGroup]="factureForm">
       <mat-grid-list cols="2" rowHeight="5:1">
         <mat-grid-tile>
           <mat-form-field
@@ -174,46 +174,141 @@
   <div style="margin-top: -10px; margin-right: 43px">
     <button
       mat-button
-      class="btn btn-danger fw-normal"
+      class="btn btn-danger fw-normal mt-4"
       type="submit"
       style="float: right; margin-left: 0.3%"
+      
     >
       Annuler
     </button>
     <button
       mat-button
-      class="btn btn-success fw-normal"
+      class="btn btn-success fw-normal mt-4"
       type="submit"
       style="float: right"
     >
       Sauvegarder
     </button>
-    <button mat-button class="btn btn-info fw-normal "
+    <button mat-button class="btn btn-info fw-normal mt-4 "
     style="float: left ;margin-left:25px;"  matStepperNext>Confirmer Etape</button>
    
 </div>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup" label="Ouvert" state="ouvert">
+    <div >
+      <mat-step  label="Ouvert" state="ouvert">
+        <div style="margin-top: 15px;">
+          <p>Facture client</p>
+          <h3>Fac/2022/0001</h3>
+        </div>
+        <mat-grid-list style="margin-left: -210px;"  cols="2" rowHeight="50px">
+          <mat-grid-tile ><p ><strong>Client </strong></p></mat-grid-tile>
+          <mat-grid-tile><p><strong>Vendeur</strong></p> <br></mat-grid-tile>
+          <mat-grid-tile><p><strong>Date de facturation </strong></p></mat-grid-tile>
+          <mat-grid-tile><p><strong>Date d'échéance </strong></p></mat-grid-tile>
+          <mat-grid-tile><p><strong>Numéro du bon de commande</strong></p></mat-grid-tile>
+        </mat-grid-list>
+        <mat-card class="w-100">
+          <mat-card-content>
+            <h4 class="mb-56">Ligne de facture</h4>
+      
+            <div class="table-responsive">
+              <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+                <!-- Id Column -->
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef>Id</th>
+                  <td mat-cell class="fw-medium" *matCellDef="let element">
+                    {{ element.id }}
+                  </td>
+                </ng-container>
+      
+                <!-- Assigned Column -->
+                <ng-container matColumnDef="assigned">
+                  <th mat-header-cell *matHeaderCellDef>Assigned</th>
+                  <td mat-cell *matCellDef="let element">
+                    <p class="mb-0 fw-medium">{{ element.name }}</p>
+                    <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
+                  </td>
+                </ng-container>
+      
+                <!-- Project Column -->
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>Project</th>
+                  <td mat-cell *matCellDef="let element">
+                    <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
+                  </td>
+                </ng-container>
+      
+                <!-- Priority Column -->
+                <ng-container matColumnDef="priority">
+                  <th mat-header-cell *matHeaderCellDef>Priority</th>
+                  <td mat-cell *matCellDef="let element">
+                    <span class="badge {{ element.badge }} rounded-pill">{{
+                      element.priority
+                    }}</span>
+                  </td>
+                </ng-container>
+      
+                <!-- Budget Column -->
+                <ng-container matColumnDef="budget">
+                  <th mat-header-cell *matHeaderCellDef>Budget</th>
+                  <td mat-cell *matCellDef="let element">
+                    <p class="mb-0 fw-medium">{{ element.budget }}</p>
+                  </td>
+                </ng-container>
+      
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+              <p style="float: right; margin-top: 15px">
+                <strong>Total :</strong> 123dt
+              </p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+        <div style="margin-top: -10px; margin-right: 43px">
+          <button
+            mat-button
+            class="btn btn-danger fw-normal"
+            type="submit"
+            style="float: right; margin-left: 0.3%"
+          >
+            Annuler
+          </button>
+          <button
+            mat-button
+            class="btn btn-success fw-normal"
+            type="submit"
+            style="float: right"
+          >
+            Sauvegarder
+          </button>
+          <button mat-button matStepperPrevious class="btn btn-warning
+          fw-normal "
+         style="float:left;margin-right: -20px">Retour</button>
+          
+          <button mat-button class="btn btn-info fw-normal "
+          style="float: left ;margin-left:25px;"  matStepperNext>Confirmer Etape</button>
+          
+          <button mat-button class="btn btn-primary
+           fw-normal "
+          style="margin-left: 5px" >Envoyer et imprimer </button>
+          
+          
+      </div>
+      </mat-step>
+    </div>
+    <mat-step label="Payé" state="payé">
       <div style="margin-top: 15px;">
         <p>Facture client</p>
         <h3>Fac/2022/0001</h3>
       </div>
-      <mat-grid-list cols="2" rowHeight="7:1">
-        <mat-grid-tile>
-          <p style="margin-left: -510px"><strong>Client</strong></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p style="margin-left: -510px"><strong>Vendeur</strong></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p style="margin-left: -450px"><strong>Date d'échéance</strong></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p style="margin-left: -440px"><strong>Date de facturation</strong></p>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <p style="margin-left: -343px"><strong>Numéro du bon de commande</strong></p>
-        </mat-grid-tile>
+      <mat-grid-list style="margin-left: -210px;"  cols="2" rowHeight="50px">
+        <mat-grid-tile ><p ><strong>Client </strong></p></mat-grid-tile>
+        <mat-grid-tile><p><strong>Vendeur</strong></p> <br></mat-grid-tile>
+        <mat-grid-tile><p><strong>Date de facturation </strong></p></mat-grid-tile>
+        <mat-grid-tile><p><strong>Date d'échéance </strong></p></mat-grid-tile>
+        <mat-grid-tile><p><strong>Numéro du bon de commande</strong></p></mat-grid-tile>
+        <mat-grid-tile><p><strong>Date de paiement</strong></p></mat-grid-tile>
       </mat-grid-list>
       <mat-card class="w-100">
         <mat-card-content>
@@ -291,20 +386,11 @@
           Sauvegarder
         </button>
         <button mat-button class="btn btn-info fw-normal "
-        style="float: left ;margin-left:25px;"  matStepperNext>Confirmer Etape</button>
-        <button mat-button class="btn btn-warning
-         fw-normal "
-        style="margin-left: 5px" >Envoyer et imprimer </button>
-        
-       
+        style="float: left ;margin-left:25px;"  >Enregistrer paiement</button>
+        <button mat-button matStepperPrevious class="btn btn-warning
+        fw-normal "
+       style="margin-left: 5px">Retour</button>
     </div>
-    </mat-step>
-    <mat-step label="Payé" state="payé">
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
-      </div>
     </mat-step>
     <ng-template matStepperIcon="brouillon">
       <mat-icon>drafts</mat-icon>
