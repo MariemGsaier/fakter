@@ -67,11 +67,9 @@ export class AddFactureComponent implements OnInit {
 
   factureForm: FormGroup = new FormGroup({
     
-    email: new FormControl(''),
-    phone: new FormControl(''),
-    website: new FormControl(''),
-    nomclt: new FormControl(''),
-    adresse: new FormControl('')
+    vendeur: new FormControl(''),
+    date_facturation: new FormControl(''),
+    date_echeance: new FormControl('')
     
   });
 
@@ -82,15 +80,6 @@ export class AddFactureComponent implements OnInit {
   dataSource = ELEMENT_DATA;
 
 
-  // secondFormGroup: FormGroup;
-  firstFormGroup: FormGroup = new FormGroup({
-    
-    firstCtrl: new FormControl(''),
-  });
-  secondFormGroup: FormGroup = new FormGroup({
-    
-    secondCtrl: new FormControl(''),
-  });
   isEditable = false;
 
   vendeurs: vendeur[] = [
@@ -117,12 +106,11 @@ export class AddFactureComponent implements OnInit {
     private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
-    this.firstFormGroup = this.formBuilder.group({
-      firstCtrl: ['', Validators.required],
+    this.factureForm = this.formBuilder.group({
+      date_facturation: ['', Validators.required],
+      date_echeance: ['', Validators.required],
     });
-    this.secondFormGroup = this.formBuilder.group({
-      secondCtrl: ['', Validators.required],
-    });
+
   }
 
   saveFacture(): void {

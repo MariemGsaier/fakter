@@ -28,7 +28,12 @@ export class AddClientComponent implements OnInit {
 
   };
   clientForm: FormGroup = new FormGroup({
-    
+
+    cin: new FormControl(''),
+    rcs: new FormControl(''),
+    passeport: new FormControl(''),
+    timbrefisc: new FormControl(''),
+    codetva: new FormControl(''),
     email: new FormControl(''),
     phone: new FormControl(''),
     website: new FormControl(''),
@@ -37,6 +42,7 @@ export class AddClientComponent implements OnInit {
     
   });
   submitted = false;
+
 
   codesId: CodeId[] = [
     {value: 'cin', viewValue: 'CIN'},
@@ -55,16 +61,21 @@ export class AddClientComponent implements OnInit {
   ngOnInit(): void {
     this.clientForm = this.formBuilder.group(
       {
-        email: ['', [Validators.required, Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
+        cin: ['',[Validators.required,Validators.pattern("^[0-9]*$"),Validators.maxLength(8),Validators.minLength(8)]],
+        rcs :['',[Validators.required,Validators.pattern("/^\w+((\-?| ?)\w+)? [a-bA-B] (\d{9}|((\d{3} ){2}\d{3}))$/gm")]],
+        codetva: ['',[Validators.required,Validators.pattern("^[A-Za-z]{2,4}(?=.{2,12}$)[-_\s0-9]*(?:[a-zA-Z][-_\s0-9]*){0,2}^")]],
+        timbrefisc : ['',[Validators.required,Validators.pattern("^[A-Za-z]{2,4}(?=.{2,12}$)[-_\s0-9]*(?:[a-zA-Z][-_\s0-9]*){0,2}^")]],
+        email: ['', [Validators.required, Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}")]],
         phone: ['', [ Validators.required,Validators.pattern("^[0-9]*$")]],
         website: ['', Validators.pattern("^((https?|ftp|smtp):\/\/)?(www.)?[a-z0-9]+\.[a-z]+(\/[a-zA-Z0-9#]+\/?)*$")],
         nomclt: ['', [Validators.required,Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
-        adresse: ['', Validators.required]
-      }
+        adresse: ['', [Validators.required,Validators.pattern("\d{1,4}[A-Z]?\s([NSEW]\.)?\s(\d{1,3}(st|nd|rd|th))?\s(\w\s)+([A-Z][a-z]{1,3}\.)?")]]
+      } 
        
     );
-  }
 
+  }
+  
   
   get f(): { [key: string]: AbstractControl } {
     return this.clientForm.controls;

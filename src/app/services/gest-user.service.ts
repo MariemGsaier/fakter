@@ -32,7 +32,6 @@ export class GestUserService {
   deleteAll(): Observable<any> {
     return this.http.delete(baseUrl);
   }
-  search(term: any): Observable<User[]> {
-    return this.http.get<User[]>(`${baseUrl}?term=${term}`);
-  }
+
+
 }
