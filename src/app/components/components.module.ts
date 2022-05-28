@@ -35,6 +35,7 @@ import { AddSocietyComponent } from './societies/add-society/add-society.compone
 import { FacturesComponent } from './factures/factures.component';
 import { AddFactureComponent } from './factures/add-facture/add-facture.component';
 // import { MatFileUploadModule } from 'mat-file-upload';
+import {Ng2TelInputModule} from 'ng2-tel-input';
 
 
 
@@ -84,7 +85,8 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     ReactiveFormsModule,
     RouterModule,
     MatCardModule,
-    // MatFileUploadModule
+    // MatFileUploadModule,
+    Ng2TelInputModule
 
   ],
   exports: [

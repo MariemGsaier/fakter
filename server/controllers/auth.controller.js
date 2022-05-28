@@ -6,8 +6,6 @@ var nodemailer= require('nodemailer');
 // const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { error } = require("console");
-
 
 exports.signup = (req, res) => {
   // Save User to Database
@@ -15,42 +13,43 @@ exports.signup = (req, res) => {
     username: req.body.username,
     email: req.body.email,
     role: req.body.role,
-    password: bcrypt.hashSync(req.body.password, 8),
+    password: bcrypt.hashSync(req.body.password, 8)
   })
     .then((user) => {
-      var transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false,
-        auth:{
-          user:'gsaiermeriem24@gmail.com',
-          pass: '000000'
-        }
-      });
-      var mailoptions = {
-        from: 'gsaiermeriem24@gmail.com',
-        to: req.body.email,
-        subject: 'Authentification email',
-        html: 'You can sign in now !'
-      };
-      transporter.sendMail(mailoptions,function(error,info){
-        if(error){
-          console.log(error);
-          res.send('sending email failed');
-        } else {
-          console.log("email sent" +info.response);
-          res.send("email sent successfully !")
-        }
-      });
-
+     
       if (user) {
+        authEmail( user.email , user.username,user.password);
         res.send({ message: "User was registered successfully!" });
+        
+  
       }
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
     });
 };
+async function authEmail( email,username,password){
+  var transport = await nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
+    auth: {
+      user: "d40e8b0694c73d", 
+      pass: "accfebdb847e90" 
+    }
+  });
+  var mailOptions = {
+    from: `"Mariem Gsaier", "mariem@gmail.com"`,
+  to: `<${email}>`,
+  subject: "Accés Fakter ",
+  html: "<h4>Vous pouvez accéder maintenant à cotre espace cher utilisateur</h4> <br> <p>Ci-dessous, vous trouverez vos données d'authentification : <br> Nom d'utilisateur : " + `${username}` + " <br> Mot de passe : " + `${password}` +"</p><br> Veuillez changer votre mot de passe immédiatement en raison de sécurité à travers le lien ci-dessous : ",
+};
+await transport.sendMail(mailOptions, (error, info) => {
+  if (error) {
+      return console.log(error);
+  }
+  console.log('Message sent: %s', info.messageId);
+});
+}
 exports.signin = (req, res) => {
   User.findOne({
     where: {

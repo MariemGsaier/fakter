@@ -14,8 +14,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./models");
 
+
 // const Role = db.role;
 db.sequelize.sync();
+
+
 
 
 // routes
