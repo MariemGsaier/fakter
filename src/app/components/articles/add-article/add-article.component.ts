@@ -17,14 +17,14 @@ const URL = 'http://localhost:4000/api/upload';
 export class AddArticleComponent implements OnInit {
   title = 'ng8fileupload';
   public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
-  form: FormGroup = new FormGroup({
-    image: new FormControl(''),
+  articleForm: FormGroup = new FormGroup({
     nom_article: new FormControl(''),
     type_article: new FormControl(''),
     prix_vente: new FormControl(''),
     taxe_vente: new FormControl(''),
     cout: new FormControl(''),
-    description: new FormControl('')
+    description: new FormControl(''),
+    image: new FormControl('')
   });
   article: Article = {
     image: "",
@@ -51,33 +51,35 @@ export class AddArticleComponent implements OnInit {
          alert('File uploaded successfully');
     };
 
-    this.form = this.formBuilder.group(
+    this.articleForm = this.formBuilder.group(
       {
-        reference_art: [
-          '',
-          [
-            Validators.required,
-          ]
-        ],
-        image: ['', [Validators.required]],
         nom_article: ['', Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)],
         type_article: [
           '',
           [
             Validators.required,
-            Validators.minLength(6),
             Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)
           ]
         ],
         prix_vente: ['', Validators.required],
         taxe_vente: ['', Validators.required],
         cout: ['', Validators.required],
-        description: ['', Validators.required]
-      },
-      {
-        validators: [Validation.match('password', 'confirmPassword')]
+        description: ['', Validators.required],
+        image: ['', [Validators.required]]
       }
     );
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.articleForm.controls;
+    
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.articleForm.invalid) {
+      return;
+    }
   }
 
   saveArticle(): void {
@@ -90,6 +92,7 @@ export class AddArticleComponent implements OnInit {
       cout: this.article.cout,
       description: this.article.description,
     };
+    if (!(this.articleForm.invalid)) {
     this.articleService.create(data).subscribe(
       (res) => {
         console.log(res);
@@ -114,6 +117,7 @@ export class AddArticleComponent implements OnInit {
       },
       (error) => console.error(error)
     );
+    }
   }
 
   newArticle(): void {

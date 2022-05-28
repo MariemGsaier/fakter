@@ -1,7 +1,7 @@
 import { NgModule, SimpleChange } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { BoardAdminComponent } from "./board-admin/board-admin.component";
-import { AddUserComponent } from "./components/add-user/add-user.component";
+import { BoardAdminComponent } from "./components/board-admin/board-admin.component";
+import { AddUserComponent } from "./components/board-admin/add-user/add-user.component";
 import { AlertsComponent } from "./components/alerts/alerts.component";
 import { AddArticleComponent } from "./components/articles/add-article/add-article.component";
 import { ArticlesComponent } from "./components/articles/articles.component";

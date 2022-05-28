@@ -26,10 +26,12 @@ require("./routes/articles.routes")(app);
 require("./routes/comptesbancaire.routes")(app);
 require("./routes/societes.routes")(app);
 require("./routes/factures.routes")(app);
+require("./routes/devise.routes")(app);
+require("./routes/datedevise.routes")(app);
 
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  // console.log(`Server is running on port ${PORT}.`);
 });
