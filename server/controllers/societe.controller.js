@@ -2,7 +2,7 @@ exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
 };
 exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to console.log()
+  res.status(200).send("User Content."); // try to modify it to // console.log()
 };
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
@@ -37,7 +37,7 @@ exports.create = (req, res) => {
     .create(ste)
     .then((data) => {
       res.send(data);
-      console.log("ajout avec succés");
+      // console.log("ajout avec succés");
     })
     .catch((err) => {
       res.status(500).send({

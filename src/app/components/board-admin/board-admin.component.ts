@@ -8,9 +8,9 @@ import {
   FormControl,
   Validators,
 } from "@angular/forms";
-import { User } from "../models/user.model";
-import { GestUserService } from "../services/gest-user.service";
-import { UserService } from "../services/user.service";
+import { User } from "../../models/user.model";
+import { GestUserService } from "../../services/gest-user.service";
+import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
 

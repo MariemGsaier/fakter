@@ -22,7 +22,7 @@ import { TooltipsComponent } from './tooltips/tooltips.component'
 import { LoginComponent } from './login/login.component';
 import { ProfileComponent } from './profile/profile.component';
 import { RouterModule } from '@angular/router';
-import { AddUserComponent } from './add-user/add-user.component';
+import { AddUserComponent } from './board-admin/add-user/add-user.component';
 import { MatCardModule } from '@angular/material/card';
 import { ArticlesComponent } from './articles/articles.component';
 import { AddArticleComponent } from './articles/add-article/add-article.component';
@@ -34,7 +34,7 @@ import { SocietiesComponent } from './societies/societies.component';
 import { AddSocietyComponent } from './societies/add-society/add-society.component';
 import { FacturesComponent } from './factures/factures.component';
 import { AddFactureComponent } from './factures/add-facture/add-facture.component';
-// import { MatFileUploadModule } from 'mat-file-upload';
+import { BoardAdminComponent } from './board-admin/board-admin.component';
 
 
 
@@ -73,6 +73,7 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     AddSocietyComponent,
     FacturesComponent,
     AddFactureComponent,
+    BoardAdminComponent,
  
 
   ],
@@ -84,7 +85,6 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
     ReactiveFormsModule,
     RouterModule,
     MatCardModule,
-    // MatFileUploadModule
 
   ],
   exports: [

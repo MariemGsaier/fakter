@@ -17,50 +17,50 @@
         </header>
         <mat-list>
           <h3 mat-subheader>Nom société</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
             <mat-icon mat-list-icon>business</mat-icon>
-             <h5 mat-line style="font-weight: 34%;">{{ currentSociete.nom_societe }}</h5>
+             <h5 mat-line>{{ currentSociete.nom_societe }}</h5>
              <p mat-line class="demo-2"> Tunsie </p>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Numéro de téléphone</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
             <mat-icon mat-list-icon>phone</mat-icon>
              <h4 mat-line>{{ currentSociete.numtel }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Adresse</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>note</mat-icon>
              <h4 mat-line>{{ currentSociete.adresse }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Email</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>email</mat-icon>
              <h4 mat-line>{{ currentSociete.courriel }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Siteweb</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>website</mat-icon>
              <h4 mat-line>{{ currentSociete.siteweb }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Type société</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>details</mat-icon>
              <h4 mat-line>{{ currentSociete.type_societe }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Numéro RCS</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>account_balance</mat-icon>
              <h4 mat-line>{{ currentSociete.num_rcs }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
           <h3 mat-subheader>Timbre fiscal</h3>
-          <mat-list-item >
+          <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>gradient</mat-icon>
              <h4 mat-line>{{ currentSociete.timbre_fiscale }}</h4>
              <mat-divider [inset]="true"></mat-divider>
@@ -216,3 +216,4 @@
       </form>
     </mat-card-content>
   </mat-card>
+  <app-society-accounts></app-society-accounts>

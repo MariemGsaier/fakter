@@ -1,7 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Societe } from 'src/app/models/societe.model';
 import { SocieteService } from 'src/app/services/societe.service';
+import Swal from "sweetalert2";
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from "@angular/forms";
 
 @Component({
   selector: 'app-societies',
@@ -35,11 +43,13 @@ export class SocietiesComponent implements OnInit {
   message = '';
   disabelModif: boolean = false;
 
-  constructor(private societeService: SocieteService, private route: ActivatedRoute,private router: Router) { }
+  constructor(private societeService: SocieteService, private route: ActivatedRoute,private router: Router, private formBuilder: FormBuilder) { }
+
 
   ngOnInit(): void {
     this.message = '';
     this.getSociete();
+    
   }
 
   edit(): void{

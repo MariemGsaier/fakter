@@ -13,21 +13,26 @@
       <header class="jumbotron">
         <h3>Détails généraux</h3>
       </header>
-      <p>
-        <mat-icon style="font-size: 20px; float: left">person</mat-icon
-        ><strong>Nom d'utilisateur:</strong>
-        {{ currentUser.username }}
-      </p>
-      <p>
-        <mat-icon style="font-size: 20px; float: left">email</mat-icon
-        ><strong>Email:</strong>
-        {{ currentUser.email }}
-      </p>
-      <p>
-        <mat-icon style="font-size: 20px; float: left">badge</mat-icon
-        ><strong>Rôle:</strong>
-        {{ currentUser.role }}
-      </p>
+      <mat-list>
+        <h3 mat-subheader>Nom d'utilisateur</h3>
+          <mat-list-item style="font-size: 17px;">
+            <mat-icon mat-list-icon>person</mat-icon>
+             <h5 mat-line style="font-weight: 34%;">{{ currentUser.username }}</h5>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Email</h3>
+          <mat-list-item style="font-size: 17px;">
+            <mat-icon mat-list-icon>email</mat-icon>
+             <h5 mat-line style="font-weight: 34%;">{{ currentUser.email }}</h5>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Rôle</h3>
+          <mat-list-item style="font-size: 17px;">
+            <mat-icon mat-list-icon>badge</mat-icon>
+             <h5 mat-line style="font-weight: 34%;">{{ currentUser.role }}</h5>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+    </mat-list>
     </div>
     <ng-template #loggedOut> Veuillez vous connecter. </ng-template>
   </mat-card-content>
@@ -53,7 +58,7 @@
               id="username"
               [(ngModel)]="currentUser.username"
             />
-            <div
+            <mat-error
               *ngIf=" f1['username'].errors"
               class="invalid-feedback"
             >
@@ -61,10 +66,9 @@
                 Le nom d'utilisateur est obligatoire
               </div>
               <div *ngIf="f1['username'].errors['pattern']">
-                Le nom d'utilisateur ne peut pas contenir des caractères
-                spéciaux
+                Le nom d'utilisateur est invalide
               </div>
-            </div>
+            </mat-error>
           </mat-form-field>
         </mat-grid-tile>
         <mat-grid-tile>
@@ -108,6 +112,7 @@
           class="btn btn-success fw-normal"
           type="submit"
           style="float: right"
+          (click)="updateUser()"
         >
           Confirmer
         </button>
@@ -153,9 +158,9 @@
               matInput
               type="password"
               class="form-control"
+              formControlName="currentPassword"
               placeholder="Veuiller entrer le mot de passe actuel"
               [(ngModel)]="currentPassword"
-              [ngModelOptions]="{ standalone: true }"
               required
               id="currentPassword"
             />
@@ -243,7 +248,7 @@
         <button
           mat-button
           class="btn btn-success fw-normal"
-          (click)="onSubmit2()"
+          (click)="updatePassword()"
           type="submit"
           style="float: right"
         >

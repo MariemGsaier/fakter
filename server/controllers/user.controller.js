@@ -2,7 +2,7 @@ exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
 };
 exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to console.log()
+  res.status(200).send("User Content."); // try to modify it to // console.log()
 };
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
@@ -54,13 +54,14 @@ exports.findOne = (req, res) => {
 // Update a user by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
-  // const pass = req.body.password
-  // console.log('check body for pass', pass)
-  // // if (pass != null) {
-  // //   pass: bcrypt.hashSync(req.body.password, 8),
-  // // }
-  console.log('id', id)
-  console.log('rrr', req.body)
+  const pass = req.body.password
+  console.log('REQUETE update', req.body)
+  console.log('check body for pass', pass, req.body.password)
+  if (pass != null) {
+    console.log('afficher password requete',req.body.password);
+    req.body.password = bcrypt.hashSync(req.body.password, 8)
+    console.log('passwor hashé', req.body.password);
+  }
   user
     .update(req.body, {
       where: { id: id },
@@ -77,7 +78,6 @@ exports.update = (req, res) => {
       }
     })
     .catch((err) => {
-      console.log('errror', err)
       res.status(500).send({
         message: "Error updating user with id=" + id,
       });
@@ -86,18 +86,18 @@ exports.update = (req, res) => {
 };
 
 exports.passCheck = (req, res) => {
-  console.log('ttt', req.params)
-  console.log('ttt', req.body)
   user.findOne({
     where: {
       id: (req.params.id),
     },
   })
     .then((user) => {
+      console.log('REQUETE compare', req.body)
       var passwordIsValid = bcrypt.compareSync(
         req.body.password,
         user.password
       );
+      console.log(passwordIsValid, req.body.password );
       if (!passwordIsValid) {
         return res.status(200).send({
           message: false,
