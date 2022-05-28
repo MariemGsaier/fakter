@@ -26,7 +26,6 @@ import { DemoFlexyModule } from './demo-flexy-module'
 import { DashboardModule } from './dashboard/dashboard.module';
 import { ComponentsModule } from './components/components.module';
 import { SimpleComponent } from './layouts/simple/simple.component';
-import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
 import { SearchUser } from './pipes/search-user.pipe';
 
@@ -37,7 +36,6 @@ import { SearchUser } from './pipes/search-user.pipe';
     AppComponent,
     FullComponent,
     SimpleComponent,
-    BoardAdminComponent,
     SearchUser
     
     

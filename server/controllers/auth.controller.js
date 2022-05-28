@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
-var nodemailer= require('nodemailer');
+var nodemailer = require("nodemailer");
 // const Role = db.role;
 // const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
@@ -16,7 +16,6 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then((user) => {
-     
       if (user) {
         authEmail( user.email , user.username,user.password);
         res.send({ message: "User was registered successfully!" });
@@ -57,15 +56,18 @@ exports.signin = (req, res) => {
     },
   })
     .then((user) => {
-      var passwordIsValid = bcrypt.compareSync(
+      var passwordIsValid  = bcrypt.compareSync(
         req.body.password,
         user.password
       );
+
       const token = jwt.sign({ id: user.id }, config.secret, {
         expiresIn: config.jwtExpiration,
       });
       if (!user) {
-        return res.status(404).send({ message: "User Not found or username is invalid!" });
+        return res
+          .status(404)
+          .send({ message: "User Not found or username is invalid!" });
       } else if (!passwordIsValid) {
         return res.status(401).send({
           accessToken: null,

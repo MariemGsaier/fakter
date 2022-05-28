@@ -3,7 +3,9 @@ module.exports = (sequelize, Sequelize) => {
       date: {
         type: Sequelize.DATE,
         primaryKey: true
-        
+      },
+      valeur: {
+        type: Sequelize.FLOAT
       }
     });
     return DateDevise;

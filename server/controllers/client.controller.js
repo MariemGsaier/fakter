@@ -22,7 +22,7 @@ const Op = db.Sequelize.Op;
     .create(clt)
       .then(data => {
         res.send(data);
-        console.log("ajout avec succés");
+        // console.log("ajout avec succés");
       })
       .catch(err => {
         res.status(500).send({

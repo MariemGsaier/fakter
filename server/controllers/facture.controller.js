@@ -26,7 +26,7 @@ exports.create = (req, res) => {
     .create(fact)
     .then((data) => {
       res.send(data);
-      console.log("ajout avec succés");
+      // console.log("ajout avec succés");
     })
     .catch((err) => {
       res.status(500).send({

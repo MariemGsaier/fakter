@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: "app-articles",
@@ -26,6 +27,15 @@ export class ArticlesComponent implements OnInit {
     "actions",
   ];
   dataSource = new MatTableDataSource<Article>();
+  updateArticleForm: FormGroup = new FormGroup({
+    nom_article: new FormControl(''),
+    type_article: new FormControl(''),
+    prix_vente: new FormControl(''),
+    taxe_vente: new FormControl(''),
+    cout: new FormControl(''),
+    description: new FormControl(''),
+    image: new FormControl('')
+  });
   currentArticle: Article = {
     image: "",
     nom_article: "",
@@ -43,12 +53,14 @@ export class ArticlesComponent implements OnInit {
   isLoggedIn = false;
   showObserverBoard = true;
   paginator?: MatPaginator;
+  submitted = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private articleService: ArticleService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private formBuilder: FormBuilder,
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -69,11 +81,37 @@ export class ArticlesComponent implements OnInit {
       this.roles = user.role;
       this.showObserverBoard = this.roles.includes("Observateur");
     }
+
+    this.updateArticleForm = this.formBuilder.group(
+      {
+        nom_article: ['',[Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)]],
+        type_article: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)
+          ]
+        ],
+        prix_vente: ['', Validators.required],
+        taxe_vente: ['', Validators.required],
+        cout: ['', Validators.required],
+        description: ['', Validators.required],
+        image: ['', [Validators.required]]
+      }
+    );
   }
 
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  // }
+  get f(): { [key: string]: AbstractControl } {
+    return this.updateArticleForm.controls;
+    
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.updateArticleForm.invalid) {
+      return;
+    }
+  }
 
   fetchArticles(): void {
     this.articleService.getAll().subscribe({
@@ -124,6 +162,7 @@ export class ArticlesComponent implements OnInit {
 
   updateArticle(): void {
     this.message = "";
+    if (!(this.updateArticleForm.invalid)) {
     Swal.fire({
       title: "Modification effectuée avec succés !",
       icon: "success",
@@ -145,6 +184,7 @@ export class ArticlesComponent implements OnInit {
           });
       }
     });
+  }
   }
 
   deleteArticle(article: Article): void {

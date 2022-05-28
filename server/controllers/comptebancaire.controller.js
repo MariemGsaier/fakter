@@ -3,7 +3,7 @@ const comptebancaire = db.comptebancaire;
 const Op = db.Sequelize.Op;
 // Créer et enregistrer un compte bancaire
 exports.create = (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   if (!req.body.num_compte) {
     res.status(400).send({
       message: "Contenu vide !",
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
     .create(compteb)
     .then((data) => {
       res.send(data);
-      console.log("ajout avec succés");
+      // console.log("ajout avec succés");
     })
     .catch((err) => {
       res.status(500).send({
