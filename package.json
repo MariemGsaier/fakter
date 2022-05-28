@@ -8,14 +8,12 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "telinput":"node_modules/intl-tel-input/build/js/intlTelInput.min.js"
+    "telinput": "node_modules/intl-tel-input/build/js/intlTelInput.min.js"
   },
-
   "styles": [
     "node_modules/bootstrap/dist/css/bootstrap.min.css",
     "node_modules/intl-tel-input/build/css/intlTelInput.css"
   ],
-
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.1.0",

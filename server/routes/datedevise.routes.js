@@ -15,5 +15,7 @@ module.exports = function (app) {
      router.post("/create", controllerddev.create);
     // fetch all 
     router.get("/", controllerddev.findAll);
+    // Update with nom
+    router.put("/:nom", controllerddev.update);
     app.use("/api/datedevises", router);
   };
