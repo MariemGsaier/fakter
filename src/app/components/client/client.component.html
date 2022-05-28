@@ -133,18 +133,8 @@
 </mat-card>
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
-    <form>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Code d'identification </mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer votre modification"
-          id="code_identification"
-          [(ngModel)]="currentClient.code_identification"
-          [ngModelOptions]="{ standalone: true }"
-        />
-      </mat-form-field>
+    <form [formGroup]="clientForm">
+      
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom </mat-label>
         <input
@@ -156,8 +146,8 @@
           formControlName="nomclt"  [ngClass]="{ 'is-invalid': submitted && f['nomclt'].errors }"
         />
         <mat-error *ngIf="f['nomclt'].errors" class="text-danger">
-          <div *ngIf="f['nomclt'].errors['required']">Le champ nom est obligatoire</div>
-          <span *ngIf="f['nomclt'].errors['pattern']">Le nom saisi est invalide</span>
+          <div *ngIf="f['nomclt'].errors['required']">Le champ nom est obligatoire !</div>
+          <span *ngIf="f['nomclt'].errors['pattern']">Le nom saisi est invalide !</span>
         </mat-error>
       </mat-form-field>
 
@@ -173,8 +163,8 @@
           formControlName="adresse" [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }"
         />
         <mat-error *ngIf="f['adresse'].errors" class="text-danger">
-          <div *ngIf="f['adresse'].errors['required']">le champ adresse est obligatoire</div>
-          <div *ngIf="f['adresse'].errors['pattern']">l'adresse est invalide</div>
+          <div *ngIf="f['adresse'].errors['required']">le champ adresse est obligatoire !</div>
+          <div *ngIf="f['adresse'].errors['pattern']">l'adresse est invalide !</div>
         </mat-error>
       </mat-form-field>
 
@@ -190,8 +180,8 @@
           formControlName="phone"  [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
         />
         <mat-error *ngIf="f['phone'].errors" class="text-danger">
-          <div *ngIf="f['phone'].errors['required']">Le champ numéro de téléphone est obligatoire</div>
-          <div *ngIf="f['phone'].errors['pattern']">Le numéro de téléphone saisi est invalide</div>
+          <div *ngIf="f['phone'].errors['required']">Le champ numéro de téléphone est obligatoire !</div>
+          <div *ngIf="f['phone'].errors['pattern']">Le numéro de téléphone saisi est invalide !</div>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -206,8 +196,8 @@
           formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" 
         />
         <mat-error *ngIf="submitted && f['email'].errors" class="text-danger">
-          <div *ngIf="f['email'].errors['required']">Le champ courriel est obligatoire</div>
-          <span *ngIf="f['email'].errors['email']">Le courriel saisi est invalide</span>
+          <div *ngIf="f['email'].errors['required']">Le champ courriel est obligatoire !</div>
+          <span *ngIf="f['email'].errors['pattern']">Le courriel saisi est invalide !</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -216,13 +206,13 @@
           matInput
           type="text"
           placeholder="Veuillez entrer votre modification"
-          required
+          
           id="siteweb"
           [(ngModel)]="currentClient.siteweb"
           formControlName="website" [ngClass]="{ 'is-invalid': submitted && f['website'].errors }"
         />
         <mat-error *ngIf="f['website'].errors" class="text-danger">
-          <div *ngIf="f['website'].errors['pattern']">le site web saisi est invalide</div>
+          <div *ngIf="f['website'].errors['pattern']">le site web saisi est invalide !</div>
         </mat-error>
       </mat-form-field>
       <div>

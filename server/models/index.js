@@ -92,6 +92,20 @@ db.devise.hasMany(db.comptebancaire,{
 
 })
 
+
+db.devise.belongsToMany(db.dateDevise, {
+  through: "valeurdevise",
+  as: "dates",
+  foreignKey: "nom_devise",
+  otherKey: "date_devise"
+});
+
+db.dateDevise.belongsToMany(db.devise, {
+  through: "valeurdevise",
+  as: "devises",
+  foreignKey: "date_devise",
+  otherKey: "nom_devise"});
+
 db.dateDevise.belongsTo(db.devise, {
   foreignKey: "nom_devise",
   as: "devises",
@@ -100,6 +114,7 @@ db.dateDevise.belongsTo(db.devise, {
 db.devise.hasMany(db.dateDevise, {
   foreignKey: "nom_devise",
   as: "dates",
+
 });
 
 

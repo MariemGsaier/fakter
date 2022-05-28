@@ -7,7 +7,8 @@ import { MatSelectModule } from '@angular/material/select'
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { AngularIbanModule } from 'angular-iban';
 import { FileUploadModule } from "ng2-file-upload";
-
+import {NgxMatIntlTelInputModule} from "ngx-mat-intl-tel-input";
+import {Ng2TelInputModule} from 'ng2-tel-input';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,12 +30,14 @@ import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
 import { SearchUser } from './pipes/search-user.pipe';
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
     SimpleComponent,
     SearchUser
+    
     
     
   ],
@@ -56,6 +59,9 @@ import { SearchUser } from './pipes/search-user.pipe';
     MatDatepickerModule,
     AngularIbanModule,
     FileUploadModule,
+    NgxMatIntlTelInputModule,
+    Ng2TelInputModule
+  
   ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

@@ -51,6 +51,7 @@ export class ClientComponent implements OnInit {
     
   });
   submitted = false;
+  paginator?: MatPaginator;
 
   constructor(
     private route: ActivatedRoute,
@@ -59,11 +60,18 @@ export class ClientComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  @ViewChild("Paginator") paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(
+    paginator: MatPaginator
+  ) {
+    this.paginator = paginator;
+
+    if (this.dataSource) {
+      this.dataSource.paginator = paginator;
+    }
+  }
 
   ngOnInit(): void {
     this.fetchClients();
-    // this.dataSource.paginator = this.paginator;
     this.clientForm = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
@@ -76,10 +84,6 @@ export class ClientComponent implements OnInit {
     );
   }
     
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
   get f(): { [key: string]: AbstractControl } {
     return this.clientForm.controls;
     
