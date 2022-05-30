@@ -47,3 +47,36 @@ exports.findAll = (req, res) => {
         });
       });
   };
+
+  // Modifier la date et valeur d'une devise
+exports.update = (req, res) => {
+  const nom = req.params.nom;
+
+  devise
+    .update(
+      {
+        date: req.body.date,
+        valeur: req.body.valeur,
+        nom_devise: req.body.nom_devise
+      },
+      {
+        where: { nom: nom },
+      }
+    )
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "La devise est mise à jour avec succés.",
+        });
+      } else {
+        res.send({
+          message: `erreur de mise à jour due la devise avec nom=${nom}. peut etre la devise est inexistante ou le corps de la requête est vide!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating devise with nom=" + nom,
+      });
+    });
+};
