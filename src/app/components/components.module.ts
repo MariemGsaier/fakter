@@ -37,6 +37,9 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
 // import { MatFileUploadModule } from 'mat-file-upload';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { ChangePwComponent } from './board-admin/change-pw/change-pw.component';
+import { ForgotpasswordComponent } from './login/forgotpassword/forgotpassword.component';
+import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw.component';
 
 
 
@@ -77,6 +80,9 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
     FacturesComponent,
     AddFactureComponent,
     BoardAdminComponent,
+    ChangePwComponent,
+    ForgotpasswordComponent,
+    ChangeForgotpwComponent,
  
 
   ],

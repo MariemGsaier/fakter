@@ -7,13 +7,14 @@ module.exports = function (app) {
       "x-access-token, Origin, Content-Type, Accept"
     );
     next();
-  });
-
+  }); 
+  app.put ("/api/auth",controller.changeFirstPw)
+  app.post ("/api/auth",controller.forgotPw)
   app.post(
     "/api/auth/create",
     [
       verifySignUp.checkDuplicateUsernameOrEmail,
-      // verifySignUp.checkRolesExisted,
+
     ],
     controller.signup
   );

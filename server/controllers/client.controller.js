@@ -51,11 +51,11 @@ exports.findAll = (req, res) => {
 
 // Modifier un client
 exports.update = (req, res) => {
-  const code_identification  = req.params.code_identification ;
+  const id = req.params.id;
  
   client
     .update(req.body, {
-      where: { code_identification : code_identification  },
+      where: {id: id },
     })
     .then((num) => {
       if (num == 1) {
@@ -64,22 +64,22 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `erreur de mise à jour du client avec codeid=${code_identification }. peut etre le client est inexistant  ou le corps de la requête est vide!`,
+          message: `erreur de mise à jour du client avec id=${id }. peut être le client est inexistant  ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating client with id=" + code_identification ,
+        message: "Erreu de mise à jour du client  avec id=" + id ,
       });
     });
 };
 // Delete a client with the specified id in the request
 exports.delete = (req, res) => {
-  const code_identification = req.params.code_identification ;
+  const id = req.params.id;
   client
     .destroy({
-      where: { code_identification : code_identification  },
+      where: { id: id  },
     })
     .then((num) => {
       if (num == 1) {
@@ -88,13 +88,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression du client  avec codeid=${code_identification }. Peut être qu'il est inexistant !`,
+          message: `échec de suppression du client  avec id=${id }. Peut être qu'il est inexistant !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Echec de suppression du client avec codeid=" + code_identification ,
+        message: "échec de suppression du client avec id=" + id ,
       });
     });
 };

@@ -63,11 +63,6 @@ export class AddClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientForm = this.formBuilder.group({
-      // cin: ['',[Validators.required,Validators.pattern("^[0-9]*$"),Validators.maxLength(8),Validators.minLength(8)]],
-      // rcs :['',[Validators.required,Validators.pattern("/^\w+((\-?| ?)\w+)? [a-bA-B] (\d{9}|((\d{3} ){2}\d{3}))$/gm")]],
-      // codetva: ['',[Validators.required,Validators.pattern("^[A-Za-z]{2,4}(?=.{2,12}$)[-_\s0-9]*(?:[a-zA-Z][-_\s0-9]*){0,2}^")]],
-      // timbrefisc : ['',[Validators.required,Validators.pattern("^[A-Za-z]{2,4}(?=.{2,12}$)[-_\s0-9]*(?:[a-zA-Z][-_\s0-9]*){0,2}^")]],
-      // passeport: ['',[Validators.required,Validators.pattern("^[A-Z0-9<]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9<]{14}[0-9]{2}$")]],
       codeid: [{ value: "", disabled: true }],
       email: [
         "",
@@ -103,7 +98,7 @@ export class AddClientComponent implements OnInit {
     const ctrl=this.clientForm.controls["codeid"]
     // const ctrl = this.clientForm.get("codeid");
 
-    ctrl?.enable();
+    ctrl.enable();
     switch (this.codesId[data].value) {
       case "cin":
         ctrl.setValidators([Validators.required,Validators.pattern("^[0-9]*$"),Validators.maxLength(8),Validators.minLength(8)]);

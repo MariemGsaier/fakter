@@ -26,11 +26,11 @@ db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
 
 
 db.facture.belongsTo(db.client,{
-  foreignKey: "code_client",
+  foreignKey: "id_client",
   as: "client"
 })
 db.client.hasMany(db.facture,{
-  foreignKey: "code_client",
+  foreignKey: "id_client",
   as: "factures"
 })
 
@@ -91,20 +91,6 @@ db.devise.hasMany(db.comptebancaire,{
   as: "comptes bancaires"
 
 })
-
-
-db.devise.belongsToMany(db.dateDevise, {
-  through: "valeurdevise",
-  as: "dates",
-  foreignKey: "nom_devise",
-  otherKey: "date_devise"
-});
-
-db.dateDevise.belongsToMany(db.devise, {
-  through: "valeurdevise",
-  as: "devises",
-  foreignKey: "date_devise",
-  otherKey: "nom_devise"});
 
 db.dateDevise.belongsTo(db.devise, {
   foreignKey: "nom_devise",

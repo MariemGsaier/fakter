@@ -33,6 +33,8 @@ import { FacturesComponent } from "./components/factures/factures.component";
 import { AddFactureComponent } from "./components/factures/add-facture/add-facture.component";
 import { AddSocietyComponent } from "./components/societies/add-society/add-society.component";
 import { SocietiesComponent } from "./components/societies/societies.component";
+import { ChangePwComponent } from "./components/board-admin/change-pw/change-pw.component";
+import { ForgotpasswordComponent } from "./components/login/forgotpassword/forgotpassword.component";
 
 
 
@@ -44,6 +46,9 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "/login", pathMatch: "full" },
       { path: "login", component: LoginComponent },
+      { path: "change-pw", component: ChangePwComponent },
+      { path: "forgot-pw", component: ForgotpasswordComponent },
+
     ],
   },
   {
@@ -81,10 +86,8 @@ const routes: Routes = [
       {path: "add-facture", component: AddFactureComponent},
       { path: "societe", component: SocietiesComponent },
       { path: "add-societe", component: AddSocietyComponent },
-      
     ],
   },
-
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "**", redirectTo: "/login", pathMatch: "full" },
 ];

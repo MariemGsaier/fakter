@@ -31,15 +31,13 @@ import { SearchUser } from './pipes/search-user.pipe';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
     FullComponent,
     SimpleComponent,
-    SearchUser
-    
-    
-    
+    SearchUser,
   ],
   imports: [
     BrowserModule,
