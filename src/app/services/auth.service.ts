@@ -23,4 +23,10 @@ export class AuthService {
       password
     }, httpOptions);
   }
+  changeFirstPw(data: any): Observable<any> {
+    return this.http.put(`${AUTH_API}`, data);
+  }
+  forgtoPw(data: any): Observable<any> {
+    return this.http.post(`${AUTH_API}`, data);
+  }
 }

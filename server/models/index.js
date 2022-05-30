@@ -26,11 +26,11 @@ db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
 
 
 db.facture.belongsTo(db.client,{
-  foreignKey: "code_client",
+  foreignKey: "id_client",
   as: "client"
 })
 db.client.hasMany(db.facture,{
-  foreignKey: "code_client",
+  foreignKey: "id_client",
   as: "factures"
 })
 

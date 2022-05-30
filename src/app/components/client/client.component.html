@@ -24,6 +24,8 @@
       mat-button
       class="btn btn-info fw-normal btnw"
       routerLink="/add-client"
+      matTooltip="Ajouter un client"
+      matTooltipPosition="above"
       type="submit"
       style="float: right"
     >
@@ -31,12 +33,26 @@
     </button>
     <button
       mat-button
+      class="btn btn-primary fw-normal"
+      matTooltip="Exporter en Excel"
+      matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
+      (click)="exportexcel()"
+    >
+      <mat-icon>save_alt</mat-icon>
+    </button>
+
+    <button
+      mat-button
       class="btn btn-danger fw-normal"
       style="float: right; margin-right: 0.142%"
+      matTooltip="Supprimer tous les clients"
+      matTooltipPosition="above"
       (click)="removeAllClients()"
     >
       Supprimer Tout
     </button>
+
     <button
       mat-icon-button
       class="ms-4 me-4"
@@ -51,7 +67,12 @@
     <h4 class="mb-56">Gérez vos clients</h4>
 
     <div class="table-responsive">
-      <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        id="excel-table"
+        class="text-nowrap w-100"
+      >
         <ng-container matColumnDef="code_identification">
           <th mat-header-cell *matHeaderCellDef>Code d'identification</th>
           <td mat-cell *matCellDef="let client">
@@ -67,7 +88,7 @@
         <ng-container matColumnDef="numtel">
           <th mat-header-cell *matHeaderCellDef>Numéro de téléphone</th>
           <td mat-cell *matCellDef="let client">
-            <p class="mb-0 fw-medium">{{ client.numtel}}</p>
+            <p class="mb-0 fw-medium">{{ client.numtel }}</p>
           </td>
         </ng-container>
 
@@ -91,8 +112,9 @@
             <p class="mb-0 fw-medium">{{ client.siteweb }}</p>
           </td>
         </ng-container>
+
         <ng-container matColumnDef="actions" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <th mat-header-cell *matHeaderCellDef >Actions</th>
           <td
             mat-cell
             *matCellDef="let client; let i = index"
@@ -102,16 +124,21 @@
               mat-button
               class="btn btn-success fw-normal btnw"
               style="margin-right: 1%"
+              matTooltip="Modifier le client"
+              matTooltipPosition="above"
               type="submit"
               (click)="setActiveClient(client, i)"
             >
               <mat-icon>edit</mat-icon>
             </button>
+
             <button
               mat-button
               class="btn btn-danger fw-normal btnw"
               style="margin-right: 1%"
               type="submit"
+              matTooltip="Supprimer le client"
+              matTooltipPosition="above"
               (click)="deleteClient(client)"
             >
               <mat-icon>delete</mat-icon>
@@ -125,7 +152,7 @@
       <mat-paginator
         #paginator
         [pageSize]="5"
-        [pageSizeOptions]="[5, 10, 20,30,50,100]"
+        [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
       >
       </mat-paginator>
     </div>
@@ -133,8 +160,50 @@
 </mat-card>
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
-    <form [formGroup]="clientForm">
-      
+    <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
+      <mat-form-field
+        class="w-100 fs-16"
+        style="margin-right: 16px"
+        appearance="outline"
+      >
+        <mat-label>Type du code d'identification </mat-label>
+        <mat-select
+          [(ngModel)]="selectedValue"
+          [ngModelOptions]="{ standalone: true }"
+          (ngModelChange)="changeCodeIdClient($event)"
+          required
+        >
+          <mat-option *ngFor="let codeId of codesId" [value]="codeId.id">
+            {{ codeId.value }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Code d'identification </mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Veuillez entrer le code d'identification du client"
+          formControlName="codeid"
+          [ngClass]="{ 'is-invalid': submitted && f['codeid'].errors }"
+          [(ngModel)]="currentClient.code_identification"
+        />
+        <mat-error *ngIf="f['codeid'].errors" class="text-danger">
+          <div *ngIf="f['codeid'].errors['required']">
+            Le champ code d'identification est obligatoire !
+          </div>
+          <span *ngIf="f['codeid'].errors['pattern']"
+            >Le code d'identification saisi est invalide !</span
+          >
+          <span *ngIf="f['codeid'].errors['maxlength']"
+            >Vous avez dépassé la longueur minimale !</span
+          >
+          <span *ngIf="f['codeid'].errors['minlength']"
+            >Une longueur minimale est requise !</span
+          >
+        </mat-error>
+      </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom </mat-label>
         <input
@@ -143,11 +212,16 @@
           placeholder="Veuillez entrer votre modification"
           id="username"
           [(ngModel)]="currentClient.nom"
-          formControlName="nomclt"  [ngClass]="{ 'is-invalid': submitted && f['nomclt'].errors }"
+          formControlName="nomclt"
+          [ngClass]="{ 'is-invalid': submitted && f['nomclt'].errors }"
         />
         <mat-error *ngIf="f['nomclt'].errors" class="text-danger">
-          <div *ngIf="f['nomclt'].errors['required']">Le champ nom est obligatoire !</div>
-          <span *ngIf="f['nomclt'].errors['pattern']">Le nom saisi est invalide !</span>
+          <div *ngIf="f['nomclt'].errors['required']">
+            Le champ nom est obligatoire !
+          </div>
+          <span *ngIf="f['nomclt'].errors['pattern']"
+            >Le nom saisi est invalide !</span
+          >
         </mat-error>
       </mat-form-field>
 
@@ -160,11 +234,16 @@
           required
           id="adr"
           [(ngModel)]="currentClient.adresse"
-          formControlName="adresse" [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }"
+          formControlName="adresse"
+          [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }"
         />
         <mat-error *ngIf="f['adresse'].errors" class="text-danger">
-          <div *ngIf="f['adresse'].errors['required']">le champ adresse est obligatoire !</div>
-          <div *ngIf="f['adresse'].errors['pattern']">l'adresse est invalide !</div>
+          <div *ngIf="f['adresse'].errors['required']">
+            le champ adresse est obligatoire !
+          </div>
+          <div *ngIf="f['adresse'].errors['pattern']">
+            l'adresse est invalide !
+          </div>
         </mat-error>
       </mat-form-field>
 
@@ -177,11 +256,16 @@
           required
           id="numtel"
           [(ngModel)]="currentClient.numtel"
-          formControlName="phone"  [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
+          formControlName="phone"
+          [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"
         />
         <mat-error *ngIf="f['phone'].errors" class="text-danger">
-          <div *ngIf="f['phone'].errors['required']">Le champ numéro de téléphone est obligatoire !</div>
-          <div *ngIf="f['phone'].errors['pattern']">Le numéro de téléphone saisi est invalide !</div>
+          <div *ngIf="f['phone'].errors['required']">
+            Le champ numéro de téléphone est obligatoire !
+          </div>
+          <div *ngIf="f['phone'].errors['pattern']">
+            Le numéro de téléphone saisi est invalide !
+          </div>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -193,11 +277,16 @@
           required
           id="cour"
           [(ngModel)]="currentClient.courriel"
-          formControlName="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" 
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
         />
         <mat-error *ngIf="submitted && f['email'].errors" class="text-danger">
-          <div *ngIf="f['email'].errors['required']">Le champ courriel est obligatoire !</div>
-          <span *ngIf="f['email'].errors['pattern']">Le courriel saisi est invalide !</span>
+          <div *ngIf="f['email'].errors['required']">
+            Le champ courriel est obligatoire !
+          </div>
+          <span *ngIf="f['email'].errors['pattern']"
+            >Le courriel saisi est invalide !</span
+          >
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -206,13 +295,15 @@
           matInput
           type="text"
           placeholder="Veuillez entrer votre modification"
-          
           id="siteweb"
           [(ngModel)]="currentClient.siteweb"
-          formControlName="website" [ngClass]="{ 'is-invalid': submitted && f['website'].errors }"
+          formControlName="website"
+          [ngClass]="{ 'is-invalid': submitted && f['website'].errors }"
         />
         <mat-error *ngIf="f['website'].errors" class="text-danger">
-          <div *ngIf="f['website'].errors['pattern']">le site web saisi est invalide !</div>
+          <div *ngIf="f['website'].errors['pattern']">
+            le site web saisi est invalide !
+          </div>
         </mat-error>
       </mat-form-field>
       <div>

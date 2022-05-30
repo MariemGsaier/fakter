@@ -59,7 +59,7 @@ export class ProfileComponent implements OnInit {
     this.form1 = this.formBuilder.group({
       username: [
         "",
-        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
+        [Validators.required, Validators.pattern("/^[a-zA-Z][a-zA-Z0-9 ]+$/")],
       ],
       email: [
         "",
@@ -78,7 +78,7 @@ export class ProfileComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(6),
-            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/),
+            Validators.pattern("/^[a-zA-Z0-9!@#$%^&*()]+$/"),
           ],
         ],
         confirmPassword: ["", Validators.required],

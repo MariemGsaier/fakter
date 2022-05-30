@@ -4,6 +4,7 @@ import { Facture } from 'src/app/models/facture.model';
 import { FactureService } from 'src/app/services/facture.service';
 import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from 'src/app/services/token-storage.service';
+import * as XLSX from 'xlsx';
 
 
 @Component({
@@ -12,6 +13,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
   styleUrls: ['./factures.component.scss']
 })
 export class FacturesComponent implements OnInit {
+  fileName= "FacturesSheet.xlsx";
   displayedColumns: string[] = ['reference','vendeur', 'date_facturation', 'date_echeance', 'etat_facture', 'etat_echeance', 'total_ht','total_chiffres','total_lettres', 'total_devise', 'actions'];
   dataSource = new MatTableDataSource<Facture>();
   currentFacture: Facture = {
@@ -90,4 +92,18 @@ export class FacturesComponent implements OnInit {
       annuler(): void {
         this.disabelModif = false;
       }
+      exportexcel(): void
+  {
+    /* pass here the table id */
+    let element = document.getElementById('excel-table');
+    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
+ 
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+ 
+    /* save to file */  
+    XLSX.writeFile(wb, this.fileName);
+ 
+  }
 }

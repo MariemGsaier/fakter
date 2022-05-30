@@ -6,7 +6,14 @@ import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
-import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  FormControl,
+  Validators,
+} from "@angular/forms";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: "app-articles",
@@ -14,6 +21,7 @@ import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from
   styleUrls: ["./articles.component.scss"],
 })
 export class ArticlesComponent implements OnInit {
+  fileName = "ArticlesSheet.xlsx";
   searchTerm: any;
   search: boolean = false;
   displayedColumns: string[] = [
@@ -28,13 +36,13 @@ export class ArticlesComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<Article>();
   updateArticleForm: FormGroup = new FormGroup({
-    nom_article: new FormControl(''),
-    type_article: new FormControl(''),
-    prix_vente: new FormControl(''),
-    taxe_vente: new FormControl(''),
-    cout: new FormControl(''),
-    description: new FormControl(''),
-    image: new FormControl('')
+    nom_article: new FormControl(""),
+    type_article: new FormControl(""),
+    prix_vente: new FormControl(""),
+    taxe_vente: new FormControl(""),
+    cout: new FormControl(""),
+    description: new FormControl(""),
+    image: new FormControl(""),
   });
   currentArticle: Article = {
     image: "",
@@ -60,7 +68,7 @@ export class ArticlesComponent implements OnInit {
     private router: Router,
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -82,28 +90,25 @@ export class ArticlesComponent implements OnInit {
       this.showObserverBoard = this.roles.includes("Observateur");
     }
 
-    this.updateArticleForm = this.formBuilder.group(
-      {
-        nom_article: ['',[Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)]],
-        type_article: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)
-          ]
-        ],
-        prix_vente: ['', Validators.required],
-        taxe_vente: ['', Validators.required],
-        cout: ['', Validators.required],
-        description: ['', Validators.required],
-        image: ['', [Validators.required]]
-      }
-    );
+    this.updateArticleForm = this.formBuilder.group({
+      nom_article: [
+        "",
+        [Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)],
+      ],
+      type_article: [
+        "",
+        [Validators.required, Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)],
+      ],
+      prix_vente: ["", Validators.required],
+      taxe_vente: ["", Validators.required],
+      cout: ["", Validators.required],
+      description: ["", Validators.required],
+      image: ["", [Validators.required]],
+    });
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.updateArticleForm.controls;
-    
   }
 
   onSubmit(): void {
@@ -162,29 +167,29 @@ export class ArticlesComponent implements OnInit {
 
   updateArticle(): void {
     this.message = "";
-    if (!(this.updateArticleForm.invalid)) {
-    Swal.fire({
-      title: "Modification effectuée avec succés !",
-      icon: "success",
-      confirmButtonColor: "#00c292",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.articleService
-          .update(this.currentArticle.id, this.currentArticle)
-          .subscribe({
-            next: (res) => {
-              console.log(res);
-              this.disabelModif = false;
-              this.fetchArticles();
-              this.message = res.message
-                ? res.message
-                : "This article was updated successfully!";
-            },
-            error: (e) => console.error(e),
-          });
-      }
-    });
-  }
+    if (!this.updateArticleForm.invalid) {
+      Swal.fire({
+        title: "Modification effectuée avec succés !",
+        icon: "success",
+        confirmButtonColor: "#00c292",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.articleService
+            .update(this.currentArticle.id, this.currentArticle)
+            .subscribe({
+              next: (res) => {
+                console.log(res);
+                this.disabelModif = false;
+                this.fetchArticles();
+                this.message = res.message
+                  ? res.message
+                  : "This article was updated successfully!";
+              },
+              error: (e) => console.error(e),
+            });
+        }
+      });
+    }
   }
 
   deleteArticle(article: Article): void {
@@ -218,5 +223,18 @@ export class ArticlesComponent implements OnInit {
 
   annuler(): void {
     this.disabelModif = false;
+  }
+
+  exportexcel(): void {
+    /* pass here the table id */
+    let element = document.getElementById("excel-table");
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
   }
 }
