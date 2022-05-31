@@ -19,7 +19,20 @@
 
 .card-body {
     text-align: center;
+    width : 300px;
+    height: 200px;
 }
+
+.card-body-cnx {
+    text-align: center;
+    width : 600px;
+}
+.center-pos{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 
 .card-body .mb-32 {
     color: #ffffff;
@@ -27,5 +40,9 @@
 }
 
 #button {
-    background-color: #00c292
+    background-color: #00c292;
+    margin-top : 20px;
+}
+.forgotmdp:hover{
+    color: #00c292;
 }

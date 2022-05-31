@@ -12,7 +12,6 @@
               placeholder="Entrez le nom d'utilisateur"
               formControlName="username"
               [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
-              required
               [(ngModel)]="user.username"
             />
             <mat-error
@@ -37,7 +36,6 @@
               formControlName="email"
               [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
               placeholder="Entrez l'email"
-              required
               [(ngModel)]="user.email"
             />
             <mat-error
@@ -54,7 +52,6 @@
             <mat-label>Rôle</mat-label>
             <mat-select
               name="role"
-              required
               formControlName="role"
               [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
               [(ngModel)]="user.role"
@@ -77,7 +74,6 @@
               formControlName="password"
               [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
               placeholder="Entrez le mot de passe"
-              required
               [(ngModel)]="user.password"
             />
             <mat-error
@@ -107,7 +103,6 @@
                 'is-invalid': submitted && f['confirmPassword'].errors
               }"
               placeholder="Entrez le mot de passe"
-              required
             />
             <mat-error
               *ngIf="f['confirmPassword'].errors"

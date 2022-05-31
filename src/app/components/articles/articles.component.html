@@ -32,6 +32,16 @@
     </button>
     <button
       mat-button
+      class="btn btn-primary fw-normal"
+      matTooltip="Exporter en Excel"
+      matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
+      (click)="exportexcel()"
+    >
+      <mat-icon>save_alt</mat-icon>
+    </button>
+    <button
+      mat-button
       class="btn btn-danger fw-normal disabled"
       style="float: right; margin-right: 0.142%"
       (click)="removeAllArticles()"
@@ -39,7 +49,12 @@
     >
       Supprimer Tout
     </button>
-    <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
+    <button
+      mat-icon-button
+      class="ms-4 me-4"
+      style="float: right"
+      (click)="search = !search"
+    >
       <i-feather
         name="search"
         class="mt-n3 text-light-muted feather-base text-dark"
@@ -49,8 +64,7 @@
     <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les articles</h4>
 
     <div class="table-responsive">
-      <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-                
+      <table mat-table [dataSource]="dataSource" id="excel-table" class="text-nowrap w-100">
         <ng-container matColumnDef="image">
           <th mat-header-cell *matHeaderCellDef>Image</th>
           <td mat-cell class="fw-medium" *matCellDef="let article">
@@ -95,16 +109,16 @@
         </ng-container>
 
         <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef="let article">
-              <p class="mb-0 fw-medium">{{ article.description }}</p>
-            </td>
-          </ng-container>
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let article">
+            <p class="mb-0 fw-medium">{{ article.description }}</p>
+          </td>
+        </ng-container>
         <ng-container matColumnDef="actions" stickyEnd>
           <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">Actions</th>
           <td
             mat-cell
-            *matCellDef="let article; let i = index;"
+            *matCellDef="let article; let i = index"
             [class.active]="i == currentIndex"
           >
             <button
@@ -137,7 +151,7 @@
       <mat-paginator
         #paginator
         [pageSize]="5"
-        [pageSizeOptions]="[5, 10, 20,30,50,100]"
+        [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
       >
       </mat-paginator>
     </div>
@@ -157,8 +171,12 @@
           [(ngModel)]="currentArticle.nom_article"
         />
         <mat-error *ngIf="f['nom_article'].errors" class="text-danger">
-          <div *ngIf="f['nom_article'].errors['required']">Le champ nom est obligatoire</div>
-          <span *ngIf="f['nom_article'].errors['pattern']">Le nom saisi est invalide</span>
+          <div *ngIf="f['nom_article'].errors['required']">
+            Le champ nom est obligatoire
+          </div>
+          <span *ngIf="f['nom_article'].errors['pattern']"
+            >Le nom saisi est invalide</span
+          >
         </mat-error>
       </mat-form-field>
 
@@ -192,7 +210,9 @@
           [(ngModel)]="currentArticle.prix_vente"
         />
         <mat-error *ngIf="f['prix_vente'].errors" class="text-danger">
-          <div *ngIf="f['prix_vente'].errors['required']">Le champ prix est obligatoire</div>
+          <div *ngIf="f['prix_vente'].errors['required']">
+            Le champ prix est obligatoire
+          </div>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -207,7 +227,9 @@
           [(ngModel)]="currentArticle.taxe_vente"
         />
         <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
-          <div *ngIf="f['taxe_vente'].errors['required']">Le champ taxe est obligatoire</div>
+          <div *ngIf="f['taxe_vente'].errors['required']">
+            Le champ taxe est obligatoire
+          </div>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -222,7 +244,9 @@
           [(ngModel)]="currentArticle.cout"
         />
         <mat-error *ngIf="f['cout'].errors" class="text-danger">
-          <div *ngIf="f['cout'].errors['required']">Le champ coût est obligatoire</div>
+          <div *ngIf="f['cout'].errors['required']">
+            Le champ coût est obligatoire
+          </div>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -237,7 +261,9 @@
           [(ngModel)]="currentArticle.description"
         ></textarea>
         <mat-error *ngIf="f['description'].errors" class="text-danger">
-          <div *ngIf="f['description'].errors['required']">Le champ description est obligatoire</div>
+          <div *ngIf="f['description'].errors['required']">
+            Le champ description est obligatoire
+          </div>
         </mat-error>
       </mat-form-field>
 
@@ -248,7 +274,7 @@
           class="btn btn-danger fw-normal"
           (click)="annuler()"
           type="submit"
-          style="float: right; margin-left: 0.3%;"
+          style="float: right; margin-left: 0.3%"
         >
           Annuler
         </button>
