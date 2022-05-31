@@ -42,7 +42,7 @@ export class FacturesComponent implements OnInit {
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
       this.roles = user.role;
-      this.showObserverBoard = this.roles.includes("observer");
+      this.showObserverBoard = this.roles.includes("Observateur");
     }
   }
 

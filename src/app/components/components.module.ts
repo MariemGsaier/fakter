@@ -37,6 +37,9 @@ import { AddFactureComponent } from './factures/add-facture/add-facture.componen
 // import { MatFileUploadModule } from 'mat-file-upload';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
+import { DevisesComponent } from './devises/devises.component';
+import { AddDeviseComponent } from './devises/add-devise/add-devise.component';
+import { DialogBoxComponent } from './factures/dialog-box/dialog-box.component';
 
 
 
@@ -77,6 +80,9 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
     FacturesComponent,
     AddFactureComponent,
     BoardAdminComponent,
+    DevisesComponent,
+    AddDeviseComponent,
+    DialogBoxComponent,
  
 
   ],

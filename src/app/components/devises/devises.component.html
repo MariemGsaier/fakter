@@ -1,0 +1,215 @@
+<mat-card class="w-100">
+    <mat-card-content>
+      <div *ngIf="search" class="search-section d-flex align-items-center">
+        <mat-form-field class="w-100" color="primary" appearance="legacy">
+          <mat-label class="fs-16">Recherchez ici</mat-label>
+          <input
+            matInput
+            placeholder="Veuillez taper un mot clé"
+            autocomplete="off"
+            (keyup)="filterData($event)"
+          />
+        </mat-form-field>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item"></li>
+        </ul>
+        <button mat-icon-button (click)="search = !search">
+          <i-feather
+            name="x-circle"
+            class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
+          ></i-feather>
+        </button>
+      </div>
+      <button
+        mat-button
+        class="btn btn-info fw-normal disabled"
+        routerLink="/add-devise"
+        type="submit"
+        style="float: right"
+        *ngIf="!showObserverBoard"
+      >
+        <mat-icon>add</mat-icon>
+      </button>
+      <button
+        mat-button
+        class="btn btn-danger fw-normal disabled"
+        style="float: right; margin-right: 0.142%"
+        (click)="removeAllDevises()"
+        *ngIf="!showObserverBoard"
+      >
+        Supprimer Tout
+      </button>
+      <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
+        <i-feather
+          name="search"
+          class="mt-n3 text-light-muted feather-base text-dark"
+        ></i-feather>
+      </button>
+      
+    <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les devises</h4>
+    <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les devises</h4>
+  
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+                  
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef>Nom devise</th>
+            <td mat-cell class="fw-medium" *matCellDef="let devise">
+              {{ devise.nom }}
+            </td>
+          </ng-container>
+  
+          <!-- Assigned Column -->
+          <ng-container matColumnDef="devise">
+            <th mat-header-cell *matHeaderCellDef>Devise</th>
+            <td mat-cell *matCellDef="let devise">
+              <p class="mb-0 fw-medium">{{ devise.devise }}</p>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="date">
+            <th mat-header-cell *matHeaderCellDef>Date d'insertion</th>
+            <td mat-cell *matCellDef="let devise">
+              <p class="mb-0 fw-medium">{{ devise.date }}</p>
+            </td>
+          </ng-container>
+  
+          <!-- Project Column -->
+          <ng-container matColumnDef="valeur">
+            <th mat-header-cell *matHeaderCellDef>Taux de change</th>
+            <td mat-cell *matCellDef="let devise">
+              <p class="mb-0 fw-medium">{{ devise.valeur }}</p>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions" stickyEnd>
+            <th mat-header-cell *matHeaderCellDef  [hidden]="showObserverBoard">Actions</th>
+            <td
+              mat-cell
+              *matCellDef="let devise; let i = index;"
+              [class.active]="i == currentIndex"
+            >
+              <button
+                mat-button
+                *ngIf="!showObserverBoard"
+                class="btn btn-success fw-normal btnw disabled"
+                style="margin-right: 1%"
+                type="submit"
+                (click)="setActiveDevise(devise, i)"
+                href="#update_card"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-button
+                *ngIf="!showObserverBoard"
+                class="btn btn-danger fw-normal btnw disabled"
+                style="margin-right: 1%"
+                type="submit"
+                (click)="deleteDevise(devise)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator
+          #paginator
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20,30,50,100]"
+        >
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card id="update_card" class="w-100" *ngIf="disabelModif">
+    <mat-card-content>
+      <form [formGroup]="updateDeviseForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Nom devise</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="nom"
+            placeholder="Veuillez entrer votre modification"
+            id="nom"
+            [(ngModel)]="currentDevise.nom"
+          />
+          <mat-error *ngIf="f['nom'].errors" class="text-danger">
+            <div *ngIf="f['nom'].errors['required']">Le champ nom est obligatoire</div>
+            <span *ngIf="f['nom'].errors['pattern']">Le nom saisi est invalide</span>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Devise</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Veuillez entrer votre modification"
+            formControlName="devise"
+            required
+            id="devise"
+            [(ngModel)]="currentDevise.devise"
+          />
+          <mat-error *ngIf="f['devise'].errors" class="text-danger">
+            <div *ngIf="f['devise'].errors['required']">Le champ devise est obligatoire</div>
+            <span *ngIf="f['devise'].errors['pattern']">Le type saisi est invalide</span>
+          </mat-error>
+        </mat-form-field>
+  
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Date</mat-label>
+          <input matInput [matDatepicker]="picker1" required />
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker1"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          <mat-error *ngIf="f['date'].errors" class="text-danger">
+            <div *ngIf="f['date'].errors['required']">Le champ date est obligatoire</div>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Taux de change</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Veuillez entrer votre modification"
+            formControlName="taxe_vente"
+            required
+            id="valeur"
+          />
+          <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
+            <div *ngIf="f['taxe_vente'].errors['required']">Le champ taxe est obligatoire</div>
+          </mat-error>
+        </mat-form-field>
+  
+        <div>
+          &nbsp;
+          <button
+            mat-button
+            class="btn btn-danger fw-normal"
+            (click)="annuler()"
+            type="submit"
+            style="float: right; margin-left: 0.3%;"
+          >
+            Annuler
+          </button>
+          <button
+            mat-button
+            class="btn btn-success fw-normal"
+            (click)="updateDevise()"
+            type="submit"
+            style="float: right"
+          >
+            Confirmer
+          </button>
+          <p>{{ message }}</p>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  

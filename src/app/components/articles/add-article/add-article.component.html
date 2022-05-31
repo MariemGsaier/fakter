@@ -27,14 +27,17 @@
           </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Type article</mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Entrez le d'article"
-              formControlName="type_article"
+            <mat-select
+              name="type_article"
               required
+              formControlName="type_article"
+              [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
               [(ngModel)]="article.type_article"
-            />
+            >
+              <mat-option *ngFor="let type of types" [value]="type.value">
+                {{ type.viewValue }}
+              </mat-option>
+            </mat-select>
             <mat-error *ngIf="f['type_article'].errors" class="text-danger">
               <div *ngIf="f['type_article'].errors['required']">
                 Le champ type est obligatoire
