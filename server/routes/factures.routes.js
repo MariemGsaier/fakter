@@ -13,6 +13,7 @@ module.exports = function (app) {
   });
 
 //créer une facture 
+router.post("sendemail",controllerfct.factureEmail);
 router.post("/create", controllerfct.create);
   // fetch all societes
   router.get("/", controllerfct.findAll);

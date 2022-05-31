@@ -1,4 +1,4 @@
-import { NgModule, SimpleChange } from "@angular/core";
+import { Component, NgModule, SimpleChange } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { BoardAdminComponent } from "./components/board-admin/board-admin.component";
 import { AddUserComponent } from "./components/board-admin/add-user/add-user.component";
@@ -35,6 +35,7 @@ import { AddSocietyComponent } from "./components/societies/add-society/add-soci
 import { SocietiesComponent } from "./components/societies/societies.component";
 import { ChangePwComponent } from "./components/board-admin/change-pw/change-pw.component";
 import { ForgotpasswordComponent } from "./components/login/forgotpassword/forgotpassword.component";
+import { PrintFactureComponent } from "./components/factures/print-facture/print-facture.component";
 
 
 
@@ -86,6 +87,7 @@ const routes: Routes = [
       {path: "add-facture", component: AddFactureComponent},
       { path: "societe", component: SocietiesComponent },
       { path: "add-societe", component: AddSocietyComponent },
+      {path : "print-facture", component: PrintFactureComponent }
     ],
   },
   { path: "", redirectTo: "/login", pathMatch: "full" },

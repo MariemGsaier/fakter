@@ -7,7 +7,6 @@ var nodemailer = require("nodemailer");
 // const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { password } = require("pg/lib/defaults");
 
 exports.signup = (req, res) => {
   // Save User to Database
@@ -59,17 +58,8 @@ exports.forgotPw = (req, res) => {
   User.findOne({
     where: { email: email },
   })
-  .then(data => {
-    res.send(data);
-    const secretk = config.secret + data.password ;
-    const payload = {
-      email : data.email,
-      id : data.id
-
-    }
-    const resetlink = jwt.sign(payload,secretk,{expiresIn : '15m'})
-    User
-    .update(data.id, { resetlink })
+  .then(user => {
+    res.send(user);
     var transport =  nodemailer.createTransport({
       host: "smtp.mailtrap.io",
       port: 2525,

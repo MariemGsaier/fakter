@@ -4,6 +4,7 @@ import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from
 import { Router } from "@angular/router";
 import { User } from 'src/app/models/user.model';
 import Swal from "sweetalert2";
+import { UserStoreService } from 'src/app/store/user-store.service';
 
 
 
@@ -24,7 +25,7 @@ export class ForgotpasswordComponent implements OnInit {
 
 
   constructor(private router: Router,private formBuilder: FormBuilder,
-    private authService: AuthService) { }
+    private authService: AuthService, private userStore : UserStoreService) { }
 
   ngOnInit(): void {
     this.forgotPwForm = this.formBuilder.group(
@@ -60,8 +61,7 @@ export class ForgotpasswordComponent implements OnInit {
           confirmButtonText: "Ok"
         }) 
         console.log(data);
-        localStorage.setItem("1",JSON.stringify(data.user.email));
-        // localStorage.removeItem("1");
+       
               },
       error: (e) => console.error(e),
     });
