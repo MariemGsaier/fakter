@@ -13,6 +13,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { ValidatorService } from "angular-iban";
+import { TokenStorageService } from "src/app/services/token-storage.service";
 
 @Component({
   selector: "app-society-accounts",
@@ -55,19 +56,37 @@ export class SocietyAccountsComponent implements OnInit {
   bankaccounts?: Bankaccount[];
   currentIndex = -1;
   search: boolean = false;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showObserverBoard = true;
+  paginator?: MatPaginator;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private BankaccountService: BankaccountService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private tokenStorageService: TokenStorageService, 
   ) {}
 
-  @ViewChild("Paginator") paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(
+    paginator: MatPaginator
+  ) {
+    this.paginator = paginator;
+
+    if (this.dataSource) {
+      this.dataSource.paginator = paginator;
+    }
+  }
 
   ngOnInit(): void {
     this.fetchBankAccounts();
-    this.dataSource.paginator = this.paginator;
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.role;
+      this.showObserverBoard = this.roles.includes("Observateur");
+    }
     this.bankAccForm = this.formBuilder.group({
       rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
       numcompte: [

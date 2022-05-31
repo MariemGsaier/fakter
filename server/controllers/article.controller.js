@@ -7,10 +7,44 @@ exports.allAccess = (req, res) => {
   exports.adminBoard = (req, res) => {
     res.status(200).send("Admin Content.");
   };
-  
+  const DIR = './uploads';
+  const multer = require('multer');
   const db = require("../models");
   const article = db.article;
   const Op = db.Sequelize.Op;
+
+  let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + '.' + path.extname(file.originalname));
+    }
+});
+let upload = multer({storage: storage});
+
+
+exports.getFile = (req, res) => {
+  res.end('file catcher example');
+};
+ 
+exports.uploadFile = (req, res) => {
+  req.file = upload.single('photo')
+    if (!req.file) {
+        console.log("No file received");
+        return res.send({
+          success: false
+        });
+    
+      } else {
+        console.log('file received');
+        return res.send({
+          success: true
+        })
+      }
+};
+
+
   // Create and Save a new article
     exports.create = (req, res) => {
       // Validate request

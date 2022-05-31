@@ -10,6 +10,7 @@ import {
   FormControl,
   Validators,
 } from "@angular/forms";
+import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
   selector: 'app-societies',
@@ -42,13 +43,22 @@ export class SocietiesComponent implements OnInit {
   societes?: Societe[];
   message = '';
   disabelModif: boolean = false;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showObserverBoard = true;
 
-  constructor(private societeService: SocieteService, private route: ActivatedRoute,private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private tokenStorageService: TokenStorageService, private societeService: SocieteService, private route: ActivatedRoute,private router: Router, private formBuilder: FormBuilder) { }
 
 
   ngOnInit(): void {
     this.message = '';
     this.getSociete();
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.role;
+      this.showObserverBoard = this.roles.includes("Observateur");
+    }
     
   }
 

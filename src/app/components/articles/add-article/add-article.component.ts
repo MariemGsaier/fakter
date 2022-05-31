@@ -9,6 +9,11 @@ import {  FileUploader } from 'ng2-file-upload';
 
 const URL = 'http://localhost:4000/api/upload';
 
+interface type {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: "app-add-article",
   templateUrl: "./add-article.component.html",
@@ -37,6 +42,11 @@ export class AddArticleComponent implements OnInit {
   };
   submitted = false;
 
+  types: type[] = [
+    {value: 'Service', viewValue: 'Service'},
+    {value: 'Consommable', viewValue: 'Consommable'}
+  ];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -53,18 +63,17 @@ export class AddArticleComponent implements OnInit {
 
     this.articleForm = this.formBuilder.group(
       {
-        nom_article: ['', Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)],
+        nom_article: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
         type_article: [
           '',
           [
-            Validators.required,
-            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)
+            Validators.required
           ]
         ],
-        prix_vente: ['', Validators.required],
-        taxe_vente: ['', Validators.required],
-        cout: ['', Validators.required],
-        description: ['', Validators.required],
+        prix_vente: ['', Validators.required,],
+        taxe_vente: ['', Validators.required,],
+        cout: ['', Validators.required,],
+        description: ['', [Validators.required,Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)]],
         image: ['', [Validators.required]]
       }
     );

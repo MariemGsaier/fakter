@@ -6,6 +6,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { TokenStorageService } from "src/app/services/token-storage.service";
 import * as XLSX from 'xlsx';
 
 
@@ -64,11 +65,15 @@ export class ClientComponent implements OnInit {
   ];
   submitted = false;
   paginator?: MatPaginator;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showObserverBoard = true;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private clientService: ClientService,
+    private tokenStorageService: TokenStorageService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -84,6 +89,12 @@ export class ClientComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchClients();
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.role;
+      this.showObserverBoard = this.roles.includes("Observateur");
+    }
     this.clientForm = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],

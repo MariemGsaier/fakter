@@ -50,18 +50,9 @@ exports.update = (req, res) => {
   const nom = req.params.nom;
 
   devise
-    .update(
-      {
-        nom: req.body.nom,
-        devise: req.body.devise,
-        date: req.body.date,
-        valeur: req.body.valeur,
-      },
-      {
-        where: { nom: nom },
-        include: ["dates"],
-      }
-    )
+    .update(req.body, {
+      where: { nom: nom },
+    })
     .then((num) => {
       if (num == 1) {
         res.send({
@@ -82,32 +73,18 @@ exports.update = (req, res) => {
 // Delete a devise with the specified name in the request
 exports.delete = (req, res) => {
   const nom = req.params.nom;
-  const nom_devise = req.params.nom;
-
   devise
     .destroy({
       where: { nom: nom },
     })
     .then((num) => {
       if (num == 1) {
-        dateDevise
-          .destroy({
-            where: { nom_devise: nom_devise },
-          })
-          .then((num) => {
-            if (num == 1) {
-              res.send({
-                message: "La devise est supprimée avec succés!",
-              });
-            } else {
-              res.send({
-                message: `Echec de suppression de la devise  avec nom=${nom}. Peut être qu'elle est inexistante !`,
-              });
-            }
-          });
+        res.send({
+          message: "la devise est supprimée avec succés!",
+        });
       } else {
         res.send({
-          message: `Echec de suppression de la devise  avec nom=${nom}. Peut être qu'elle est inexistante !`,
+          message: `Echec de suppression de la devise avec nom=${nom}. Peut être qu'elle est inexistante !`,
         });
       }
     })

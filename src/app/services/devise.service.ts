@@ -18,11 +18,11 @@ export class DeviseService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
-  update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+  update(nom: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl}/${nom}`, data);
   }
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+  delete(nom: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/${nom}`);
   }
   deleteAll(): Observable<any> {
     return this.http.delete(baseUrl);

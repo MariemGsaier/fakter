@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -58,10 +59,11 @@ import { SearchUser } from './pipes/search-user.pipe';
     AngularIbanModule,
     FileUploadModule,
     NgxMatIntlTelInputModule,
-    Ng2TelInputModule
+    Ng2TelInputModule,
+    MatDialogModule
   
   ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders,{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
