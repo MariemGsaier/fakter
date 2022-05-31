@@ -1,7 +1,6 @@
 <!-- Daily Activity -->
 <mat-card class="w-100">
     <mat-card-content>
-
         <button mat-button class="btn btn-info fw-normal btnw" routerLink="/add-facture" type="submit" matTooltip="Ajouter une facture" matTooltipPosition="above"
             style="float: right">
             <mat-icon>add</mat-icon>
@@ -15,7 +14,8 @@
       >
       <mat-icon>save_alt</mat-icon>
       </button>
-        <h4 class="mb-56">Gérez vos factures</h4>
+    <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les factures</h4>
+    <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les factures</h4>
 
         <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" id="excel-table" class="text-nowrap w-100">
@@ -87,11 +87,11 @@
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="actions" stickyEnd>
-                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">Actions</th>
                     <td mat-cell *matCellDef="let facture; let i = index;" [class.active]="i == currentIndex">
 
                         <button mat-button class="btn btn-success fw-normal btnw" style="margin-right: 1%;"
-                            type="submit" (click)="setActiveFacture(facture, i)">
+                            type="submit" (click)="setActiveFacture(facture, i)" *ngIf="!showObserverBoard">
                             <mat-icon>edit</mat-icon>
                         </button>
                     </td>

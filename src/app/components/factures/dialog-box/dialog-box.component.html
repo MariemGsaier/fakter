@@ -1,0 +1,33 @@
+<h1 mat-dialog-title><strong>Hello !</strong></h1>
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-select placeholder="Selectionnez un article" [value]="selectedArticle" >
+      <mat-option *ngFor="let article of articles" [value]="article">{{ article.nom_article }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p>{{articles}}</p>
+  <!-- <mat-form-field class="w-100 fs-16" appearance="outline">
+    <mat-label>Article</mat-label>
+    <mat-select
+      name="article"
+      required
+      formControlName="article"
+      (selectionChange)="fetchArticles($event.value)"
+      [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
+      [(ngModel)]="nom_article"
+    >
+      <mat-option *ngFor="let article of articles" [value]="article.value">
+        {{ article.nom_article }}
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="f['role'].errors" class="invalid-feedback">
+      <div *ngIf="f['role'].errors['required']">Le role est obligatoire</div>
+    </mat-error>
+  </mat-form-field> -->
+  <ng-template #elseTemplate>
+    Sure to delete <b></b>?
+  </ng-template>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+</div>

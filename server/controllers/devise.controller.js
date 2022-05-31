@@ -29,22 +29,7 @@ exports.create = (req, res) => {
       });
     });
 };
-// Lister les devises
-exports.findAll = (req, res) => {
-  const nom = req.query.nom;
-  var condition = nom ? { nom: { [Op.iLike]: `%${nom}%` } } : null;
-  devise
-    .findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "une erreur est survenue lors de l'affichage.",
-      });
-    });
-};
-
+// Lister les devises avec les dates
 exports.findAllDevises = (req, res) => {
   return devise
     .findAll({
@@ -90,27 +75,26 @@ exports.delete = (req, res) => {
   const nom = req.params.nom;
   devise
     .destroy({
-      include: ["dates"],//check thiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiis
+      where: { nom: nom },
     })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "La devise est supprimée avec succés!",
+          message: "la devise est supprimée avec succés!",
         });
       } else {
         res.send({
-          message: `Echec de suppression de la devise  avec nom=${nom}. Peut être qu'elle est inexistante !`,
+          message: `Echec de suppression de la devise avec nom=${nom}. Peut être qu'elle est inexistante !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          "Echec de suppression du client avec codeid=" + code_identification,
+        message: "Echec de suppression de la devise avec nom=" + nom,
       });
     });
 };
-// Delete all clients from the database.
+// Delete all devises from the database.
 exports.deleteAll = (req, res) => {
   devise
     .destroy({

@@ -47,3 +47,73 @@ exports.findAll = (req, res) => {
         });
       });
   };
+
+ // Modifier une date devise
+exports.update = (req, res) => {
+  const id = req.params.id;
+
+  dateDevise
+    .update(req.body, {
+      where: { id: id },
+    })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "La date devise est mise à jour avec succés.",
+        });
+      } else {
+        res.send({
+          message: `erreur de mise à jour due la date devise avec id=${id}. peut être la date devise est inexistante ou le corps de la requête est vide!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating date devise with id=" + id,
+      });
+    });
+};
+
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  dateDevise
+    .destroy({
+      where: { id: id },
+    })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "la date devise est supprimée avec succés!",
+        });
+      } else {
+        res.send({
+          message: `Echec de suppression de la date devise avec id=${id}. Peut être qu'elle est inexistante !`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Echec de suppression de la date devise avec id=" + id,
+      });
+    });
+};
+// Delete all devises from the database.
+exports.deleteAll = (req, res) => {
+  dateDevise
+    .destroy({
+      where: {},
+      truncate: false,
+    })
+    .then((nums) => {
+      res.send({
+        message: `${nums} Toutes les dates devises sont supprimés avec succés !`,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "Une erreur est survenue lors de la suppression des dates devises.",
+      });
+    });
+};

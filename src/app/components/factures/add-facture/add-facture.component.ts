@@ -5,6 +5,10 @@ import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
 import { Facture } from 'src/app/models/facture.model';
 import { FactureService } from 'src/app/services/facture.service';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { Article } from 'src/app/models/article.model';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 
 interface vendeur {
@@ -21,22 +25,6 @@ interface devise {
     viewValue: string;
   
   }
-  export interface PeriodicElement {
-    id: number;
-    name: string;
-    work: string;
-    project: string;
-    priority: string;
-    badge: string;
-    budget: string;
-  }
-  
-  const ELEMENT_DATA: PeriodicElement[] = [
-    { id: 1, name: 'Deep Javiya', work: 'Frontend Devloper', project: 'Flexy Angular', priority: 'Low', badge: 'badge-info', budget: '$3.9k' },
-    { id: 2, name: 'Nirav Joshi', work: 'Project Manager', project: 'Hosting Press HTML', priority: 'Medium', badge: 'badge-primary', budget: '$24.5k' },
-    { id: 3, name: 'Sunil Joshi', work: 'Web Designer', project: 'Elite Admin', priority: 'High', badge: 'badge-danger', budget: '$12.8k' },
-    { id: 4, name: 'Maruti Makwana', work: 'Backend Devloper', project: 'Material Pro', priority: 'Critical', badge: 'badge-success', budget: '$2.4k' },
-  ];
 
 
 @Component({
@@ -51,7 +39,14 @@ interface devise {
   ],
 })
 export class AddFactureComponent implements OnInit {
-
+  displayedColumns: string[] = [
+    "nom",
+    "quantite",
+    "prix",
+    "taxe",
+    "sous_total",
+  ];
+  dataSource = new MatTableDataSource<Article>();
   facture: Facture = {
     reference: "",
     vendeur: "",
@@ -74,12 +69,6 @@ export class AddFactureComponent implements OnInit {
   });
 
   submitted=false;
-  
-    
-  displayedColumns: string[] = ['id', 'assigned', 'name', 'priority', 'budget'];
-  dataSource = ELEMENT_DATA;
-
-
   isEditable = false;
 
   vendeurs: vendeur[] = [
@@ -102,7 +91,7 @@ export class AddFactureComponent implements OnInit {
   // etatFacture="";
   // etats: string[] = ['payée', 'impayée'];
 
-  constructor(private route: ActivatedRoute,private factureService: FactureService,
+  constructor(public dialog: MatDialog, private route: ActivatedRoute,private factureService: FactureService,
     private router: Router, private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
@@ -112,7 +101,18 @@ export class AddFactureComponent implements OnInit {
     });
 
   }
-
+  openDialog() : void {
+    this.dialog.open(DialogBoxComponent, {
+      height: '400px',
+      width: '600px',
+      hasBackdrop : false,
+      backdropClass: 'backdropBackground'
+    });
+    // dialogRef.afterClosed().subscribe((result: any) => {
+    //   console.log(`Dialog result: ${result}`); // Pizza!
+    // });
+    // dialogRef.close('Pizza!');
+  }
   saveFacture(): void {
     const data = {
       id: this.facture.id,

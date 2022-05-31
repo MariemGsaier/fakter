@@ -114,63 +114,68 @@
       </mat-grid-list>
     </form>
     <mat-card class="w-100">
-    <mat-card-content>
-      <h4 class="mb-56">Ligne de facture</h4>
-
-      <div class="table-responsive">
-        <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-          <!-- Id Column -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Id</th>
-            <td mat-cell class="fw-medium" *matCellDef="let element">
-              {{ element.id }}
-            </td>
-          </ng-container>
-
-          <!-- Assigned Column -->
-          <ng-container matColumnDef="assigned">
-            <th mat-header-cell *matHeaderCellDef>Assigned</th>
-            <td mat-cell *matCellDef="let element">
-              <p class="mb-0 fw-medium">{{ element.name }}</p>
-              <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
-            </td>
-          </ng-container>
-
-          <!-- Project Column -->
-          <ng-container matColumnDef="name">
-            <th mat-header-cell *matHeaderCellDef>Project</th>
-            <td mat-cell *matCellDef="let element">
-              <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
-            </td>
-          </ng-container>
-
-          <!-- Priority Column -->
-          <ng-container matColumnDef="priority">
-            <th mat-header-cell *matHeaderCellDef>Priority</th>
-            <td mat-cell *matCellDef="let element">
-              <span class="badge {{ element.badge }} rounded-pill">{{
-                element.priority
-              }}</span>
-            </td>
-          </ng-container>
-
-          <!-- Budget Column -->
-          <ng-container matColumnDef="budget">
-            <th mat-header-cell *matHeaderCellDef>Budget</th>
-            <td mat-cell *matCellDef="let element">
-              <p class="mb-0 fw-medium">{{ element.budget }}</p>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        </table>
-        <p style="float: right; margin-top: 15px">
-          <strong>Total :</strong> 123dt
-        </p>
-      </div>
-    </mat-card-content>
-  </mat-card>
+      <mat-card-content>
+        <h4 class="mb-56">Ligne de facture</h4>
+    
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+            <!-- Id Column -->
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef>Article</th>
+              <td mat-cell class="fw-medium" *matCellDef="let element">
+                {{ element.nom }}
+              </td>
+            </ng-container>
+    
+            <!-- Assigned Column -->
+            <ng-container matColumnDef="quantite">
+              <th mat-header-cell *matHeaderCellDef>Quantité</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.quantite }}</p>
+              </td>
+            </ng-container>
+    
+            <!-- Project Column -->
+            <ng-container matColumnDef="prix">
+              <th mat-header-cell *matHeaderCellDef>Prix</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium op-5">{{ element.prix }}</p>
+              </td>
+            </ng-container>
+    
+            <!-- Priority Column -->
+            <ng-container matColumnDef="taxe">
+              <th mat-header-cell *matHeaderCellDef>Taxe</th>
+              <td mat-cell *matCellDef="let element">
+                <span class="badge {{ element.taxe }} rounded-pill">{{
+                  element.priority
+                }}</span>
+              </td>
+            </ng-container>
+    
+            <!-- Budget Column -->
+            <ng-container matColumnDef="sous_total">
+              <th mat-header-cell *matHeaderCellDef>Sous-total</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.sous_total }}</p>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <div class="add">
+              <mat-icon style="font-size: 14px;">add<a class="link"(click)="openDialog()">Ajouter un article</a></mat-icon>
+          </div>
+          <div>
+          <p style="float: right; margin-top: 15px">
+            <strong>Total :</strong> 123dt
+          </p>
+        </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    
   <div style="margin-top: -10px; margin-right: 43px">
     <button
       mat-button
@@ -210,61 +215,66 @@
         <mat-card class="w-100">
           <mat-card-content>
             <h4 class="mb-56">Ligne de facture</h4>
-      
+        
             <div class="table-responsive">
               <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
                 <!-- Id Column -->
-                <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef>Id</th>
+                <ng-container matColumnDef="nom">
+                  <th mat-header-cell *matHeaderCellDef>Article</th>
                   <td mat-cell class="fw-medium" *matCellDef="let element">
-                    {{ element.id }}
+                    {{ element.nom }}
                   </td>
                 </ng-container>
-      
+        
                 <!-- Assigned Column -->
-                <ng-container matColumnDef="assigned">
-                  <th mat-header-cell *matHeaderCellDef>Assigned</th>
+                <ng-container matColumnDef="quantite">
+                  <th mat-header-cell *matHeaderCellDef>Quantité</th>
                   <td mat-cell *matCellDef="let element">
-                    <p class="mb-0 fw-medium">{{ element.name }}</p>
-                    <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
+                    <p class="mb-0 fw-medium">{{ element.quantite }}</p>
                   </td>
                 </ng-container>
-      
+        
                 <!-- Project Column -->
-                <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef>Project</th>
+                <ng-container matColumnDef="prix">
+                  <th mat-header-cell *matHeaderCellDef>Prix</th>
                   <td mat-cell *matCellDef="let element">
-                    <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
+                    <p class="mb-0 fw-medium op-5">{{ element.prix }}</p>
                   </td>
                 </ng-container>
-      
+        
                 <!-- Priority Column -->
-                <ng-container matColumnDef="priority">
-                  <th mat-header-cell *matHeaderCellDef>Priority</th>
+                <ng-container matColumnDef="taxe">
+                  <th mat-header-cell *matHeaderCellDef>Taxe</th>
                   <td mat-cell *matCellDef="let element">
-                    <span class="badge {{ element.badge }} rounded-pill">{{
+                    <span class="badge {{ element.taxe }} rounded-pill">{{
                       element.priority
                     }}</span>
                   </td>
                 </ng-container>
-      
+        
                 <!-- Budget Column -->
-                <ng-container matColumnDef="budget">
-                  <th mat-header-cell *matHeaderCellDef>Budget</th>
+                <ng-container matColumnDef="sous_total">
+                  <th mat-header-cell *matHeaderCellDef>Sous-total</th>
                   <td mat-cell *matCellDef="let element">
-                    <p class="mb-0 fw-medium">{{ element.budget }}</p>
+                    <p class="mb-0 fw-medium">{{ element.sous_total }}</p>
                   </td>
                 </ng-container>
-      
+        
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
               </table>
+              <div class="add">
+                  <mat-icon style="font-size: 14px;">add<a class="link"(click)="openDialog()">Ajouter un article</a></mat-icon>
+              </div>
+              <div>
               <p style="float: right; margin-top: 15px">
                 <strong>Total :</strong> 123dt
               </p>
             </div>
+            </div>
           </mat-card-content>
         </mat-card>
+        
         <div style="margin-top: -10px; margin-right: 43px">
           <button
             mat-button
@@ -313,61 +323,66 @@
       <mat-card class="w-100">
         <mat-card-content>
           <h4 class="mb-56">Ligne de facture</h4>
-    
+      
           <div class="table-responsive">
             <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
               <!-- Id Column -->
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef>Id</th>
+              <ng-container matColumnDef="nom">
+                <th mat-header-cell *matHeaderCellDef>Article</th>
                 <td mat-cell class="fw-medium" *matCellDef="let element">
-                  {{ element.id }}
+                  {{ element.nom }}
                 </td>
               </ng-container>
-    
+      
               <!-- Assigned Column -->
-              <ng-container matColumnDef="assigned">
-                <th mat-header-cell *matHeaderCellDef>Assigned</th>
+              <ng-container matColumnDef="quantite">
+                <th mat-header-cell *matHeaderCellDef>Quantité</th>
                 <td mat-cell *matCellDef="let element">
-                  <p class="mb-0 fw-medium">{{ element.name }}</p>
-                  <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
+                  <p class="mb-0 fw-medium">{{ element.quantite }}</p>
                 </td>
               </ng-container>
-    
+      
               <!-- Project Column -->
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef>Project</th>
+              <ng-container matColumnDef="prix">
+                <th mat-header-cell *matHeaderCellDef>Prix</th>
                 <td mat-cell *matCellDef="let element">
-                  <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
+                  <p class="mb-0 fw-medium op-5">{{ element.prix }}</p>
                 </td>
               </ng-container>
-    
+      
               <!-- Priority Column -->
-              <ng-container matColumnDef="priority">
-                <th mat-header-cell *matHeaderCellDef>Priority</th>
+              <ng-container matColumnDef="taxe">
+                <th mat-header-cell *matHeaderCellDef>Taxe</th>
                 <td mat-cell *matCellDef="let element">
-                  <span class="badge {{ element.badge }} rounded-pill">{{
+                  <span class="badge {{ element.taxe }} rounded-pill">{{
                     element.priority
                   }}</span>
                 </td>
               </ng-container>
-    
+      
               <!-- Budget Column -->
-              <ng-container matColumnDef="budget">
-                <th mat-header-cell *matHeaderCellDef>Budget</th>
+              <ng-container matColumnDef="sous_total">
+                <th mat-header-cell *matHeaderCellDef>Sous-total</th>
                 <td mat-cell *matCellDef="let element">
-                  <p class="mb-0 fw-medium">{{ element.budget }}</p>
+                  <p class="mb-0 fw-medium">{{ element.sous_total }}</p>
                 </td>
               </ng-container>
-    
+      
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
             </table>
+            <div class="add">
+                <mat-icon style="font-size: 14px;">add<a class="link"(click)="openDialog()">Ajouter un article</a></mat-icon>
+            </div>
+            <div>
             <p style="float: right; margin-top: 15px">
               <strong>Total :</strong> 123dt
             </p>
           </div>
+          </div>
         </mat-card-content>
       </mat-card>
+      
       <div style="margin-top: -10px; margin-right: 43px">
         <button
           mat-button

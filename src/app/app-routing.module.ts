@@ -33,6 +33,8 @@ import { FacturesComponent } from "./components/factures/factures.component";
 import { AddFactureComponent } from "./components/factures/add-facture/add-facture.component";
 import { AddSocietyComponent } from "./components/societies/add-society/add-society.component";
 import { SocietiesComponent } from "./components/societies/societies.component";
+import { DevisesComponent } from "./components/devises/devises.component";
+import { AddDeviseComponent } from "./components/devises/add-devise/add-devise.component";
 import { ChangePwComponent } from "./components/board-admin/change-pw/change-pw.component";
 import { ForgotpasswordComponent } from "./components/login/forgotpassword/forgotpassword.component";
 import { PrintFactureComponent } from "./components/factures/print-facture/print-facture.component";
@@ -88,6 +90,9 @@ const routes: Routes = [
       { path: "societe", component: SocietiesComponent },
       { path: "add-societe", component: AddSocietyComponent },
       {path : "print-facture", component: PrintFactureComponent }
+      { path: "devises", component: DevisesComponent },
+      { path: "add-devise", component: AddDeviseComponent },
+
     ],
   },
   { path: "", redirectTo: "/login", pathMatch: "full" },

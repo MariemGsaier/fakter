@@ -6,14 +6,13 @@ import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators, } from "@angular/forms";
 import * as XLSX from "xlsx";
+
+interface type {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: "app-articles",
@@ -42,7 +41,7 @@ export class ArticlesComponent implements OnInit {
     taxe_vente: new FormControl(""),
     cout: new FormControl(""),
     description: new FormControl(""),
-    image: new FormControl(""),
+    // image: new FormControl(""),
   });
   currentArticle: Article = {
     image: "",
@@ -62,6 +61,11 @@ export class ArticlesComponent implements OnInit {
   showObserverBoard = true;
   paginator?: MatPaginator;
   submitted = false;
+
+  types: type[] = [
+    { value: "Service", viewValue: "Service" },
+    { value: "Consommable", viewValue: "Consommable" },
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -93,17 +97,17 @@ export class ArticlesComponent implements OnInit {
     this.updateArticleForm = this.formBuilder.group({
       nom_article: [
         "",
-        [Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)],
+        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
       ],
-      type_article: [
-        "",
-        [Validators.required, Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)],
-      ],
+      type_article: ["", [Validators.required]],
       prix_vente: ["", Validators.required],
       taxe_vente: ["", Validators.required],
       cout: ["", Validators.required],
-      description: ["", Validators.required],
-      image: ["", [Validators.required]],
+      description: [
+        "",
+        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")],
+      ],
+      // image: ["", [Validators.required]],
     });
   }
 
@@ -143,75 +147,75 @@ export class ArticlesComponent implements OnInit {
   }
 
   removeAllArticles(): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de tout supprimer ? ",
-      text: "Vous ne serez pas capable de restaurer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.articleService.deleteAll().subscribe({
-          next: (res) => {
-            console.log(res);
+    this.articleService.deleteAll().subscribe({
+      next: (res) => {
+        console.log(res);
+        Swal.fire({
+          title: "Êtes-vous sûr de tout supprimer ? ",
+          text: "Vous ne serez pas capable de restaurer !",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#00c292",
+          cancelButtonColor: "#e46a76",
+          confirmButtonText: "Oui",
+          cancelButtonText: "Annuler",
+        }).then((result) => {
+          if (result.isConfirmed) {
             this.refreshList();
-          },
-          error: (e) => console.error(e),
+          }
         });
-      }
+      },
+      error: (e) => console.error(e),
     });
   }
 
   updateArticle(): void {
     this.message = "";
     if (!this.updateArticleForm.invalid) {
-      Swal.fire({
-        title: "Modification effectuée avec succés !",
-        icon: "success",
-        confirmButtonColor: "#00c292",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.articleService
-            .update(this.currentArticle.id, this.currentArticle)
-            .subscribe({
-              next: (res) => {
-                console.log(res);
-                this.disabelModif = false;
+      this.articleService
+        .update(this.currentArticle.id, this.currentArticle)
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            this.disabelModif = false;
+            Swal.fire({
+              title: "Modification effectuée avec succés !",
+              icon: "success",
+              confirmButtonColor: "#00c292",
+            }).then((result) => {
+              if (result.isConfirmed) {
                 this.fetchArticles();
-                this.message = res.message
-                  ? res.message
-                  : "This article was updated successfully!";
-              },
-              error: (e) => console.error(e),
+              }
             });
-        }
-      });
+            this.message = res.message
+              ? res.message
+              : "This article was updated successfully!";
+          },
+          error: (e) => console.error(e),
+        });
     }
   }
 
   deleteArticle(article: Article): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.articleService.delete(article.id).subscribe({
-          next: (res) => {
-            console.log(res);
+    this.articleService.delete(article.id).subscribe({
+      next: (res) => {
+        console.log(res);
+        Swal.fire({
+          title: "Êtes-vous sûr de le supprimer ? ",
+          text: "Vous ne serez pas capable de le récupérer !",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#00c292",
+          cancelButtonColor: "#e46a76",
+          confirmButtonText: "Oui",
+          cancelButtonText: "Annuler",
+        }).then((result) => {
+          if (result.isConfirmed) {
             this.refreshList();
-          },
-          error: (e) => console.error(e),
+          }
         });
-      }
+      },
+      error: (e) => console.error(e),
     });
   }
 
