@@ -43,6 +43,7 @@ import { DialogBoxComponent } from './factures/dialog-box/dialog-box.component';
 import { ChangePwComponent } from './board-admin/change-pw/change-pw.component';
 import { ForgotpasswordComponent } from './login/forgotpassword/forgotpassword.component';
 import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw.component';
+import { PrintFactureComponent } from './factures/print-facture/print-facture.component';
 
 
 
@@ -89,6 +90,7 @@ import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw
     ChangePwComponent,
     ForgotpasswordComponent,
     ChangeForgotpwComponent,
+    PrintFactureComponent,
  
 
   ],
