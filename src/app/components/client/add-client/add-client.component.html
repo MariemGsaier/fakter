@@ -74,7 +74,13 @@
                    
                     <div>
                         &nbsp;
-                    <button mat-button class="btn btn-success fw-normal" (click)="saveClient()"  type="submit">Sauvegarder</button></div>
+                    <button mat-button class="btn btn-success fw-normal" style="float: right" (click)="saveClient()"  type="submit">Sauvegarder</button></div>
+                    <div 
+        class="alert alert-danger alert-text-danger d-flex fs-14 " style="width: 354px;"
+        role="alert" *ngIf="errorAddClient">
+        <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+        {{ errorMsg }}
+      </div>
                 </form>
 
             </mat-card-content>

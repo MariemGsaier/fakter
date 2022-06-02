@@ -331,7 +331,12 @@
         >
           Confirmer
         </button>
-        <p>{{ message }}</p>
+        <div 
+        class="alert alert-danger alert-text-danger d-flex fs-14 " style="width: 45Opx;"
+        role="alert" *ngIf="errorUpdateUser">
+        <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+        {{ errorMsg }}
+      </div>
       </div>
     </form>
   </mat-card-content>

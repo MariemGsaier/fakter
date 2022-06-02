@@ -39,6 +39,7 @@ import { ChangePwComponent } from "./components/board-admin/change-pw/change-pw.
 import { ForgotpasswordComponent } from "./components/login/forgotpassword/forgotpassword.component";
 import { PrintFactureComponent } from "./components/factures/print-facture/print-facture.component";
 import { AddDatedevisesComponent } from "./components/devises/add-datedevises/add-datedevises.component";
+import { ChangeForgotpwComponent } from "./components/login/change-forgotpw/change-forgotpw.component";
 
 
 
@@ -51,6 +52,7 @@ const routes: Routes = [
       { path: "", redirectTo: "/login", pathMatch: "full" },
       { path: "login", component: LoginComponent },
       { path: "change-pw", component: ChangePwComponent },
+      {path: "change-forgotpw", component: ChangeForgotpwComponent},
       { path: "forgot-pw", component: ForgotpasswordComponent },
 
     ],

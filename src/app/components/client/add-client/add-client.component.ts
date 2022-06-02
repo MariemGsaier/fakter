@@ -32,11 +32,6 @@ export class AddClientComponent implements OnInit {
     siteweb: "",
   };
   clientForm: FormGroup = new FormGroup({
-    // cin: new FormControl(''),
-    // rcs: new FormControl(''),
-    // passeport: new FormControl(''),
-    // timbrefisc: new FormControl(''),
-    // codetva: new FormControl(''),
     email: new FormControl(""),
     phone: new FormControl(""),
     website: new FormControl(""),
@@ -45,6 +40,8 @@ export class AddClientComponent implements OnInit {
   });
   submitted = false;
   selectedValue = "";
+  errorAddClient =false;
+  errorMsg =""
 
   codesId = [
     { id: 0, value: "cin" },
@@ -172,7 +169,11 @@ export class AddClientComponent implements OnInit {
             }
           });
         },
-        error: (e) => console.error(e),
+        error: (e) => {
+          console.error(e);
+          this.errorAddClient=true
+          this.errorMsg = "le code d'identification entré existe déjà !";
+        } 
       });
     }
   }

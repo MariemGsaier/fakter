@@ -9,6 +9,7 @@ const Op = db.Sequelize.Op;
       });
       return;
     }
+
     const clt = {
       code_identification: req.body.code_identification,
       nom: req.body.nom,
@@ -17,23 +18,40 @@ const Op = db.Sequelize.Op;
       courriel: req.body.courriel ,
       siteweb: req.body.siteweb 
    };
-
-    client
-    .create(clt)
-      .then(data => {
-        res.send(data);
-        // console.log("ajout avec succés");
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "une erreur est survenue lors de la création du client."
-        });
+   client.findOne({
+    where: {
+      code_identification: req.body.code_identification,
+    },
+  })
+  .then((client) => {
+    if (client) {
+      res.status(400).send({
+        message: "Echec! le code d'identification entré existe déjà !"
       });
+      return;
+
+    } else{
+      client
+      .create(clt)
+        .then(data => {
+          res.send(data);
+        })
+        .catch(err => {
+          res.status(500).send({
+            message:
+              err.message 
+          });
+        });
+
+    }
+   })
+
+
 };
 // Lister les clients
 exports.findAll = (req, res) => {
-  const  code_identification = req.query. code_identification;
+  //The req.query property is an object containing the property for each query string parameter in the route.
+  const  code_identification = req.query.code_identification;
   var condition =  code_identification
     ? {  code_identification: { [Op.iLike]: `%${ code_identification}%` } }
     : null;
@@ -44,15 +62,15 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "une erreur est survenue lors de l'affichage.",
+        message: err.message
       });
     });
 };
 
 // Modifier un client
 exports.update = (req, res) => {
+  //The req.query property is an object containing the property for each query string parameter in the route.
   const id = req.params.id;
- 
   client
     .update(req.body, {
       where: {id: id },
@@ -70,7 +88,7 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Erreu de mise à jour du client  avec id=" + id ,
+        message: "Erreur  de mise à jour du client  avec id=" + id ,
       });
     });
 };
@@ -100,9 +118,11 @@ exports.delete = (req, res) => {
 };
 // Delete all clients from the database.
 exports.deleteAll = (req, res) => {
+
   client
     .destroy({
       where: {},
+      // truncate is set to true to ignore the where option
       truncate: false,
     })
     .then((nums) => {
@@ -111,7 +131,7 @@ exports.deleteAll = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Une erreur est survenue lors de la suppression des clients.",
+          err.message 
       });
     });
 };

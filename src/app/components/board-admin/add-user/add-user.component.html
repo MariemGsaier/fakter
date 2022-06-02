@@ -2,122 +2,120 @@
   <div class="card-body">
     <h4 class="mb-32">Ajoutez un utilisateur</h4>
     <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-      <mat-grid-list cols="2" rowHeight="5:1">
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
-            <mat-label>Nom d'utilisateur</mat-label>
-            <input
-              matInput
-              type="text"
-              placeholder="Entrez le nom d'utilisateur"
-              formControlName="username"
-              [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
-              [(ngModel)]="user.username"
-            />
-            <mat-error
-              *ngIf="f['username'].errors"
-              class="invalid-feedback"
-            >
-              <div *ngIf="f['username'].errors['required']">
-                Le nom d'utilisateur est obligatoire
-              </div>
-              <div *ngIf="f['username'].errors['pattern']">
-                Le nom d'utilisateur ne peut contenir que des lettres et des chiffres
-              </div>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Email</mat-label>
-            <input
-              matInput
-              type="email"
-              formControlName="email"
-              [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
-              placeholder="Entrez l'email"
-              [(ngModel)]="user.email"
-            />
-            <mat-error
-              *ngIf="f['email'].errors"
-              class="invalid-feedback"
-            >
-              <div *ngIf="f['email'].errors['required']">L'email  est obligatoire</div>
-              <div *ngIf="f['email'].errors['email']">L'email  est invalide</div>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
-            <mat-label>Rôle</mat-label>
-            <mat-select
-              name="role"
-              formControlName="role"
-              [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
-              [(ngModel)]="user.role"
-            >
-              <mat-option *ngFor="let role of roles" [value]="role.value">
-                {{ role.viewValue }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="f['role'].errors" class="invalid-feedback">
-              <div *ngIf="f['role'].errors['required']">Le role est obligatoire</div>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Mot de passe</mat-label>
-            <input
-              matInput
-              type="password"
-              formControlName="password"
-              [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-              placeholder="Entrez le mot de passe"
-              [(ngModel)]="user.password"
-            />
-            <mat-error
-              *ngIf="f['password'].errors"
-              class="invalid-feedback"
-            >
-              <div *ngIf="f['password'].errors['required']">
-                Le mot de passe est obligatoire
-              </div>
-              <div *ngIf="f['password'].errors['minlength']">
-                Le mot de passe doit avoir au moins 6 caractères
-              </div>
-              <div *ngIf="f['password'].errors['pattern']">
-                Le mot de passe doit contenir des miniscule, des majuscules des chiffres, et des caractères spéciaux
-              </div>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
-          <mat-form-field class="w-100 fs-16" appearance="outline" style="margin-right: 16px">
-            <mat-label>Confirmer mot de passe</mat-label>
-            <input
-              matInput
-              type="password"
-              formControlName="confirmPassword"
-              [ngClass]="{
-                'is-invalid': submitted && f['confirmPassword'].errors
-              }"
-              placeholder="Entrez le mot de passe"
-            />
-            <mat-error
-              *ngIf="f['confirmPassword'].errors"
-              class="invalid-feedback"
-            >
-              <div *ngIf="f['confirmPassword'].errors['required']">
-                La confirmation de mot de passe est obligatoire
-              </div>
-              <div *ngIf="f['confirmPassword'].errors['matching']">
-                La confirmation mot de passe n'est pas compatible
-              </div>
-            </mat-error>
-          </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px"
+      >
+        <mat-label>Nom d'utilisateur</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Entrez le nom d'utilisateur"
+          formControlName="username"
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+          [(ngModel)]="user.username"
+        />
+        <mat-error *ngIf="f['username'].errors" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">
+            Le nom d'utilisateur est obligatoire
+          </div>
+          <div *ngIf="f['username'].errors['pattern']">
+            Le nom d'utilisateur ne peut contenir que des lettres et des
+            chiffres
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          placeholder="Entrez l'email"
+          [(ngModel)]="user.email"
+        />
+        <mat-error *ngIf="f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">
+            L'email est obligatoire
+          </div>
+          <div *ngIf="f['email'].errors['email']">L'email est invalide</div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px"
+      >
+        <mat-label>Rôle</mat-label>
+        <mat-select
+          name="role"
+          formControlName="role"
+          [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
+          [(ngModel)]="user.role"
+        >
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{ role.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="f['role'].errors" class="invalid-feedback">
+          <div *ngIf="f['role'].errors['required']">
+            Le role est obligatoire
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Mot de passe</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="password"
+          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          placeholder="Entrez le mot de passe"
+          [(ngModel)]="user.password"
+        />
+        <mat-error *ngIf="f['password'].errors" class="invalid-feedback">
+          <div *ngIf="f['password'].errors['required']">
+            Le mot de passe est obligatoire
+          </div>
+          <div *ngIf="f['password'].errors['minlength']">
+            Le mot de passe doit avoir au moins 6 caractères
+          </div>
+          <div *ngIf="f['password'].errors['pattern']">
+            Le mot de passe doit contenir des miniscule, des majuscules des
+            chiffres, et des caractères spéciaux
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px"
+      >
+        <mat-label>Confirmer mot de passe</mat-label>
+        <input
+          matInput
+          type="password"
+          formControlName="confirmPassword"
+          [ngClass]="{
+            'is-invalid': submitted && f['confirmPassword'].errors
+          }"
+          placeholder="Entrez le mot de passe"
+        />
+        <mat-error *ngIf="f['confirmPassword'].errors" class="invalid-feedback">
+          <div *ngIf="f['confirmPassword'].errors['required']">
+            La confirmation de mot de passe est obligatoire
+          </div>
+          <div *ngIf="f['confirmPassword'].errors['matching']">
+            La confirmation mot de passe n'est pas compatible
+          </div>
+        </mat-error>
+      </mat-form-field>
       <div>
         &nbsp;
         <button
@@ -127,8 +125,14 @@
           (click)="saveUser()"
           type="submit"
         >
-          Confirmer
+          Sauvegarder
         </button>
+        <div 
+        class="alert alert-danger alert-text-danger d-flex fs-14 " style="width: 354px;"
+        role="alert" *ngIf="errorUser">
+        <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+        {{ errorMsg }}
+      </div>
       </div>
     </form>
   </div>

@@ -28,6 +28,7 @@ export class ForgotpasswordComponent implements OnInit {
     private authService: AuthService, private userStore : UserStoreService) { }
 
   ngOnInit(): void {
+    this.userStore.resetUserStore();
     this.forgotPwForm = this.formBuilder.group(
       {
         email: ['', [Validators.required, Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
@@ -60,8 +61,11 @@ export class ForgotpasswordComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok"
         }) 
-        console.log(data);
-       
+        // console.log(data);
+        this.userStore.setUserInStore(data);
+        console.log(this.userStore.getUserFromStore());
+        this.router.navigate(['/login'])
+        // window.location.reload();
               },
       error: (e) => console.error(e),
     });

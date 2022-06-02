@@ -2,8 +2,7 @@
   <div class="card-body">
     <h4 class="mb-32">Ajoutez un compte bancaire</h4>
     <form [formGroup]="bankAccForm" (ngSubmit)="onSubmit()">
-      <mat-grid-list cols="2" rowHeight="5:1">
-        <mat-grid-tile>
+
           <mat-form-field
             class="w-100 fs-16"
             appearance="outline"
@@ -36,8 +35,6 @@
             >
             </mat-error>
           </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>RIB </mat-label>
             <input
@@ -57,8 +54,6 @@
               >
             </mat-error>
           </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
           <mat-form-field
             class="w-100 fs-16"
             appearance="outline"
@@ -85,8 +80,6 @@
               >
             </mat-error>
           </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>BIC</mat-label>
             <input
@@ -112,8 +105,12 @@
             >
             </mat-error>
           </mat-form-field>
-        </mat-grid-tile>
-        <mat-grid-tile>
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Devise</mat-label>
+            <mat-select placeholder="Selectionnez une devise" [(ngModel)]="BankAccount.nom_devise" [ngModelOptions]=" {standalone: true}"  required>
+              <mat-option *ngFor="let devise of devises;" [value]="devise" >{{ devise.nom }}</mat-option>
+            </mat-select>
+          </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>IBAN </mat-label>
             <input
@@ -136,17 +133,20 @@
               >
             </mat-error>
           </mat-form-field>
-        </mat-grid-tile>
-      </mat-grid-list>
-
       <button
         mat-button
         class="btn btn-success fw-normal"
         type="submit"
         (click)="saveBankAccount()"
       >
-        Confirmer
+        Sauvegarder
       </button>
+      <div 
+      class="alert alert-danger alert-text-danger d-flex fs-14 " style="width: 354px;"
+      role="alert" *ngIf="errorAddAccount">
+      <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+      {{ errorMsg }}
+    </div>
     </form>
   </div>
 </div>

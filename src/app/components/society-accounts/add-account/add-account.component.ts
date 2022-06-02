@@ -11,6 +11,9 @@ import {
   Validators,
 } from "@angular/forms";
 import {ValidatorService} from 'angular-iban';
+import { Devise } from "src/app/models/devise.model";
+import { DeviseService } from "src/app/services/devise.service";
+import { BankaccountDevise } from "src/app/models/bankaccount-devise.model";
 
 
 
@@ -20,13 +23,15 @@ import {ValidatorService} from 'angular-iban';
   styleUrls: ["./add-account.component.scss"],
 })
 export class AddAccountComponent implements OnInit {
-  BankAccount: Bankaccount = {
-    num_compte: undefined,
-    rib: undefined,
+  BankAccount: BankaccountDevise = {
+    num_compte: "",
+    rib: "",
     bic: "",
     iban: "",
     nom_banque: "",
+    nom_devise : ""
   };
+  
   bankAccForm: FormGroup = new FormGroup({
     numCompte: new FormControl(""),
     rib: new FormControl(""),
@@ -35,17 +40,55 @@ export class AddAccountComponent implements OnInit {
     nomBanque: new FormControl(""),
   });
 
+  currentDevise: Devise = {
+    nom : "",
+    devise :""
+  };
+  devises = [
+    {
+      nom: "",
+      devise: ""
+    }
+  ];
  
-  submitted = false;
+
+currentIndex = -1;
+errorAddAccount=false
+errorMsg=""
+submitted = false;
+selectedDevise = "";
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private bankAccountService: BankaccountService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private deviseService : DeviseService
   ) {}
 
+  getDevises() {
+    this.deviseService.getAllDevises().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.devises = data.map((data: any) => {return { 
+          nom : data.nom,
+          devise: data.devise,
+      
+        
+        }} );
+        console.log(this.devises);
+      },
+    })
+  }
+
   ngOnInit(): void {
+    this.devises = [
+      {
+        nom: '',
+        devise: ''
+      }
+    ];
+    this.getDevises();
     this.bankAccForm = this.formBuilder.group({
       rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
       numcompte: [
@@ -57,7 +100,7 @@ export class AddAccountComponent implements OnInit {
           Validators.maxLength(17),
         ],
       ],
-      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")], Validators.minLength(8),Validators.maxLength(11),],
+      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$") ,Validators.minLength(8),Validators.maxLength(11)]],
       iban: [
         Validators.required,
         ValidatorService.validateIban
@@ -66,7 +109,7 @@ export class AddAccountComponent implements OnInit {
     });
   }
   get f(): { [key: string]: AbstractControl } {
-    console.log(this.bankAccForm.controls);
+    // console.log(this.bankAccForm.controls);
     return this.bankAccForm.controls;
   }
 
@@ -88,8 +131,9 @@ export class AddAccountComponent implements OnInit {
       bic: this.BankAccount.bic,
       iban: this.BankAccount.iban,
       nom_banque: this.BankAccount.nom_banque,
+      nom_devise : this.BankAccount.nom_devise
     };
-    if (!this.bankAccForm.invalid) {
+    if (!this.bankAccForm.invalid){
       this.bankAccountService.create(data).subscribe({
         next: (res) => {
           console.log(res);
@@ -111,9 +155,16 @@ export class AddAccountComponent implements OnInit {
             }
           });
         },
-        error: (e) => console.error(e),
+        error: (e) => {
+          console.error(e);
+          this.errorAddAccount=true;
+          this.errorMsg="Le numéro de compte entré existe déjà !"
+        }
       });
+
     }
+
+    
   }
   newBankAccount(): void {
     this.submitted = false;

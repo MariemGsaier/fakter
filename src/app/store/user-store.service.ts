@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable, BehaviorSubject} from 'rxjs';
-// import { cloneDeep } from 'sequelize/types/utils';
+import { cloneDeep } from 'lodash';
 import { User } from '../models/user.model';
 
 @Injectable({
@@ -14,16 +14,20 @@ export class UserStoreService {
   constructor() { }
 
   public setUserInStore(newData : Partial<User>):void {
-    // const oldData=this.getUserFromStore();
-    // const newUser={
-    //    ...oldData,
-    //    ...newData
-    //  }
-    //  this.userStore.next(newUser);
+    const oldData=this.getUserFromStore();
+    const newUser={
+     ...oldData,
+    ...newData
+      }
+     this.userStore.next(newUser);
   }
 
-  //  public getUserFromStore(): User{
-  //   return cloneDeep(this.userStore.getValue());
+  public resetUserStore():void{
+    this.userStore.next({});
+  }
 
-  //  }
+   public getUserFromStore(): User{
+   return cloneDeep(this.userStore.getValue());
+
+   }
 }

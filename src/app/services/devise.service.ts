@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Devise } from '../models/devise.model';
 import { LigneDevise } from '../models/ligne-devise.model';
+import { Devise } from '../models/devise.model';
 const baseUrl = 'http://localhost:8080/api/devises';
 const createUrl= 'http://localhost:8080/api/devises/create'
 
@@ -12,6 +12,10 @@ const createUrl= 'http://localhost:8080/api/devises/create'
 export class DeviseService {
 
   constructor(private http: HttpClient) { }
+
+  getAllDevises() : Observable<Devise[]> {
+    return this.http.get<Devise[]>(baseUrl);
+  }
 
   getAll(): Observable<LigneDevise[]> {
     return this.http.get<LigneDevise[]>(baseUrl);

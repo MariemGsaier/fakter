@@ -25,7 +25,7 @@ exports.create = (req, res) => {
       .catch(err => {
         res.status(500).send({
           message:
-            err.message || "une erreur est survenue lors de la création de la date devise."
+            err.message 
         });
       });
 };
