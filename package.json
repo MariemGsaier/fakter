@@ -8,7 +8,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "telinput": "node_modules/intl-tel-input/build/js/intlTelInput.min.js"
+    "telinput": "node_modules/intl-tel-input/build/js/intlTelInput.min.js",
+    "postinstall": "ngcc"
   },
   "styles": [
     "node_modules/bootstrap/dist/css/bootstrap.min.css",
@@ -36,6 +37,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
+    "express-fileupload": "^1.4.0",
     "iban": "^0.0.14",
     "intl-tel-input": "^17.0.16",
     "jsonwebtoken": "^8.5.1",
