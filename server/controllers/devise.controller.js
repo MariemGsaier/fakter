@@ -29,21 +29,6 @@ exports.create = (req, res) => {
       });
     });
 };
-// Lister les devises avec les dates
-exports.findAllDevises = (req, res) => {
-  return devise
-    .findAll({
-      include: ["dates"],
-    })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "une erreur est survenue lors de l'affichage.",
-      });
-    });
-};
 
 // Modifier une devise
 exports.update = (req, res) => {

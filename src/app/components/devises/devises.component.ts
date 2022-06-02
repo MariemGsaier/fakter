@@ -6,15 +6,15 @@ import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from "@angular/forms";
+import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators, } from "@angular/forms";
 import { DeviseService } from "src/app/services/devise.service";
 import { DatedeviseService } from "src/app/services/datedevise.service";
+import { LigneDevise } from "src/app/models/ligne-devise.model";
+
+interface devise {
+  nom : string,
+  devise : string
+}
 
 @Component({
   selector: "app-devises",
@@ -26,7 +26,7 @@ export class DevisesComponent implements OnInit {
   searchTerm: any;
   search: boolean = false;
   displayedColumns: string[] = ["nom", "devise", "valeur", "date", "actions"];
-  dataSource = new MatTableDataSource<Devise>();
+  dataSource = new MatTableDataSource<LigneDevise>();
   updateDeviseForm: FormGroup = new FormGroup({
     nom: new FormControl(""),
     devise: new FormControl(""),
@@ -41,8 +41,18 @@ export class DevisesComponent implements OnInit {
     date: new Date(),
     valeur: undefined,
   };
+  currentLigneDevise: LigneDevise = {
+    id: "",
+    date: new Date(),
+    valeur: undefined,
+    devises: 
+        {
+            nom: "",
+            devise: ""
+        }
+  };
   message = "";
-  devises?: Devise[];
+  devises?: LigneDevise[];
   currentIndex = -1;
   disabelModif: boolean = false;
   private roles: string[] = [];
@@ -82,7 +92,7 @@ export class DevisesComponent implements OnInit {
     this.updateDeviseForm = this.formBuilder.group({
       nom: [
         "",
-        [Validators.required, Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)],
+        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
       ],
       devise: [
         "",
@@ -105,7 +115,7 @@ export class DevisesComponent implements OnInit {
   }
 
   fetchDevises(): void {
-    this.deviseService.getAll().subscribe({
+    this.dateDeviseService.getAll().subscribe({
       next: (data) => {
         this.devises = data;
         this.dataSource.data = this.devises;
@@ -117,12 +127,13 @@ export class DevisesComponent implements OnInit {
 
   refreshList(): void {
     this.fetchDevises();
-    this.currentDevise = {};
+    this.currentLigneDevise = {};
     this.currentIndex = -1;
   }
 
-  setActiveDevise(devise: Devise, index: number): void {
-    this.currentDevise = devise;
+  setActiveDevise(devise: LigneDevise, index: number): void {
+    this.currentLigneDevise = devise;
+    console.log('000', this.currentLigneDevise.devises?.nom)
     console.log(devise);
     this.currentIndex = index;
     this.disabelModif = true;

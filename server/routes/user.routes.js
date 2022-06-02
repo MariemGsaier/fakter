@@ -24,7 +24,7 @@ module.exports = function (app) {
   // Update a user with id
   router.put("/:id", userController.update);
   // Update user password with id
-  router.post("/pass/:id", userController.passCheck);
+  router.put("/pass/:id", userController.updatePassword);
   // Delete a user with id
   router.delete("/:id", userController.delete);
   // delete all users

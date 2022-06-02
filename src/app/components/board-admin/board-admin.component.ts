@@ -76,6 +76,7 @@ export class BoardAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.userService.getAdminBoard().subscribe(
       (data) => {
         this.content = data;
@@ -84,6 +85,7 @@ export class BoardAdminComponent implements OnInit {
         this.content = JSON.parse(err.error).message;
       }
     );
+
 
     this.retrieveUsers();
     this.userUpdateForm = this.formBuilder.group({

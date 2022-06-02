@@ -103,8 +103,8 @@ export class AddFactureComponent implements OnInit {
   }
   openDialog() : void {
     this.dialog.open(DialogBoxComponent, {
-      height: '400px',
-      width: '600px',
+      height: '600px',
+      width: '800px',
       hasBackdrop : false,
       backdropClass: 'backdropBackground'
     });
