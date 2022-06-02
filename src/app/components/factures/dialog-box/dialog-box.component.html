@@ -1,33 +1,57 @@
-<h1 mat-dialog-title><strong>Hello !</strong></h1>
+<h4 class="mb-56" mat-dialog-title>Ajoutez une ligne facture</h4>
 <div mat-dialog-content>
-  <mat-form-field>
-    <mat-select placeholder="Selectionnez un article" [value]="selectedArticle" >
-      <mat-option *ngFor="let article of articles" [value]="article">{{ article.nom_article }}</mat-option>
-    </mat-select>
-  </mat-form-field>
+  <form action="">
+    <mat-form-field class="w-100 fs-16" appearance="outline">
+      <mat-label>Nom article</mat-label>
+      <mat-select placeholder="Selectionnez un article" [value]="selectedArticle" required>
+        <mat-option *ngFor="let article of articles; let i = index;" [class.active]="i == currentIndex" [value]="article" (click)="setActiveDevise(article, i)">{{ article.nom_article }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="disabelModif">
+    <mat-form-field class="w-100 fs-16" appearance="outline">
+      <mat-label>Prix</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Veuillez entrer le prix"
+        [(ngModel)]="currentArticle.prix_vente"
+        [ngModelOptions]=" {standalone: true}"
+        id="prix"
+      />
+    </mat-form-field>
+    <mat-form-field class="w-100 fs-16" appearance="outline">
+      <mat-label>Taxe</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Veuillez entrer la taxe"
+        [(ngModel)]="currentArticle.taxe_vente"
+        [ngModelOptions]=" {standalone: true}"
+        id="taxe"
+      />
+    </mat-form-field>
+    <mat-form-field class="w-100 fs-16" appearance="outline">
+      <mat-label>Quantité</mat-label>
+      <input
+        matInput
+        type="number"
+        placeholder="Veuillez entrer la quantité"
+        id="quantite"
+      />
+    </mat-form-field>
+  
+  <button
+                mat-button
+                class="btn btn-success fw-normal btnw disabled"
+                style="float: right;"
+                type="submit"
+              >
+                Ajouter
+              </button>
+            </div>
+  </form>
   <p>{{articles}}</p>
-  <!-- <mat-form-field class="w-100 fs-16" appearance="outline">
-    <mat-label>Article</mat-label>
-    <mat-select
-      name="article"
-      required
-      formControlName="article"
-      (selectionChange)="fetchArticles($event.value)"
-      [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
-      [(ngModel)]="nom_article"
-    >
-      <mat-option *ngFor="let article of articles" [value]="article.value">
-        {{ article.nom_article }}
-      </mat-option>
-    </mat-select>
-    <mat-error *ngIf="f['role'].errors" class="invalid-feedback">
-      <div *ngIf="f['role'].errors['required']">Le role est obligatoire</div>
-    </mat-error>
-  </mat-form-field> -->
-  <ng-template #elseTemplate>
-    Sure to delete <b></b>?
-  </ng-template>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="closeDialog()" mat-flat-button color="warn">Cancel</button>
+  <button mat-button style="float: right;" (click)="closeDialog()" mat-flat-button color="warn">Quitter</button>
 </div>

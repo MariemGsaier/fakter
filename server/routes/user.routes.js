@@ -23,12 +23,13 @@ module.exports = function (app) {
   router.get("/:id", userController.findOne);
   // Update a user with id
   router.put("/:id", userController.update);
-  // Update user password with id
-  router.post("/pass/:id", userController.passCheck);
+  // Update a User password with id
+  router.put("/pass/:id", userController.updatePassword);
   // Delete a user with id
   router.delete("/:id", userController.delete);
   // delete all users
   router.delete("/", userController.deleteAll);
-  // base url
+
+ // base url
   app.use("/api/users", router);
 };

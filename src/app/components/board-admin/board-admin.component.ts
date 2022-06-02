@@ -85,6 +85,7 @@ export class BoardAdminComponent implements OnInit {
       }
     );
 
+
     this.retrieveUsers();
     this.userUpdateForm = this.formBuilder.group({
       username: [

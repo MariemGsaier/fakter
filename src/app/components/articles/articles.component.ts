@@ -13,6 +13,10 @@ interface type {
   value: string;
   viewValue: string;
 }
+interface taxe {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: "app-articles",
@@ -24,7 +28,6 @@ export class ArticlesComponent implements OnInit {
   searchTerm: any;
   search: boolean = false;
   displayedColumns: string[] = [
-    "image",
     "nom",
     "type_article",
     "prix",
@@ -41,15 +44,14 @@ export class ArticlesComponent implements OnInit {
     taxe_vente: new FormControl(""),
     cout: new FormControl(""),
     description: new FormControl(""),
-    // image: new FormControl(""),
   });
   currentArticle: Article = {
     image: "",
     nom_article: "",
     type_article: "",
-    prix_vente: 0,
-    taxe_vente: 0,
-    cout: 0,
+    prix_vente: undefined,
+    taxe_vente: undefined,
+    cout: undefined,
     description: "",
   };
   message = "";
@@ -63,6 +65,10 @@ export class ArticlesComponent implements OnInit {
   submitted = false;
 
   types: type[] = [
+    { value: "Service", viewValue: "Service" },
+    { value: "Consommable", viewValue: "Consommable" },
+  ];
+  taxes: taxe[] = [
     { value: "Service", viewValue: "Service" },
     { value: "Consommable", viewValue: "Consommable" },
   ];
@@ -99,7 +105,7 @@ export class ArticlesComponent implements OnInit {
         "",
         [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
       ],
-      type_article: ["", [Validators.required]],
+      type_article: ["", Validators.required],
       prix_vente: ["", Validators.required],
       taxe_vente: ["", Validators.required],
       cout: ["", Validators.required],
@@ -107,7 +113,6 @@ export class ArticlesComponent implements OnInit {
         "",
         [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")],
       ],
-      // image: ["", [Validators.required]],
     });
   }
 

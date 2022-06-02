@@ -108,35 +108,8 @@ export class ProfileComponent implements OnInit {
     this.submitted = true;
 
     if (this.form2.invalid) {
-      console.log("gggg", this.form2.invalid);
       return;
     }
-    console.log("hhhh", this.form2.invalid);
-    this.message = "";
-    this.checkPassword(this.currentUser.id).subscribe((password) => {
-      console.log("1", password.message);
-      if (password.message == true) {
-        this.getUser(this.currentUser.id).subscribe((user) => {
-          let pass: User = {
-            password: user.password,
-          };
-          console.log("eeeeee", pass);
-          this.gestUserService.update(this.currentUser.id, pass).subscribe(
-            (response) => {
-              console.log(response);
-              // this.disabelModifDetails = true;
-              // this.reloadPage();
-              this.message = response.message
-                ? response.message
-                : "Your password is updated successfully!";
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        });
-      } else console.log("Une erreur a été détéctée");
-    });
   }
 
   editDetails(): void {
@@ -145,18 +118,6 @@ export class ProfileComponent implements OnInit {
 
   editPassword(): void {
     this.disabelModifPassword = true;
-  }
-
-  getUser(id: string): Observable<User> {
-    return this.gestUserService.get(id);
-  }
-
-  checkPassword(id: string): Observable<any> {
-    let password = {
-      password: this.currentPassword,
-    };
-    console.log("rrrr", password);
-    return this.gestUserService.checkPw(id, password);
   }
 
   updateUser(): void {
@@ -190,93 +151,31 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  // updatePassword(): void {
-  //   console.log(this.form2.controls["password"].value);
-
-  //   this.message = "";
-  //   if (!this.form2.invalid) {
-  //     // if (result.isConfirmed) {
-  //     this.checkPassword(this.currentUser.id).subscribe((password) => {
-  //       // console.log("1", password);
-  //       // if (password.message == true) {
-  //       const pass = {
-  //         password: this.form2.controls["password"].value,
-  //       };
-  //       // console.log("eeeeee", pass);
-  //       this.gestUserService.update(this.currentUser.id, pass).subscribe(
-  //         (response) => {
-  //           console.log(response);
-  //           this.disabelModifDetails = true;
-  //           // this.reloadPage();
-  //           this.message = response.message
-  //             ? response.message
-  //             : "Your password is updated successfully!";
-  //           Swal.fire({
-  //             title: "Modification effectuée avec succés !",
-  //             icon: "success",
-  //             confirmButtonColor: "#00c292",
-  //           }).then((result) => {
-  //             if (result.isConfirmed) {
-  //               // this.reloadPage();
-  //             }
-  //           });
-  //         },
-  //         (error) => {
-  //           console.log(error);
-  //           Swal.fire({
-  //             title: "Modification echouée !",
-  //             icon: "warning",
-  //             confirmButtonColor: "red",
-  //           });
-  //         }
-  //       );
-  //       // } else {
-  //       //   console.log("Une erreur a été détéctée");
-  //       //   Swal.fire({
-  //       //     title: "Modification echouée !",
-  //       //     icon: "warning",
-  //       //     confirmButtonColor: "red",
-  //       //   });
-  //       // }
-  //     });
-  //     //   }
-  //   }
-  // }
-
   updatePassword(): void {
     this.message = "";
     if (!this.form2.invalid) {
-      this.checkPassword(this.currentUser.id).subscribe((password) => {
-        if (password.message == true) {
-          const pass = {
-            password: this.form2.controls["password"].value,
-          };
-          this.token.saveUser(this.currentUser);
-          this.gestUserService
-            .update(this.currentUser.id, pass)
-            .subscribe(
-              (response) => {
-                console.log(response);
-                this.disabelModifDetails = true;
-                // this.reloadPage();
-                this.message = response.message
-                  ? response.message
-                  : "Your profile is updated successfully!";
-              },
-              (error) => {
-                console.log(error);
+      this.gestUserService
+        .updatePassword(this.currentUser.id, this.form2.value)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            this.disabelModifPassword = true;
+            Swal.fire({
+              title: "Modification effectuée avec succés !",
+              icon: "success",
+              confirmButtonColor: "#00c292",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.reloadPage();
               }
-            );
-        } else {
-          console.log("Une erreur a été détéctée");
-          Swal.fire({
-            title: "Modification echouée !",
-            icon: "warning",
-            confirmButtonColor: "red",
+            });
+            this.message = response.message
+              ? response.message
+              : "Your password is updated successfully!";
+          },
+          error: (e) => console.error(e),
           });
-        }
-      });
-    }
+      }
   }
 
   annulerDetails(): void {

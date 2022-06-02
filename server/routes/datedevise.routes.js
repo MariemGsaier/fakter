@@ -13,8 +13,10 @@ module.exports = function (app) {
   
     // Create 
      router.post("/create", controllerddev.create);
-    // fetch all 
-    router.get("/", controllerddev.findAll);
+     // fetch all devises with dates
+     router.get("/", controllerddev.findAllDevises);
+    // // fetch all 
+    // router.get("/", controllerddev.findAll);
     // Update with nom
     router.put("/:id", controllerddev.update);
     // Delete  with id

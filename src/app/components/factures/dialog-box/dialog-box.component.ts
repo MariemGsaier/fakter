@@ -12,19 +12,47 @@ import { ArticleService } from "src/app/services/article.service";
 
 export class DialogBoxComponent implements OnInit {
 
+  currentArticle: Article = {
+    id: undefined,
+    image: "",
+    nom_article: "",
+    type_article: "",
+    prix_vente: undefined,
+    taxe_vente: undefined,
+    cout: undefined,
+    description: "",
+  };
+  
+  currentIndex = -1;
+  disabelModif: boolean = false;
+
   articles = [
     {
       nom_article: '',
+      prix_vente: undefined,
+      taxe_vente: undefined,
     }
   ];
-  selectedArticle = this.articles;
+  
+  selected = [
+    {
+      prix_vente: undefined,
+      taxe_vente: undefined,
+    }
+  ]
+  selectedArticle = this.selected;
 
   constructor(private articleService: ArticleService, public dialogRef: MatDialogRef<DialogBoxComponent>) { }
 
   getArticles() {
     this.articleService.getAll().subscribe({
       next: (data) => {
-        this.articles = data.map((data: any) => {return { nom_article : data.nom_article }} );
+        this.articles = data.map((data: any) => {return { 
+          nom_article : data.nom_article,
+          prix_vente: data.prix_vente,
+          taxe_vente: data.taxe_vente
+        
+        }} );
         // if (dropDownData) {
         //   this.nom_article = dropDownData.nom_article;
         //   if(this.articles){
@@ -36,6 +64,13 @@ export class DialogBoxComponent implements OnInit {
         console.log(this.articles);
       },
     })
+  }
+
+  setActiveDevise(article: Article, index: number): void {
+    this.currentArticle = article;
+    console.log('!!!!', article);
+    this.currentIndex = index;
+    this.disabelModif = true;
   }
 
   closeDialog() {
