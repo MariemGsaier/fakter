@@ -7,8 +7,6 @@ exports.userBoard = (req, res) => {
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
 };
-  const DIR = './uploads';
-  const multer = require('multer');
 
   const db = require("../models");
   const article = db.article;
