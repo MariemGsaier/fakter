@@ -1,5 +1,6 @@
 export class Bankaccount {
-  num_compte?: number;
+  id?: any;
+  num_compte?: string;
   rib?: string;
   bic?: string;
   iban?: string;

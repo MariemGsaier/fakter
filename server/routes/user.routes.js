@@ -16,20 +16,17 @@ module.exports = function (app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     userController.adminBoard
   );
+// fetch all users
+router.get("/", userController.findAll);
+// Update a user with id
+router.put("/:id", userController.update);
+// Update a User password with id
+router.put("/pass/:id", userController.updatePassword);
+// Delete a user with id
+router.delete("/:id", userController.delete);
+// delete all users
+router.delete("/", userController.deleteAll);
 
-  // fetch all users
-  router.get("/", userController.findAll);
-  // fetch a single user with id
-  router.get("/:id", userController.findOne);
-  // Update a user with id
-  router.put("/:id", userController.update);
-  // Update a User password with id
-  router.put("/pass/:id", userController.updatePassword);
-  // Delete a user with id
-  router.delete("/:id", userController.delete);
-  // delete all users
-  router.delete("/", userController.deleteAll);
-
- // base url
-  app.use("/api/users", router);
+// base url
+app.use("/api/users", router);
 };

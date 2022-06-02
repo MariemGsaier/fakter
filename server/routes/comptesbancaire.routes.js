@@ -15,9 +15,9 @@ module.exports = function (app) {
     // fetch all 
     router.get("/", controllercb.findAll);
     // Update  with id
-    router.put("/:num_compte", controllercb.update);
+    router.put("/:id", controllercb.update);
     // Delete  with id
-    router.delete("/:num_compte", controllercb.delete);
+    router.delete("/:id", controllercb.delete);
     // Create 
     router.delete("/", controllercb.deleteAll);
     app.use("/api/bankaccounts", router);

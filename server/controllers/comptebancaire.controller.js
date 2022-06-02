@@ -17,6 +17,8 @@ exports.create = (req, res) => {
     bic: req.body.bic,
     iban: req.body.iban,
     nom_banque: req.body.nom_banque,
+    nom_devise : req.body.nom_devise,
+    id_societe : 1
   };
   comptebancaire.findOne({
     where: {
@@ -48,12 +50,10 @@ exports.create = (req, res) => {
 };
 // Lister les comptes bancaires
 exports.findAll = (req, res) => {
-  const num_compte = req.query.num_compte;
-  var condition = num_compte
-    ? { num_compte: { [Op.iLike]: `%${num_compte}%` } }
-    : null;
   comptebancaire
-    .findAll({ where: condition })
+    .findAll({
+      include: ["devise"],
+    })
     .then((data) => {
       res.send(data);
     })
@@ -66,10 +66,10 @@ exports.findAll = (req, res) => {
 
 // Modifier un compte bancaire
 exports.update = (req, res) => {
-  const num_compte = req.params.num_compte;
+  const id = req.params.id;
   comptebancaire
     .update(req.body, {
-      where: { num_compte: num_compte },
+      where: { id: id },
     })
     .then((num) => {
       if (num == 1) {
@@ -78,22 +78,22 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `erreur de mise à jour de du compte avec numCompte=${num_compte}. peut etre le compte est inexistant  ou le corps de la requête est vide!`,
+          message: `erreur de mise à jour de du compte avec id=${id}. peut etre le compte est inexistant  ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Erreur de mise à jour du compte avec numCompte=" + num_compte,
+        message: "Erreur de mise à jour du compte avec id=" + id,
       });
     });
 };
 // Supprimer un compte bancaire
 exports.delete = (req, res) => {
-  const num_compte = req.params.num_compte;
+  const id = req.params.id;
   comptebancaire
     .destroy({
-      where: { num_compte: num_compte },
+      where: { id: id },
     })
     .then((num) => {
       if (num == 1) {
@@ -102,7 +102,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression du compte bancaire avec numCompte=${num_compte}. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression du compte bancaire avec numCompte=${id}. Peut être qu'il est inexistant !`,
         });
       }
     })

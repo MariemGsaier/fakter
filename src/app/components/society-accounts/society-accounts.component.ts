@@ -14,6 +14,8 @@ import {
 } from "@angular/forms";
 import { ValidatorService } from "angular-iban";
 import { TokenStorageService } from "src/app/services/token-storage.service";
+import { BankaccountDevise } from "src/app/models/bankaccount-devise.model";
+import { DeviseService } from "src/app/services/devise.service";
 
 @Component({
   selector: "app-society-accounts",
@@ -27,18 +29,20 @@ export class SocietyAccountsComponent implements OnInit {
     "nombanque",
     "bic",
     "iban",
+    "nomdevise",
     "actions",
   ];
 
 
-  dataSource = new MatTableDataSource<Bankaccount>();
+  dataSource = new MatTableDataSource<BankaccountDevise>();
 
-  currentBankAccount: Bankaccount = {
-    num_compte: 0,
+  currentBankAccount: BankaccountDevise = {
+    num_compte: "",
     rib: "",
     bic: "",
     iban: "",
     nom_banque: "",
+    nom_devise : ""
   };
 
   bankAccForm: FormGroup = new FormGroup({
@@ -55,7 +59,7 @@ export class SocietyAccountsComponent implements OnInit {
 
   disabelModif: boolean = false;
   message = "";
-  bankaccounts?: Bankaccount[];
+  bankaccounts?: BankaccountDevise[];
   currentIndex = -1;
   search: boolean = false;
   private roles: string[] = [];
@@ -63,12 +67,35 @@ export class SocietyAccountsComponent implements OnInit {
   showObserverBoard = true;
   paginator?: MatPaginator;
 
+  devises = [
+    {
+      nom: "",
+      devise: ""
+    }
+  ];
+
+  getDevises() {
+    this.deviseService.getAllDevises().subscribe({
+      next: (data) => {
+        console.log(data);
+        this.devises = data.map((data: any) => {return { 
+          nom : data.nom,
+          devise: data.devise,
+      
+        
+        }} );
+        console.log(this.devises);
+      },
+    })
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private BankaccountService: BankaccountService,
     private formBuilder: FormBuilder,
     private tokenStorageService: TokenStorageService, 
+    private deviseService : DeviseService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -100,7 +127,7 @@ export class SocietyAccountsComponent implements OnInit {
           Validators.maxLength(17),
         ],
       ],
-      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")], Validators.minLength(8),Validators.maxLength(11),],
+      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$"),Validators.minLength(8),Validators.maxLength(11)]],
       iban: [
         Validators.required,
         ValidatorService.validateIban
@@ -140,7 +167,7 @@ export class SocietyAccountsComponent implements OnInit {
     this.currentBankAccount = {};
     this.currentIndex = -1;
   }
-  setActiveBankAccount(bankaccount: Bankaccount, index: number): void {
+  setActiveBankAccount(bankaccount: BankaccountDevise, index: number): void {
     this.currentBankAccount = bankaccount;
     console.log(bankaccount);
     this.currentIndex = index;
@@ -182,7 +209,7 @@ export class SocietyAccountsComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.BankaccountService.update(
-          this.currentBankAccount.num_compte,
+          this.currentBankAccount.id,
           this.currentBankAccount
         ).subscribe({
           next: (res) => {
@@ -199,7 +226,7 @@ export class SocietyAccountsComponent implements OnInit {
     });
   }
 
-  deleteBankAccount(bankaccount: Bankaccount): void {
+  deleteBankAccount(bankaccount: BankaccountDevise): void {
     Swal.fire({
       title: "Êtes-vous sûr de le supprimer ? ",
       text: "Vous ne serez pas capable de le récupérer !",
@@ -211,7 +238,7 @@ export class SocietyAccountsComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.BankaccountService.delete(bankaccount.num_compte).subscribe({
+        this.BankaccountService.delete(bankaccount.id).subscribe({
           next: (res) => {
             console.log(res);
             this.message = res.message
