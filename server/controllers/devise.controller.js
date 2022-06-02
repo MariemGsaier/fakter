@@ -1,6 +1,5 @@
 const db = require("../models");
 const devise = db.devise;
-const dateDevise = db.dateDevise;
 const Op = db.Sequelize.Op;
 // Créer et enregistrer une devise
 exports.create = (req, res) => {
@@ -26,6 +25,23 @@ exports.create = (req, res) => {
         message:
           err.message ||
           "une erreur est survenue lors de la création de la devise.",
+      });
+    });
+};
+
+exports.findAll = (req, res) => {
+  const nom = req.query.nom;
+  var condition = nom
+    ? { nom: { [Op.iLike]: `%${nom}%` } }
+    : null;
+  devise
+    .findAll({ where: condition })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message
       });
     });
 };

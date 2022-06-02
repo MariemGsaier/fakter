@@ -9,7 +9,8 @@ module.exports = function (app) {
     );
     next();
   });
-  
+  //fetch all devises
+  router.get("/", controllerdev.findAll);
     // Create 
      router.post("/create", controllerdev.create);
     // Update  with nom
