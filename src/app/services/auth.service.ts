@@ -29,4 +29,8 @@ export class AuthService {
   forgtoPw(data: any): Observable<any> {
     return this.http.post(`${AUTH_API}`, data);
   }
+
+  changeForgtoPw(data: any): Observable<any> {
+    return this.http.post(AUTH_API +'changeforgotpw', data);
+  }
 }

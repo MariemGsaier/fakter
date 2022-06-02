@@ -21,17 +21,29 @@
 </div>
 <mat-card class="w-100">
   <mat-card-content>
-        <button
+    <button
       mat-button
       class="btn btn-info fw-normal"
       routerLink="/add-user"
       type="submit"
       style="float: right"
     >
-    <mat-icon>add</mat-icon>
+      <mat-icon>add</mat-icon>
     </button>
-    <button mat-button class="btn btn-danger fw-normal" style="float: right; margin-right: 0.142%" (click)="removeAllUsers()">Supprimer Tout</button>
-    <button mat-icon-button class="ms-4 me-4" style="float: right;" (click)="search = !search">
+    <button
+      mat-button
+      class="btn btn-danger fw-normal"
+      style="float: right; margin-right: 0.142%"
+      (click)="removeAllUsers()"
+    >
+      Supprimer Tout
+    </button>
+    <button
+      mat-icon-button
+      class="ms-4 me-4"
+      style="float: right"
+      (click)="search = !search"
+    >
       <i-feather
         name="search"
         class="mt-n3 text-light-muted feather-base text-dark"
@@ -40,53 +52,68 @@
     <h4 class="mb-56">Gérez vos utilisateurs</h4>
 
     <div class="table-responsive">
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        class="text-nowrap w-100"
-      >
-      
+      <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>Nom d'utilisateur</th>
+          <td mat-cell *matCellDef="let user">
+            <p class="mb-0 fw-medium">{{ user.username }}</p>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="username">
-            <th mat-header-cell *matHeaderCellDef>Nom d'utilisateur</th>
-            <td mat-cell *matCellDef="let user">
-              <p class="mb-0 fw-medium">{{ user.username }}</p>
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let user">
+            <p class="mb-0 fw-medium">{{ user.email }}</p>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="email">
-            <th mat-header-cell *matHeaderCellDef>Email</th>
-            <td mat-cell *matCellDef="let user">
-              <p class="mb-0 fw-medium">{{ user.email }}</p>
-            </td>
-          </ng-container>
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>Rôle</th>
+          <td mat-cell *matCellDef="let user">
+            <span>{{ user.role }}</span>
+          </td>
+        </ng-container>
 
-          <ng-container matColumnDef="role">
-            <th mat-header-cell *matHeaderCellDef>Rôle</th>
-            <td mat-cell *matCellDef="let user">
-              <span>{{ user.role }}</span>
-            </td>
-          </ng-container>
-
-          <ng-container matColumnDef="action" stickyEnd>
-            <th mat-header-cell *matHeaderCellDef>Actions</th>
-            <td mat-cell *matCellDef="let user; let i = index" [class.active]="i == currentIndex">
-              <span><button mat-button class="btn btn-success fw-normal btnw" style="margin-right: 1%;" type="submit" name="modifier" (click)="setActiveUser(user, i)">
+        <ng-container matColumnDef="action" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td
+            mat-cell
+            *matCellDef="let user; let i = index"
+            [class.active]="i == currentIndex"
+          >
+            <span
+              ><button
+                mat-button
+                class="btn btn-success fw-normal btnw"
+                style="margin-right: 1%"
+                type="submit"
+                name="modifier"
+                (click)="setActiveUser(user, i)"
+              >
                 <mat-icon>edit</mat-icon>
-              </button></span>
-              <span><button mat-button class="btn btn-danger fw-normal btnw" type="submit" name="supprimer" (click)="deleteUser(user)">
+              </button></span
+            >
+            <span
+              ><button
+                mat-button
+                class="btn btn-danger fw-normal btnw"
+                type="submit"
+                name="supprimer"
+                (click)="deleteUser(user)"
+              >
                 <mat-icon>delete</mat-icon>
-              </button></span>
-            </td>
-          </ng-container>
+              </button></span
+            >
+          </td>
+        </ng-container>
 
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
       <mat-paginator
         #paginator
         [pageSize]="5"
-        [pageSizeOptions]="[5, 10, 20,30,50,100]"
+        [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
       >
       </mat-paginator>
     </div>
@@ -107,11 +134,14 @@
           id="username"
           [(ngModel)]="currentUser.username"
         />
-      <mat-error *ngIf="f['username'].errors" class="invalid-feedback">
-      <div *ngIf="f['username'].errors['pattern']">
-        Le nom d'utilisateur est invalide
-      </div>
-    </mat-error>
+        <mat-error *ngIf="f['username'].errors" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">
+            Le champ nom d'utilisateur est obligatoire
+          </div>
+          <div *ngIf="f['username'].errors['pattern']">
+            Le nom d'utilisateur est invalide
+          </div>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Email</mat-label>
@@ -125,21 +155,24 @@
           [(ngModel)]="currentUser.email"
         />
         <mat-error *ngIf="f['email'].errors" class="invalid-feedback">
-        <div *ngIf="f['email'].errors['pattern']">L'email  est invalide</div>
-      </mat-error>
+          <div *ngIf="f['email'].errors['required']">
+            Le champ email est obligatoire
+          </div>
+          <div *ngIf="f['email'].errors['pattern']">L'email est invalide</div>
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Rôle</mat-label>
         <mat-select
-              name="role"
-              required
-              [(ngModel)]="currentUser.role"
-              [ngModelOptions]="{ standalone: true }"
-            >
-              <mat-option *ngFor="let role of roles" [value]="role.value">
-                {{ role.viewValue }}
-              </mat-option>
-            </mat-select>
+          name="role"
+          required
+          [(ngModel)]="currentUser.role"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{ role.viewValue }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
 
       <div>
@@ -149,7 +182,7 @@
           class="btn btn-danger fw-normal"
           (click)="annuler()"
           type="submit"
-          style="float: right; margin-left: 0.3%;"
+          style="float: right; margin-left: 0.3%"
         >
           Annuler
         </button>
@@ -162,8 +195,19 @@
         >
           Confirmer
         </button>
-        
-        <p>{{ message }}</p>
+
+        <div
+          class="alert alert-danger alert-text-danger d-flex fs-14"
+          style="width: 45Opx"
+          role="alert"
+          *ngIf="errorUpdate"
+        >
+          <i-feather
+            name="alert-circle"
+            class="text-danger feather-base me-12"
+          ></i-feather>
+          {{ errorMsg }}
+        </div>
       </div>
     </form>
   </mat-card-content>

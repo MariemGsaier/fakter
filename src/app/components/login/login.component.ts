@@ -43,7 +43,8 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/dashboard']);
       },
       (err) => {
-        this.errorMessage = err.error.message;
+        console.log(err.error.message) ;
+        this.errorMessage="Le nom d'utilisateur ou le mot de passe est incorrect !"
         this.isLoginFailed = true;
       }
     );

@@ -50,6 +50,8 @@ export class SocietyAccountsComponent implements OnInit {
   });
 
   submitted = false;
+  errorUpdateAccount=false;
+  errorMsg=""
 
   disabelModif: boolean = false;
   message = "";
@@ -187,7 +189,11 @@ export class SocietyAccountsComponent implements OnInit {
             console.log(res);
             this.disabelModif = false;
           },
-          error: (e) => console.error(e),
+          error: (e) => {
+            console.error(e);
+            this.errorUpdateAccount=true;
+            this.errorMsg="Une erreur est survenue lors de la mise à jour du compte bancaire !"
+          }
         });
       }
     });

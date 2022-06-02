@@ -34,6 +34,16 @@ exports.findAll = (req, res) => {
 // Update a user by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
+
+  const pass = req.body.password
+  console.log('REQUETE update', req.body)
+  console.log('check body for pass', pass, req.body.password)
+  if (pass != null) {
+    console.log('afficher password requete',req.body.password);
+    req.body.password = bcrypt.hashSync(req.body.password, 8)
+    console.log('passwor hashé', req.body.password);
+  }
+
   user
     .update(req.body, {
       where: { id: id },
@@ -54,7 +64,6 @@ exports.update = (req, res) => {
         message: "Error updating user with id=" + id,
       });
     });
-
 };
 
 // Update a user's password by the id in the request

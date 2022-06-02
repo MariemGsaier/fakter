@@ -19,7 +19,7 @@
 
 .card-body {
     text-align: center;
-    height: 200px;
+    height: 400px;
 }
 
 .card-body-cnx {
@@ -35,6 +35,13 @@
     justify-content: center;
     align-items: center;
 }
+.card-body-loggedin{
+    text-align: center;
+    height: 200px;
+    color: #ffffff;
+    vertical-align: middle;
+}
+
 
 
 .card-body .mb-32 {
@@ -44,7 +51,8 @@
 
 #button {
     background-color: #00c292;
-    margin-top : 20px;
+    margin-top : 15px;
+    margin-bottom: 10px;
 }
 .forgotmdp:hover{
     color: #00c292;

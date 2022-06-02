@@ -24,6 +24,8 @@ export class AddUserComponent implements OnInit {
     role: '',
     password: ''
   };
+errorMsg =""
+  
 
   userForm: FormGroup = new FormGroup({
     username: new FormControl(''),
@@ -33,6 +35,7 @@ export class AddUserComponent implements OnInit {
     confirmPassword: new FormControl('')
   });
   submitted = false;
+  errorUser = false;
 
   roles: role[] = [
     {value: 'Super Administrateur', viewValue: 'Super administrateur'},
@@ -106,7 +109,13 @@ export class AddUserComponent implements OnInit {
               }
             })
           },
-          error: (e) => console.error(e)
+          error: (e) => {
+            console.log(e.error.message) ;
+            this.errorUser = true;
+            this.errorMsg="Le nom d'utilisateur ou l'email existe déjà !"
+          }
+        
+
         } );
 
     }

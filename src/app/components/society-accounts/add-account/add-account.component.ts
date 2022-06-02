@@ -35,7 +35,8 @@ export class AddAccountComponent implements OnInit {
     nomBanque: new FormControl(""),
   });
 
- 
+ errorAddAccount=false
+ errorMsg=""
   submitted = false;
 
   constructor(
@@ -111,7 +112,11 @@ export class AddAccountComponent implements OnInit {
             }
           });
         },
-        error: (e) => console.error(e),
+        error: (e) => {
+          console.error(e);
+          this.errorAddAccount=true;
+          this.errorMsg="Le numéro de compte entré existe déjà !"
+        }
       });
     }
   }

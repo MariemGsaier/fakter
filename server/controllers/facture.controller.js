@@ -22,18 +22,28 @@ exports.create = (req, res) => {
     total_lettres:req.body.etat_echeance,
     total_devise:req.body.etat_echeance,
   };
+  facture.findOne({
+    where: {
+      reference: req.body.reference,
+    },
+  })
+  .then((facture) => {
+    if (facture) {
+      res.status(400).send({
+        message: "Echec! la reference de la facture entrée existe déjà !"
+      });
+      return;
 
+    } })
   facture
     .create(fact)
     .then((data) => {
       res.send(data);
-      // console.log("ajout avec succés");
     })
     .catch((err) => {
       res.status(500).send({
         message:
-          err.message ||
-          "une erreur est survenue lors de la création du client.",
+          err.message 
       });
     });
 };
@@ -76,7 +86,7 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating facture with id=" + id,
+        message: err.message
       });
     });
 };
@@ -100,7 +110,7 @@ exports.factureEmail= (req, res) => {
         }
       });
       var mailOptions = {
-      from: `"Omar Elloumi", "noreply@hello.com"`,
+      from: `"Omar Elloumi", "noreply@fakter.com"`,
       to: `<${courriel}>`,
       subject: "Mot de passe oublié ",
       html: "<p>Bonjour cher"+ `<${client.nom}>` +" ,<br><br> Une réinitialisation du mot de passe a été demandée pour le compte Fakter lié à cet e-mail.<br><br> Vous pouvez changer votre mot de passe en suivant <a href='http://localhost:4200/forgot-pw'>ce lien<a>. <br><br>Note : Si vous ne vous attendez pas à cela, vous pouvez ignorer cet e-mail.</p>",
