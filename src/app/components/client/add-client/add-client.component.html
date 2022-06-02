@@ -36,6 +36,7 @@
                             <mat-form-field class="w-100 fs-16" appearance="outline">
                                 <mat-label>Numéro de téléphone</mat-label>
                                 <input matInput type="text" placeholder="Ex : +21623456789"  formControlName="phone"  [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }"  [(ngModel)]="client.numtel" >
+                                <mat-icon matSuffix>phone</mat-icon>
                                 <mat-error *ngIf="f['phone'].errors" class="text-danger">
                                     <div *ngIf="f['phone'].errors['required']">Le champ numéro de téléphone est obligatoire !</div>
                                     <div *ngIf="f['phone'].errors['pattern']">Le numéro de téléphone saisi est invalide !</div>

@@ -1,16 +1,24 @@
 <!-- Daily Activity -->
 <mat-card class="w-100">
     <mat-card-content>
-
-        <button mat-button class="btn btn-info fw-normal btnw" routerLink="/add-facture" type="submit" *ngIf="!showObserverBoard"
+        <button mat-button class="btn btn-info fw-normal btnw" routerLink="/add-facture" type="submit" matTooltip="Ajouter une facture" matTooltipPosition="above"
             style="float: right">
             <mat-icon>add</mat-icon>
         </button>
+        <button
+        mat-button
+        class="btn btn-primary fw-normal"
+        matTooltip="Exporter en Excel" matTooltipPosition="above"
+        style="float: right; margin-right: 0.142%"
+        (click)="exportexcel()"
+      >
+      <mat-icon>save_alt</mat-icon>
+      </button>
     <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les factures</h4>
     <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les factures</h4>
 
         <div class="table-responsive">
-            <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+            <table mat-table [dataSource]="dataSource" id="excel-table" class="text-nowrap w-100">
 
                 <!-- Id Column -->
                 <ng-container matColumnDef="reference">

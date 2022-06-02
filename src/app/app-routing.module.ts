@@ -35,6 +35,8 @@ import { AddSocietyComponent } from "./components/societies/add-society/add-soci
 import { SocietiesComponent } from "./components/societies/societies.component";
 import { DevisesComponent } from "./components/devises/devises.component";
 import { AddDeviseComponent } from "./components/devises/add-devise/add-devise.component";
+import { ChangePwComponent } from "./components/board-admin/change-pw/change-pw.component";
+import { ForgotpasswordComponent } from "./components/login/forgotpassword/forgotpassword.component";
 
 
 
@@ -46,6 +48,9 @@ const routes: Routes = [
     children: [
       { path: "", redirectTo: "/login", pathMatch: "full" },
       { path: "login", component: LoginComponent },
+      { path: "change-pw", component: ChangePwComponent },
+      { path: "forgot-pw", component: ForgotpasswordComponent },
+
     ],
   },
   {
@@ -85,10 +90,8 @@ const routes: Routes = [
       { path: "add-societe", component: AddSocietyComponent },
       { path: "devises", component: DevisesComponent },
       { path: "add-devise", component: AddDeviseComponent },
-      
     ],
   },
-
   { path: "", redirectTo: "/login", pathMatch: "full" },
   { path: "**", redirectTo: "/login", pathMatch: "full" },
 ];

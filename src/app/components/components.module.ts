@@ -39,6 +39,9 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { DevisesComponent } from './devises/devises.component';
 import { AddDeviseComponent } from './devises/add-devise/add-devise.component';
 import { DialogBoxComponent } from './factures/dialog-box/dialog-box.component';
+import { ChangePwComponent } from './board-admin/change-pw/change-pw.component';
+import { ForgotpasswordComponent } from './login/forgotpassword/forgotpassword.component';
+import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw.component';
 
 
 
@@ -82,6 +85,9 @@ import { DialogBoxComponent } from './factures/dialog-box/dialog-box.component';
     DevisesComponent,
     AddDeviseComponent,
     DialogBoxComponent,
+    ChangePwComponent,
+    ForgotpasswordComponent,
+    ChangeForgotpwComponent,
  
 
   ],
