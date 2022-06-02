@@ -23,12 +23,10 @@ module.exports = function (app) {
 
   // Retrieve all users
   router.get("/", controller.findAll);
-  // Retrieve a single user with id
-  router.get("/:id", controller.findOne);
-  // Update a Tutorial with id
+  // Update a User with id
   router.put("/:id", controller.update);
-  // Update user password with id
-  router.post("/pass/:id", controller.passCheck);
+  // Update a User password with id
+  router.put("/pass/:id", controller.updatePassword);
   // Delete a Tutorial with id
   router.delete("/:id", controller.delete);
   // Create a new Tutorial

@@ -2,12 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Article } from "src/app/models/article.model";
 import { ArticleService } from "src/app/services/article.service";
-import { Validation } from 'src/app/validation/validation';
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import {  FileUploader } from 'ng2-file-upload';
-
-const URL = 'http://localhost:4000/api/upload';
 
 interface type {
   value: string;
@@ -20,8 +16,6 @@ interface type {
   styleUrls: ["./add-article.component.scss"],
 })
 export class AddArticleComponent implements OnInit {
-  title = 'ng8fileupload';
-  public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
   articleForm: FormGroup = new FormGroup({
     nom_article: new FormControl(''),
     type_article: new FormControl(''),
@@ -55,12 +49,6 @@ export class AddArticleComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-         console.log('ImageUpload:uploaded:', item, status, response);
-         alert('File uploaded successfully');
-    };
-
     this.articleForm = this.formBuilder.group(
       {
         nom_article: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
@@ -73,7 +61,7 @@ export class AddArticleComponent implements OnInit {
         prix_vente: ['', Validators.required,],
         taxe_vente: ['', Validators.required,],
         cout: ['', Validators.required,],
-        description: ['', [Validators.required,Validators.pattern(/^[A-Z0-9!@#$%^&*()]+$/)]],
+        description: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")]],
         image: ['', [Validators.required]]
       }
     );

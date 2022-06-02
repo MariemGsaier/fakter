@@ -62,7 +62,7 @@ import { SearchUser } from './pipes/search-user.pipe';
     FileUploadModule,
     NgxMatIntlTelInputModule,
     Ng2TelInputModule,
-    MatDialogModule
+    MatDialogModule,
   
   ],
   providers: [authInterceptorProviders,{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],

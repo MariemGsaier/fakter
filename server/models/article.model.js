@@ -1,13 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
   const Article = sequelize.define("article", {
-    image: {
-      type: Sequelize.STRING,
-    },
     nom_article: {
       type: Sequelize.STRING,
     },
     type_article: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM,
+      values: ['Service', 'Consommable']
     },
     prix_vente: {
       type: Sequelize.FLOAT,

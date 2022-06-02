@@ -50,15 +50,8 @@
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-                
-        <ng-container matColumnDef="image">
-          <th mat-header-cell *matHeaderCellDef>Image</th>
-          <td mat-cell class="fw-medium" *matCellDef="let article">
-            {{ article.image }}
-          </td>
-        </ng-container>
 
-        <!-- Assigned Column -->
+        <!-- Colonne Nom -->
         <ng-container matColumnDef="nom">
           <th mat-header-cell *matHeaderCellDef>Nom article</th>
           <td mat-cell *matCellDef="let article">
@@ -72,7 +65,7 @@
           </td>
         </ng-container>
 
-        <!-- Project Column -->
+        <!-- Colonne Prix -->
         <ng-container matColumnDef="prix">
           <th mat-header-cell *matHeaderCellDef>Prix de vente</th>
           <td mat-cell *matCellDef="let article">
@@ -86,7 +79,7 @@
           </td>
         </ng-container>
 
-        <!-- Priority Column -->
+        <!-- Colonne Coût -->
         <ng-container matColumnDef="cout">
           <th mat-header-cell *matHeaderCellDef>Coût</th>
           <td mat-cell *matCellDef="let article">
@@ -94,12 +87,15 @@
           </td>
         </ng-container>
 
+        <!-- Colonne Description -->
         <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef>Description</th>
             <td mat-cell *matCellDef="let article">
               <p class="mb-0 fw-medium">{{ article.description }}</p>
             </td>
           </ng-container>
+
+          <!-- Colonne Actions -->
         <ng-container matColumnDef="actions" stickyEnd>
           <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">Actions</th>
           <td
@@ -197,15 +193,16 @@
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Taxe vente</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="Veuillez entrer votre modification"
-          formControlName="taxe_vente"
-          required
-          id="taxe"
-          [(ngModel)]="currentArticle.taxe_vente"
-        />
+        <mat-select
+        name="taxe_vente"
+        required
+        formControlName="taxe_vente"
+        [(ngModel)]="currentArticle.taxe_vente"
+      >
+        <mat-option *ngFor="let type of types" [value]="type.value">
+          {{ type.viewValue }}
+        </mat-option>
+      </mat-select>
         <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
           <div *ngIf="f['taxe_vente'].errors['required']">Le champ taxe est obligatoire</div>
         </mat-error>
@@ -233,11 +230,12 @@
           placeholder="Veuillez entrer votre modification"
           formControlName="description"
           required
-          id="dp"
+          id="description"
           [(ngModel)]="currentArticle.description"
         ></textarea>
         <mat-error *ngIf="f['description'].errors" class="text-danger">
           <div *ngIf="f['description'].errors['required']">Le champ description est obligatoire</div>
+          <div *ngIf="f['description'].errors['pattern']">La description saisie est invalide</div>
         </mat-error>
       </mat-form-field>
 

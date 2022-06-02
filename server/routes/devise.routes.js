@@ -13,8 +13,6 @@ module.exports = function (app) {
   
     // Create 
      router.post("/create", controllerdev.create);
-    // fetch all devises with dates
-    router.get("/", controllerdev.findAllDevises);
     // Update  with nom
     router.put("/:nom", controllerdev.update);
     // Delete  with nom

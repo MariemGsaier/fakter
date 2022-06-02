@@ -34,7 +34,6 @@ import { SocietiesComponent } from './societies/societies.component';
 import { AddSocietyComponent } from './societies/add-society/add-society.component';
 import { FacturesComponent } from './factures/factures.component';
 import { AddFactureComponent } from './factures/add-facture/add-facture.component';
-// import { MatFileUploadModule } from 'mat-file-upload';
 import {Ng2TelInputModule} from 'ng2-tel-input';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { DevisesComponent } from './devises/devises.component';
@@ -94,7 +93,6 @@ import { DialogBoxComponent } from './factures/dialog-box/dialog-box.component';
     ReactiveFormsModule,
     RouterModule,
     MatCardModule,
-    // MatFileUploadModule,
     Ng2TelInputModule
   ],
   exports: [

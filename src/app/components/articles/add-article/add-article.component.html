@@ -31,7 +31,6 @@
               name="type_article"
               required
               formControlName="type_article"
-              [ngClass]="{ 'is-invalid': submitted && f['role'].errors }"
               [(ngModel)]="article.type_article"
             >
               <mat-option *ngFor="let type of types" [value]="type.value">
@@ -122,41 +121,9 @@
               <div *ngIf="f['description'].errors['required']">
                 Le champ description est obligatoire
               </div>
+              <div *ngIf="f['description'].errors['pattern']">La description saisie est invalide</div>
             </mat-error>
           </mat-form-field>
-          <div class="container">
-            <div>
-              <mat-label class="w-100 fs-16" style="color: rgb(118, 118, 118)"
-                >Image article</mat-label
-              >
-            </div>
-            <input
-              type="file"
-              formControlName="image"
-              name="photo"
-              required
-              ng2FileSelect
-              (uploader)="(uploader)"
-              [(ngModel)]="article.image"
-            />
-            <button
-              mat-button
-              type="button"
-              class="btn btn-success btn-s"
-              (click)="uploader.uploadAll()"
-              [disabled]="!uploader.getNotUploadedItems().length"
-            >
-              Ajouter image
-            </button>
-            <mat-error
-              *ngIf="submitted && f['image'].errors"
-              class="text-danger"
-            >
-              <div *ngIf="f['image'].errors['required']">
-                Le champ image est obligatoire
-              </div>
-            </mat-error>
-          </div>
       &nbsp;
       <button
         mat-button
