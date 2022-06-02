@@ -1,12 +1,12 @@
 exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
-  };
-  exports.userBoard = (req, res) => {
-    res.status(200).send("User Content."); // try to modify it to // console.log()
-  };
-  exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
-  };
+  res.status(200).send("Public Content.");
+};
+exports.userBoard = (req, res) => {
+  res.status(200).send("User Content."); // try to modify it to // console.log()
+};
+exports.adminBoard = (req, res) => {
+  res.status(200).send("Admin Content.");
+};
   const DIR = './uploads';
   const multer = require('multer');
   const db = require("../models");
@@ -54,7 +54,7 @@ exports.uploadFile = (req, res) => {
         });
         return;
       }
-      // Create an article
+      // Create an article                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
       const art = {
         reference_art: req.body.reference_art,
         image: req.body.image,
@@ -65,19 +65,36 @@ exports.uploadFile = (req, res) => {
         cout: req.body.cout,
         description: req.body.description
       };
-      // Save article in the database
+      article.findOne({
+        where: {
+          nom_article: req.body. nom_article,
+        },
+      })
+      .then((article) => {
+        if (article) {
+          res.status(400).send({
+            message: "Echec! le nom de l'article existe déjà !"
+          });
+          return;
+
+        } })
+      
+          // Save article in the database
       article
       .create(art)
         .then(data => {
           res.send(data);
-          // console.log("ajout avec succés");
         })
         .catch(err => {
           res.status(500).send({
             message:
-              err.message || "Some error occurred while creating the article."
+              err.message 
           });
         });
+          
+        
+     
+      
   };
   // fetch all articles from the database.
   exports.findAll = (req, res) => {
@@ -92,7 +109,7 @@ exports.uploadFile = (req, res) => {
       })
       .catch((err) => {
         res.status(500).send({
-          message: err.message || "Some error occurred while fetching articles.",
+          message: err.message
         });
       });
   };
@@ -141,7 +158,7 @@ exports.uploadFile = (req, res) => {
       })
       .catch((err) => {
         res.status(500).send({
-          message: "Could not delete article with id=" + id,
+          message: err.message
         });
       });
   };
@@ -158,7 +175,7 @@ exports.uploadFile = (req, res) => {
       .catch((err) => {
         res.status(500).send({
           message:
-            err.message || "Some error occurred while removing all articles.",
+            err.message 
         });
       });
   };

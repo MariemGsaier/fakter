@@ -1,6 +1,5 @@
-
 module.exports = function (app) {
-  const controller = require("../controllers/user.controller");
+  const userController = require("../controllers/user.controller");
   const { authJwt } = require("../middleware");
   var router = require("express").Router();
   app.use(function (req, res, next) {
@@ -10,28 +9,26 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/test/all", controller.allAccess);
-  app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
+  app.get("/api/test/all", userController.allAccess);
+  app.get("/api/test/user", [authJwt.verifyToken], userController.userBoard);
   app.get(
     "/api/test/admin",
     [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
+    userController.adminBoard
   );
 
-  // Create a new Tutorial
-  // router.post("/", tutorials.create);
-
-  // Retrieve all users
-  router.get("/", controller.findAll);
-  // Retrieve a single user with id
-  router.get("/:id", controller.findOne);
-  // Update a Tutorial with id
-  router.put("/:id", controller.update);
+  // fetch all users
+  router.get("/", userController.findAll);
+  // fetch a single user with id
+  router.get("/:id", userController.findOne);
+  // Update a user with id
+  router.put("/:id", userController.update);
   // Update user password with id
-  router.post("/pass/:id", controller.passCheck);
-  // Delete a Tutorial with id
-  router.delete("/:id", controller.delete);
-  // Create a new Tutorial
-  router.delete("/", controller.deleteAll);
+  router.post("/pass/:id", userController.passCheck);
+  // Delete a user with id
+  router.delete("/:id", userController.delete);
+  // delete all users
+  router.delete("/", userController.deleteAll);
+  // base url
   app.use("/api/users", router);
 };

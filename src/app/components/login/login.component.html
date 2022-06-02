@@ -35,7 +35,7 @@
           </div>
           <div fxFlex="100" >
             <div >
-              <div class="card" id="card-inside" style="margin-bottom: 0;height: 363px;">
+              <div class="card" id="card-inside" style="margin-bottom: 0;">
                 <div class="card-body">
                   <h4 class="mb-31">Connectez-vous</h4>
                   <form
@@ -50,7 +50,7 @@
                       <input
                         matInput
                         type="text"
-                        class="form-control"
+                     
                         name="username"
                         [(ngModel)]="form.username"
                         required
@@ -58,11 +58,10 @@
                         placeholder="Entrez votre nom d'utilisateur"
                       />
                       <mat-error
-                        class="alert alert-danger"
-                        role="alert"
+                       
                         *ngIf="username.errors && f.submitted"
                       >
-                        Username is required!
+                        Le champ nom d'utilisateur est obligatoire !
                       </mat-error>
                     </mat-form-field>
 
@@ -71,7 +70,6 @@
                       <input
                         matInput
                         type="password"
-                        class="form-control"
                         name="password"
                         [(ngModel)]="form.password"
                         required
@@ -81,15 +79,14 @@
                       />
                       
                       <mat-error
-                        class="alert alert-danger"
-                        role="alert"
+                
                         *ngIf="password.errors && f.submitted"
                       >
                         <div *ngIf="password?.errors?.['required']">
-                          Password is required
+                          Le champ mot de passe est obligatoire !
                         </div>
                         <div *ngIf="password?.errors?.['minlength']">
-                          Password must be at least 6 characters
+                          Le mot de passe doit contenir au minimum 
                         </div>
                       </mat-error>
                     </mat-form-field>
@@ -99,23 +96,21 @@
                     
 
                     <button
-                      class="form-group"
                       mat-raised-button
                       class="btn btn-info fw-normal"
                       type="submit"
                       id="button"
+                     
                     >
                       Se Connecter
                     </button>
-                    <div class="form-group">
-                      <div
-                        class="alert alert-danger"
-                        role="alert"
-                        *ngIf="f.submitted && isLoginFailed"
-                      >
-                        La connexion a échoué: {{ errorMessage }}
-                      </div>
-                    </div>
+                    <div 
+                    class="alert alert-danger alert-text-danger d-flex fs-14 align-items-center rounded"
+                    role="alert" *ngIf="f.submitted && isLoginFailed">
+                    <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+                    {{ errorMessage }}
+                  </div>
+                   
                   </form>
                 </div>
               </div>
@@ -140,8 +135,8 @@
     <div fxFlex="100" fxLayoutAlign="space-around center">
       <div id="card-container">
         <div class="card">
-          <div class="card-body">
-            <div>
+          <div class="card-body-loggedin">
+            <div  style="float: left; margin-top: -4%;">
               <img
                 src="\assets\images\logo-white.png"
                 fxFlex.md="20%"
@@ -149,12 +144,12 @@
                 fxFlex.xl="30%"
                 fxFlex.sm="20%"
                 fxFlex.xs="30%"
-                style="float: left; margin-top: -9%; margin-left: -5%"
+               
                 alt=""
               />
             </div>
             <div>
-            <h4 class="mb-32">
+            <h4 style="margin-top: -5px;">
               <div>{{ username }}, vous êtes déjà connecté(e).</div>
               <br />
               <div>
@@ -166,7 +161,16 @@
           </div>
           </div>
         </div>
+        <div style="position: relative; margin-top: 100px; ">
+          <p class="text-center pb-24 fs-16">
+            © 2022 All rights reserved by Fakter
+          </p>
+  
+        </div>
       </div>
     </div>
+    
   </mat-card-content>
+  
 </mat-card>
+

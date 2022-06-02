@@ -68,6 +68,8 @@ export class ClientComponent implements OnInit {
   private roles: string[] = [];
   isLoggedIn = false;
   showObserverBoard = true;
+  errorUpdateUser = false;
+  errorMsg =""
 
   constructor(
     private route: ActivatedRoute,
@@ -215,7 +217,11 @@ export class ClientComponent implements OnInit {
             console.log(res);
             this.disabelModif = false;
           },
-          error: (e) => console.error(e),
+          error: (e) => {
+            console.error(e);
+            this.errorUpdateUser=true;
+            this.errorMsg="Une erreur est survenue lors de la mise à jour de l'utilisateur !"
+          },
         });
       }
     })

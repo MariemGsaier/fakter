@@ -8,15 +8,14 @@ module.exports = function (app) {
     );
     next();
   }); 
-  app.put ("/api/auth",controller.changeFirstPw)
-  app.post ("/api/auth",controller.forgotPw)
+  app.put ("/api/auth",controller.changeFirstPw);
+  app.post ("/api/auth",controller.forgotPw);
+  app.post("/api/auth/changeforgotpw",controller.changeForgotPw);
   app.post(
     "/api/auth/create",
     [
       verifySignUp.checkDuplicateUsernameOrEmail,
 
-    ],
-    controller.signup
-  );
+    ],)
   app.post("/api/auth/signin", controller.signin);
 };

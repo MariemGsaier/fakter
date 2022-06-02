@@ -37,8 +37,8 @@ export class BoardAdminComponent implements OnInit {
     email: "",
     role: "",
   };
-
-  message = "";
+  errorUpdate =false;
+  errorMsg = "";
   users?: User[];
   currentIndex = -1;
   username = "";
@@ -76,7 +76,6 @@ export class BoardAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.message = "";
     this.userService.getAdminBoard().subscribe(
       (data) => {
         this.content = data;
@@ -90,9 +89,9 @@ export class BoardAdminComponent implements OnInit {
     this.userUpdateForm = this.formBuilder.group({
       username: [
         "",
-        [Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
+        [Validators.required,Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
       ],
-      email: ["", [Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
+      email: ["", [Validators.required,Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
     });
   }
 
@@ -158,7 +157,6 @@ export class BoardAdminComponent implements OnInit {
   }
 
   updateUser(): void {
-    this.message = "";
     console.log('test',this.userUpdateForm.invalid)
     if (!this.userUpdateForm.invalid) {
       Swal.fire({
@@ -174,11 +172,13 @@ export class BoardAdminComponent implements OnInit {
                 console.log(res);
                 this.disabelModif = false;
                 this.retrieveUsers();
-                this.message = res.message
-                  ? res.message
-                  : "This client was updated successfully!";
+              
               },
-              error: (e) => console.error(e),
+              error: (e) => {
+                console.error(e)
+                this.errorUpdate =true
+                this.errorMsg="Une erreur est survenue lors de la mise à jour de l'utilisateur !"
+              },
             });
         }
       });

@@ -62,7 +62,7 @@ exports.update = (req, res) => {
     req.body.password = bcrypt.hashSync(req.body.password, 8)
     console.log('passwor hashé', req.body.password);
   }
-  user
+    user
     .update(req.body, {
       where: { id: id },
     })
@@ -82,7 +82,6 @@ exports.update = (req, res) => {
         message: "Error updating user with id=" + id,
       });
     });
-
 };
 
 exports.passCheck = (req, res) => {

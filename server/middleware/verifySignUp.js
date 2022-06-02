@@ -1,5 +1,4 @@
 const db = require("../models");
-// const ROLES = db.ROLES;
 const User = db.user;
 checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
@@ -30,22 +29,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
     });
   });
 };
-// checkRolesExisted = (req, res, next) => {
-//   User.findOne({
-//     where: {
-//       role: req.body.role,
-//     },
-//   }).then((user) => {
-//     if (!user) {
-//       res.status(400).send({
-//         message: "Role doesn't exist!",
-//       });
-//       return;
-//     }
-//   });
 
-//   next();
-// };
 const verifySignUp = {
   checkDuplicateUsernameOrEmail: checkDuplicateUsernameOrEmail,
   // checkRolesExisted: checkRolesExisted,

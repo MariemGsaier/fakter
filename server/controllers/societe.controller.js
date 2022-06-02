@@ -1,3 +1,4 @@
+
 exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
 };
@@ -7,7 +8,6 @@ exports.userBoard = (req, res) => {
 exports.adminBoard = (req, res) => {
   res.status(200).send("Admin Content.");
 };
-
 const db = require("../models");
 const societe = db.societe;
 const Op = db.Sequelize.Op;

@@ -18,6 +18,19 @@ exports.create = (req, res) => {
     iban: req.body.iban,
     nom_banque: req.body.nom_banque,
   };
+  comptebancaire.findOne({
+    where: {
+      num_compte: req.body.num_compte,
+    },
+  })
+  .then((comptebancaire) => {
+    if (comptebancaire) {
+      res.status(400).send({
+        message: "Echec! le numéro de compte entré existe déjà !"
+      });
+      return;
+
+    } })
 
   comptebancaire
     .create(compteb)
