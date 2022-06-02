@@ -1,0 +1,87 @@
+<div>
+  <div class="mb-20">
+    <button
+      mat-button
+      class="btn btn-danger"
+      (click)="exportHtmlToPDF()"
+      fw-normal
+      style="margin-right: 5px"
+    >
+      <mat-icon>picture_as_pdf</mat-icon> Exporter et envoyer email
+    </button>
+  </div>
+  <div style = "margin-top : 60px"id="htmltable">
+    <div class="mb-20 "><img src="assets\images\logowimbee.png" style="float: left ; margin-left: 10px; margin-top: 7px;" width="115px"  /><br></div>
+    <mat-divider></mat-divider>
+    <div class="mt-20"  style="margin-left: 21px" >
+      <p>{{ societe.nom_societe }}</p>
+      <p>{{ societe.adresse }}</p>
+      <p>{{ societe.numtel }}</p>
+
+    </div>
+    <div class="client-parag" ><p>client.nom </p><br></div>
+      <div class="client-parag"> <p>client.adresse </p><br></div>
+      <div class="client-parag"><p>client.numtel</p><br></div><br>
+      <p style="font-size: 20px ; margin-left: 21px"><strong>Fac/22/0001</strong></p>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p>Date de facturation : 31/05/2022</p></div>
+      <div class="client-parag" style="margin-top: -25px ;margin-left: 21px"><p>Date d'échéance : 5/06/2022</p></div>
+    
+    <mat-card class="w-100">
+      <mat-card-content>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+            <!-- Id Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>Id</th>
+              <td mat-cell class="fw-medium" *matCellDef="let element">
+                {{ element.id }}
+              </td>
+            </ng-container>
+  
+            <!-- Assigned Column -->
+            <ng-container matColumnDef="assigned">
+              <th mat-header-cell *matHeaderCellDef>Assigned</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.name }}</p>
+                <p class="mb-0 fw-normal op-5">{{ element.work }}</p>
+              </td>
+            </ng-container>
+  
+            <!-- Project Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Project</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium op-5">{{ element.project }}</p>
+              </td>
+            </ng-container>
+  
+            <!-- Priority Column -->
+            <ng-container matColumnDef="priority">
+              <th mat-header-cell *matHeaderCellDef>Priority</th>
+              <td mat-cell *matCellDef="let element">
+                <span>{{
+                  element.priority
+                }}</span>
+              </td>
+            </ng-container>
+  
+            <!-- Budget Column -->
+            <ng-container matColumnDef="budget">
+              <th mat-header-cell *matHeaderCellDef>Budget</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.budget }}</p>
+              </td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <p style="float: right; margin-top: 15px">
+            <strong>Total :</strong> 123dt
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <p style="margin-left: 21px">Merci d'utiliser la communication suivante pour votre paiement <strong>Fac/22/0001 </strong>!</p>
+  </div>
+</div>
