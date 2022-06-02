@@ -43,6 +43,7 @@ import { ChangePwComponent } from './board-admin/change-pw/change-pw.component';
 import { ForgotpasswordComponent } from './login/forgotpassword/forgotpassword.component';
 import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw.component';
 import { PrintFactureComponent } from './factures/print-facture/print-facture.component';
+import { AddDatedevisesComponent } from './devises/add-datedevises/add-datedevises.component';
 
 
 
@@ -90,6 +91,7 @@ import { PrintFactureComponent } from './factures/print-facture/print-facture.co
     ForgotpasswordComponent,
     ChangeForgotpwComponent,
     PrintFactureComponent,
+    AddDatedevisesComponent,
  
 
   ],

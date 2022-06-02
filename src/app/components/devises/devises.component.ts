@@ -27,12 +27,16 @@ export class DevisesComponent implements OnInit {
   search: boolean = false;
   displayedColumns: string[] = ["nom", "devise", "valeur", "date", "actions"];
   dataSource = new MatTableDataSource<LigneDevise>();
+
   updateDeviseForm: FormGroup = new FormGroup({
-    nom: new FormControl(""),
-    devise: new FormControl(""),
     valeur: new FormControl(""),
     date: new FormControl(""),
+    devises: new FormGroup({
+      nom: new FormControl(""),
+      devise: new FormControl(""),
+      })
   });
+
   currentDevise: Devise = {
     nom: "",
     devise: "",
@@ -90,22 +94,21 @@ export class DevisesComponent implements OnInit {
     }
 
     this.updateDeviseForm = this.formBuilder.group({
-      nom: [
-        "",
-        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
-      ],
-      devise: [
-        "",
-        [Validators.required, Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)],
-      ],
       date: ["", Validators.required],
       valeur: ["", Validators.required],
+      devises: this.formBuilder.group({
+        nom: [ "", [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]+$/)]],
+        devise: ["", [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]+$/)]]
+        })
     });
   }
 
   get f(): { [key: string]: AbstractControl } {
     return this.updateDeviseForm.controls;
   }
+  // get f2(): { [key: string]: AbstractControl } {
+  //   return this.updateDeviseForm.devises?.controls;
+  // }
 
   onSubmit(): void {
     this.submitted = true;
@@ -133,6 +136,14 @@ export class DevisesComponent implements OnInit {
 
   setActiveDevise(devise: LigneDevise, index: number): void {
     this.currentLigneDevise = devise;
+    this.updateDeviseForm.setValue({
+      date: devise.date,
+      valeur: devise.valeur,
+      devises: {
+        nom: devise.devises?.nom,
+        devise: devise.devises?.devise
+      }
+    })
     console.log('000', this.currentLigneDevise.devises?.nom)
     console.log(devise);
     this.currentIndex = index;
