@@ -1,6 +1,5 @@
 export class Article {
   id?: any;
-  image?: string;
   nom_article?: string;
   type_article?: string;
   prix_vente?: number;

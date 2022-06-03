@@ -59,7 +59,7 @@ export class AddArticleComponent implements OnInit {
         prix_vente: ['', Validators.required,],
         taxe_vente: ['', Validators.required,],
         cout: ['', Validators.required,],
-        description: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")]],
+        description: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")]]
       }
     );
   }
@@ -78,7 +78,6 @@ export class AddArticleComponent implements OnInit {
 
   saveArticle(): void {
     const data = {
-      image: this.article.image,
       nom_article: this.article.nom_article,
       type_article: this.article.type_article,
       prix_vente: this.article.prix_vente,

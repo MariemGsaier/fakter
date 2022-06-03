@@ -13,6 +13,7 @@ import { GestUserService } from "../../services/gest-user.service";
 import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
+import { TokenStorageService } from "src/app/services/token-storage.service";
 
 interface role {
   value: string;
@@ -42,6 +43,7 @@ export class BoardAdminComponent implements OnInit {
   users?: User[];
   currentIndex = -1;
   username = "";
+  roleAuth=""
   disabelModif: boolean = false;
   paginator?: MatPaginator;
 
@@ -50,6 +52,7 @@ export class BoardAdminComponent implements OnInit {
     email: new FormControl(""),
   });
   submitted = false;
+  hideAuthSupAdmin=false;
 
   roles: role[] = [
     {value: 'Super Administrateur', viewValue: 'Super administrateur'},
@@ -62,7 +65,8 @@ export class BoardAdminComponent implements OnInit {
     private formBuilder: FormBuilder,
     private gestUserService: GestUserService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private tokenStorage: TokenStorageService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -111,6 +115,10 @@ export class BoardAdminComponent implements OnInit {
   retrieveUsers(): void {
     this.gestUserService.getAll().subscribe({
       next: (data) => {
+      
+        if((this.tokenStorage.getUser().role = "Super Administrateur") && (this.tokenStorage.getUser().username == data[0].username)){
+          this.hideAuthSupAdmin=true;
+        }
         this.users = data;
         this.dataSource.data = this.users;
         console.log(data);

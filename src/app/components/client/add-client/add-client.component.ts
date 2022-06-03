@@ -93,7 +93,6 @@ export class AddClientComponent implements OnInit {
   changeCodeIdClient(data: any) {
     console.log(this.codesId[data].value);
     const ctrl=this.clientForm.controls["codeid"]
-    // const ctrl = this.clientForm.get("codeid");
 
     ctrl.enable();
     switch (this.codesId[data].value) {
