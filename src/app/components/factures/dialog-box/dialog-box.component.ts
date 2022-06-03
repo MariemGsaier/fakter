@@ -14,7 +14,6 @@ export class DialogBoxComponent implements OnInit {
 
   currentArticle: Article = {
     id: undefined,
-    image: "",
     nom_article: "",
     type_article: "",
     prix_vente: undefined,

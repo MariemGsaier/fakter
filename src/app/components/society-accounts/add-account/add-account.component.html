@@ -107,8 +107,8 @@
           </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Devise</mat-label>
-            <mat-select placeholder="Selectionnez une devise" [(ngModel)]="BankAccount.nom_devise" [ngModelOptions]=" {standalone: true}"  required>
-              <mat-option *ngFor="let devise of devises;" [value]="devise" >{{ devise.nom }}</mat-option>
+            <mat-select placeholder="Selectionnez une devise" [(ngModel)]="BankAccount.nom_devise" (ngModelChange)="changeDeviseValue($event)" required>
+              <mat-option *ngFor="let devise of devises;" [value]="devise.nom" >{{ devise.nom }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">

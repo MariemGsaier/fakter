@@ -109,6 +109,7 @@ export class SocietyAccountsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getDevises()
     this.fetchBankAccounts();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
@@ -137,7 +138,7 @@ export class SocietyAccountsComponent implements OnInit {
   }
 
   get f(): { [key: string]: AbstractControl } {
-    console.log(this.bankAccForm.controls);
+
     return this.bankAccForm.controls;
   }
 
@@ -169,7 +170,7 @@ export class SocietyAccountsComponent implements OnInit {
   }
   setActiveBankAccount(bankaccount: BankaccountDevise, index: number): void {
     this.currentBankAccount = bankaccount;
-    console.log(bankaccount);
+    console.log("active"+bankaccount);
     this.currentIndex = index;
     this.disabelModif = true;
   }
