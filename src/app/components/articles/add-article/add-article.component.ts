@@ -22,11 +22,9 @@ export class AddArticleComponent implements OnInit {
     prix_vente: new FormControl(''),
     taxe_vente: new FormControl(''),
     cout: new FormControl(''),
-    description: new FormControl(''),
-    image: new FormControl('')
+    description: new FormControl('')
   });
   article: Article = {
-    image: "",
     nom_article: "",
     type_article: "",
     prix_vente: undefined,
@@ -62,7 +60,6 @@ export class AddArticleComponent implements OnInit {
         taxe_vente: ['', Validators.required,],
         cout: ['', Validators.required,],
         description: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")]],
-        image: ['', [Validators.required]]
       }
     );
   }
@@ -112,8 +109,14 @@ export class AddArticleComponent implements OnInit {
           }
         })
       },
-      (error) => console.error(error)
-    );
+      (error) => {console.error(error);
+      Swal.fire({
+        title: "Une erreur est survenue lors de l'ajout de l'article !",
+        text: "Veuillez réessayer une autre fois.",
+        icon: "warning",
+        confirmButtonColor: "#e46a76",
+      })}
+    )
     }
   }
 

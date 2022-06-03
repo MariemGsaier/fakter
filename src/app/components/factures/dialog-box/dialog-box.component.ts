@@ -14,7 +14,6 @@ export class DialogBoxComponent implements OnInit {
 
   currentArticle: Article = {
     id: undefined,
-    image: "",
     nom_article: "",
     type_article: "",
     prix_vente: undefined,
@@ -66,7 +65,7 @@ export class DialogBoxComponent implements OnInit {
     })
   }
 
-  setActiveDevise(article: Article, index: number): void {
+  setActiveArticle(article: Article, index: number): void {
     this.currentArticle = article;
     console.log('!!!!', article);
     this.currentIndex = index;
