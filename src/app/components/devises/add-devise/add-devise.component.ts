@@ -4,6 +4,8 @@ import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from
 import Swal from 'sweetalert2';
 import { Devise } from 'src/app/models/devise.model';
 import { DeviseService } from 'src/app/services/devise.service';
+import { DeviseStoreService } from "src/app/store/devise-store.service";
+
 
 @Component({
   selector: 'app-add-devise',
@@ -23,9 +25,11 @@ export class AddDeviseComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private router: Router,
     private deviseService: DeviseService,
-    private formBuilder: FormBuilder,) { }
+    private formBuilder: FormBuilder,
+    private deviseStore : DeviseStoreService) { }
 
   ngOnInit(): void {
+    this.deviseStore.resetDeviseStore();
     this.deviseForm = this.formBuilder.group(
       {
         nom: ['', [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)]],
@@ -66,6 +70,8 @@ export class AddDeviseComponent implements OnInit {
         })
         .then((result) => {
           if (result.isConfirmed) {
+            this.deviseStore.setDeviseInStore(data);
+            console.log(this.deviseStore.getDeviseFromStore());
             this.router.navigate(['/add-datedevise'])
           }
         })

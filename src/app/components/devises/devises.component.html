@@ -36,7 +36,7 @@
         <button mat-menu-item class="fs-16" routerLink="/add-devise">
           Ajouter une devise
         </button>
-        <button mat-menu-item class="fs-16" routerLink="/profile">
+        <button mat-menu-item class="fs-16" routerLink="/add-date">
           Ajouter un taux de change
         </button>
       </div>
@@ -148,7 +148,6 @@
 <mat-card id="update_card" class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form [formGroup]="updateDeviseForm" (ngSubmit)="onSubmit()">
-      <div formGroupName="devises">
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Nom devise</mat-label>
           <input
@@ -191,7 +190,6 @@
             >
           </mat-error>
         </mat-form-field>
-      </div>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Date</mat-label>

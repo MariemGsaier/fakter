@@ -40,6 +40,7 @@ import { ForgotpasswordComponent } from "./components/login/forgotpassword/forgo
 import { PrintFactureComponent } from "./components/factures/print-facture/print-facture.component";
 import { AddDatedevisesComponent } from "./components/devises/add-datedevises/add-datedevises.component";
 import { ChangeForgotpwComponent } from "./components/login/change-forgotpw/change-forgotpw.component";
+import { AddDateComponent } from "./components/devises/add-date/add-date.component";
 
 
 
@@ -96,6 +97,7 @@ const routes: Routes = [
       { path: "devises", component: DevisesComponent },
       { path: "add-devise", component: AddDeviseComponent },
       { path: "add-datedevise", component: AddDatedevisesComponent },
+      { path: "add-date", component: AddDateComponent },
 
     ],
   },

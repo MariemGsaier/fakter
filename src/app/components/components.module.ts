@@ -44,6 +44,7 @@ import { ForgotpasswordComponent } from './login/forgotpassword/forgotpassword.c
 import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw.component';
 import { PrintFactureComponent } from './factures/print-facture/print-facture.component';
 import { AddDatedevisesComponent } from './devises/add-datedevises/add-datedevises.component';
+import { AddDateComponent } from './devises/add-date/add-date.component';
 
 
 
@@ -92,6 +93,7 @@ import { AddDatedevisesComponent } from './devises/add-datedevises/add-datedevis
     ChangeForgotpwComponent,
     PrintFactureComponent,
     AddDatedevisesComponent,
+    AddDateComponent,
  
 
   ],
