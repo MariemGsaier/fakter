@@ -31,6 +31,7 @@ export class AddAccountComponent implements OnInit {
     nom_banque: "",
     nom_devise : ""
   };
+  selectedValue=""
   
   bankAccForm: FormGroup = new FormGroup({
     numCompte: new FormControl(""),
@@ -46,8 +47,7 @@ export class AddAccountComponent implements OnInit {
   };
   devises = [
     {
-      nom: "",
-      devise: ""
+      nom: ""
     }
   ];
  
@@ -71,23 +71,18 @@ selectedDevise = "";
       next: (data) => {
         console.log(data);
         this.devises = data.map((data: any) => {return { 
-          nom : data.nom,
-          devise: data.devise,
-      
-        
+          nom : data.nom
         }} );
         console.log(this.devises);
       },
     })
   }
 
+  changeDeviseValue(data: any){
+    this.BankAccount.nom_devise= data.nom;
+  }
+
   ngOnInit(): void {
-    this.devises = [
-      {
-        nom: '',
-        devise: ''
-      }
-    ];
     this.getDevises();
     this.bankAccForm = this.formBuilder.group({
       rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
@@ -109,7 +104,6 @@ selectedDevise = "";
     });
   }
   get f(): { [key: string]: AbstractControl } {
-    // console.log(this.bankAccForm.controls);
     return this.bankAccForm.controls;
   }
 
@@ -133,6 +127,7 @@ selectedDevise = "";
       nom_banque: this.BankAccount.nom_banque,
       nom_devise : this.BankAccount.nom_devise
     };
+    console.log(data);
     if (!this.bankAccForm.invalid){
       this.bankAccountService.create(data).subscribe({
         next: (res) => {

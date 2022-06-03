@@ -10,4 +10,8 @@ export class Facture {
   total_chiffres?: number;
   total_lettres?: string;
   total_devise?: number;
+  nom_devise?: string;
+  créé_par?: string;
+  nom_client?: string;
+  num_compte?: string;
 }

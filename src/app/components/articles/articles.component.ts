@@ -46,7 +46,6 @@ export class ArticlesComponent implements OnInit {
     description: new FormControl(""),
   });
   currentArticle: Article = {
-    image: "",
     nom_article: "",
     type_article: "",
     prix_vente: undefined,
