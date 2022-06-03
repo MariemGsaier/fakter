@@ -4,7 +4,7 @@
     <mat-form-field class="w-100 fs-16" appearance="outline">
       <mat-label>Nom article</mat-label>
       <mat-select placeholder="Selectionnez un article" [value]="selectedArticle" required>
-        <mat-option *ngFor="let article of articles; let i = index;" [class.active]="i == currentIndex" [value]="article" (click)="setActiveDevise(article, i)">{{ article.nom_article }}</mat-option>
+        <mat-option *ngFor="let article of articles; let i = index;" [class.active]="i == currentIndex" [value]="article" (click)="setActiveArticle(article, i)">{{ article.nom_article }}</mat-option>
       </mat-select>
     </mat-form-field>
     <div *ngIf="disabelModif">

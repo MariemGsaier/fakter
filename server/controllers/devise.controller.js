@@ -29,6 +29,7 @@ exports.create = (req, res) => {
     });
 };
 
+// Lister les devises
 exports.findAll = (req, res) => {
   const nom = req.query.nom;
   var condition = nom

@@ -10,9 +10,6 @@ module.exports = (sequelize, Sequelize) => {
     prix_vente: {
       type: Sequelize.FLOAT,
     },
-    taxe_vente: {
-      type: Sequelize.BIGINT,
-    },
     cout: {
       type: Sequelize.FLOAT,
     },

@@ -65,7 +65,7 @@ export class DialogBoxComponent implements OnInit {
     })
   }
 
-  setActiveDevise(article: Article, index: number): void {
+  setActiveArticle(article: Article, index: number): void {
     this.currentArticle = article;
     console.log('!!!!', article);
     this.currentIndex = index;

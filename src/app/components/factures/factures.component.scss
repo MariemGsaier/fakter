@@ -20,13 +20,20 @@ th.mat-header-cell {
 
 .mat-header-cell {
     font-size: 14px;
-
 }
-
-.mat-icon {
+.mat-icon{
     font-size: 20px;
 }
-
 .btnw {
     min-width: 1%;
+}
+.cancel-btn:hover{
+    color: #e46a76;
+ }
+
+.disabled:disabled {
+    background-color: aliceblue;
+}
+html {  
+    scroll-behavior: smooth;  
 }

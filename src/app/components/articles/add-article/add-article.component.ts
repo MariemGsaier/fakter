@@ -108,8 +108,14 @@ export class AddArticleComponent implements OnInit {
           }
         })
       },
-      (error) => console.error(error)
-    );
+      (error) => {console.error(error);
+      Swal.fire({
+        title: "Une erreur est survenue lors de l'ajout de l'article !",
+        text: "Veuillez réessayer une autre fois.",
+        icon: "warning",
+        confirmButtonColor: "#e46a76",
+      })}
+    )
     }
   }
 

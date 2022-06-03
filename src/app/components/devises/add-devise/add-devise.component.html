@@ -13,6 +13,7 @@
                 type="text"
                 formControlName="nom"
                 placeholder="Entrez le nom de la devise"
+                [ngClass]="{ 'is-invalid': submitted && f['nom'].errors }"
                 required
                 [(ngModel)]="devise.nom"
               />
@@ -32,6 +33,7 @@
                 type="text"
                 placeholder="Entrez le symbole de la devise"
                 formControlName="devise"
+                [ngClass]="{ 'is-invalid': submitted && f['devise'].errors }"
                 required
                 [(ngModel)]="devise.devise"
               />
@@ -42,40 +44,6 @@
                 <span *ngIf="f['devise'].errors['pattern']"
                   >Le devise saisi est invalide</span
                 >
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field
-              class="w-100 fs-16"
-              appearance="outline"
-              style="margin-right: 16px"
-            >
-              <mat-label>Date d'insertion</mat-label>
-              <input matInput [matDatepicker]="picker1" required />
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="picker1"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-              <mat-error *ngIf="f['date'].errors" class="text-danger">
-                <div *ngIf="f['date'].errors['required']">
-                  Le champ date est obligatoire
-                </div>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="w-100 fs-16" appearance="outline">
-              <mat-label>Taux de change</mat-label>
-              <input
-                matInput
-                type="number"
-                placeholder="Entrez la valeur du taux de change"
-                formControlName="valeur"
-                required
-              />
-              <mat-error *ngIf="f['valeur'].errors" class="text-danger">
-                <div *ngIf="f['valeur'].errors['required']">
-                  Le champ taxe est obligatoire
-                </div>
               </mat-error>
             </mat-form-field>
         &nbsp;
