@@ -50,7 +50,6 @@ export class ArticlesComponent implements OnInit {
     nom_article: "",
     type_article: "",
     prix_vente: undefined,
-    taxe_vente: undefined,
     cout: undefined,
     description: "",
   };

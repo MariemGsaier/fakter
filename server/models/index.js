@@ -24,7 +24,7 @@ db.devise = require("../models/devise.model")(sequelize, Sequelize);
 db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
 db.taxe = require("../models/taxe.model")(sequelize, Sequelize);
 
-db.article.belongsTo(db.client,{
+db.article.belongsTo(db.taxe,{
   foreignKey: "id_taxe",
   as: "taxe"
 })

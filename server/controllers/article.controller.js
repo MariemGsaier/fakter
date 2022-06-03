@@ -28,9 +28,9 @@ exports.adminBoard = (req, res) => {
         nom_article: req.body.nom_article ,
         type_article: req.body.type_article ,
         prix_vente: req.body.prix_vente ,
-        taxe_vente: req.body.taxe_vente ,
         cout: req.body.cout,
-        description: req.body.description
+        description: req.body.description,
+        id_taxe: req.body.id_taxe
       };
       article.findOne({
         where: {

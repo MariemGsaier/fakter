@@ -4,7 +4,6 @@ export class Article {
   nom_article?: string;
   type_article?: string;
   prix_vente?: number;
-  taxe_vente?: number;
   cout?: number;
   description?: string;
 }
