@@ -1,5 +1,5 @@
 const db = require("../models");
-const client = db.client;
+const Client = db.client;
 const Op = db.Sequelize.Op;
 // Créer et enregistrer un client
   exports.create = (req, res) => {
@@ -18,7 +18,7 @@ const Op = db.Sequelize.Op;
       courriel: req.body.courriel ,
       siteweb: req.body.siteweb 
    };
-   client.findOne({
+   Client.findOne({
     where: {
       code_identification: req.body.code_identification,
     },
@@ -31,7 +31,7 @@ const Op = db.Sequelize.Op;
       return;
 
     } else{
-      client
+      Client
       .create(clt)
         .then(data => {
           res.send(data);

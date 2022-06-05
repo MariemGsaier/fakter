@@ -50,7 +50,7 @@ export class DevisesComponent implements OnInit {
     valeur: undefined,
   };
   currentLigneDevise: LigneDevise = {
-    id: "",
+    id: undefined,
     date: new Date(),
     valeur: undefined,
     devises: {
@@ -69,8 +69,6 @@ export class DevisesComponent implements OnInit {
   submitted = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private deviseService: DeviseService,
     private dateDeviseService: DatedeviseService,
     private tokenStorageService: TokenStorageService,
@@ -185,13 +183,22 @@ export class DevisesComponent implements OnInit {
   updateDevise(): void {
     this.message = "";
     if (!this.updateDeviseForm.invalid) {
+      const date_data = {
+        id: this.currentLigneDevise.id,
+        date: this.updateDeviseForm.get("date")?.value,
+        valeur: this.updateDeviseForm.get("valeur")?.value,
+      };
+      const devise_data = {
+        nom: this.updateDeviseForm.get("nom")?.value,
+        devise: this.updateDeviseForm.get("devise")?.value,
+      };
       this.dateDeviseService
-        .update(this.currentDateDevise.id, this.updateDeviseForm.value)
+        .update(this.currentLigneDevise.id, date_data)
         .subscribe({
           next: (res) => {
             console.log(res);
             this.deviseService
-              .update(this.currentDevise.nom, this.currentDevise)
+              .update(this.currentLigneDevise.devises?.nom, devise_data)
               .subscribe({
                 next: (res) => {
                   console.log(res);

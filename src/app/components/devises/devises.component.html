@@ -186,7 +186,7 @@
               Le champ devise est obligatoire
             </div>
             <span *ngIf="f['devise'].errors['pattern']"
-              >Le type saisi est invalide</span
+              >La devise saisie est invalide</span
             >
           </mat-error>
         </mat-form-field>
@@ -227,7 +227,7 @@
         />
         <mat-error *ngIf="f['valeur'].errors" class="invalid-feedback">
           <div *ngIf="f['valeur'].errors['required']">
-            Le champ taxe est obligatoire
+            Le champ taux de change est obligatoire
           </div>
         </mat-error>
       </mat-form-field>

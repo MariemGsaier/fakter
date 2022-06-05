@@ -24,6 +24,8 @@ module.exports = function (app) {
      router.post("/create", controllerart.create);
     // fetch all article
     router.get("/", controllerart.findAll);
+     // fetch all articles with dates
+     router.get("/prix", controllerart.findAllArticles);
     // Update an article with id
     router.put("/:id", controllerart.update);
     // Delete an article with id

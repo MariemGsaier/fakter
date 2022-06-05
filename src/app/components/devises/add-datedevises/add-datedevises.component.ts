@@ -41,7 +41,7 @@ export class AddDatedevisesComponent implements OnInit {
     this.dateDeviseForm = this.formBuilder.group(
       {
         date: ['', [Validators.required, Validators.pattern(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)]],
-        valeur: ['', [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)]]
+        valeur: ['', [Validators.required]]
       }
     );
   }

@@ -22,14 +22,24 @@
     </div>
     <button
       mat-button
-      class="btn btn-info fw-normal disabled"
-      routerLink="/add-article"
+      class="btn btn-info fw-normal"
       type="submit"
       style="float: right"
       *ngIf="!showObserverBoard"
+      [matMenuTriggerFor]="menu"
     >
       <mat-icon>add</mat-icon>
     </button>
+    <mat-menu #menu="matMenu" class="profile-dropdown">
+      <div class="p-16 mb-4">
+        <button mat-menu-item class="fs-16" routerLink="/add-article">
+          Ajouter un article
+        </button>
+        <button mat-menu-item class="fs-16" routerLink="/add-prix">
+          Ajouter un prix pour un article
+        </button>
+      </div>
+    </mat-menu>
     <button
       mat-button
       class="btn btn-primary fw-normal"
@@ -70,13 +80,13 @@
         <ng-container matColumnDef="nom">
           <th mat-header-cell *matHeaderCellDef>Nom article</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.nom_article }}</p>
+            <p class="mb-0 fw-medium">{{ article.articles.nom_article }}</p>
           </td>
         </ng-container>
         <ng-container matColumnDef="type_article">
           <th mat-header-cell *matHeaderCellDef>Type de l'article</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.type_article }}</p>
+            <p class="mb-0 fw-medium">{{ article.articles.type_article }}</p>
           </td>
         </ng-container>
 
@@ -84,13 +94,7 @@
         <ng-container matColumnDef="prix">
           <th mat-header-cell *matHeaderCellDef>Prix de vente</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.prix_vente }}</p>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="taxe">
-          <th mat-header-cell *matHeaderCellDef>Taxe de vente</th>
-          <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.taxe_vente }}</p>
+            <p class="mb-0 fw-medium">{{ article.prix }}</p>
           </td>
         </ng-container>
 
@@ -98,7 +102,7 @@
         <ng-container matColumnDef="cout">
           <th mat-header-cell *matHeaderCellDef>Coût</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.cout }}</p>
+            <p class="mb-0 fw-medium">{{ article.articles.cout }}</p>
           </td>
         </ng-container>
 
@@ -106,7 +110,7 @@
         <ng-container matColumnDef="description">
             <th mat-header-cell *matHeaderCellDef>Description</th>
             <td mat-cell *matCellDef="let article">
-              <p class="mb-0 fw-medium">{{ article.description }}</p>
+              <p class="mb-0 fw-medium">{{ article.articles.description }}</p>
             </td>
           </ng-container>
 
@@ -157,25 +161,7 @@
 <mat-card id="update_card" class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form [formGroup]="updateArticleForm" (ngSubmit)="onSubmit()">
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Nom article </mat-label>
-        <input
-          matInput
-          type="text"
-          formControlName="nom_article"
-          placeholder="Veuillez entrer votre modification"
-          id="nom"
-          [(ngModel)]="currentArticle.nom_article"
-        />
-        <mat-error *ngIf="f['nom_article'].errors" class="text-danger">
-          <div *ngIf="f['nom_article'].errors['required']">
-            Le champ nom est obligatoire
-          </div>
-          <span *ngIf="f['nom_article'].errors['pattern']"
-            >Le nom saisi est invalide</span
-          >
-        </mat-error>
-      </mat-form-field>
+      <h4 class="mb-56">{{currentPrixArticle.articles?.nom_article}}</h4>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Type article</mat-label>
@@ -183,7 +169,8 @@
               name="type_article"
               required
               formControlName="type_article"
-              [(ngModel)]="currentArticle.type_article"
+              [ngClass]="{ 'is-invalid': submitted && f['type_article'].errors }"
+              [value]="currentPrixArticle.articles?.type_article"
             >
               <mat-option *ngFor="let type of types" [value]="type.value">
                 {{ type.viewValue }}
@@ -201,32 +188,16 @@
           matInput
           type="number"
           placeholder="Veuillez entrer votre modification"
-          formControlName="prix_vente"
+          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
+          formControlName="prix"
+          readonly
           required
           id="prix"
-          [(ngModel)]="currentArticle.prix_vente"
+          [value]="currentPrixArticle.prix"
         />
-        <mat-error *ngIf="f['prix_vente'].errors" class="text-danger">
-          <div *ngIf="f['prix_vente'].errors['required']">
+        <mat-error *ngIf="f['prix'].errors" class="text-danger">
+          <div *ngIf="f['prix'].errors['required']">
             Le champ prix est obligatoire
-          </div>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Taxe vente</mat-label>
-        <mat-select
-        name="taxe_vente"
-        required
-        formControlName="taxe_vente"
-        [(ngModel)]="currentArticle.taxe_vente"
-      >
-        <mat-option *ngFor="let type of types" [value]="type.value">
-          {{ type.viewValue }}
-        </mat-option>
-      </mat-select>
-        <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
-          <div *ngIf="f['taxe_vente'].errors['required']">
-            Le champ taxe est obligatoire
           </div>
         </mat-error>
       </mat-form-field>
@@ -237,9 +208,10 @@
           type="number"
           placeholder="Veuillez entrer votre modification"
           formControlName="cout"
+          [ngClass]="{ 'is-invalid': submitted && f['cout'].errors }"
           required
           id="cout"
-          [(ngModel)]="currentArticle.cout"
+          [value]="currentPrixArticle.articles?.cout"
         />
         <mat-error *ngIf="f['cout'].errors" class="text-danger">
           <div *ngIf="f['cout'].errors['required']">
@@ -254,9 +226,10 @@
           type="text"
           placeholder="Veuillez entrer votre modification"
           formControlName="description"
+          [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
           required
           id="description"
-          [(ngModel)]="currentArticle.description"
+          [value]="currentPrixArticle.articles?.description"
         ></textarea>
         <mat-error *ngIf="f['description'].errors" class="text-danger">
           <div *ngIf="f['description'].errors['required']">Le champ description est obligatoire</div>

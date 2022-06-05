@@ -10,6 +10,7 @@ exports.adminBoard = (req, res) => {
 
   const db = require("../models");
   const article = db.article;
+  const prixArticle = db.prixArticle;
   const Op = db.Sequelize.Op;
 
 
@@ -24,13 +25,10 @@ exports.adminBoard = (req, res) => {
       }
       // Create an article                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
       const art = {
-        reference_art: req.body.reference_art,
         nom_article: req.body.nom_article ,
         type_article: req.body.type_article ,
-        prix_vente: req.body.prix_vente ,
-        taxe_vente: req.body.taxe_vente ,
         cout: req.body.cout,
-        description: req.body.description
+        description: req.body.description,
       };
       article.findOne({
         where: {
@@ -58,20 +56,41 @@ exports.adminBoard = (req, res) => {
               err.message 
           });
         });
-          
-        
-     
-      
   };
-  // fetch all articles from the database.
+  // Lister les articles
   exports.findAll = (req, res) => {
     const nom_article = req.query.nom_article;
     var condition = nom_article
       ? { nom_article: { [Op.iLike]: `%${nom_article}%` } }
       : null;
     article
-      .findAll({ where: condition })
+      .findAll({ where: condition,})
       .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message
+        });
+      });
+  };
+
+  // Lister les articles avec prix et dates
+  exports.findAllArticles = (req, res) => {
+    const nom_article = req.query.nom_article;
+    var condition = nom_article
+      ? { nom_article: { [Op.iLike]: `%${nom_article}%` } }
+      : null;
+      article
+      .findAll({ where: condition,
+      include: ["prix"] })
+      .then((data) => {
+       prixArt = prixArticle.findAll({
+          limit: 1,
+          order: [ [ 'createdAt', 'DESC' ]]
+        });
+        console.log(prixArt);
+        data.prix = prixArt;
         res.send(data);
       })
       .catch((err) => {
@@ -83,10 +102,10 @@ exports.adminBoard = (req, res) => {
   
   // Update an article by the id in the request
   exports.update = (req, res) => {
-    const id = req.params.id;
+    const nom_article = req.params.nom_article;
     article
       .update(req.body, {
-        where: { id: id },
+        where: { nom_article: nom_article },
       })
       .then((num) => {
         if (num == 1) {

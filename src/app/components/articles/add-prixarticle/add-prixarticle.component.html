@@ -1,23 +1,23 @@
 <div class="card">
   <div class="card-body">
-    <h4 class="mb-32">
-      Ajoutez un taux de change pour la devise <u>{{ devise.nom }}</u>
+    <h4 class="mb-32">Ajoutez un prix pour l'article <u>{{article.nom_article}}</u>
+
     </h4>
-    <form [formGroup]="dateDeviseForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="prixArticleForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Taux de change</mat-label>
+        <mat-label>Prix vente</mat-label>
         <input
           matInput
           type="number"
-          placeholder="Entrez le symbole de la devise"
-          formControlName="valeur"
-          [ngClass]="{ 'is-invalid': submitted && f['valeur'].errors }"
+          placeholder="Entrez le prix"
+          formControlName="prix"
+          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
           required
-          [(ngModel)]="dateDevise.valeur"
+          [(ngModel)]="prixArticle.prix"
         />
-        <mat-error *ngIf="f['valeur'].errors" class="text-danger">
-          <div *ngIf="f['valeur'].errors['required']">
-            Le champ valeur est obligatoire
+        <mat-error *ngIf="f['prix'].errors" class="text-danger">
+          <div *ngIf="f['prix'].errors['required']">
+            Le champ prix est obligatoire
           </div>
         </mat-error>
       </mat-form-field>
@@ -30,25 +30,19 @@
 
         <input
           matInput
-          [matDatepicker]="picker1"
+          [matDatepicker]="dp"
           formControlName="date"
-          [(ngModel)]="dateDevise.date"
+          [(ngModel)]="prixArticle.date"
           [ngClass]="{ 'is-invalid': submitted && f['date'].errors }"
+          readonly
           required
         />
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="picker1"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
+        <mat-hint>{{ getDateFormatString() }}</mat-hint>
+        <mat-datepicker #dp></mat-datepicker>
         <mat-error *ngIf="f['date'].errors" class="text-danger">
           <div *ngIf="f['date'].errors['required']">
             Le champ date est obligatoire
           </div>
-          <span *ngIf="f['date'].errors['pattern']"
-            >La date saisie est invalide</span
-          >
         </mat-error>
       </mat-form-field>
       &nbsp;
@@ -56,7 +50,7 @@
         mat-button
         class="btn btn-success fw-normal"
         style="float: right"
-        (click)="saveDateDevise()"
+        (click)="savePrixArticle()"
         type="submit"
       >
         Confirmer

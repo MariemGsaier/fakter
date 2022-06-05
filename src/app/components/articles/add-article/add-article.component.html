@@ -51,42 +51,6 @@
             appearance="outline"
             style="margin-right: 16px"
           >
-            <mat-label>Prix de vente</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le prix de vente"
-              formControlName="prix_vente"
-              required
-              [(ngModel)]="article.prix_vente"
-            />
-            <mat-error *ngIf="f['prix_vente'].errors" class="text-danger">
-              <div *ngIf="f['prix_vente'].errors['required']">
-                Le champ prix est obligatoire
-              </div>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Taxe de vente</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez la taxe de vente"
-              formControlName="taxe_vente"
-              required
-              [(ngModel)]="article.taxe_vente"
-            />
-            <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
-              <div *ngIf="f['taxe_vente'].errors['required']">
-                Le champ taxe est obligatoire
-              </div>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field
-            class="w-100 fs-16"
-            appearance="outline"
-            style="margin-right: 16px"
-          >
             <mat-label>Coût</mat-label>
             <input
               matInput

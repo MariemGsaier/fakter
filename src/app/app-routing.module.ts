@@ -41,6 +41,8 @@ import { PrintFactureComponent } from "./components/factures/print-facture/print
 import { AddDatedevisesComponent } from "./components/devises/add-datedevises/add-datedevises.component";
 import { ChangeForgotpwComponent } from "./components/login/change-forgotpw/change-forgotpw.component";
 import { AddDateComponent } from "./components/devises/add-date/add-date.component";
+import { AddPrixarticleComponent } from "./components/articles/add-prixarticle/add-prixarticle.component";
+import { AddPrixComponent } from "./components/articles/add-prix/add-prix.component";
 
 
 
@@ -98,6 +100,8 @@ const routes: Routes = [
       { path: "add-devise", component: AddDeviseComponent },
       { path: "add-datedevise", component: AddDatedevisesComponent },
       { path: "add-date", component: AddDateComponent },
+      { path: "add-prixarticle", component: AddPrixarticleComponent },
+      { path: "add-prix", component: AddPrixComponent },
 
     ],
   },
