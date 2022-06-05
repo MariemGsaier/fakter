@@ -22,15 +22,16 @@ db.article = require("../models/article.model.js")(sequelize, Sequelize);
 db.facture = require("../models/facture.model")(sequelize, Sequelize);
 db.devise = require("../models/devise.model")(sequelize, Sequelize);
 db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
-db.taxe = require("../models/taxe.model")(sequelize, Sequelize);
+db.prixArticle = require("../models/prixarticle.model")(sequelize, Sequelize);
+db.lignefacture = require("../models/lignefacture.model")(sequelize, Sequelize);
 
-db.article.belongsTo(db.taxe,{
-  foreignKey: "id_taxe",
-  as: "taxe"
+db.prixArticle.belongsTo(db.article,{
+  foreignKey: "nom_article",
+  as: "articles"
 })
-db.taxe.hasMany(db.article,{
-  foreignKey: "id_taxe",
-  as: "article"
+db.article.hasMany(db.prixArticle,{
+  foreignKey: "nom_article",
+  as: "prix"
 })
 
 db.facture.belongsTo(db.client,{
@@ -61,12 +62,12 @@ db.user.hasMany(db.facture, {
 });
 
 db.facture.belongsToMany(db.article, {
-  through: "ligne_facture",
+  through: db.lignefacture,
   as: "article",
   foreignKey: "reference",
 });
 db.article.belongsToMany(db.facture, {
-  through: "ligne_facture",
+  through: db.lignefacture,
   as: "facture",
   foreignKey: "id",
 });

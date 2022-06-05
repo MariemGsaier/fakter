@@ -45,6 +45,8 @@ import { ChangeForgotpwComponent } from './login/change-forgotpw/change-forgotpw
 import { PrintFactureComponent } from './factures/print-facture/print-facture.component';
 import { AddDatedevisesComponent } from './devises/add-datedevises/add-datedevises.component';
 import { AddDateComponent } from './devises/add-date/add-date.component';
+import { AddPrixarticleComponent } from './articles/add-prixarticle/add-prixarticle.component';
+import { AddPrixComponent } from './articles/add-prix/add-prix.component';
 
 
 
@@ -94,6 +96,8 @@ import { AddDateComponent } from './devises/add-date/add-date.component';
     PrintFactureComponent,
     AddDatedevisesComponent,
     AddDateComponent,
+    AddPrixarticleComponent,
+    AddPrixComponent,
  
 
   ],

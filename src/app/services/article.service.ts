@@ -15,6 +15,9 @@ export class ArticleService {
   getAll(): Observable<Article[]> {
     return this.http.get<Article[]>(baseUrl);
   }
+  getAllPrix(): Observable<Article[]> {
+    return this.http.get<Article[]>(baseUrl + '/prix');
+  }
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }

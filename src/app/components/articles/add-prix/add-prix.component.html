@@ -1,0 +1,86 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="mb-32">Ajoutez un prix</h4>
+    <form [formGroup]="prixArticleForm" (ngSubmit)="onSubmit()">
+      <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px"
+      >
+        <mat-label>Nom article</mat-label>
+        <mat-select
+          name="nom"
+          formControlName="nom_article"
+          [ngClass]="{ 'is-invalid': submitted && f['nom_article'].errors }"
+          [(ngModel)]="prixArticle.nom_article"
+        >
+          <mat-option *ngFor="let article of articles" [value]="article.nom_article">
+            {{ article.nom_article }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="f['nom_article'].errors" class="invalid-feedback">
+          <div *ngIf="f['nom_article'].errors['required']">
+            Le nom est obligatoire
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Prix vente</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Entrez le prix"
+          formControlName="prix"
+          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
+          required
+          [(ngModel)]="prixArticle.prix"
+        />
+        <mat-error *ngIf="f['prix'].errors" class="text-danger">
+          <div *ngIf="f['prix'].errors['required']">
+            Le champ prix est obligatoire
+          </div>
+          <span *ngIf="f['prix'].errors['pattern']"
+            >Le prix saisi est invalide</span
+          >
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px"
+      >
+        <mat-label>Date d'insertion</mat-label>
+
+        <input
+          matInput
+          [matDatepicker]="dp"
+          formControlName="date"
+          [(ngModel)]="prixArticle.date"
+          [ngClass]="{ 'is-invalid': submitted && f['date'].errors }"
+          readonly
+          required
+        />
+        <mat-hint>{{ getDateFormatString() }}</mat-hint>
+        <mat-datepicker #dp></mat-datepicker>
+        <mat-error *ngIf="f['date'].errors" class="text-danger">
+          <div *ngIf="f['date'].errors['required']">
+            Le champ date est obligatoire
+          </div>
+          <span *ngIf="f['date'].errors['pattern']"
+            >La date saisie est invalide</span
+          >
+        </mat-error>
+      </mat-form-field>
+      &nbsp;
+      <button
+        mat-button
+        class="btn btn-success fw-normal"
+        style="float: right"
+        (click)="savePrixArticle()"
+        type="submit"
+      >
+        Confirmer
+      </button>
+    </form>
+  </div>
+</div>
