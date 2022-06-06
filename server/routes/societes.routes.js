@@ -20,16 +20,10 @@ module.exports = function (app) {
   );
 
   // Create a new societe
-  router.post("/create", controllerste.create);
-  // fetch all societes
-  router.get("/", controllerste.findAll);
+  // router.post("/create", [authJwt.verifyToken], controllerste.create);
   // Retrieve a single societe with id
   router.get("/:id", controllerste.findOne);
   // Update a societe with id
   router.put("/:id", controllerste.update);
-  // Delete a societe with id
-  router.delete("/:id", controllerste.delete);
-  // Create a new societe
-  router.delete("/", controllerste.deleteAll);
   app.use("/api/societes", router);
 };

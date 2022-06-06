@@ -39,7 +39,7 @@ export class ArticlesComponent implements OnInit {
     "description",
     "actions",
   ];
-  dataSource = new MatTableDataSource<Article>();
+  dataSource = new MatTableDataSource<LignePrix>();
   updateArticleForm: FormGroup = new FormGroup({
     nom_article: new FormControl(""),
     type_article: new FormControl(""),
@@ -54,14 +54,14 @@ export class ArticlesComponent implements OnInit {
     description: "",
   };
   currentPrixArticle: LignePrix = {
-    id: undefined,
-    prix: undefined,
-    date: new Date(),
-    articles: {
-      nom_article: "",
-      type_article: "",
-      cout: undefined,
-      description: "",
+    nom_article: "",
+    type_article: "",
+    cout: undefined,
+    description: "",
+    prix: {
+      id: undefined,
+      prix: undefined,
+      date: new Date(),
     },
   };
   message = "";
@@ -85,7 +85,7 @@ export class ArticlesComponent implements OnInit {
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
     private formBuilder: FormBuilder,
-    private prixArticleService: PrixarticleService
+    private prixArticleService: PrixarticleService,
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -136,14 +136,8 @@ export class ArticlesComponent implements OnInit {
   fetchArticles(): void {
     this.articleService.getAllPrix().subscribe({
       next: (data) => {
-        console.log('222', data);
-    this.prixArticleService.getAll().subscribe({
-      next: (data) => {
-            this.articles = data;
-            this.dataSource.data = this.articles;
-            console.log("111", data);
-          },
-        });
+        this.articles = data;
+        this.dataSource.data = this.articles;
       },
       error: (e) => console.error(e),
     });
@@ -158,11 +152,11 @@ export class ArticlesComponent implements OnInit {
   setActiveArticle(article: LignePrix, index: number): void {
     this.currentPrixArticle = article;
     this.updateArticleForm.setValue({
-      nom_article: article.articles?.nom_article,
-      type_article: article.articles?.type_article,
-      cout: article.articles?.cout,
-      description: article.articles?.description,
-      prix: article.prix,
+      nom_article: article.nom_article,
+      type_article: article.type_article,
+      cout: article.cout,
+      description: article.description,
+      prix: article.prix?.prix,
     });
     console.log(article);
     this.currentIndex = index;

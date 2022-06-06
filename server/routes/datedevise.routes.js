@@ -17,11 +17,9 @@ module.exports = function (app) {
      router.get("/", controllerddev.findAllDevises);
     // // fetch all 
     // router.get("/", controllerddev.findAll);
-    // Update with nom
-    router.put("/:id", controllerddev.update);
     // Delete  with id
     router.delete("/:id", controllerddev.delete);
     // Delete all 
-    router.delete("/", controllerddev.deleteAll);
+    router.delete("/",  controllerddev.deleteAll);
     app.use("/api/datedevises", router);
   };

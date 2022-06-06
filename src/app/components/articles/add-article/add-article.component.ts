@@ -56,7 +56,7 @@ export class AddArticleComponent implements OnInit {
           ]
         ],
         cout: ['', Validators.required,],
-        description: ['', [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")]]
+        description: ['', [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$")]]
       }
     );
   }
