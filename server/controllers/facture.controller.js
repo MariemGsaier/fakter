@@ -12,29 +12,20 @@ exports.create = (req, res) => {
   }
   const fact = {
     reference: req.body.reference,
-    vendeur: req.body.vendeur,
+    créé_par: req.body.créé_par,
     date_facturation: req.body.date_facturation,
     date_echeance: req.body.date_echeance,
     etat_facture: req.body.courriel,
     etat_echeance: req.body.etat_echeance,
-    total_ht: req.body.etat_echeance,
-    total_chiffres:req.body.etat_echeance,
-    total_lettres:req.body.etat_echeance,
-    total_devise:req.body.etat_echeance,
+    total_ht: req.body.total_ht,
+    total_ttc: req.body.total_ttc,
+    total_devise: req.body.total_devise,
+    id_client : req.body.id_client,
+    id_compte : req.body.id_compte,
+    id_user : req.body.id_user,
+    nom_devise : req.body.nom_devise,
   };
-  facture.findOne({
-    where: {
-      reference: req.body.reference,
-    },
-  })
-  .then((facture) => {
-    if (facture) {
-      res.status(400).send({
-        message: "Echec! la reference de la facture entrée existe déjà !"
-      });
-      return;
 
-    } })
   facture
     .create(fact)
     .then((data) => {

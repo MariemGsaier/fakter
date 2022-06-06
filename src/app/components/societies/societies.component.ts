@@ -73,8 +73,15 @@ export class SocietiesComponent implements OnInit {
           this.currentSociete = data;
           console.log(data);
         },
-        (error: any) => {
-          console.log(error);
+        (error: any) =>{
+          console.error(error);
+          Swal.fire({
+            title: "Echec d'affichage de la société !",
+            text: "Une erreur est survenue lors du chargement des de la société.",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
         });
   }
 

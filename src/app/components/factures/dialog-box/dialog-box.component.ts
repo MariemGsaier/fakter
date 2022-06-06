@@ -50,14 +50,6 @@ export class DialogBoxComponent implements OnInit {
           taxe_vente: data.taxe_vente
         
         }} );
-        // if (dropDownData) {
-        //   this.nom_article = dropDownData.nom_article;
-        //   if(this.articles){
-        //     this.nom_article = this.articles[0];
-        //   } else {
-        //     this.articles = [];
-        //   }
-        // }
         console.log(this.articles);
       },
     })

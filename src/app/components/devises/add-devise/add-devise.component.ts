@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -7,16 +7,19 @@ import { DeviseService } from 'src/app/services/devise.service';
 import { DeviseStoreService } from "src/app/store/devise-store.service";
 
 
+
 @Component({
   selector: 'app-add-devise',
   templateUrl: './add-devise.component.html',
-  styleUrls: ['./add-devise.component.scss']
+  styleUrls: ['./add-devise.component.scss'],
+  
 })
 export class AddDeviseComponent implements OnInit {
   deviseForm: FormGroup = new FormGroup({
     nom: new FormControl(''),
     devise: new FormControl('')
   });
+
   devise: Devise = {
     nom: "",
     devise: ""
@@ -26,7 +29,8 @@ export class AddDeviseComponent implements OnInit {
     private router: Router,
     private deviseService: DeviseService,
     private formBuilder: FormBuilder,
-    private deviseStore : DeviseStoreService) { }
+    private deviseStore : DeviseStoreService
+   ) { }
 
   ngOnInit(): void {
     this.deviseStore.resetDeviseStore();

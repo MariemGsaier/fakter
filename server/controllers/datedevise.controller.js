@@ -15,6 +15,7 @@ exports.create = (req, res) => {
       valeur: req.body.valeur,
       nom_devise: req.body.nom_devise
    };
+   console.log("mmm" + dateDev);
 
     dateDevise
     .create(dateDev)

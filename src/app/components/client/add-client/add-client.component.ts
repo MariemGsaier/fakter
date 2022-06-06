@@ -33,7 +33,6 @@ export class AddClientComponent implements OnInit {
   };
   clientForm: FormGroup = new FormGroup({
     email: new FormControl(""),
-    phone: new FormControl(""),
     website: new FormControl(""),
     nomclt: new FormControl(""),
     adresse: new FormControl(""),
@@ -70,12 +69,8 @@ export class AddClientComponent implements OnInit {
       ],
       phone: [
         "",
-        [
           Validators.required,
-          Validators.pattern(
-            "(([+][(]?[0-9]{1,3}[)]?)|([(]?[0-9]{4}[)]?))s*[)]?[-s.]?[(]?[0-9]{1,3}[)]?([-s.]?[0-9]{3})([-s.]?[0-9]{3,4})"
-          ),
-        ],
+         
       ],
       website: [
         "",
@@ -100,7 +95,7 @@ export class AddClientComponent implements OnInit {
         ctrl.setValidators([Validators.required,Validators.pattern("^[0-9]*$"),Validators.maxLength(8),Validators.minLength(8)]);
         break;
       case "numPasseport":
-        ctrl.setValidators([Validators.required,Validators.pattern("^[A-Z0-9<]{9}[0-9]{1}[A-Z]{3}[0-9]{7}[A-Z]{1}[0-9]{7}[A-Z0-9<]{14}[0-9]{2}$")]);
+        ctrl.setValidators([Validators.required,Validators.pattern("^(?!^0+$)[a-zA-Z0-9]{3,20}$")]);
         break;
       case "codeTva":
         ctrl.setValidators([Validators.required,Validators.pattern("^((FR)?[0-9A-Z]{2}[0-9]{9} | (DE)?[0-9]{9} | (CZ)?[0-9]{8,10} | (DK)?[0-9]{8} | (BE)?0[0-9]{9} |)$")]);
@@ -118,9 +113,7 @@ export class AddClientComponent implements OnInit {
     return this.codesId[data].value;
   }
 
-  // CodeIdcontrol():void {
-
-  // }
+  
 
   get f(): { [key: string]: AbstractControl } {
     return this.clientForm.controls;
@@ -146,6 +139,7 @@ export class AddClientComponent implements OnInit {
       courriel: this.client.courriel,
       siteweb: this.client.siteweb,
     };
+    console.log(data);
     if (!this.clientForm.invalid) {
       this.clientService.create(data).subscribe({
         next: (res) => {
@@ -180,5 +174,9 @@ export class AddClientComponent implements OnInit {
   newClient(): void {
     this.submitted = false;
     window.location.reload();
+  }
+
+  annuler(): void {
+    this.router.navigate(['/clients'])
   }
 }

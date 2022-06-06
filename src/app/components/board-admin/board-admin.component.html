@@ -27,6 +27,8 @@
       routerLink="/add-user"
       type="submit"
       style="float: right"
+      matTooltip="Ajouter un utilisateur"
+      matTooltipPosition="above"
     >
       <mat-icon>add</mat-icon>
     </button>
@@ -35,6 +37,8 @@
       class="btn btn-danger fw-normal"
       style="float: right; margin-right: 0.142%"
       (click)="removeAllUsers()"
+      matTooltip="Supprimer tous les utilisateurs"
+      matTooltipPosition="above"
     >
       Supprimer Tout
     </button>
@@ -89,6 +93,9 @@
                 type="submit"
                 name="modifier"
                 (click)="setActiveUser(user, i)"
+                matTooltip="Modifier l'utilisateur "
+                matTooltipPosition="above"
+
               >
                 <mat-icon>edit</mat-icon>
               </button></span
@@ -100,6 +107,8 @@
                 type="submit"
                 name="supprimer"
                 (click)="deleteUser(user)"
+                matTooltip="Supprimer l'utilisateur "
+                matTooltipPosition="above"
               >
                 <mat-icon>delete</mat-icon>
               </button></span
@@ -193,7 +202,7 @@
           type="submit"
           style="float: right"
         >
-          Confirmer
+          Sauvegarder
         </button>
 
         <div

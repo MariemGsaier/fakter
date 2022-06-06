@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -6,17 +6,52 @@ import { Datedevise } from 'src/app/models/datedevise.model';
 import { DatedeviseService } from 'src/app/services/datedevise.service';
 import { DeviseStoreService } from "src/app/store/devise-store.service";
 import { Devise } from 'src/app/models/devise.model';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
+import * as moment from 'moment';
+
+
+
 
 @Component({
   selector: 'app-add-datedevises',
   templateUrl: './add-datedevises.component.html',
-  styleUrls: ['./add-datedevises.component.scss']
+  styleUrls: ['./add-datedevises.component.scss'],
+  providers: [
+    // The locale would typically be provided on the root module of your application. We do it at
+    // the component level here, due to limitations of our example generation script.
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module. We provide it at the component level
+    // here, due to limitations of our example generation script.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
+  ]
 })
 export class AddDatedevisesComponent implements OnInit {
   dateDeviseForm: FormGroup = new FormGroup({
     date: new FormControl(''),
     valeur: new FormControl('')
   });
+
+  getDateFormatString(): string {
+    if (this._locale === 'ja-JP') {
+      return 'YYYY/MM/DD';
+    } 
+    return '';
+  }
+
   dateDevise: Datedevise = {
     date: new Date(),
     valeur: undefined
@@ -32,16 +67,24 @@ export class AddDatedevisesComponent implements OnInit {
     private router: Router,
     private dateDeviseService: DatedeviseService,
     private formBuilder: FormBuilder,
-    private deviseStore : DeviseStoreService) { }
+    private deviseStore : DeviseStoreService,
+    @Inject(MAT_DATE_LOCALE) private _locale: string, ) { }
+
+
+    
 
   ngOnInit(): void {
+    
+    
+    
     this.storeddevise = this.deviseStore.getDeviseFromStore();
     console.log('!!!!',this.storeddevise);
     this.devise.nom = this.storeddevise.nom;
     this.dateDeviseForm = this.formBuilder.group(
       {
-        date: ['', [Validators.required, Validators.pattern(/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/)]],
-        valeur: ['', [Validators.required]]
+        date: ['', Validators.required],
+        valeur: ['', Validators.required]
+
       }
     );
   }
@@ -62,8 +105,8 @@ export class AddDatedevisesComponent implements OnInit {
     const data = {
       date: this.dateDevise.date,
       valeur: this.dateDevise.valeur,
+      nom_devise: this.devise.nom
     };
-    
     if (!(this.dateDeviseForm.invalid)) {
     this.dateDeviseService.create(data)
     .subscribe({

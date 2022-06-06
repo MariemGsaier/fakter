@@ -79,7 +79,7 @@ selectedDevise = "";
   }
 
   changeDeviseValue(data: any){
-    this.BankAccount.nom_devise= data.nom;
+    console.log(data);
   }
 
   ngOnInit(): void {
@@ -119,6 +119,7 @@ selectedDevise = "";
   }
 
   saveBankAccount(): void {
+    console.log(this.BankAccount);
     const data = {
       num_compte: this.BankAccount.num_compte,
       rib: this.BankAccount.rib,
@@ -127,7 +128,6 @@ selectedDevise = "";
       nom_banque: this.BankAccount.nom_banque,
       nom_devise : this.BankAccount.nom_devise
     };
-    console.log(data);
     if (!this.bankAccForm.invalid){
       this.bankAccountService.create(data).subscribe({
         next: (res) => {
@@ -164,5 +164,9 @@ selectedDevise = "";
   newBankAccount(): void {
     this.submitted = false;
     window.location.reload();
+  }
+
+  annuler(): void {
+    this.router.navigate(['/societe'])
   }
 }
