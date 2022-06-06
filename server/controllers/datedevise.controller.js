@@ -64,32 +64,6 @@ exports.findAll = (req, res) => {
       });
   };
 
- // Modifier une date devise
-exports.update = (req, res) => {
-  const id = req.params.id;
-
-  dateDevise
-    .update(req.body, {
-      where: { id: id },
-    })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "La date devise est mise à jour avec succés.",
-        });
-      } else {
-        res.send({
-          message: `erreur de mise à jour due la date devise avec id=${id}. peut être la date devise est inexistante ou le corps de la requête est vide!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating date devise with id=" + id,
-      });
-    });
-};
-
 exports.delete = (req, res) => {
   const id = req.params.id;
   dateDevise

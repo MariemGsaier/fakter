@@ -84,6 +84,7 @@ export class AddDatedevisesComponent implements OnInit {
       {
         date: ['', Validators.required],
         valeur: ['', Validators.required]
+
       }
     );
   }

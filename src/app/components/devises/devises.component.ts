@@ -49,7 +49,7 @@ export class DevisesComponent implements OnInit {
     valeur: undefined,
   };
   currentLigneDevise: LigneDevise = {
-    id: "",
+    id: undefined,
     date: new Date(),
     valeur: undefined,
     devises: {
@@ -68,8 +68,6 @@ export class DevisesComponent implements OnInit {
   submitted = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private deviseService: DeviseService,
     private dateDeviseService: DatedeviseService,
     private tokenStorageService: TokenStorageService,
@@ -197,40 +195,6 @@ export class DevisesComponent implements OnInit {
         });
       },
     });
-  }
-
-  updateDevise(): void {
-    this.message = "";
-    if (!this.updateDeviseForm.invalid) {
-      this.dateDeviseService
-        .update(this.currentDateDevise.id, this.updateDeviseForm.value)
-        .subscribe({
-          next: (res) => {
-            console.log(res);
-            this.deviseService
-              .update(this.currentDevise.nom, this.currentDevise)
-              .subscribe({
-                next: (res) => {
-                  console.log(res);
-                  this.disabelModif = false;
-                  this.message = res.message
-                    ? res.message
-                    : "This devise was updated successfully!";
-                  Swal.fire({
-                    title: "Modification effectuée avec succés !",
-                    icon: "success",
-                    confirmButtonColor: "#00c292",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      this.fetchDevises();
-                    }
-                  });
-                },
-              });
-          },
-          error: (e) => console.error(e),
-        });
-    }
   }
 
   deleteDevise(dateDevise: Datedevise): void {

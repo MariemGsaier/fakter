@@ -13,8 +13,6 @@ module.exports = function (app) {
   router.get("/", controllerdev.findAll);
     // Create 
      router.post("/create", controllerdev.create);
-    // Update  with nom
-    router.put("/:nom", controllerdev.update);
     // Delete  with nom
     router.delete("/:nom", controllerdev.delete);
     // Delete all 

@@ -17,11 +17,8 @@
         />
         <mat-error *ngIf="f['valeur'].errors" class="text-danger">
           <div *ngIf="f['valeur'].errors['required']">
-            Le champ date est obligatoire
+            Le champ valeur est obligatoire
           </div>
-          <span *ngIf="f['valeur'].errors['pattern']"
-            >La date saisie est invalide</span
-          >
         </mat-error>
       </mat-form-field>
 

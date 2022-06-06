@@ -14,12 +14,10 @@ import {
   Validators,
 } from "@angular/forms";
 import * as XLSX from "xlsx";
+import { LignePrix } from "src/app/models/ligne-prix.model";
+import { PrixarticleService } from "src/app/services/prixarticle.service";
 
 interface type {
-  value: string;
-  viewValue: string;
-}
-interface taxe {
   value: string;
   viewValue: string;
 }
@@ -37,30 +35,37 @@ export class ArticlesComponent implements OnInit {
     "nom",
     "type_article",
     "prix",
-    "taxe",
     "cout",
     "description",
     "actions",
   ];
-  dataSource = new MatTableDataSource<Article>();
+  dataSource = new MatTableDataSource<LignePrix>();
   updateArticleForm: FormGroup = new FormGroup({
     nom_article: new FormControl(""),
     type_article: new FormControl(""),
-    prix_vente: new FormControl(""),
-    taxe_vente: new FormControl(""),
     cout: new FormControl(""),
     description: new FormControl(""),
+    prix: new FormControl(""),
   });
   currentArticle: Article = {
     nom_article: "",
     type_article: "",
-    prix_vente: undefined,
-    taxe_vente: undefined,
     cout: undefined,
     description: "",
   };
+  currentPrixArticle: LignePrix = {
+    nom_article: "",
+    type_article: "",
+    cout: undefined,
+    description: "",
+    prix: {
+      id: undefined,
+      prix: undefined,
+      date: new Date(),
+    },
+  };
   message = "";
-  articles?: Article[];
+  articles?: LignePrix[];
   currentIndex = -1;
   disabelModif: boolean = false;
   private roles: string[] = [];
@@ -73,17 +78,14 @@ export class ArticlesComponent implements OnInit {
     { value: "Service", viewValue: "Service" },
     { value: "Consommable", viewValue: "Consommable" },
   ];
-  taxes: taxe[] = [
-    { value: "Service", viewValue: "Service" },
-    { value: "Consommable", viewValue: "Consommable" },
-  ];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private prixArticleService: PrixarticleService,
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -111,13 +113,12 @@ export class ArticlesComponent implements OnInit {
         [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
       ],
       type_article: ["", Validators.required],
-      prix_vente: ["", Validators.required],
-      taxe_vente: ["", Validators.required],
       cout: ["", Validators.required],
       description: [
         "",
         [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")],
       ],
+      prix: ["", Validators.required],
     });
   }
 
@@ -133,11 +134,10 @@ export class ArticlesComponent implements OnInit {
   }
 
   fetchArticles(): void {
-    this.articleService.getAll().subscribe({
+    this.articleService.getAllPrix().subscribe({
       next: (data) => {
         this.articles = data;
         this.dataSource.data = this.articles;
-        console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -158,8 +158,15 @@ export class ArticlesComponent implements OnInit {
     this.currentIndex = -1;
   }
 
-  setActiveArticle(article: Article, index: number): void {
-    this.currentArticle = article;
+  setActiveArticle(article: LignePrix, index: number): void {
+    this.currentPrixArticle = article;
+    this.updateArticleForm.setValue({
+      nom_article: article.nom_article,
+      type_article: article.type_article,
+      cout: article.cout,
+      description: article.description,
+      prix: article.prix?.prix,
+    });
     console.log(article);
     this.currentIndex = index;
     this.disabelModif = true;

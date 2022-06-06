@@ -18,9 +18,6 @@ export class DatedeviseService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
-  update(nom: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${nom}`, data);
-  }
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`);
   }

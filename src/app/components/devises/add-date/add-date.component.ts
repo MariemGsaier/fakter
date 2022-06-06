@@ -1,3 +1,4 @@
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -38,25 +39,26 @@ import 'moment/locale/fr';
 })
 export class AddDateComponent implements OnInit {
   dateDeviseForm: FormGroup = new FormGroup({
-    date: new FormControl(''),
-    valeur: new FormControl(''),
-    nom: new FormControl('')
+    date: new FormControl(""),
+    valeur: new FormControl(""),
+    nom: new FormControl(""),
   });
 
   dateDevise: Datedevise = {
     date : new Date(),
     valeur: undefined,
-    nom_devise: ""
+    nom_devise: "",
   };
   devises = [
     {
-      nom: ''
-    }
+      nom: "",
+    },
   ];
   submitted = false;
   
 
   constructor(
+    private route: ActivatedRoute,
     private router: Router,
     private dateDeviseService: DatedeviseService,
     private formBuilder: FormBuilder,
@@ -75,10 +77,10 @@ export class AddDateComponent implements OnInit {
         nom: ['', Validators.required]
       }
     );
+
   }
   get f(): { [key: string]: AbstractControl } {
     return this.dateDeviseForm.controls;
-    
   }
 
   changeDeviseValue(data: any){
@@ -95,13 +97,14 @@ export class AddDateComponent implements OnInit {
   getDevises() {
     this.deviseService.getAllDevises().subscribe({
       next: (data) => {
-        this.devises = data.map((data: any) => {return { 
-          nom : data.nom
-        
-        }} );
-        console.log('!!!', this.devises);
+        this.devises = data.map((data: any) => {
+          return {
+            nom: data.nom,
+          };
+        });
+        console.log("!!!", this.devises);
       },
-    })
+    });
   }
 
   saveDateDevise(): void {
@@ -109,36 +112,34 @@ export class AddDateComponent implements OnInit {
     const data = {
       date: this.dateDevise.date,
       valeur: this.dateDevise.valeur,
-      nom_devise: this.dateDevise.nom_devise
+      nom_devise: this.dateDevise.nom_devise,
     };
-    console.log(this.dateDeviseForm.invalid);
-    if (!(this.dateDeviseForm.invalid)) {
-    this.dateDeviseService.create(data)
-    .subscribe({
-      next: (res) => {
-        console.log(res);
-        this.submitted = true;
-        Swal.fire({
-          title: "Ajout avec succés !",
-          text: "Vous pouvez ajouter une autre taux de change ou quitter.",
-          icon: "success",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Ajouter une autre taux de change",
-          cancelButtonText: "Quitter",
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            this.router.navigate(['/add-date'])
-          } else if (!(result.isConfirmed)) {
-            this.router.navigate(['/devises'])
-          }
-        })
-      },
-      error: (e) => console.error(e)
-    } );
 
-}
-}
+      
+    if (!this.dateDeviseForm.invalid) {
+      this.dateDeviseService.create(data).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.submitted = true;
+          Swal.fire({
+            title: "Ajout avec succés !",
+            text: "Vous pouvez ajouter une autre devise ou quitter.",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Ajouter une autre devise",
+            cancelButtonText: "Quitter",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(["/add-devise"]);
+            } else if (!result.isConfirmed) {
+              this.router.navigate(["/devises"]);
+            }
+          });
+        },
+        error: (e) => console.error(e),
+      });
+    }
+  }
 }

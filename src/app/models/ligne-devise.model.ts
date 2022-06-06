@@ -7,5 +7,4 @@ export class LigneDevise {
             nom?: string
             devise?: string;
         }
-    
 }
