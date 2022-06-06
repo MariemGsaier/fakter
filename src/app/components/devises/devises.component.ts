@@ -180,49 +180,6 @@ export class DevisesComponent implements OnInit {
     });
   }
 
-  updateDevise(): void {
-    this.message = "";
-    if (!this.updateDeviseForm.invalid) {
-      const date_data = {
-        id: this.currentLigneDevise.id,
-        date: this.updateDeviseForm.get("date")?.value,
-        valeur: this.updateDeviseForm.get("valeur")?.value,
-      };
-      const devise_data = {
-        nom: this.updateDeviseForm.get("nom")?.value,
-        devise: this.updateDeviseForm.get("devise")?.value,
-      };
-      this.dateDeviseService
-        .update(this.currentLigneDevise.id, date_data)
-        .subscribe({
-          next: (res) => {
-            console.log(res);
-            this.deviseService
-              .update(this.currentLigneDevise.devises?.nom, devise_data)
-              .subscribe({
-                next: (res) => {
-                  console.log(res);
-                  this.disabelModif = false;
-                  this.message = res.message
-                    ? res.message
-                    : "This devise was updated successfully!";
-                  Swal.fire({
-                    title: "Modification effectuée avec succés !",
-                    icon: "success",
-                    confirmButtonColor: "#00c292",
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      this.fetchDevises();
-                    }
-                  });
-                },
-              });
-          },
-          error: (e) => console.error(e),
-        });
-    }
-  }
-
   deleteDevise(dateDevise: Datedevise): void {
     console.log(this.currentDateDevise.id);
 
