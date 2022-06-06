@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {AbstractControl, FormBuilder,FormControl, FormGroup, Validators} from '@angular/forms';
 import {STEPPER_GLOBAL_OPTIONS} from '@angular/cdk/stepper';
@@ -14,6 +14,15 @@ import { ClientService } from 'src/app/services/client.service';
 import { UserService } from 'src/app/services/user.service';
 import { GestUserService } from 'src/app/services/gest-user.service';
 import { BankaccountService } from 'src/app/services/bankaccount.service';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
+import 'moment/locale/ja';
+import 'moment/locale/fr';
+import * as moment from 'moment';
 
 
 
@@ -26,6 +35,16 @@ import { BankaccountService } from 'src/app/services/bankaccount.service';
       provide: STEPPER_GLOBAL_OPTIONS,
       useValue: {displayDefaultIndicatorType: false},
     },
+    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
+
+    // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
+    // `MatMomentDateModule` in your applications root module.
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
   ],
 })
 export class AddFactureComponent implements OnInit {
@@ -40,8 +59,8 @@ export class AddFactureComponent implements OnInit {
   facture: Facture = {
     reference: "",
     vendeur: "",
-    date_facturation: new Date (),
-    date_echeance: new Date (),
+    date_facturation: undefined,
+    date_echeance: undefined,
     etat_facture: "",
     etat_echeance: false,
     total_ht: undefined,
@@ -101,7 +120,17 @@ export class AddFactureComponent implements OnInit {
 
 
   constructor(public dialog: MatDialog, private route: ActivatedRoute,private factureService: FactureService,private deviseService : DeviseService, private clientService : ClientService, private userService : GestUserService, private bankAccountService : BankaccountService,
-    private router: Router, private formBuilder: FormBuilder) { }
+    private router: Router, private formBuilder: FormBuilder,@Inject(MAT_DATE_LOCALE) private _locale: string) { }
+
+    getDateFormatString(): string {
+      if (this._locale === 'ja-JP') {
+        return 'YYYY/MM/DD';
+      } else if (this._locale === 'fr') {
+        return 'DD/MM/YYYY';
+      }
+      return '';
+    }
+    
 
     getDevises() {
       this.deviseService.getAllDevises().subscribe({
@@ -152,6 +181,7 @@ export class AddFactureComponent implements OnInit {
     }
 
   ngOnInit(): void {
+   console.log(moment.locales());
     this. getComptes();
     this.getclients();
     this.getDevises();
@@ -195,7 +225,6 @@ export class AddFactureComponent implements OnInit {
       total_chiffres : this.facture.total_chiffres,
       total_lettres : this.facture.total_lettres,
       total_devise : this.facture.total_devise,
-
     };
     if (!(this.factureForm.invalid)) {
       this.factureService.create(data)

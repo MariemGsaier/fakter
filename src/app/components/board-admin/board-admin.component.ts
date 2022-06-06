@@ -115,15 +115,20 @@ export class BoardAdminComponent implements OnInit {
   retrieveUsers(): void {
     this.gestUserService.getAll().subscribe({
       next: (data) => {
-      
-        if((this.tokenStorage.getUser().role = "Super Administrateur") && (this.tokenStorage.getUser().username == data[0].username)){
-          this.hideAuthSupAdmin=true;
-        }
         this.users = data;
         this.dataSource.data = this.users;
         console.log(data);
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec d'affichage des utilisateurs !",
+          text: "Une erreur est survenue lors du chargement de la liste des utilisateurs.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      }
     });
   }
 
@@ -140,31 +145,7 @@ export class BoardAdminComponent implements OnInit {
     this.disabelModif = true;
   }
 
-  removeAllUsers(): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de tout supprimer ? ",
-      text: "Vous ne serez pas capable de restaurer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.gestUserService.deleteAll().subscribe(
-          (response) => {
-            console.log(response);
-            this.refreshList();
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      }
-    });
-  }
-
+ 
   updateUser(): void {
     console.log('test',this.userUpdateForm.invalid)
     if (!this.userUpdateForm.invalid) {
@@ -212,12 +193,52 @@ export class BoardAdminComponent implements OnInit {
             this.refreshList();
           },
           (error) => {
-            console.log(error);
+            console.error(error)
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression de l'utilisateur.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            })
           }
         );
       }
     });
   }
+
+  removeAllUsers(): void {
+    Swal.fire({
+      title: "Êtes-vous sûr de tout supprimer ? ",
+      text: "Vous ne serez pas capable de restaurer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.gestUserService.deleteAll().subscribe(
+          (response) => {
+            console.log(response);
+            this.refreshList();
+          },
+          (error) => {
+            console.error(error)
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression des utilisateurs.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            })
+          }
+        );
+      }
+    });
+  }
+
 
   filterData($event: any) {
     $event.target.value.trim();

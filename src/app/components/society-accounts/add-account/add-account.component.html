@@ -107,7 +107,7 @@
           </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Devise</mat-label>
-            <mat-select placeholder="Selectionnez une devise" [(ngModel)]="BankAccount.nom_devise" (ngModelChange)="changeDeviseValue($event)" required>
+            <mat-select placeholder="Selectionnez une devise" [ngModelOptions]="{standalone : true}" [(ngModel)]="BankAccount.nom_devise" (ngModelChange)="changeDeviseValue($event)" >
               <mat-option *ngFor="let devise of devises;" [value]="devise.nom" >{{ devise.nom }}</mat-option>
             </mat-select>
           </mat-form-field>
@@ -133,20 +133,33 @@
               >
             </mat-error>
           </mat-form-field>
-      <button
-        mat-button
-        class="btn btn-success fw-normal"
-        type="submit"
-        (click)="saveBankAccount()"
-      >
-        Sauvegarder
-      </button>
-      <div 
-      class="alert alert-danger alert-text-danger d-flex fs-14 " style="width: 354px;"
-      role="alert" *ngIf="errorAddAccount">
-      <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
-      {{ errorMsg }}
-    </div>
+          <div>
+            &nbsp;
+            <button
+              mat-button
+              class="btn btn-danger fw-normal"
+              (click)="annuler()"
+              type="submit"
+              style="float: right; margin-left: 0.3%"
+            >
+              Annuler
+            </button>
+            <button
+              mat-button
+              class="btn btn-success fw-normal"
+              (click)="saveBankAccount()"
+              type="submit"
+              style="float: right"
+            >
+              Sauvegarder
+            </button>
+            <div 
+            class="alert alert-danger alert-text-danger d-flex fs-14 " style="width: 45Opx;"
+            role="alert" *ngIf="errorAddAccount">
+            <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+            {{ errorMsg }}
+          </div>
+          </div>
     </form>
   </div>
 </div>

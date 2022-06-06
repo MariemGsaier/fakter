@@ -1,5 +1,5 @@
 const db = require("../models");
-const client = db.client;
+const Client = db.client;
 const Op = db.Sequelize.Op;
 // Créer et enregistrer un client
   exports.create = (req, res) => {
@@ -18,7 +18,7 @@ const Op = db.Sequelize.Op;
       courriel: req.body.courriel ,
       siteweb: req.body.siteweb 
    };
-   client.findOne({
+   Client.findOne({
     where: {
       code_identification: req.body.code_identification,
     },
@@ -31,7 +31,7 @@ const Op = db.Sequelize.Op;
       return;
 
     } else{
-      client
+      Client
       .create(clt)
         .then(data => {
           res.send(data);
@@ -55,7 +55,7 @@ exports.findAll = (req, res) => {
   var condition =  code_identification
     ? {  code_identification: { [Op.iLike]: `%${ code_identification}%` } }
     : null;
-  client
+  Client
     .findAll({ where: condition })
     .then((data) => {
       res.send(data);
@@ -71,7 +71,7 @@ exports.findAll = (req, res) => {
 exports.update = (req, res) => {
   //The req.query property is an object containing the property for each query string parameter in the route.
   const id = req.params.id;
-  client
+  Client
     .update(req.body, {
       where: {id: id },
     })
@@ -95,7 +95,7 @@ exports.update = (req, res) => {
 // Delete a client with the specified id in the request
 exports.delete = (req, res) => {
   const id = req.params.id;
-  client
+  Client
     .destroy({
       where: { id: id  },
     })
@@ -119,7 +119,7 @@ exports.delete = (req, res) => {
 // Delete all clients from the database.
 exports.deleteAll = (req, res) => {
 
-  client
+  Client
     .destroy({
       where: {},
       // truncate is set to true to ignore the where option

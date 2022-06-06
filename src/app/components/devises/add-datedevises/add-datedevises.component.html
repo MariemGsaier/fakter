@@ -24,27 +24,15 @@
           >
         </mat-error>
       </mat-form-field>
-      <mat-form-field
-        class="w-100 fs-16"
-        appearance="outline"
-        style="margin-right: 16px"
-      >
-        <mat-label>Date d'insertion</mat-label>
 
-        <input
-          matInput
-          [matDatepicker]="picker1"
-          formControlName="date"
-          [(ngModel)]="dateDevise.date"
-          [ngClass]="{ 'is-invalid': submitted && f['date'].errors }"
-          required
-        />
-        <mat-hint>MM/DD/YYYY</mat-hint>
-        <mat-datepicker-toggle
-          matSuffix
-          [for]="picker1"
-        ></mat-datepicker-toggle>
-        <mat-datepicker #picker1></mat-datepicker>
+      <mat-form-field class="w-100 fs-16"
+      appearance="outline"
+      style="margin-right: 16px">
+        <mat-label>Date d'insertion</mat-label>
+        <input matInput [matDatepicker]="dp" formControlName="date" [ngClass]="{ 'is-invalid': submitted && f['date'].errors }" [(ngModel)]="dateDevise.date" readonly>
+        <mat-hint>{{getDateFormatString()}}</mat-hint>
+        <mat-datepicker #dp></mat-datepicker>
+      
         <mat-error *ngIf="f['date'].errors" class="text-danger">
           <div *ngIf="f['date'].errors['required']">
             Le champ date est obligatoire

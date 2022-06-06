@@ -64,8 +64,7 @@ export class ForgotpasswordComponent implements OnInit {
         // console.log(data);
         this.userStore.setUserInStore(data);
         console.log(this.userStore.getUserFromStore());
-        this.router.navigate(['/login'])
-        // window.location.reload();
+        window.location.reload();
               },
       error: (e) => console.error(e),
     });

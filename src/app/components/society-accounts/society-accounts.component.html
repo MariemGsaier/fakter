@@ -26,6 +26,8 @@
       routerLink="/add-account"
       type="submit"
       style="float: right"
+      matTooltip="Ajouter un compte bancaire"
+      matTooltipPosition="above"
       *ngIf="!showObserverBoard"
     >
       <mat-icon>add</mat-icon>
@@ -36,6 +38,8 @@
       style="float: right; margin-right: 0.142%"
       (click)="removeAllBankAccounts()"
       *ngIf="!showObserverBoard"
+      matTooltip="Supprimer tous les comptes bancaires"
+      matTooltipPosition="above"
     >
       Supprimer Tout
     </button>
@@ -108,6 +112,8 @@
               type="submit"
               (click)="setActiveBankAccount(account, i)"
               *ngIf="!showObserverBoard"
+              matTooltip="Modifier un compte bancaire"
+              matTooltipPosition="above"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -118,6 +124,8 @@
               type="submit"
               (click)="deleteBankAccount(account)"
               *ngIf="!showObserverBoard"
+              matTooltip="Supprimer un compte bancaire"
+              matTooltipPosition="above"
             >
               <mat-icon>delete</mat-icon>
             </button>
@@ -256,7 +264,7 @@
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Devise</mat-label>
         <mat-select placeholder="Selectionnez une devise" [(ngModel)]="currentBankAccount.nom_devise" [ngModelOptions]=" {standalone: true}"  required>
-          <mat-option *ngFor="let devise of devises;" [value]="devise" >{{ devise.nom }}</mat-option>
+          <mat-option *ngFor="let devise of devises;" [value]="devise.nom" >{{ devise.nom }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -268,6 +276,7 @@
           (click)="annuler()"
           type="submit"
           style="float: right; margin-left: 0.3%"
+          
         >
           Annuler
         </button>

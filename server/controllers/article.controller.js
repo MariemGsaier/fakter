@@ -24,7 +24,6 @@ exports.adminBoard = (req, res) => {
       }
       // Create an article                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
       const art = {
-        reference_art: req.body.reference_art,
         nom_article: req.body.nom_article ,
         type_article: req.body.type_article ,
         prix_vente: req.body.prix_vente ,

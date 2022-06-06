@@ -16,11 +16,10 @@ import {
 import { DeviseService } from "src/app/services/devise.service";
 import { DatedeviseService } from "src/app/services/datedevise.service";
 import { LigneDevise } from "src/app/models/ligne-devise.model";
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
 
-interface devise {
-  nom: string;
-  devise: string;
-}
 
 @Component({
   selector: "app-devises",
@@ -131,7 +130,16 @@ export class DevisesComponent implements OnInit {
         this.dataSource.data = this.devises;
         console.log(data);
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec d'affichage des devises !",
+          text: "Une erreur est survenue lors du chargement de la liste des devises.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      }
     });
   }
 
@@ -176,7 +184,16 @@ export class DevisesComponent implements OnInit {
               }
             });
           },
-          error: (e) => console.error(e),
+          error: (e) => {
+            console.error(e);
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression des devises.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            });
+          },
         });
       },
     });
@@ -237,7 +254,16 @@ export class DevisesComponent implements OnInit {
           }
         });
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec de supression !",
+          text: "Une erreur est survenue lors de la supression de la devise.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      },
     });
   }
 
