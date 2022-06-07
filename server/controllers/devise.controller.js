@@ -47,6 +47,38 @@ exports.findAll = (req, res) => {
     });
 };
 
+// Lister les devises avec valeurs et dates
+exports.findAllDevises = (req, res) => {
+  const nom = req.query.nom;
+  var condition = nom
+    ? { nom: { [Op.iLike]: `%${nom}%` } }
+    : null;
+    devise
+    .findAll({ where: condition, include: ["dates"] })
+    .then((result) => {
+      data = result.map(el => el.get({ plain: true }))
+      for (i = 0; i < data.length; i++) {
+        if (data[i].dates.length == 0) continue
+        var indice = 0;
+        for (j = 1; j < data[i].dates.length; j++) {
+          if (data[i].dates[indice].date < data[i].dates[j].date) {
+            indice = j;
+          }
+        }
+        var latestValeur = new Array();
+        latestValeur.push(data[i].dates[indice]);
+        data[i].dates = [];
+        data[i].dates = latestValeur;
+      }
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message,
+      });
+    });
+};
+
 // Delete a devise with the specified name in the request
 exports.delete = (req, res) => {
   const nom = req.params.nom;

@@ -16,17 +16,18 @@ import {
 import { DeviseService } from "src/app/services/devise.service";
 import { DatedeviseService } from "src/app/services/datedevise.service";
 import { LigneDevise } from "src/app/models/ligne-devise.model";
+import { HistoriqueLigneDevise } from "src/app/models/historique-ligne-devise.model";
 
 @Component({
-  selector: "app-devises",
-  templateUrl: "./devises.component.html",
-  styleUrls: ["./devises.component.scss"],
+  selector: 'app-historique-devises',
+  templateUrl: './historique-devises.component.html',
+  styleUrls: ['./historique-devises.component.scss']
 })
-export class DevisesComponent implements OnInit {
+export class HistoriqueDevisesComponent implements OnInit {
   searchTerm: any;
   search: boolean = false;
   displayedColumns: string[] = ["nom", "devise", "valeur", "date", "actions"];
-  dataSource = new MatTableDataSource<LigneDevise>();
+  dataSource = new MatTableDataSource<HistoriqueLigneDevise>();
 
   updateDeviseForm: FormGroup = new FormGroup({
     valeur: new FormControl(""),
@@ -44,17 +45,17 @@ export class DevisesComponent implements OnInit {
     date: new Date(),
     valeur: undefined,
   };
-  currentLigneDevise: LigneDevise = {
-    nom: "",
-    devise: "",
-    dates: {
-      id: undefined,
-      date: new Date(),
-      valeur: undefined,
+  currentLigneDevise: HistoriqueLigneDevise = {
+    id: undefined,
+    date: new Date(),
+    valeur: undefined,
+    devises: {
+      nom: "",
+      devise: "",
     },
   };
   message = "";
-  devises?: LigneDevise[];
+  devises?: HistoriqueLigneDevise[];
   currentIndex = -1;
   disabelModif: boolean = false;
   private roles: string[] = [];
@@ -106,6 +107,9 @@ export class DevisesComponent implements OnInit {
   get f(): { [key: string]: AbstractControl } {
     return this.updateDeviseForm.controls;
   }
+  // get f2(): { [key: string]: AbstractControl } {
+  //   return this.updateDeviseForm.devises?.controls;
+  // }
 
   onSubmit(): void {
     this.submitted = true;
@@ -115,7 +119,7 @@ export class DevisesComponent implements OnInit {
   }
 
   fetchDevises(): void {
-    this.deviseService.getAll().subscribe({
+    this.dateDeviseService.getAll().subscribe({
       next: (data) => {
         this.devises = data;
         this.dataSource.data = this.devises;
@@ -131,13 +135,13 @@ export class DevisesComponent implements OnInit {
     this.currentIndex = -1;
   }
 
-  setActiveDevise(devise: LigneDevise, index: number): void {
+  setActiveDevise(devise: HistoriqueLigneDevise, index: number): void {
     this.currentLigneDevise = devise;
     this.updateDeviseForm.setValue({
-      date: devise.dates?.date,
-      valeur: devise.dates?.valeur,
-      nom: devise.nom,
-      devise: devise.devise,
+      date: devise.date,
+      valeur: devise.valeur,
+      nom: devise.devises?.nom,
+      devise: devise.devises?.devise,
     });
     console.log(devise);
     this.currentIndex = index;
@@ -174,10 +178,8 @@ export class DevisesComponent implements OnInit {
 
   deleteDevise(dateDevise: Datedevise): void {
     console.log(this.currentDateDevise.id);
-    this.deviseService.delete(this.currentLigneDevise.nom).subscribe({
-      next: (res) => {
-        console.log(res);
-    this.dateDeviseService.delete(this.currentLigneDevise.dates?.id).subscribe({
+
+    this.dateDeviseService.delete(dateDevise.id).subscribe({
       next: (res) => {
         console.log(res);
         Swal.fire({
@@ -197,9 +199,7 @@ export class DevisesComponent implements OnInit {
       },
       error: (e) => console.error(e),
     });
-  },
-});
-}
+  }
 
   filterData($event: any) {
     $event.target.value.trim();

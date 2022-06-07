@@ -47,6 +47,7 @@ import { AddDatedevisesComponent } from './devises/add-datedevises/add-datedevis
 import { AddDateComponent } from './devises/add-date/add-date.component';
 import { AddPrixarticleComponent } from './articles/add-prixarticle/add-prixarticle.component';
 import { AddPrixComponent } from './articles/add-prix/add-prix.component';
+import { HistoriqueDevisesComponent } from './devises/historique-devises/historique-devises.component';
 
 
 
@@ -98,6 +99,7 @@ import { AddPrixComponent } from './articles/add-prix/add-prix.component';
     AddDateComponent,
     AddPrixarticleComponent,
     AddPrixComponent,
+    HistoriqueDevisesComponent,
  
 
   ],

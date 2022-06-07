@@ -11,6 +11,8 @@ module.exports = function (app) {
   });
   //fetch all devises
   router.get("/", controllerdev.findAll);
+  // fetch all devises with dates
+  router.get("/valeur", controllerdev.findAllDevises);
     // Create 
      router.post("/create", controllerdev.create);
     // Delete  with nom

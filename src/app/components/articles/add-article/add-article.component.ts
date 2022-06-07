@@ -81,8 +81,8 @@ export class AddArticleComponent implements OnInit {
       description: this.article.description,
     };
     if (!(this.articleForm.invalid)) {
-    this.articleService.create(data).subscribe(
-      (res) => {
+    this.articleService.create(data).subscribe({
+      next: (res) => {
         console.log(res);
         this.submitted = true;
         Swal.fire({
@@ -96,18 +96,12 @@ export class AddArticleComponent implements OnInit {
             this.articleStore.setArticleInStore(data);
             this.router.navigate(['/add-prixarticle'])
           }
-        })
+        });
       },
-      (error) => {console.error(error);
-      Swal.fire({
-        title: "Une erreur est survenue lors de l'ajout de l'article !",
-        text: "Veuillez réessayer une autre fois.",
-        icon: "warning",
-        confirmButtonColor: "#e46a76",
-      })}
-    )
-    }
+      error: (e) => console.error(e),
+    });
   }
+}
 
   newArticle(): void {
     this.submitted = false;

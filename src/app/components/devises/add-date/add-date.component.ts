@@ -50,14 +50,11 @@ export class AddDateComponent implements OnInit {
         "",
         [
           Validators.required,
-          Validators.pattern(
-            /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
-          ),
         ],
       ],
       valeur: [
         "",
-        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
+        [Validators.required,],
       ],
       nom: ["", [Validators.required]],
     });
@@ -92,7 +89,6 @@ export class AddDateComponent implements OnInit {
       valeur: this.dateDevise.valeur,
       nom_devise: this.dateDevise.nom_devise,
     };
-
     if (!this.dateDeviseForm.invalid) {
       this.dateDeviseService.create(data).subscribe({
         next: (res) => {

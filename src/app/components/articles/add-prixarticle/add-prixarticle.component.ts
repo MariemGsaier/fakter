@@ -113,10 +113,7 @@ export class AddPrixarticleComponent implements OnInit {
       prix: this.prixArticle.prix,
       date: this.prixArticle.date,
       nom_article: this.article.nom_article,
-    };
-    console.log('444',this.prixArticleForm.invalid);
-    
-
+    };  
     if (!this.prixArticleForm.invalid) {
       this.prixArticleService.create(data).subscribe({
         next: (res) => {

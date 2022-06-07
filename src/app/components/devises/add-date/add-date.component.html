@@ -16,7 +16,7 @@
           [ngClass]="{ 'is-invalid': submitted && f['nom'].errors }"
           [(ngModel)]="dateDevise.nom_devise"
         >
-          <mat-option *ngFor="let devise of devises" [value]="devise">
+          <mat-option *ngFor="let devise of devises" [value]="devise.nom">
             {{ devise.nom }}
           </mat-option>
         </mat-select>
@@ -39,11 +39,8 @@
           />
           <mat-error *ngIf="f['valeur'].errors" class="text-danger">
             <div *ngIf="f['valeur'].errors['required']">
-              Le champ date est obligatoire
+              Le champ taux de change est obligatoire
             </div>
-            <span *ngIf="f['valeur'].errors['pattern']"
-              >La date saisie est invalide</span
-            >
           </mat-error>
         </mat-form-field>
         <mat-form-field
@@ -71,9 +68,6 @@
             <div *ngIf="f['date'].errors['required']">
               Le champ date est obligatoire
             </div>
-            <span *ngIf="f['date'].errors['pattern']"
-              >La date saisie est invalide</span
-            >
           </mat-error>
         </mat-form-field>
         &nbsp;
