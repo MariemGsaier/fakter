@@ -130,7 +130,16 @@ export class BoardAdminComponent implements OnInit {
         this.dataSource.data = this.users;
         console.log(data);
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec d'affichage des utilisateurs !",
+          text: "Une erreur est survenue lors du chargement de la liste des utilisateurs.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      }
     });
   }
 
@@ -158,7 +167,6 @@ export class BoardAdminComponent implements OnInit {
       }
     );
   }
-
   updateUser(): void {
     console.log("test", this.userUpdateForm.invalid);
     if (!this.userUpdateForm.invalid) {

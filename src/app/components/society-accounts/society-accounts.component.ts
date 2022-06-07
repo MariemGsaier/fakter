@@ -160,7 +160,16 @@ export class SocietyAccountsComponent implements OnInit {
         this.dataSource.data = this.bankaccounts;
         console.log(data);
       },
-      error: (e) => console.error(e),
+      error: (e) =>{
+        console.error(e);
+        Swal.fire({
+          title: "Echec d'affichage des comptes bancaires !",
+          text: "Une erreur est survenue lors du chargement de la liste des comptes bancaires.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      }
     });
   }
   refreshList(): void {
@@ -170,9 +179,33 @@ export class SocietyAccountsComponent implements OnInit {
   }
   setActiveBankAccount(bankaccount: BankaccountDevise, index: number): void {
     this.currentBankAccount = bankaccount;
-    console.log("active"+bankaccount);
     this.currentIndex = index;
     this.disabelModif = true;
+  }
+
+  updateBankAccount(): void {
+    this.BankaccountService.update(
+      this.currentBankAccount.id,
+      this.currentBankAccount
+    ).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.disabelModif = false;
+        Swal.fire({
+          title: "Le compte bancaire est mis à jour avec succés ! ",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        })
+      },
+      error: (e) => {
+        console.error(e);
+        this.errorUpdateAccount=true;
+        this.errorMsg="Une erreur est survenue lors de la mise à jour du compte bancaire !"
+      }
+    });
+
+   
   }
 
   removeAllBankAccounts(): void {
@@ -196,32 +229,6 @@ export class SocietyAccountsComponent implements OnInit {
             this.refreshList();
           },
           error: (e) => console.error(e),
-        });
-      }
-    });
-  }
-
-  updateBankAccount(): void {
-    Swal.fire({
-      title: "Le compte bancaire est mis à jour avec succés ! ",
-      icon: "success",
-      confirmButtonColor: "#00c292",
-      confirmButtonText: "Ok",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.BankaccountService.update(
-          this.currentBankAccount.id,
-          this.currentBankAccount
-        ).subscribe({
-          next: (res) => {
-            console.log(res);
-            this.disabelModif = false;
-          },
-          error: (e) => {
-            console.error(e);
-            this.errorUpdateAccount=true;
-            this.errorMsg="Une erreur est survenue lors de la mise à jour du compte bancaire !"
-          }
         });
       }
     });

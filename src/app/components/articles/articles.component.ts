@@ -136,7 +136,16 @@ export class ArticlesComponent implements OnInit {
         this.articles = data;
         this.dataSource.data = this.articles;
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec d'affichage des articles !",
+          text: "Une erreur est survenue lors du chargement de la liste des articles.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      }
     });
   }
 
@@ -179,7 +188,16 @@ export class ArticlesComponent implements OnInit {
           }
         });
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec de supression !",
+          text: "Une erreur est survenue lors de la supression des articles.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      },
     });
   }
 
@@ -229,7 +247,16 @@ export class ArticlesComponent implements OnInit {
           }
         });
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec de supression !",
+          text: "Une erreur est survenue lors de la supression de l'article.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      },
     });
   }
 
@@ -237,10 +264,6 @@ export class ArticlesComponent implements OnInit {
     $event.target.value.trim();
     $event.target.value.toLowerCase();
     this.dataSource.filter = $event.target.value;
-  }
-
-  annuler(): void {
-    this.disabelModif = false;
   }
 
   exportexcel(): void {
@@ -254,5 +277,8 @@ export class ArticlesComponent implements OnInit {
 
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
+  }
+  annuler(): void {
+    this.disabelModif = false;
   }
 }

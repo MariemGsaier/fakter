@@ -26,8 +26,12 @@
       type="submit"
       style="float: right"
       *ngIf="!showObserverBoard"
-      [matMenuTriggerFor]="menu"
-    >
+
+      matTooltip="Ajouter un article"
+      matTooltipPosition="above"
+
+      [matMenuTriggerFor]="menu">
+
       <mat-icon>add</mat-icon>
     </button>
     <mat-menu #menu="matMenu" class="profile-dropdown">
@@ -56,6 +60,8 @@
       style="float: right; margin-right: 0.142%"
       (click)="removeAllArticles()"
       *ngIf="!showObserverBoard"
+      matTooltip="Supprimer tous les articles"
+      matTooltipPosition="above"
     >
       Supprimer Tout
     </button>
@@ -75,7 +81,6 @@
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
-
         <!-- Colonne Nom -->
         <ng-container matColumnDef="nom">
           <th mat-header-cell *matHeaderCellDef>Nom article</th>
@@ -108,15 +113,17 @@
 
         <!-- Colonne Description -->
         <ng-container matColumnDef="description">
-            <th mat-header-cell *matHeaderCellDef>Description</th>
-            <td mat-cell *matCellDef="let article">
-              <p class="mb-0 fw-medium">{{ article.description }}</p>
-            </td>
-          </ng-container>
+          <th mat-header-cell *matHeaderCellDef>Description</th>
+          <td mat-cell *matCellDef="let article">
+            <p class="mb-0 fw-medium">{{ article.description }}</p>
+          </td>
+        </ng-container>
 
-          <!-- Colonne Actions -->
+        <!-- Colonne Actions -->
         <ng-container matColumnDef="actions" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">Actions</th>
+          <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">
+            Actions
+          </th>
           <td
             mat-cell
             *matCellDef="let article; let i = index"
@@ -129,7 +136,8 @@
               style="margin-right: 1%"
               type="submit"
               (click)="setActiveArticle(article, i)"
-              href="#update_card"
+              matTooltip="Modifier un article"
+              matTooltipPosition="above"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -140,6 +148,8 @@
               style="margin-right: 1%"
               type="submit"
               (click)="deleteArticle(article)"
+              matTooltip="Supprimer un article"
+              matTooltipPosition="above"
             >
               <mat-icon>delete</mat-icon>
             </button>
@@ -166,6 +176,25 @@
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Type article</mat-label>
         <mat-select
+<<<<<<< HEAD
+          name="type_article"
+          required
+          formControlName="type_article"
+          [(ngModel)]="currentArticle.type_article"
+        >
+          <mat-option *ngFor="let type of types" [value]="type.value">
+            {{ type.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="f['type_article'].errors" class="text-danger">
+          <div *ngIf="f['type_article'].errors['required']">
+            Le champ type est obligatoire
+          </div>
+          <span *ngIf="f['type_article'].errors['pattern']"
+            >Le type saisi est invalide</span
+          >
+        </mat-error>
+=======
               name="type_article"
               required
               formControlName="type_article"
@@ -180,6 +209,7 @@
               <div *ngIf="f['type_article'].errors['required']">Le champ type est obligatoire</div>
               <span *ngIf="f['type_article'].errors['pattern']">Le type saisi est invalide</span>
             </mat-error>
+>>>>>>> ce3dfb44cdcc1f8fabc5b91dd50e2fa288d3216b
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -202,6 +232,27 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
+<<<<<<< HEAD
+        <mat-label>Taxe vente</mat-label>
+        <mat-select
+          name="taxe_vente"
+          required
+          formControlName="taxe_vente"
+          [(ngModel)]="currentArticle.taxe_vente"
+        >
+          <mat-option *ngFor="let type of types" [value]="type.value">
+            {{ type.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
+          <div *ngIf="f['taxe_vente'].errors['required']">
+            Le champ taxe est obligatoire
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+=======
+>>>>>>> ce3dfb44cdcc1f8fabc5b91dd50e2fa288d3216b
         <mat-label>Coût</mat-label>
         <input
           matInput
@@ -232,8 +283,12 @@
           [value]="currentPrixArticle.description"
         ></textarea>
         <mat-error *ngIf="f['description'].errors" class="text-danger">
-          <div *ngIf="f['description'].errors['required']">Le champ description est obligatoire</div>
-          <div *ngIf="f['description'].errors['pattern']">La description saisie est invalide</div>
+          <div *ngIf="f['description'].errors['required']">
+            Le champ description est obligatoire
+          </div>
+          <div *ngIf="f['description'].errors['pattern']">
+            La description saisie est invalide
+          </div>
         </mat-error>
       </mat-form-field>
 

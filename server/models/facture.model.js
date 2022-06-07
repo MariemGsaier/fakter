@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
     reference: {
       type: Sequelize.STRING,
     },
-    vendeur: {
+    créé_par: {
       type: Sequelize.STRING,
     },
     date_facturation: {
@@ -21,11 +21,8 @@ module.exports = (sequelize, Sequelize) => {
     total_ht: {
       type: Sequelize.FLOAT,
     },
-    total_chiffres: {
+    total_ttc: {
       type: Sequelize.FLOAT,
-    },
-    total_lettres: {
-      type: Sequelize.STRING,
     },
     total_devise: {
       type: Sequelize.FLOAT,
