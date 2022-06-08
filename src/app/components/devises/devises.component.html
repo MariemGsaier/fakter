@@ -1,25 +1,17 @@
 <mat-card class="w-100">
   <mat-card-content>
     <div *ngIf="search" class="search-section d-flex align-items-center">
-      <mat-form-field class="w-100" color="primary" appearance="legacy">
-        <mat-label class="fs-16">Recherchez ici</mat-label>
-        <input
-          matInput
-          placeholder="Veuillez taper un mot clé"
-          autocomplete="off"
-          (keyup)="filterData($event)"
-        />
-      </mat-form-field>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"></li>
-      </ul>
-      <button mat-icon-button (click)="search = !search">
-        <i-feather
-          name="x-circle"
-          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
-        ></i-feather>
-      </button>
-    </div>
+    <mat-form-field class="w-100" color="primary" appearance="legacy">
+      <mat-label class="fs-16">Recherchez ici</mat-label>
+      <input matInput
+      placeholder="Veuillez taper un mot clé"
+      autocomplete="off"
+      (keyup)="filterData($event)">
+    </mat-form-field>
+    <button mat-icon-button (click)="search=!search">
+      <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+    </button>
+  </div>
     <div>
     <button
       mat-button
@@ -54,6 +46,17 @@
       matTooltipPosition="above"
     >
       Supprimer Tout
+    </button>
+    <button
+      mat-button
+      class="btn btn-primary fw-normal"
+      style="float: right; margin-right: 0.142%"
+      routerLink="/historique-devises"
+      *ngIf="!showObserverBoard"
+      matTooltip="Consulter Historique d'insertion"
+      matTooltipPosition="above"
+    >
+      Historique
     </button>
     <button
       mat-icon-button
@@ -97,7 +100,7 @@
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>Date d'insertion</th>
           <td mat-cell *matCellDef="let devise">
-            <p class="mb-0 fw-medium">{{devise.date | date:'medium':'+0200':'fr'}}</p>
+            <p class="mb-0 fw-medium">{{devise.dates[0]?.date | date:'medium':'+0200':'fr'}}</p>
           </td>
         </ng-container>
 
@@ -110,19 +113,6 @@
             *matCellDef="let devise; let i = index"
             [class.active]="i == currentIndex"
           >
-            <button
-              mat-button
-              *ngIf="!showObserverBoard"
-              class="btn btn-success fw-normal btnw"
-              style="margin-right: 1%"
-              type="submit"
-              (click)="setActiveDevise(devise, i)"
-              matTooltip="Modifier la devise "
-              matTooltipPosition="above"
-      
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
             <button
               mat-button
               *ngIf="!showObserverBoard"

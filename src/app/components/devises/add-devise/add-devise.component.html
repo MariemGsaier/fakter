@@ -28,15 +28,16 @@
             </mat-form-field>
             <mat-form-field class="w-100 fs-16" appearance="outline">
               <mat-label>Devise</mat-label>
-              <input
-                matInput
-                type="text"
-                placeholder="Entrez le symbole de la devise"
+              <mat-select
+                name="role"
                 formControlName="devise"
                 [ngClass]="{ 'is-invalid': submitted && f['devise'].errors }"
-                required
                 [(ngModel)]="devise.devise"
-              />
+              >
+                <mat-option *ngFor="let valeur of valeurs" [value]="valeur.value">
+                  {{ valeur.viewValue }}
+                </mat-option>
+              </mat-select>
               <mat-error *ngIf="f['devise'].errors" class="text-danger">
                 <div *ngIf="f['devise'].errors['required']">
                   Le champ devise est obligatoire

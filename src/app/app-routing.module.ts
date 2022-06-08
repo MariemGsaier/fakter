@@ -43,9 +43,9 @@ import { ChangeForgotpwComponent } from "./components/login/change-forgotpw/chan
 import { AddDateComponent } from "./components/devises/add-date/add-date.component";
 import { AddPrixarticleComponent } from "./components/articles/add-prixarticle/add-prixarticle.component";
 import { AddPrixComponent } from "./components/articles/add-prix/add-prix.component";
-
-
-
+import { HistoriqueDevisesComponent } from "./components/devises/historique-devises/historique-devises.component";
+import { LoginGardGuard } from "./gard/login-gard.guard";
+import { AdminGuard } from "./gard/admin.guard";
 
 const routes: Routes = [
   {
@@ -55,9 +55,8 @@ const routes: Routes = [
       { path: "", redirectTo: "/login", pathMatch: "full" },
       { path: "login", component: LoginComponent },
       { path: "change-pw", component: ChangePwComponent },
-      {path: "change-forgotpw", component: ChangeForgotpwComponent},
+      { path: "change-forgotpw", component: ChangeForgotpwComponent },
       { path: "forgot-pw", component: ForgotpasswordComponent },
-
     ],
   },
   {
@@ -65,7 +64,11 @@ const routes: Routes = [
     component: FullComponent,
     children: [
       { path: "", redirectTo: "/dashboard", pathMatch: "full" },
-      { path: "dashboard", component: DashboardComponent },
+      {
+        path: "dashboard",
+        component: DashboardComponent,
+        canActivate: [LoginGardGuard],
+      },
       { path: "alerts", component: AlertsComponent },
       { path: "forms", component: FormsComponent },
       { path: "table", component: ProductComponent },
@@ -82,27 +85,111 @@ const routes: Routes = [
       { path: "slide-toggle", component: SlideToggleComponent },
       { path: "tooltip", component: TooltipsComponent },
       { path: "button", component: ButtonsComponent },
-      { path: "profile", component: ProfileComponent },
-      { path: "admin", component: BoardAdminComponent },
-      { path: "add-user", component: AddUserComponent },
-      { path: "articles", component: ArticlesComponent },
-      { path: "add-article", component: AddArticleComponent },
-      { path: "clients", component: ClientComponent },
-      { path: "add-client", component: AddClientComponent },
-      { path: "add-account", component: AddAccountComponent },
-      { path: "bankaccounts", component: SocietyAccountsComponent },
-      { path: "factures", component: FacturesComponent },
-      {path: "add-facture", component: AddFactureComponent},
-      { path: "societe", component: SocietiesComponent },
-      { path: "add-societe", component: AddSocietyComponent },
-      {path : "print-facture", component: PrintFactureComponent },
-      { path: "devises", component: DevisesComponent },
-      { path: "add-devise", component: AddDeviseComponent },
-      { path: "add-datedevise", component: AddDatedevisesComponent },
-      { path: "add-date", component: AddDateComponent },
-      { path: "add-prixarticle", component: AddPrixarticleComponent },
-      { path: "add-prix", component: AddPrixComponent },
-
+      {
+        path: "profile",
+        component: ProfileComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "admin",
+        component: BoardAdminComponent,
+        canActivate: [LoginGardGuard, AdminGuard],
+      },
+      {
+        path: "add-user",
+        component: AddUserComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "articles",
+        component: ArticlesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-article",
+        component: AddArticleComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "clients",
+        component: ClientComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-client",
+        component: AddClientComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-account",
+        component: AddAccountComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "bankaccounts",
+        component: SocietyAccountsComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "factures",
+        component: FacturesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-facture",
+        component: AddFactureComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "societe",
+        component: SocietiesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-societe",
+        component: AddSocietyComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "print-facture",
+        component: PrintFactureComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "devises",
+        component: DevisesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-devise",
+        component: AddDeviseComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-datedevise",
+        component: AddDatedevisesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-date",
+        component: AddDateComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-prixarticle",
+        component: AddPrixarticleComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "add-prix",
+        component: AddPrixComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "historique-devises",
+        component: HistoriqueDevisesComponent,
+        canActivate: [LoginGardGuard],
+      },
     ],
   },
   { path: "", redirectTo: "/login", pathMatch: "full" },

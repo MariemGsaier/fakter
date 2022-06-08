@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
 import { Datedevise } from "src/app/models/datedevise.model";
 import { Devise } from "src/app/models/devise.model";
 import { MatTableDataSource } from "@angular/material/table";
@@ -19,6 +18,7 @@ import { LigneDevise } from "src/app/models/ligne-devise.model";
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr, 'fr');
+
 
 @Component({
   selector: "app-devises",
@@ -65,6 +65,7 @@ export class DevisesComponent implements OnInit {
   showObserverBoard = true;
   paginator?: MatPaginator;
   submitted = false;
+
 
   constructor(
     private deviseService: DeviseService,
