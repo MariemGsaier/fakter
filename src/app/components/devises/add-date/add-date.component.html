@@ -43,7 +43,6 @@
             <div *ngIf="f['valeur'].errors['required']">
               Le champ taux de change est obligatoire !
             </div>
-           
           </mat-error>
         </mat-form-field>
         <mat-form-field class="w-100 fs-16"
@@ -55,9 +54,6 @@
             <div *ngIf="f['date'].errors['required']">
               Le champ date est obligatoire
             </div>
-            <span *ngIf="f['date'].errors['pattern']"
-              >La date saisie est invalide</span
-            >
           </mat-error>
         </mat-form-field>
         &nbsp;

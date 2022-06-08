@@ -38,12 +38,12 @@ export class BoardAdminComponent implements OnInit {
     email: "",
     role: "",
   };
-  errorUpdate =false;
+  errorUpdate = false;
   errorMsg = "";
   users?: User[];
   currentIndex = -1;
   username = "";
-  roleAuth=""
+  roleAuth = "";
   disabelModif: boolean = false;
   paginator?: MatPaginator;
 
@@ -52,12 +52,12 @@ export class BoardAdminComponent implements OnInit {
     email: new FormControl(""),
   });
   submitted = false;
-  hideAuthSupAdmin=false;
+  hideAuthSupAdmin = false;
 
   roles: role[] = [
-    {value: 'Super Administrateur', viewValue: 'Super administrateur'},
-    {value: 'Administrateur', viewValue: 'Administrateur'},
-    {value: 'Observateur', viewValue: 'Observateur'},
+    { value: "Super Administrateur", viewValue: "Super administrateur" },
+    { value: "Administrateur", viewValue: "Administrateur" },
+    { value: "Observateur", viewValue: "Observateur" },
   ];
 
   constructor(
@@ -80,23 +80,28 @@ export class BoardAdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getAdminBoard().subscribe(
-      (data) => {
+    this.userService.getAdminBoard().subscribe({
+      next: (data) => {
         this.content = data;
       },
-      (err) => {
+      error: (err) => {
         this.content = JSON.parse(err.error).message;
-      }
-    );
-
+      },
+    });
 
     this.retrieveUsers();
     this.userUpdateForm = this.formBuilder.group({
       username: [
         "",
-        [Validators.required,Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
+        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
       ],
-      email: ["", [Validators.required,Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
+      email: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}"),
+        ],
+      ],
     });
   }
 
@@ -115,6 +120,12 @@ export class BoardAdminComponent implements OnInit {
   retrieveUsers(): void {
     this.gestUserService.getAll().subscribe({
       next: (data) => {
+        if (
+          (this.tokenStorage.getUser().role = "Super Administrateur") &&
+          this.tokenStorage.getUser().username == data[0].username
+        ) {
+          this.hideAuthSupAdmin = true;
+        }
         this.users = data;
         this.dataSource.data = this.users;
         console.log(data);
@@ -145,9 +156,19 @@ export class BoardAdminComponent implements OnInit {
     this.disabelModif = true;
   }
 
- 
+  removeAllUsers(): void {
+    this.gestUserService.deleteAll().subscribe(
+      (response) => {
+        console.log(response);
+        this.refreshList();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
   updateUser(): void {
-    console.log('test',this.userUpdateForm.invalid)
+    console.log("test", this.userUpdateForm.invalid);
     if (!this.userUpdateForm.invalid) {
       Swal.fire({
         title: "Modification effectuée avec succés !",
@@ -162,83 +183,44 @@ export class BoardAdminComponent implements OnInit {
                 console.log(res);
                 this.disabelModif = false;
                 this.retrieveUsers();
-              
               },
               error: (e) => {
-                console.error(e)
-                this.errorUpdate =true
-                this.errorMsg="Une erreur est survenue lors de la mise à jour de l'utilisateur !"
+                console.error(e);
+                this.errorUpdate = true;
+                this.errorMsg =
+                  "Une erreur est survenue lors de la mise à jour de l'utilisateur !";
               },
             });
         }
       });
     }
   }
+
   deleteUser(user: User): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.gestUserService.delete(user.id).subscribe(
-          (response) => {
-            console.log(response);
-            this.disabelModif = false;
+    this.gestUserService.delete(user.id).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.disabelModif = false;
+        Swal.fire({
+          title: "Êtes-vous sûr de le supprimer ? ",
+          text: "Vous ne serez pas capable de le récupérer !",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#00c292",
+          cancelButtonColor: "#e46a76",
+          confirmButtonText: "Oui",
+          cancelButtonText: "Annuler",
+        }).then((result) => {
+          if (result.isConfirmed) {
             this.refreshList();
-          },
-          (error) => {
-            console.error(error)
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression de l'utilisateur.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            })
           }
-        );
-      }
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      },
     });
   }
-
-  removeAllUsers(): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de tout supprimer ? ",
-      text: "Vous ne serez pas capable de restaurer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.gestUserService.deleteAll().subscribe(
-          (response) => {
-            console.log(response);
-            this.refreshList();
-          },
-          (error) => {
-            console.error(error)
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression des utilisateurs.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            })
-          }
-        );
-      }
-    });
-  }
-
 
   filterData($event: any) {
     $event.target.value.trim();

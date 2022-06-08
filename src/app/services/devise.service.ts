@@ -17,7 +17,7 @@ export class DeviseService {
     return this.http.get<Devise[]>(baseUrl);
   }
   getAll(): Observable<LigneDevise[]> {
-    return this.http.get<LigneDevise[]>(baseUrl);
+    return this.http.get<LigneDevise[]>(baseUrl + '/valeur');
   }
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);

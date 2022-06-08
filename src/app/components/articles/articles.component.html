@@ -3,21 +3,13 @@
     <div *ngIf="search" class="search-section d-flex align-items-center">
       <mat-form-field class="w-100" color="primary" appearance="legacy">
         <mat-label class="fs-16">Recherchez ici</mat-label>
-        <input
-          matInput
-          placeholder="Veuillez taper un mot clé"
-          autocomplete="off"
-          (keyup)="filterData($event)"
-        />
+        <input matInput
+        placeholder="Veuillez taper un mot clé"
+        autocomplete="off"
+        (keyup)="filterData($event)">
       </mat-form-field>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"></li>
-      </ul>
-      <button mat-icon-button (click)="search = !search">
-        <i-feather
-          name="x-circle"
-          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
-        ></i-feather>
+      <button mat-icon-button (click)="search=!search">
+        <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
       </button>
     </div>
     <button
@@ -176,25 +168,6 @@
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Type article</mat-label>
         <mat-select
-<<<<<<< HEAD
-          name="type_article"
-          required
-          formControlName="type_article"
-          [(ngModel)]="currentArticle.type_article"
-        >
-          <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.viewValue }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="f['type_article'].errors" class="text-danger">
-          <div *ngIf="f['type_article'].errors['required']">
-            Le champ type est obligatoire
-          </div>
-          <span *ngIf="f['type_article'].errors['pattern']"
-            >Le type saisi est invalide</span
-          >
-        </mat-error>
-=======
               name="type_article"
               required
               formControlName="type_article"
@@ -209,7 +182,6 @@
               <div *ngIf="f['type_article'].errors['required']">Le champ type est obligatoire</div>
               <span *ngIf="f['type_article'].errors['pattern']">Le type saisi est invalide</span>
             </mat-error>
->>>>>>> ce3dfb44cdcc1f8fabc5b91dd50e2fa288d3216b
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -232,27 +204,6 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
-<<<<<<< HEAD
-        <mat-label>Taxe vente</mat-label>
-        <mat-select
-          name="taxe_vente"
-          required
-          formControlName="taxe_vente"
-          [(ngModel)]="currentArticle.taxe_vente"
-        >
-          <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.viewValue }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
-          <div *ngIf="f['taxe_vente'].errors['required']">
-            Le champ taxe est obligatoire
-          </div>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-=======
->>>>>>> ce3dfb44cdcc1f8fabc5b91dd50e2fa288d3216b
         <mat-label>Coût</mat-label>
         <input
           matInput

@@ -3,50 +3,59 @@
   <form action="">
     <mat-form-field class="w-100 fs-16" appearance="outline">
       <mat-label>Nom article</mat-label>
-      <mat-select placeholder="Selectionnez un article" [value]="selectedArticle" required>
-        <mat-option *ngFor="let article of articles; let i = index;" [class.active]="i == currentIndex" [value]="article" (click)="setActiveArticle(article, i)">{{ article.nom_article }}</mat-option>
+      <mat-select
+        placeholder="Selectionnez un article"
+        [value]="selectedArticle"
+        required
+      >
+        <mat-option
+          *ngFor="let article of articles; let i = index"
+          [class.active]="i == currentIndex"
+          [value]="article"
+          (click)="setActiveArticle(article, i)"
+          >{{ article.nom_article }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
     <div *ngIf="disabelModif">
-    <mat-form-field class="w-100 fs-16" appearance="outline">
-      <mat-label>Prix</mat-label>
-      <input
-        matInput
-        type="number"
-        placeholder="Veuillez entrer le prix"
-        id="prix"
-      />
-    </mat-form-field>
-    <mat-form-field class="w-100 fs-16" appearance="outline">
-      <mat-label>Taxe</mat-label>
-      <input
-        matInput
-        type="number"
-        placeholder="Veuillez entrer la taxe"
-        id="taxe"
-      />
-    </mat-form-field>
-    <mat-form-field class="w-100 fs-16" appearance="outline">
-      <mat-label>Quantité</mat-label>
-      <input
-        matInput
-        type="number"
-        placeholder="Veuillez entrer la quantité"
-        id="quantite"
-      />
-    </mat-form-field>
-  
-  <button
-                mat-button
-                class="btn btn-success fw-normal btnw disabled"
-                style="float: right;"
-                type="submit"
-              >
-                Ajouter
-              </button>
-            </div>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Prix</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Veuillez entrer le prix"
+          id="prix"
+        />
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Quantité</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Veuillez entrer la quantité"
+          id="quantite"
+        />
+      </mat-form-field>
+
+      <button
+        mat-button
+        class="btn btn-success fw-normal btnw disabled"
+        style="float: right"
+        type="submit"
+      >
+        Ajouter
+      </button>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions>
-  <button mat-button style="float: right;" (click)="closeDialog()" mat-flat-button color="warn">Quitter</button>
+  <button
+    mat-button
+    style="float: right"
+    (click)="closeDialog()"
+    mat-flat-button
+    color="warn"
+  >
+    Quitter
+  </button>
 </div>

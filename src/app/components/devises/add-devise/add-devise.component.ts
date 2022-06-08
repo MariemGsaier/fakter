@@ -6,7 +6,10 @@ import { Devise } from 'src/app/models/devise.model';
 import { DeviseService } from 'src/app/services/devise.service';
 import { DeviseStoreService } from "src/app/store/devise-store.service";
 
-
+interface devise {
+  value: string;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-add-devise',
@@ -25,6 +28,18 @@ export class AddDeviseComponent implements OnInit {
     devise: ""
   };
   submitted = false;
+
+  valeurs: devise[] = [
+    { value: "TND", viewValue: "TND" },
+    { value: "EUR", viewValue: "EUR" },
+    { value: "USD", viewValue: "USD" },
+    { value: "CAD", viewValue: "CAD" },
+    { value: "AUD", viewValue: "AUD" },
+    { value: "TRY", viewValue: "TRY" },
+    { value: "EGP", viewValue: "EGP" },
+    { value: "AED", viewValue: "AED" },
+  ];
+
   constructor(private route: ActivatedRoute,
     private router: Router,
     private deviseService: DeviseService,

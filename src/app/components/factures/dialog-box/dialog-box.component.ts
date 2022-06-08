@@ -13,7 +13,6 @@ import { ArticleService } from "src/app/services/article.service";
 export class DialogBoxComponent implements OnInit {
 
   currentArticle: Article = {
-    id: undefined,
     nom_article: "",
     type_article: "",
     cout: undefined,
