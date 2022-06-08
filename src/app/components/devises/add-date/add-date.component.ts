@@ -77,7 +77,6 @@ export class AddDateComponent implements OnInit {
         nom: ['', Validators.required]
       }
     );
-
   }
   get f(): { [key: string]: AbstractControl } {
     return this.dateDeviseForm.controls;
@@ -114,8 +113,6 @@ export class AddDateComponent implements OnInit {
       valeur: this.dateDevise.valeur,
       nom_devise: this.dateDevise.nom_devise,
     };
-
-      
     if (!this.dateDeviseForm.invalid) {
       this.dateDeviseService.create(data).subscribe({
         next: (res) => {

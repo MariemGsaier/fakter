@@ -18,6 +18,7 @@ import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-s
   styleUrls: ["./dialog-box.component.scss"],
 })
 export class DialogBoxComponent implements OnInit {
+
   currentPrixArticle: LignePrix = {
     nom_article: "",
     type_article: "",

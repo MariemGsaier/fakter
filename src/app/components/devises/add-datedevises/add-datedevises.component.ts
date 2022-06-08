@@ -17,8 +17,6 @@ import 'moment/locale/fr';
 import * as moment from 'moment';
 
 
-
-
 @Component({
   selector: 'app-add-datedevises',
   templateUrl: './add-datedevises.component.html',
@@ -84,7 +82,6 @@ export class AddDatedevisesComponent implements OnInit {
       {
         date: ['', Validators.required],
         valeur: ['', Validators.required]
-
       }
     );
   }

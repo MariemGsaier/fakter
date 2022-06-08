@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
 import { Article } from "src/app/models/article.model";
 import { ArticleService } from "src/app/services/article.service";
 import { MatTableDataSource } from "@angular/material/table";
@@ -80,12 +79,9 @@ export class ArticlesComponent implements OnInit {
   ];
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
     private formBuilder: FormBuilder,
-    private prixArticleService: PrixarticleService,
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(

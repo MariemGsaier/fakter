@@ -130,34 +130,3 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
-<div
-  style="
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-  "
-  *ngIf="!isLoggedIn"
->
-  <div class="card">
-    <div class="card-body">
-      <h4 class="mb-32">Attention !</h4>
-
-      <div
-        *ngFor="let alerts of alerts"
-        class="alert {{ alerts.background }} {{
-          alerts.color
-        }} d-flex fs-14 align-items-center rounded mb-16"
-        role="alert"
-      >
-        <i-feather
-          name="{{ alerts.icon }}"
-          class="{{ alerts.iconColor }} feather-base me-12"
-        ></i-feather>
-        {{ alerts.message }}
-      </div>
-    </div>
-  </div>
-</div>

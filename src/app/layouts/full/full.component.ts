@@ -12,15 +12,6 @@ interface sidebarMenu {
   menu: string;
 }
 
-interface alerts {
-  border: string;
-  background: string;
-  color: string;
-  icon: string;
-  iconColor: string;
-  message: string;
-}
-
 @Component({
   selector: "app-full",
   templateUrl: "./full.component.html",
@@ -102,17 +93,6 @@ export class FullComponent implements OnInit {
         });
     }
   }
-
-  alerts: alerts[] = [
-    {
-      border: "alert-border-warning",
-      background: "alert-warning",
-      color: "alert-text-warning",
-      icon: "alert-triangle",
-      iconColor: "text-warning",
-      message: "Vous n'êtes pas authentifié ! veuillez vous-connectez.",
-    },
-  ];
 
   logout(): void {
     this.tokenStorageService.signOut();
