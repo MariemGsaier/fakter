@@ -99,7 +99,7 @@
         <ng-container matColumnDef="prix">
           <th mat-header-cell *matHeaderCellDef>Prix de vente</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.prix?.prix }}</p>
+            <p class="mb-0 fw-medium">{{ article.prix[0].prix }}</p>
           </td>
         </ng-container>
 
@@ -176,11 +176,12 @@
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Type article</mat-label>
         <mat-select
-<<<<<<< HEAD
           name="type_article"
           required
           formControlName="type_article"
           [(ngModel)]="currentArticle.type_article"
+          [ngClass]="{ 'is-invalid': submitted && f['type_article'].errors }"
+          [value]="currentPrixArticle.type_article"
         >
           <mat-option *ngFor="let type of types" [value]="type.value">
             {{ type.viewValue }}
@@ -194,22 +195,6 @@
             >Le type saisi est invalide</span
           >
         </mat-error>
-=======
-              name="type_article"
-              required
-              formControlName="type_article"
-              [ngClass]="{ 'is-invalid': submitted && f['type_article'].errors }"
-              [value]="currentPrixArticle.type_article"
-            >
-              <mat-option *ngFor="let type of types" [value]="type.value">
-                {{ type.viewValue }}
-              </mat-option>
-            </mat-select>
-            <mat-error *ngIf="f['type_article'].errors" class="text-danger">
-              <div *ngIf="f['type_article'].errors['required']">Le champ type est obligatoire</div>
-              <span *ngIf="f['type_article'].errors['pattern']">Le type saisi est invalide</span>
-            </mat-error>
->>>>>>> ce3dfb44cdcc1f8fabc5b91dd50e2fa288d3216b
       </mat-form-field>
 
       <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -232,27 +217,6 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
-<<<<<<< HEAD
-        <mat-label>Taxe vente</mat-label>
-        <mat-select
-          name="taxe_vente"
-          required
-          formControlName="taxe_vente"
-          [(ngModel)]="currentArticle.taxe_vente"
-        >
-          <mat-option *ngFor="let type of types" [value]="type.value">
-            {{ type.viewValue }}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="f['taxe_vente'].errors" class="text-danger">
-          <div *ngIf="f['taxe_vente'].errors['required']">
-            Le champ taxe est obligatoire
-          </div>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-=======
->>>>>>> ce3dfb44cdcc1f8fabc5b91dd50e2fa288d3216b
         <mat-label>Coût</mat-label>
         <input
           matInput

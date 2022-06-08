@@ -21,23 +21,30 @@
             <table mat-table [dataSource]="dataSource" id="excel-table" class="text-nowrap w-100">
 
                 <!-- Id Column -->
-                <ng-container matColumnDef="reference">
+                <ng-container matColumnDef="référence">
                     <th mat-header-cell *matHeaderCellDef> Référence </th>
                     <td mat-cell class="fw-medium" *matCellDef="let facture"> {{facture.reference}} </td>
                 </ng-container>
 
                 <!-- Assigned Column -->
-                <ng-container matColumnDef="vendeur">
-                    <th mat-header-cell *matHeaderCellDef> Vendeur </th>
+                <ng-container matColumnDef="créé_par">
+                    <th mat-header-cell *matHeaderCellDef> Créé par </th>
                     <td mat-cell *matCellDef="let facture">
-                        <p class="mb-0 fw-medium">{{ facture.vendeur }}</p>
+                        <p class="mb-0 fw-medium">{{ creatorFact }}</p>
                     </td>
                 </ng-container>
+                <ng-container matColumnDef="client">
+                  <th mat-header-cell *matHeaderCellDef> Client </th>
+                  <td mat-cell *matCellDef="let facture">
+                      <p class="mb-0 fw-medium">{{ facture.client.nom}}</p>
+                  </td>
+              </ng-container>
+                
                 <!-- Priority Column -->
                 <ng-container matColumnDef="date_facturation">
                     <th mat-header-cell *matHeaderCellDef> Date facturation </th>
                     <td mat-cell *matCellDef="let facture">
-                        <p class="mb-0 fw-medium">{{facture.date_facturation}}</p>
+                        <p class="mb-0 fw-medium">{{facture.date_facturation}}  </p>
                     </td>
                 </ng-container>
 
@@ -68,16 +75,10 @@
                         <p class="mb-0 fw-medium ">{{facture.total_ht}}</p>
                     </td>
                 </ng-container>
-                <ng-container matColumnDef="total_chiffres">
-                    <th mat-header-cell *matHeaderCellDef> Total en chiffres </th>
+                <ng-container matColumnDef="total_ttc">
+                    <th mat-header-cell *matHeaderCellDef> Total TTC </th>
                     <td mat-cell *matCellDef="let facture">
-                        <p class="mb-0 fw-medium ">{{facture.total_chiffres}}</p>
-                    </td>
-                </ng-container>
-                <ng-container matColumnDef="total_lettres">
-                    <th mat-header-cell *matHeaderCellDef> Total en lettres </th>
-                    <td mat-cell *matCellDef="let facture">
-                        <p class="mb-0 fw-medium ">{{facture.total_chiffres}}</p>
+                        <p class="mb-0 fw-medium ">{{facture.total_ttc}}</p>
                     </td>
                 </ng-container>
                 <ng-container matColumnDef="total_devise">
@@ -113,19 +114,19 @@
                 matInput
                 type="text"
                 placeholder="Veuillez entrer votre modification"
-                id="reference"
+                id="référence"
                 [(ngModel)]="currentFacture.reference"
                 [ngModelOptions]="{ standalone: true }"
               />
             </mat-form-field>
         <mat-form-field class="w-100 fs-16" appearance="outline">
-          <mat-label>Vendeur </mat-label>
+          <mat-label>Créé par </mat-label>
           <input
             matInput
             type="text"
             placeholder="Veuillez entrer votre modification"
-            id="vendeur"
-            [(ngModel)]="currentFacture.vendeur"
+            id="créé_par"
+            [(ngModel)]="currentFacture.nom_user"
             [ngModelOptions]="{ standalone: true }"
           />
         </mat-form-field>
@@ -199,22 +200,10 @@
             placeholder="Veuillez entrer votre modification"
             required
             id="total_chiffres"
-            [(ngModel)]="currentFacture.total_chiffres"
+            [(ngModel)]="currentFacture.total_ttc"
             [ngModelOptions]="{ standalone: true }"
           />
         </mat-form-field>
-        <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Total en lettres</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Veuillez entrer votre modification"
-              required
-              id="total_lettres"
-              [(ngModel)]="currentFacture.total_lettres"
-              [ngModelOptions]="{ standalone: true }"
-            />
-          </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Total devise</mat-label>
             <input

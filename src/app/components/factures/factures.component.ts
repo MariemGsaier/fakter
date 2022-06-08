@@ -7,6 +7,7 @@ import { TokenStorageService } from 'src/app/services/token-storage.service';
 import * as XLSX from 'xlsx';
 
 
+
 @Component({
   selector: 'app-factures',
   templateUrl: './factures.component.html',
@@ -14,20 +15,25 @@ import * as XLSX from 'xlsx';
 })
 export class FacturesComponent implements OnInit {
   fileName= "FacturesSheet.xlsx";
-  displayedColumns: string[] = ['reference','vendeur', 'date_facturation', 'date_echeance', 'etat_facture', 'etat_echeance', 'total_ht','total_chiffres','total_lettres', 'total_devise', 'actions'];
+  displayedColumns: string[] = ['référence','créé_par','client', 'date_facturation', 'date_echeance', 'etat_facture', 'etat_echeance', 'total_ht','total_ttc', 'total_devise', 'actions'];
   dataSource = new MatTableDataSource<Facture>();
   currentFacture: Facture = {
-    reference: '',
-    vendeur: '',
-    date_facturation: new Date (),
-    date_echeance: new Date (),
+    reference: "",
+    date_facturation: new Date(),
+    date_echeance:new Date(),
     etat_facture: "",
     etat_echeance: false,
-    total_ht: 0,
-    total_chiffres: 0,
-    total_lettres: "",
-    total_devise: 0
+    total_ht: undefined,
+    total_ttc: undefined,
+    total_devise: undefined,
+    nom_devise: "",
+    nom_user: "",
+    client :{
+      nom : ""
+
+    },
   };
+  creatorFact = this.tokenStorageService.getUser().username;
   message = '';
   factures?: Facture[];
   currentIndex = -1;
@@ -49,7 +55,7 @@ export class FacturesComponent implements OnInit {
   }
 
   fetchFactures(): void {
-    this.factureService.getAll()
+    this.factureService.getAllFactDetailed()
   
     .subscribe(
       data => {

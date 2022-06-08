@@ -99,7 +99,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchArticles();
+    this.fetchArticles()
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -138,6 +138,8 @@ export class ArticlesComponent implements OnInit {
       next: (data) => {
         this.articles = data;
         this.dataSource.data = this.articles;
+        console.log(data);
+        
       },
       error: (e) => {
         console.error(e);
@@ -208,7 +210,7 @@ export class ArticlesComponent implements OnInit {
     this.message = "";
     if (!this.updateArticleForm.invalid) {
       this.articleService
-        .update(this.currentArticle.id, this.currentArticle)
+        .update(this.currentArticle.nom_article, this.currentArticle)
         .subscribe({
           next: (res) => {
             console.log(res);
@@ -232,7 +234,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   deleteArticle(article: Article): void {
-    this.articleService.delete(article.id).subscribe({
+    this.articleService.delete(article.nom_article).subscribe({
       next: (res) => {
         console.log(res);
         Swal.fire({

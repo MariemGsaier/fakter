@@ -77,7 +77,6 @@ exports.findAll = (req, res) => {
 // Lister les articles avec prix et dates
 exports.findAllArticles = (req, res) => {
   const nom_article = req.query.nom_article;
-  var latestDate = new Date();
   var condition = nom_article
     ? { nom_article: { [Op.iLike]: `%${nom_article}%` } }
     : null;
@@ -96,7 +95,8 @@ exports.findAllArticles = (req, res) => {
         var latestPrix = new Array();
         latestPrix.push(data[i].prix[indice]);
         data[i].prix = [];
-        data[i].prix = latestPrix;
+        latestPrix_obj = {...latestPrix}
+        data[i].prix = latestPrix_obj;
       }
       res.send(data);
     })
