@@ -1,5 +1,4 @@
 export class BankaccountDevise {
-        id?: any;
         num_compte?: string;
         rib?: string;
         bic?: string;

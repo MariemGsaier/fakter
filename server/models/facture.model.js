@@ -2,9 +2,11 @@ module.exports = (sequelize, Sequelize) => {
   const Facture = sequelize.define("facture", {
     reference: {
       type: Sequelize.STRING,
+      unique : true
     },
-    créé_par: {
+    num_boncommande :{
       type: Sequelize.STRING,
+      unique : true
     },
     date_facturation: {
       type: Sequelize.DATE,

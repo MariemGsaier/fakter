@@ -48,6 +48,7 @@ import { AddDateComponent } from './devises/add-date/add-date.component';
 import { AddPrixarticleComponent } from './articles/add-prixarticle/add-prixarticle.component';
 import { AddPrixComponent } from './articles/add-prix/add-prix.component';
 import { HistoriqueDevisesComponent } from './devises/historique-devises/historique-devises.component';
+import { PaidFactureComponent } from './factures/paid-facture/paid-facture.component';
 
 
 
@@ -100,6 +101,7 @@ import { HistoriqueDevisesComponent } from './devises/historique-devises/histori
     AddPrixarticleComponent,
     AddPrixComponent,
     HistoriqueDevisesComponent,
+    PaidFactureComponent,
  
 
   ],

@@ -95,7 +95,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchArticles();
+    this.fetchArticles()
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -134,6 +134,8 @@ export class ArticlesComponent implements OnInit {
       next: (data) => {
         this.articles = data;
         this.dataSource.data = this.articles;
+        console.log(data);
+        
       },
       error: (e) => {
         console.error(e);

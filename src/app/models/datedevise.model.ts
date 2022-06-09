@@ -1,4 +1,4 @@
-export class Datedevise {
+export interface Datedevise {
     id?: any;
     date?: Date;
     valeur?: number;

@@ -12,16 +12,16 @@ exports.create = (req, res) => {
   }
   const fact = {
     reference: req.body.reference,
-    créé_par: req.body.créé_par,
+    num_boncommande : req.body.num_boncommande,
     date_facturation: req.body.date_facturation,
     date_echeance: req.body.date_echeance,
-    etat_facture: req.body.courriel,
+    etat_facture: req.body.etat_facture,
     etat_echeance: req.body.etat_echeance,
     total_ht: req.body.total_ht,
     total_ttc: req.body.total_ttc,
     total_devise: req.body.total_devise,
     id_client : req.body.id_client,
-    id_compte : req.body.id_compte,
+    num_compte : req.body.num_compte,
     id_user : req.body.id_user,
     nom_devise : req.body.nom_devise,
   };
@@ -52,7 +52,23 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message || "Some error occurred while fetching factures.",
+        message: err.message 
+      });
+    });
+};
+
+// fetch factures with users / clients 
+exports.findAllDetails = (req, res) => {
+
+facture.findAll({
+    include: ["user","client"],
+  })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message
       });
     });
 };

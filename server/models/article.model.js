@@ -3,14 +3,10 @@ module.exports = (sequelize, Sequelize) => {
     nom_article: {
       type: Sequelize.STRING,
       primaryKey: true
-
     },
     type_article: {
       type: Sequelize.ENUM,
       values: ['Service', 'Consommable'] 
-    },
-    prix_vente: {
-      type: Sequelize.FLOAT
     },
     cout: {
       type: Sequelize.FLOAT
