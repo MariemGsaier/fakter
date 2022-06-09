@@ -141,29 +141,6 @@
   <mat-card-content>
     <form [formGroup]="bankAccForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Numéro de compte </mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer votre modification"
-          id="username"
-          [(ngModel)]="currentBankAccount.num_compte"
-          formControlName="numcompte"
-          [ngClass]="{ 'is-invalid': f['numcompte'].errors }"
-        />
-        <mat-error *ngIf="f['numcompte'].errors" class="text-danger">
-          <div *ngIf="f['numcompte'].errors['required']">
-            Le champ Numéro de compte est obligatoire
-          </div>
-          <div *ngIf="f['numcompte'].errors['pattern']">
-            Le numéro de compte saisi est invalide
-          </div>
-          <div *ngIf="f['numcompte'].errors['maxlength']">Max 34</div>
-          <div *ngIf="f['numcompte'].errors['minlength']">Min 14</div>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>RIB</mat-label>
         <input
           matInput

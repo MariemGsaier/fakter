@@ -69,7 +69,8 @@ exports.findAllDevises = (req, res) => {
         var latestValeur = new Array();
         latestValeur.push(data[i].dates[indice]);
         data[i].dates = [];
-        data[i].dates = latestValeur;
+        latestValeur_obj = {...latestValeur}
+        data[i].dates = latestValeur_obj;
       }
       res.send(data);
     })

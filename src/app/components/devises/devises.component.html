@@ -78,30 +78,30 @@
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
         <ng-container matColumnDef="nom">
           <th mat-header-cell *matHeaderCellDef>Nom devise</th>
-          <td mat-cell class="fw-medium" *matCellDef="let dateDevise">
-            {{ dateDevise.nom }}
+          <td mat-cell class="fw-medium" *matCellDef="let devise">
+            {{ devise.nom }}
           </td>
         </ng-container>
 
         <!-- Assigned Column -->
         <ng-container matColumnDef="devise">
           <th mat-header-cell *matHeaderCellDef>Devise</th>
-          <td mat-cell *matCellDef="let dateDevise">
-            <p class="mb-0 fw-medium">{{ dateDevise.devise }}</p>
+          <td mat-cell *matCellDef="let devise">
+            <p class="mb-0 fw-medium">{{ devise.devise }}</p>
           </td>
         </ng-container>
         <!-- Project Column -->
         <ng-container matColumnDef="valeur">
           <th mat-header-cell *matHeaderCellDef>Taux de change</th>
-          <td mat-cell *matCellDef="let dateDevise">
-            <p class="mb-0 fw-medium">{{ dateDevise.dates[0]?.valeur }}</p>
+          <td mat-cell *matCellDef="let devise">
+            <p class="mb-0 fw-medium">{{ devise.dates[0].valeur }}</p>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="date">
           <th mat-header-cell *matHeaderCellDef>Date d'insertion</th>
-          <td mat-cell *matCellDef="let dateDevise">
-            <p class="mb-0 fw-medium">{{dateDevise.dates[0]?.date | date:'medium':'+0200':'fr'}}</p>
+          <td mat-cell *matCellDef="let devise">
+            <p class="mb-0 fw-medium">{{devise.dates[0].date | date:'medium':'+0200':'fr'}}</p>
           </td>
         </ng-container>
 

@@ -1,19 +1,11 @@
-.example-radio-group {
-    display: flex;
-    flex-direction: column;
-    margin: 15px 0;
-    align-items: flex-start;
-  }
-  
-  .example-radio-button {
-    margin: 5px;
-  }
+
   .table-responsive {
     overflow-x: auto;
   }
   
   td.mat-cell {
     padding: 16px;
+    text-align: center;
   }
   
   th.mat-header-cell:first-of-type,
@@ -24,6 +16,7 @@
   
   th.mat-header-cell {
     padding: 16px;
+    text-align: center;
   }
   
   .mat-header-cell {
@@ -39,4 +32,25 @@
 
   .add:hover {
     color: #00c292;
+  }
+  .totauxFact {
+    position: relative;
+  }
+  #ttc{
+    position: absolute;         
+    bottom: -2px;       
+    right: 27px;
+    margin-top: 15px
+  }
+  #ht{
+    position: absolute;         
+    bottom: 15px;       
+    right: 27px;
+    margin-top: 15px
+  }
+  #totdevise{
+    position: absolute;         
+    bottom: -20px;       
+    right: 27px;
+    margin-top: 15px
   }

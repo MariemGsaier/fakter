@@ -91,7 +91,7 @@
         <ng-container matColumnDef="prix">
           <th mat-header-cell *matHeaderCellDef>Prix de vente</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.prix?.prix }}</p>
+            <p class="mb-0 fw-medium">{{ article.prix[0].prix }}</p>
           </td>
         </ng-container>
 

@@ -68,10 +68,10 @@ exports.findAll = (req, res) => {
 
 // Modifier un compte bancaire
 exports.update = (req, res) => {
-  const id = req.params.id;
+  const num_compte = req.params.num_compte;
   comptebancaire
     .update(req.body, {
-      where: { id: id },
+      where: { num_compte: num_compte },
     })
     .then((num) => {
       if (num == 1) {
@@ -80,22 +80,22 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `erreur de mise à jour de du compte avec id=${id}. peut etre le compte est inexistant  ou le corps de la requête est vide!`,
+          message: `erreur de mise à jour de du compte avec numCompte=${num_compte}. peut etre le compte est inexistant  ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Erreur de mise à jour du compte avec id=" + id,
+        message: "Erreur de mise à jour du compte avec numCompte=" + num_compte,
       });
     });
 };
 // Supprimer un compte bancaire
 exports.delete = (req, res) => {
-  const id = req.params.id;
+  const numCompte = req.params.numCompte;
   comptebancaire
     .destroy({
-      where: { id: id },
+      where: { numCompte: numCompte },
     })
     .then((num) => {
       if (num == 1) {
@@ -104,15 +104,14 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression du compte bancaire avec numCompte=${id}. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression du compte bancaire avec numCompte=${numCompte}. Peut être qu'il est inexistant !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          "Echec de suppression du compte bancaire avec numCompte=" +
-          num_compte,
+        message: err.message
+        
       });
     });
 };

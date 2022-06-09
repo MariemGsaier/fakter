@@ -2,7 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const Comptebanc = sequelize.define("comptebancaire", {
       num_compte: {
         type: Sequelize.BIGINT,
-        unique : true
+        primaryKey : true
       },
       rib: {
         type: Sequelize.STRING,
@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       bic: {
         type: Sequelize.STRING,
-        unique : true
+        unique : true916a1ecf8
       },
       iban: {
         type: Sequelize.STRING,

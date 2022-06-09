@@ -117,7 +117,7 @@ export class DevisesComponent implements OnInit {
   }
 
   fetchDevises(): void {
-    this.deviseService.getAll().subscribe({
+    this.deviseService.getAllRecent().subscribe({
       next: (data) => {
         this.devises = data;
         this.dataSource.data = this.devises;

@@ -63,9 +63,6 @@ import { SearchUser } from './pipes/search-user.pipe';
     NgxMatIntlTelInputModule,
     Ng2TelInputModule,
     MatDialogModule,
-    
-
-  
   ],
   providers: [authInterceptorProviders,{provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}, {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {floatLabel: 'auto'}}],
   bootstrap: [AppComponent]

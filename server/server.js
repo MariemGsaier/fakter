@@ -32,6 +32,8 @@ require("./routes/factures.routes")(app);
 require("./routes/devise.routes")(app);
 require("./routes/datedevise.routes")(app);
 require("./routes/prixarticle.routes")(app);
+require("./routes/lignefacture.routes")(app);
+
 
 
 // set port, listen for requests

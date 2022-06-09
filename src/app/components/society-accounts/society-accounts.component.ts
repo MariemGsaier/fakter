@@ -37,7 +37,6 @@ export class SocietyAccountsComponent implements OnInit {
   dataSource = new MatTableDataSource<BankaccountDevise>();
 
   currentBankAccount: BankaccountDevise = {
-    num_compte: "",
     rib: "",
     bic: "",
     iban: "",
@@ -46,7 +45,6 @@ export class SocietyAccountsComponent implements OnInit {
   };
 
   bankAccForm: FormGroup = new FormGroup({
-    numCompte: new FormControl(""),
     rib: new FormControl(""),
     bic: new FormControl(""),
     iban: new FormControl(""),
@@ -119,15 +117,6 @@ export class SocietyAccountsComponent implements OnInit {
     }
     this.bankAccForm = this.formBuilder.group({
       rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
-      numcompte: [
-        "",
-        [
-          Validators.required,
-          Validators.pattern("^[a-zA-Z0-9]+$"),
-          Validators.minLength(5),
-          Validators.maxLength(17),
-        ],
-      ],
       bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$"),Validators.minLength(8),Validators.maxLength(11)]],
       iban: [
         Validators.required,
@@ -185,7 +174,7 @@ export class SocietyAccountsComponent implements OnInit {
 
   updateBankAccount(): void {
     this.BankaccountService.update(
-      this.currentBankAccount.id,
+      this.currentBankAccount.num_compte,
       this.currentBankAccount
     ).subscribe({
       next: (res) => {
@@ -246,7 +235,7 @@ export class SocietyAccountsComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.BankaccountService.delete(bankaccount.id).subscribe({
+        this.BankaccountService.delete(bankaccount.num_compte).subscribe({
           next: (res) => {
             console.log(res);
             this.message = res.message

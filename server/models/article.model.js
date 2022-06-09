@@ -3,7 +3,6 @@ module.exports = (sequelize, Sequelize) => {
     nom_article: {
       type: Sequelize.STRING,
       primaryKey: true
-
     },
     type_article: {
       type: Sequelize.ENUM,

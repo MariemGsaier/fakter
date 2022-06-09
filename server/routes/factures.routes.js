@@ -12,11 +12,14 @@ module.exports = function (app) {
     next();
   });
 
-//créer une facture 
+//envoyer  facture 
 router.post("sendemail", controllerfct.factureEmail);
+// créer facture
 router.post("/create", controllerfct.create);
-  // fetch all societes
+  // fetch all factures
   router.get("/", controllerfct.findAll);
+  // fetch detailed factures
+  router.get("/detailed", controllerfct.findAllDetails);
   // Update a societe with id
   router.put("/:id", controllerfct.update);
   app.use("/api/factures", router);

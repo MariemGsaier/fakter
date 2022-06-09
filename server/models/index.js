@@ -64,22 +64,22 @@ db.user.hasMany(db.facture, {
 db.facture.belongsToMany(db.article, {
   through: db.lignefacture,
   as: "article",
-  foreignKey: "reference",
+  foreignKey: "id_facture",
 });
 db.article.belongsToMany(db.facture, {
   through: db.lignefacture,
   as: "facture",
-  foreignKey: "id",
+  foreignKey: "nom_article",
 });
 
 
 db.facture.belongsTo(db.comptebancaire,{
-  foreignKey: "id_compte",
+  foreignKey: "num_compte",
   as: "compte"
 })
 
 db.comptebancaire.hasMany(db.facture,{
-  foreignKey: "id_compte",
+  foreignKey: "num_compte",
   as: "factures"
 })
 db.facture.belongsTo(db.devise,{

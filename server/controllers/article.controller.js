@@ -97,7 +97,8 @@ exports.findAllArticles = (req, res) => {
         var latestPrix = new Array();
         latestPrix.push(data[i].prix[indice]);
         data[i].prix = [];
-        data[i].prix = latestPrix;
+        latestPrix_obj = {...latestPrix}
+        data[i].prix = latestPrix_obj;
       }
       res.send(data);
     })

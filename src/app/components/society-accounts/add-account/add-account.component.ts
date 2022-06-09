@@ -78,9 +78,7 @@ selectedDevise = "";
     })
   }
 
-  changeDeviseValue(data: any){
-    console.log(data);
-  }
+
 
   ngOnInit(): void {
     this.getDevises();

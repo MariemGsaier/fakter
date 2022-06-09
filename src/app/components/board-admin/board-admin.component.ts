@@ -126,7 +126,8 @@ export class BoardAdminComponent implements OnInit {
         ) {
           this.hideAuthSupAdmin = true;
         }
-        this.users = data;
+        let userAuth= this.tokenStorage.getUser()
+        this.users = data.filter(elm => elm.id !== userAuth.id );
         this.dataSource.data = this.users;
         console.log(data);
       },
