@@ -226,7 +226,7 @@ export class AddFactureComponent implements OnInit {
       total_lettres : this.facture.total_lettres,
       total_devise : this.facture.total_devise,
     };
-    if (!(this.factureForm.invalid)) {
+    if ((this.factureForm.valid)) {
       this.factureService.create(data)
       .subscribe({
         next: (res) => {

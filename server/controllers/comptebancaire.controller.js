@@ -17,18 +17,20 @@ exports.create = (req, res) => {
     bic: req.body.bic,
     iban: req.body.iban,
     nom_banque: req.body.nom_banque,
-    nom_devise : req.body.nom_devise,
     id_societe : 1
   };
   comptebancaire.findOne({
     where: {
       num_compte: req.body.num_compte,
+      rib: req.body.rib,
+      bic: req.body.bic,
+      iban: req.body.iban,
     },
   })
   .then((comptebancaire) => {
     if (comptebancaire) {
       res.status(400).send({
-        message: "Echec! le numéro de compte entré existe déjà !"
+        message: "Echec! les informations du compte entrées existent déjà !"
       });
       return;
 
@@ -38,7 +40,7 @@ exports.create = (req, res) => {
     .create(compteb)
     .then((data) => {
       res.send(data);
-      // console.log("ajout avec succés");
+      console.log("ajout avec succés");
     })
     .catch((err) => {
       res.status(500).send({

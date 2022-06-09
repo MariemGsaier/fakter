@@ -39,7 +39,8 @@ const Op = db.Sequelize.Op;
         .catch(err => {
           res.status(500).send({
             message:
-              err.message 
+              err.message ||
+              "une erreur est survenue lors de la création du client.",
           });
         });
 
@@ -62,8 +63,9 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message
-      });
+        message: err.message ||
+        "une erreur est survenue lors de l'affichage de la liste des clients.",
+    });
     });
 };
 
@@ -92,7 +94,7 @@ exports.update = (req, res) => {
       });
     });
 };
-// Delete a client with the specified id in the request
+// Supprimer un client avec l'id spécifié dans la requête
 exports.delete = (req, res) => {
   const id = req.params.id;
   Client
@@ -106,7 +108,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `échec de suppression du client  avec id=${id }. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression du client  avec id=${id }. Peut être qu'il est inexistant !`,
         });
       }
     })
@@ -116,7 +118,7 @@ exports.delete = (req, res) => {
       });
     });
 };
-// Delete all clients from the database.
+// Supprimer tous les clients de la base de données
 exports.deleteAll = (req, res) => {
 
   Client

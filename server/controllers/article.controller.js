@@ -18,7 +18,7 @@ exports.create = (req, res) => {
   // Validate request
   if (!req.body.nom_article) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "contenu vide !",
     });
     return;
   }
@@ -52,8 +52,9 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
-      });
+        message: err.message ||
+        "une erreur est survenue lors de la création de l'article.",
+    });
     });
 };
 // Lister les articles
@@ -69,7 +70,8 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: err.message ||
+        "une erreur est survenue lors de l'affichage de la liste des articles.",
       });
     });
 };
@@ -101,12 +103,13 @@ exports.findAllArticles = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: err.message ||
+        "une erreur est survenue lors de l'affichage de la liste des articles.",
       });
     });
 };
 
-// Update an article by the id in the request
+// Modifier un article avec le nom spécifié dans la requête
 exports.update = (req, res) => {
   const nom_article = req.params.nom_article;
   article
@@ -116,35 +119,35 @@ exports.update = (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "article was updated successfully.",
+          message: "L'article est mis à jour avec succés.",
         });
       } else {
         res.send({
-          message: `Cannot update article with id=${id}. Maybe article was not found or req.body is empty!`,
+          message: `erreur de mise à jour de l'article avec nom = ${nom_article }. peut être l'article est inexistant ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Error updating article with id=" + id,
+        message: "Erreur  de mise à jour de l'article  avec nom_article = " + nom_article,
       });
     });
 };
-// Delete an article with the specified id in the request
+// Supprimer un article avec le nom spécifié dans la requête
 exports.delete = (req, res) => {
-  const id = req.params.id;
+  const nom_article = req.params.nom_article;
   article
     .destroy({
-      where: { id: id },
+      where: { nom_article: nom_article },
     })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "article was deleted successfully!",
+          message: "L'article est supprimé avec succés!",
         });
       } else {
         res.send({
-          message: `Cannot delete article with id=${id}. Maybe article was not found!`,
+          message: `Echec de suppression de l'article  avec nom_article = ${nom_article }. Peut être qu'il est inexistant !`,
         });
       }
     })
@@ -154,7 +157,7 @@ exports.delete = (req, res) => {
       });
     });
 };
-// Delete all articles from the database.
+// Supprimer tous les articles de la base de données
 exports.deleteAll = (req, res) => {
   article
     .destroy({
@@ -162,7 +165,7 @@ exports.deleteAll = (req, res) => {
       truncate: false,
     })
     .then((nums) => {
-      res.send({ message: `${nums} article were deleted successfully!` });
+      res.send({ message: `${nums} Tous les articles sont supprimés avec succés !` });
     })
     .catch((err) => {
       res.status(500).send({

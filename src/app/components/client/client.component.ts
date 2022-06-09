@@ -34,7 +34,6 @@ export class ClientComponent implements OnInit {
     "actions",
   ];
   dataSource = new MatTableDataSource<Client>();
-  // content?: string;
   currentClient: Client = {
     code_identification: "",
     nom: "",
@@ -59,11 +58,10 @@ export class ClientComponent implements OnInit {
   selectedValue = "";
 
   codesId = [
-    { id: 0, value: "cin" },
-    { id: 1, value: "numPasseport" },
-    { id: 2, value: "codeTva" },
-    { id: 3, value: "numRcs" },
-    { id: 4, value: "matriculeFisc" },
+    { id: 0, value: "Numéro CIN" },
+    { id: 1, value: "Numéro Passeport" },
+    { id: 2, value: "Numéro RCS" },
+    { id: 3, value: "Identifiant Fiscal" },
   ];
   submitted = false;
   paginator?: MatPaginator;

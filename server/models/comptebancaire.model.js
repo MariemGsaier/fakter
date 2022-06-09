@@ -6,9 +6,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       rib: {
         type: Sequelize.STRING,
+        unique : true
       },
       bic: {
         type: Sequelize.STRING,
+        unique : true
       },
       iban: {
         type: Sequelize.STRING,

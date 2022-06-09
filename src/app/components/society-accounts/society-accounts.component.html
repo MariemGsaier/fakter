@@ -1,25 +1,5 @@
 <mat-card class="w-100">
   <mat-card-content>
-    <div *ngIf="search" class="search-section d-flex align-items-center">
-      <mat-form-field class="w-100" color="primary" appearance="legacy">
-        <mat-label class="fs-16">Recherchez ici</mat-label>
-        <input
-          matInput
-          placeholder="Veuillez taper un mot clé"
-          autocomplete="off"
-          (keyup)="filterData($event)"
-        />
-      </mat-form-field>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"></li>
-      </ul>
-      <button mat-icon-button (click)="search = !search">
-        <i-feather
-          name="x-circle"
-          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
-        ></i-feather>
-      </button>
-    </div>
     <button
       mat-button
       class="btn btn-info fw-normal btnw"
@@ -55,6 +35,19 @@
       ></i-feather>
     </button>
     <h4 class="mb-56">Gérez vos comptes bancaires</h4>
+    
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input matInput
+        placeholder="Veuillez taper un mot clé"
+        autocomplete="off"
+        (keyup)="filterData($event)">
+      </mat-form-field>
+      <button mat-icon-button (click)="search=!search">
+        <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+      </button>
+    </div>  
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">

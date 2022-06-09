@@ -12,7 +12,7 @@ const db = require("../models");
 const prixArticle = db.prixArticle;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new prix article
+// Créer et sauvegarder un nouveau prix article
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.prix) {
@@ -21,7 +21,7 @@ exports.create = (req, res) => {
     });
     return;
   }
-  // Create a prix
+  // Créer prix
   const prx = {
     prix: req.body.prix,
     date: req.body.date,
@@ -42,7 +42,7 @@ exports.create = (req, res) => {
       }
     });
 
-  // Save prix article in the database
+  // Sauvegarder prix article dans la base de données
   prixArticle
     .create(prx)
     .then((data) => {
@@ -55,23 +55,7 @@ exports.create = (req, res) => {
     });
 };
 
-// Lister les articles
-exports.findAll = (req, res) => {
-  const id = req.query.id;
-  var condition = id ? { id: { [Op.iLike]: `%${id}%` } } : null;
-  prixArticle
-    .findAll({ where: condition })
-    .then((data) => {
-        res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message,
-      });
-    });
-};
-
-// Delete an article with the specified id in the request
+// Supprimer un prix article avec l'id spécifié dans la requête
 exports.delete = (req, res) => {
   const id = req.params.id;
   article
@@ -85,7 +69,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Cannot delete article with id=${id}. Maybe article was not found!`,
+          message: `Cannot delete article with id = ${id}. Maybe article was not found!`,
         });
       }
     })
@@ -95,7 +79,7 @@ exports.delete = (req, res) => {
       });
     });
 };
-// Delete all articles from the database.
+// Supprimer tous les prix articles de la base de données
 exports.deleteAll = (req, res) => {
   article
     .destroy({

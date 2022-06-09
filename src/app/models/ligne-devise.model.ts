@@ -1,9 +1,7 @@
-export class LigneDevise {
+import { Datedevise } from "./datedevise.model";
+
+export interface LigneDevise {
   nom?: string;
   devise?: string;
-  dates?: {
-    id?: any;
-    date?: Date;
-    valeur?: number;
-  };
+  dates: Datedevise[];
 }

@@ -3,9 +3,6 @@ module.exports = (sequelize, Sequelize) => {
       nom_societe: {
         type: Sequelize.STRING,
       },
-      logo: {
-        type: Sequelize.STRING,
-      },
       numtel: {
         type: Sequelize.BIGINT,
       },
@@ -24,8 +21,8 @@ module.exports = (sequelize, Sequelize) => {
       num_rcs: {
         type: Sequelize.STRING,
       },
-      timbre_fiscale: {
-          type: Sequelize.BIGINT,
+      timbre_fiscal: {
+          type: Sequelize.FLOAT,
         },
     });
     return Societe;

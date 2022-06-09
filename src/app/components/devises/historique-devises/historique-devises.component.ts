@@ -17,14 +17,14 @@ import { DeviseService } from "src/app/services/devise.service";
 import { DatedeviseService } from "src/app/services/datedevise.service";
 import { LigneDevise } from "src/app/models/ligne-devise.model";
 import { HistoriqueLigneDevise } from "src/app/models/historique-ligne-devise.model";
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-registerLocaleData(localeFr, 'fr');
+import { registerLocaleData } from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+registerLocaleData(localeFr, "fr");
 
 @Component({
-  selector: 'app-historique-devises',
-  templateUrl: './historique-devises.component.html',
-  styleUrls: ['./historique-devises.component.scss']
+  selector: "app-historique-devises",
+  templateUrl: "./historique-devises.component.html",
+  styleUrls: ["./historique-devises.component.scss"],
 })
 export class HistoriqueDevisesComponent implements OnInit {
   searchTerm: any;
@@ -180,27 +180,25 @@ export class HistoriqueDevisesComponent implements OnInit {
   }
 
   deleteDevise(dateDevise: Datedevise): void {
-    console.log(this.currentDateDevise.id);
-
-    this.dateDeviseService.delete(dateDevise.id).subscribe({
-      next: (res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Êtes-vous sûr de le supprimer ? ",
-          text: "Vous ne serez pas capable de le récupérer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dateDeviseService.delete(dateDevise.id).subscribe({
+          next: (res) => {
+            console.log(res);
             this.refreshList();
-          }
+          },
+          error: (e) => console.error(e),
         });
-      },
-      error: (e) => console.error(e),
+      }
     });
   }
 

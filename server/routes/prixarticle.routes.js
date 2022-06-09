@@ -11,11 +11,7 @@ module.exports = function (app) {
     });
     
     
-      // Create 
+      // Créer prix article
        router.post("/create", controllerprx.create);
-       // fetch all devises with dates
-       router.get("/", controllerprx.findAll);
-      // // fetch all 
-      // router.get("/", controllerddev.findAll);
       app.use("/api/prix", router);
     };

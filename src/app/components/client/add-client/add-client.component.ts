@@ -11,6 +11,7 @@ import {
   Validators,
 } from "@angular/forms";
 import { __values } from "tslib";
+import { FloatLabelType } from "@angular/material/form-field";
 
 interface CodeId {
   value: string;
@@ -31,9 +32,11 @@ export class AddClientComponent implements OnInit {
     courriel: "",
     siteweb: "",
   };
+  floatLabelPhoneControl = new FormControl('always' as FloatLabelType);
   clientForm: FormGroup = new FormGroup({
     email: new FormControl(""),
     website: new FormControl(""),
+    phone: this.floatLabelPhoneControl,
     nomclt: new FormControl(""),
     adresse: new FormControl(""),
   });
@@ -43,11 +46,10 @@ export class AddClientComponent implements OnInit {
   errorMsg =""
 
   codesId = [
-    { id: 0, value: "cin" },
-    { id: 1, value: "numPasseport" },
-    { id: 2, value: "codeTva" },
-    { id: 3, value: "numRcs" },
-    { id: 4, value: "matriculeFisc" },
+    { id: 0, value: "Numéro CIN" },
+    { id: 1, value: "Numéro Passeport" },
+    { id: 2, value: "Numéro RCS" },
+    { id: 3, value: "Identifiant Fiscal" },
   ];
 
   constructor(
@@ -91,19 +93,16 @@ export class AddClientComponent implements OnInit {
 
     ctrl.enable();
     switch (this.codesId[data].value) {
-      case "cin":
+      case "Numéro CIN":
         ctrl.setValidators([Validators.required,Validators.pattern("^[0-9]*$"),Validators.maxLength(8),Validators.minLength(8)]);
         break;
-      case "numPasseport":
+      case "Numéro Passeport":
         ctrl.setValidators([Validators.required,Validators.pattern("^(?!^0+$)[a-zA-Z0-9]{3,20}$")]);
         break;
-      case "codeTva":
-        ctrl.setValidators([Validators.required,Validators.pattern("^((FR)?[0-9A-Z]{2}[0-9]{9} | (DE)?[0-9]{9} | (CZ)?[0-9]{8,10} | (DK)?[0-9]{8} | (BE)?0[0-9]{9} |)$")]);
-        break;
-      case "numRcs":
+      case "Numéro RCS":
         ctrl.setValidators([Validators.required,Validators.pattern("/^\w+((\-?| ?)\w+)? [a-bA-B] (\d{9}|((\d{3} ){2}\d{3}))$/gm")]);
         break;
-      case "matriculeFisc":
+      case "Identifiant Fiscal":
         ctrl.setValidators([Validators.required,Validators.pattern("/[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]/")]);
         break;
 
@@ -128,6 +127,10 @@ export class AddClientComponent implements OnInit {
   onReset(): void {
     this.submitted = false;
     this.clientForm.reset();
+  }
+
+  getFloatLabelValue(): FloatLabelType {
+    return this.floatLabelPhoneControl.value || 'always';
   }
 
   saveClient(): void {

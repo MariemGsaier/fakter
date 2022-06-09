@@ -72,6 +72,8 @@ export class ArticlesComponent implements OnInit {
   showObserverBoard = true;
   paginator?: MatPaginator;
   submitted = false;
+  errorUpdateArticle = false;
+  errorMsg = "";
 
   types: type[] = [
     { value: "Service", viewValue: "Service" },
@@ -82,6 +84,7 @@ export class ArticlesComponent implements OnInit {
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
     private formBuilder: FormBuilder,
+    private prixArticleService: PrixarticleService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -112,7 +115,7 @@ export class ArticlesComponent implements OnInit {
       cout: ["", Validators.required],
       description: [
         "",
-        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")],
+        [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$")],
       ],
       prix: ["", Validators.required],
     });
@@ -144,7 +147,7 @@ export class ArticlesComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
-      }
+      },
     });
   }
 
@@ -169,40 +172,40 @@ export class ArticlesComponent implements OnInit {
   }
 
   removeAllArticles(): void {
-    this.articleService.deleteAll().subscribe({
-      next: (res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Êtes-vous sûr de tout supprimer ? ",
-          text: "Vous ne serez pas capable de restaurer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.articleService.deleteAll().subscribe({
+          next: (res) => {
+            console.log(res);
             this.refreshList();
-          }
+          },
+          error: (e) => {
+            console.error(e);
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression de l'article.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            });
+          },
         });
-      },
-      error: (e) => {
-        console.error(e);
-        Swal.fire({
-          title: "Echec de supression !",
-          text: "Une erreur est survenue lors de la supression des articles.",
-          icon: "warning",
-          confirmButtonColor: "#00c292",
-          confirmButtonText: "Ok",
-        });
-      },
+      }
     });
   }
 
   updateArticle(): void {
     this.message = "";
-    if (!this.updateArticleForm.invalid) {
+    if (this.updateArticleForm.valid) {
       this.articleService
         .update(this.currentArticle.nom_article, this.currentArticle)
         .subscribe({
@@ -218,44 +221,53 @@ export class ArticlesComponent implements OnInit {
                 this.fetchArticles();
               }
             });
-            this.message = res.message
-              ? res.message
-              : "This article was updated successfully!";
           },
-          error: (e) => console.error(e),
+          error: (e) => {
+            console.error(e);
+            this.errorUpdateArticle = true;
+            this.errorMsg =
+              "Une erreur est survenue lors de la mise à jour de l'article !";
+          },
         });
     }
   }
 
   deleteArticle(article: Article): void {
-    this.articleService.delete(article.nom_article).subscribe({
-      next: (res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Êtes-vous sûr de le supprimer ? ",
-          text: "Vous ne serez pas capable de le récupérer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.refreshList();
-          }
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.articleService.delete(article.nom_article).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.prixArticleService
+              .delete(this.currentPrixArticle.prix?.id)
+              .subscribe({
+                next: (res) => {
+                  console.log(res);
+                  this.refreshList();
+                },
+                error: (e) => {
+                  console.error(e);
+                  Swal.fire({
+                    title: "Echec de supression !",
+                    text: "Une erreur est survenue lors de la supression de l'article.",
+                    icon: "warning",
+                    confirmButtonColor: "#00c292",
+                    confirmButtonText: "Ok",
+                  });
+                },
+              });
+          },
         });
-      },
-      error: (e) => {
-        console.error(e);
-        Swal.fire({
-          title: "Echec de supression !",
-          text: "Une erreur est survenue lors de la supression de l'article.",
-          icon: "warning",
-          confirmButtonColor: "#00c292",
-          confirmButtonText: "Ok",
-        });
-      },
+      }
     });
   }
 

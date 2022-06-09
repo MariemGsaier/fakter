@@ -8,5 +8,5 @@ export class Societe {
     siteweb?: string;
     type_societe?: string;
     num_rcs?: string;
-    timbre_fiscale?: number;
+    timbre_fiscal?: number;
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { Article } from "src/app/models/article.model";
 import { ArticleService } from "src/app/services/article.service";
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -37,7 +37,6 @@ export class AddArticleComponent implements OnInit {
   ];
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private articleService: ArticleService,
     private formBuilder: FormBuilder,
@@ -80,7 +79,7 @@ export class AddArticleComponent implements OnInit {
       cout: this.article.cout,
       description: this.article.description,
     };
-    if (!(this.articleForm.invalid)) {
+    if ((this.articleForm.valid)) {
     this.articleService.create(data).subscribe({
       next: (res) => {
         console.log(res);

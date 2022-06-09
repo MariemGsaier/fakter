@@ -1,31 +1,13 @@
 <mat-card class="w-100">
     <mat-card-content>
-      <div *ngIf="search" class="search-section d-flex align-items-center">
-        <mat-form-field class="w-100" color="primary" appearance="legacy">
-          <mat-label class="fs-16">Recherchez ici</mat-label>
-          <input
-            matInput
-            placeholder="Veuillez taper un mot clé"
-            autocomplete="off"
-            (keyup)="filterData($event)"
-          />
-        </mat-form-field>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"></li>
-        </ul>
-        <button mat-icon-button (click)="search = !search">
-          <i-feather
-            name="x-circle"
-            class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
-          ></i-feather>
-        </button>
-      </div>
       <div>
       <button
         mat-button
         class="btn btn-info fw-normal"
         type="submit"
         style="float: right"
+        matTooltip="Ajout"
+        matTooltipPosition="above"
         *ngIf="!showObserverBoard"
         [matMenuTriggerFor]="menu"
       >
@@ -46,6 +28,8 @@
         mat-button
         class="btn btn-danger fw-normal"
         style="float: right; margin-right: 0.142%"
+        matTooltip="Supprimer tous les taux de changes"
+        matTooltipPosition="above"
         (click)="removeAllDevises()"
         *ngIf="!showObserverBoard"
       >
@@ -65,6 +49,19 @@
   
       <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les devises</h4>
       <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les devises</h4>
+      
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input matInput
+        placeholder="Veuillez taper un mot clé"
+        autocomplete="off"
+        (keyup)="filterData($event)">
+      </mat-form-field>
+      <button mat-icon-button (click)="search=!search">
+        <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+      </button>
+    </div>  
   
       <div class="table-responsive">
         <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
@@ -105,6 +102,7 @@
               mat-cell
               *matCellDef="let devise; let i = index"
               [class.active]="i == currentIndex"
+              (click)="setActiveDevise(devise, i)"
             >
               <button
                 mat-button
@@ -112,6 +110,8 @@
                 class="btn btn-danger fw-normal btnw"
                 style="margin-right: 1%"
                 type="submit"
+                matTooltip="Supprimer le taux de change"
+                matTooltipPosition="above"
                 (click)="deleteDevise(devise)"
               >
                 <mat-icon>delete</mat-icon>

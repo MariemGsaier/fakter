@@ -85,7 +85,7 @@ errorMsg =""
       role: this.user.role,
       password: this.user.password
     };
-    if (!(this.userForm.invalid)) {
+    if ((this.userForm.valid)) {
       this.gestUserService.create(data)
       .subscribe({
         next: (res) => {

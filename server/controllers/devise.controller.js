@@ -42,7 +42,8 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message
+        message: err.message ||
+        "une erreur est survenue lors de l'affichage de la liste des devises.",
       });
     });
 };
@@ -74,7 +75,8 @@ exports.findAllDevises = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message,
+        message: err.message ||
+        "une erreur est survenue lors de l'affichage de la liste des devises et leur valeurs.",
       });
     });
 };
