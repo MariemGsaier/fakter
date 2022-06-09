@@ -50,11 +50,7 @@ export class DevisesComponent implements OnInit {
   currentLigneDevise: LigneDevise = {
     nom: "",
     devise: "",
-    dates: {
-      id: undefined,
-      date: new Date(),
-      valeur: undefined,
-    },
+    dates: [],
   };
   message = "";
   devises?: LigneDevise[];
@@ -119,7 +115,7 @@ export class DevisesComponent implements OnInit {
   }
 
   fetchDevises(): void {
-    this.deviseService.getAll().subscribe({
+    this.deviseService.getAllRecent().subscribe({
       next: (data) => {
         this.devises = data;
         this.dataSource.data = this.devises;
@@ -140,15 +136,15 @@ export class DevisesComponent implements OnInit {
 
   refreshList(): void {
     this.fetchDevises();
-    this.currentLigneDevise = {};
+    this.currentLigneDevise = {dates: []};
     this.currentIndex = -1;
   }
 
   setActiveDevise(devise: LigneDevise, index: number): void {
     this.currentLigneDevise = devise;
     this.updateDeviseForm.setValue({
-      date: devise.dates?.date,
-      valeur: devise.dates?.valeur,
+      date: devise.dates[0].date,
+      valeur: devise.dates[0].valeur,
       nom: devise.nom,
       devise: devise.devise,
     });
@@ -199,7 +195,7 @@ export class DevisesComponent implements OnInit {
     this.deviseService.delete(this.currentLigneDevise.nom).subscribe({
       next: (res) => {
         console.log(res);
-    this.dateDeviseService.delete(this.currentLigneDevise.dates?.id).subscribe({
+    this.dateDeviseService.delete(this.currentLigneDevise.dates[0].id).subscribe({
       next: (res) => {
         console.log(res);
         Swal.fire({

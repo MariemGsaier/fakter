@@ -16,7 +16,7 @@ export class DeviseService {
   getAllDevises() : Observable<Devise[]> {
     return this.http.get<Devise[]>(baseUrl);
   }
-  getAll(): Observable<LigneDevise[]> {
+  getAllRecent(): Observable<LigneDevise[]> {
     return this.http.get<LigneDevise[]>(baseUrl + '/valeur');
   }
   create(data: any): Observable<any> {

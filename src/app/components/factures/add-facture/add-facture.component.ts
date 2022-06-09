@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit, Inject, LOCALE_ID } from "@angular/core";
+import { Router } from "@angular/router";
 import {
   AbstractControl,
   FormBuilder,
@@ -12,12 +12,9 @@ import { FactureService } from "src/app/services/facture.service";
 import Swal from "sweetalert2";
 import { MatDialog } from "@angular/material/dialog";
 import { MatTableDataSource } from "@angular/material/table";
-import { Article } from "src/app/models/article.model";
 import { DialogBoxComponent } from "../dialog-box/dialog-box.component";
 import { DeviseService } from "src/app/services/devise.service";
 import { ClientService } from "src/app/services/client.service";
-import { UserService } from "src/app/services/user.service";
-import { GestUserService } from "src/app/services/gest-user.service";
 import { BankaccountService } from "src/app/services/bankaccount.service";
 import {
   MAT_MOMENT_DATE_FORMATS,
@@ -31,10 +28,13 @@ import {
 } from "@angular/material/core";
 import "moment/locale/ja";
 import "moment/locale/fr";
-import * as moment from "moment";
 import { AddFacture } from "src/app/models/add-facture.model";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import { LigneFactureService } from "src/app/services/ligne-facture.service";
+
+import { LigneDevise } from "src/app/models/ligne-devise.model";
+import { FactureStoreService } from "src/app/store/facture-store.service";
+import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-store.service";
 
 
 export interface Element {
@@ -43,7 +43,7 @@ export interface Element {
   prix: number;
   taxe: number;
   sous_totalttc: number;
-  soustotal_ht : number
+  soustotal_ht: number;
 }
 
 @Component({
@@ -52,6 +52,10 @@ export interface Element {
   styleUrls: ["./add-facture.component.scss"],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: "ja-JP" },
+    {
+      provide: LOCALE_ID,
+      useValue: "fr",
+    },
 
     // `MomentDateAdapter` and `MAT_MOMENT_DATE_FORMATS` can be automatically provided by importing
     // `MatMomentDateModule` in your applications root module.
@@ -71,23 +75,23 @@ export class AddFactureComponent implements OnInit {
     "prix",
     "taxe",
     "sous_total",
-    "soustotal_ht"
+    "soustotal_ht",
   ];
 
   totalttc = 0;
-  totalht = 0
+  totalht = 0;
+  tauxChangeDevise: any = 0;
   dataSource = new MatTableDataSource<Element>();
 
   facture: AddFacture = {
     date_facturation: undefined,
-    date_echeance:undefined,
-    etat_echeance: false,
+    date_echeance: undefined,
     total_devise: undefined,
     nom_devise: "",
     id_user: this.userStorageService.getUser().id,
-    nom_client :"",
+    id_client: undefined,
     num_compte: "",
-    num_bc : ""
+    num_bc: "",
   };
 
   factureForm: FormGroup = new FormGroup({
@@ -98,12 +102,13 @@ export class AddFactureComponent implements OnInit {
     num_compte: new FormControl(""),
     devise: new FormControl(""),
   });
-
-
+  nbref = 0;
   submitted = false;
   isEditable = false;
   selectedDevise = "";
-  deviseSelected = false;
+  totalConverti = 0;
+  deviseSymbol? = "";
+  devisesRecent?: LigneDevise[];
   devises = [
     {
       nom: "",
@@ -112,6 +117,7 @@ export class AddFactureComponent implements OnInit {
   ];
   clients = [
     {
+      id: undefined,
       code_identification: "",
       nom: "",
       adresse: "",
@@ -131,23 +137,35 @@ export class AddFactureComponent implements OnInit {
     },
   ];
 
- 
-
   constructor(
     public dialog: MatDialog,
-    private route: ActivatedRoute,
     private factureService: FactureService,
     private deviseService: DeviseService,
     private clientService: ClientService,
-    private userService: GestUserService,
     private bankAccountService: BankaccountService,
-    private userStorageService : TokenStorageService,
-    private ligneFactureService : LigneFactureService,
+    private userStorageService: TokenStorageService,
+    private ligneFactureService: LigneFactureService,
+    private factureStore : FactureStoreService,
     private router: Router,
     private formBuilder: FormBuilder,
+    private ligneFactStore :ArticleslignefactStoreService,
     @Inject(MAT_DATE_LOCALE) private _locale: string
   ) {}
 
+  ngOnInit(): void {
+    this.factureStore.resetFactureStore();
+    this.getComptes();
+    this.getclients();
+    this.getDevises();
+    this.factureForm = this.formBuilder.group({
+      date_facturation: ["", Validators.required],
+      date_echeance: ["", Validators.required],
+      num_bc: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
+      client: ["", Validators.required],
+      num_compte: ["", Validators.required],
+      devise: ["", Validators.required],
+    });
+  }
   getDateFormatString(): string {
     if (this._locale === "ja-JP") {
       return "YYYY/MM/DD";
@@ -158,11 +176,11 @@ export class AddFactureComponent implements OnInit {
   }
 
   changeDeviseValue(data: any) {
-    console.log(data);
-    this.deviseSelected = true;
+    console.log(data)
+    this.convertirDevise();
   }
 
-  changeClientValue(data: any){
+  changeClientValue(data: any) {
     console.log(data);
   }
 
@@ -186,6 +204,7 @@ export class AddFactureComponent implements OnInit {
         console.log(data);
         this.clients = data.map((data: any) => {
           return {
+            id: data.id,
             code_identification: data.code_identification,
             nom: data.nom,
             adresse: data.adresse,
@@ -216,21 +235,6 @@ export class AddFactureComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    console.log(moment.locales());
-    this.getComptes();
-    this.getclients();
-    this.getDevises();
-    this.factureForm = this.formBuilder.group({
-      date_facturation: ["", Validators.required],
-      date_echeance: ["", Validators.required],
-      num_bc: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
-      client: ["", Validators.required],
-      num_compte: ["", Validators.required],
-      devise: ["", Validators.required],
-    });
-  }
-
   get f(): { [key: string]: AbstractControl } {
     return this.factureForm.controls;
   }
@@ -257,7 +261,7 @@ export class AddFactureComponent implements OnInit {
       soustotalhttab.forEach((element) => {
         this.totalht = this.totalht + element;
       });
-      console.log(this.totalht)
+      console.log(this.totalht);
       let soustotalttctab = this.articles_added.map((res) => {
         return res.sous_totalttc;
       });
@@ -265,45 +269,81 @@ export class AddFactureComponent implements OnInit {
       soustotalttctab.forEach((element) => {
         this.totalttc = this.totalttc + element;
       });
-     
+      this.convertirDevise();
       this.dataSource = new MatTableDataSource<Element>(this.articles_added);
-
-      // this.dataSource?.data = data;
+      this.ligneFactStore.setArticlesInStore(this.articles_added);
+    });
+  }
+  convertirDevise(): void {
+    this.deviseService.getAllRecent().subscribe({
+      next: (data) => {
+        this.tauxChangeDevise = 0;
+        for (let i = 0; i <= data.length; i++) {
+          if (
+            data[i]?.nom == this.selectedDevise &&
+            data[i].dates.length != 0
+          ) {
+            this.tauxChangeDevise = data[i].dates[0].valeur;
+            console.log("ttc", this.totalttc);
+            this.totalConverti = this.tauxChangeDevise * this.totalttc;
+            this.deviseSymbol = data[i]?.devise;
+            console.log(this.deviseSymbol);
+          }
+        }
+        console.log(this.tauxChangeDevise);
+        console.log(this.totalConverti);
+        this.devisesRecent = data;
+        console.log("tabbb", this.devisesRecent);
+      },
+      error: (e) => console.error(e),
+    });
+  }
+  updateFacture(body: Facture) {
+    body.reference = "FACT/" + new Date().getFullYear() + "/" + body.id;
+    this.factureService.update(body.id, body).subscribe({
+      next: (res) => console.log(res),
     });
   }
   saveFacture(): void {
     const data = {
-      id: this.facture.id,
-      reference: "FACT/"+ new Date().getFullYear()+"/"+ this.facture.id,
+      reference: "FACT/" + new Date(),
       date_facturation: this.facture.date_facturation,
-      etat_facturation: "ouvert",
-      etat_echeance: this.facture.etat_echeance,
-      total_ht: this.facture.total_ht,
+      date_echeance: this.facture.date_echeance,
+      etat_facture: "ouvert",
+      etat_echeance: false,
+      total_ht: this.totalht,
       total_ttc: this.totalttc,
-      total_devise: this.facture.total_devise,
+      total_devise: this.totalConverti,
       nom_devise: this.facture.nom_devise,
       id_user: this.facture.id_user,
-      nom_client :this.facture.nom_client,
+      id_client: this.facture.id_client,
       num_compte: this.facture.num_compte,
+      num_boncommande: this.facture.num_bc,
     };
-    if (!this.factureForm.invalid) {
+    console.log(data);
+
+    console.log(this.factureForm.valid);
+
+    if (this.factureForm.valid) {
       this.factureService.create(data).subscribe({
         next: (res) => {
+          this.updateFacture(res);
+          this.factureStore.setFactureInStore(res);
           for (let i = 0; i < this.articles_added.length; i++) {
-           const ligneFactData={
-            id_facture : this.facture.id,
-            nom_article : this.articles_added[i].nom_article,
-            quantite :this.articles_added[i].quantite
-           }
-           this.ligneFactureService.create(ligneFactData).subscribe({
-            next: (res) => {
-              console.log(ligneFactData);
-            },
-            error: (e) => console.error(e),
-
-          });
+            const ligneFactData = {
+              id_facture: res.id,
+              nom_article: this.articles_added[i].nom_article,
+              quantite: this.articles_added[i].quantite,
+            };
+            this.ligneFactureService.create(ligneFactData).subscribe({
+              next: (res) => {
+                console.log(res);
+               
+              },
+              error: (e) => console.error(e),
+            });
           }
-          
+
           console.log(res);
           this.submitted = true;
           Swal.fire({
@@ -311,14 +351,21 @@ export class AddFactureComponent implements OnInit {
             text: "Vous pouvez ajouter une autre facture ou quitter.",
             icon: "success",
             showCancelButton: true,
+            showDenyButton: true,
             confirmButtonColor: "#00c292",
-            cancelButtonColor: "#e46a76",
+            denyButtonColor: "#fb9678",
+            cancelButtonColor : "#e46a76",
             confirmButtonText: "Ajouter une autre facture",
-            cancelButtonText: "Quitter",
+            denyButtonText: "Envoyer et imprimer facture",
+            cancelButtonText :"Quitter"
+            
           }).then((result) => {
             if (result.isConfirmed) {
               this.newFacture();
-            } else {
+            } else if(result.isDenied) {
+              this.router.navigate(["/print-facture"]);
+            }
+            else {
               this.router.navigate(["/factures"]);
             }
           });

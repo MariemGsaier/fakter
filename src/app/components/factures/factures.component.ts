@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Facture } from 'src/app/models/facture.model';
 import { FactureService } from 'src/app/services/facture.service';
 import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 import * as XLSX from 'xlsx';
+import { MatPaginator } from "@angular/material/paginator";
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
 
 
 
@@ -33,7 +37,6 @@ export class FacturesComponent implements OnInit {
 
     },
   };
-  creatorFact = this.tokenStorageService.getUser().username;
   message = '';
   factures?: Facture[];
   currentIndex = -1;
@@ -41,6 +44,7 @@ export class FacturesComponent implements OnInit {
   private roles: string[] = [];
   isLoggedIn = false;
   showObserverBoard = true;
+  paginator?: MatPaginator;
 
   constructor(private route: ActivatedRoute,private router: Router, private factureService: FactureService, private tokenStorageService: TokenStorageService) { }
 
@@ -51,6 +55,15 @@ export class FacturesComponent implements OnInit {
       const user = this.tokenStorageService.getUser();
       this.roles = user.role;
       this.showObserverBoard = this.roles.includes("Observateur");
+    }
+  }
+  @ViewChild(MatPaginator, { static: false }) set matPaginator(
+    paginator: MatPaginator
+  ) {
+    this.paginator = paginator;
+
+    if (this.dataSource) {
+      this.dataSource.paginator = paginator;
     }
   }
 

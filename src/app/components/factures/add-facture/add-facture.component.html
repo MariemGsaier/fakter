@@ -1,290 +1,274 @@
 <div class="card">
   <div class="card-body">
-      <div style="margin-top: 15px">
-        <h3>Facture client</h3> 
-      </div>
-      <form [formGroup]="factureForm" (ngSubmit)="onSubmit()">
-        <mat-grid-list cols="2" rowHeight="5:1">
-          <mat-grid-tile>
-            <mat-form-field
-              class="w-100 fs-16"
-              appearance="outline"
-              style="margin-right: 16px"
-            >
-              <mat-label>Client</mat-label>
-              <mat-select
-                placeholder="Selectionnez une devise"
-                [(ngModel)]="facture.nom_client"
-                (ngModelChange)="changeClientValue($event)"
-                formControlName="client"
-                [ngClass]="{ 'is-invalid': f['client'].errors }"
-                required
-              >
-                <mat-option
-                  *ngFor="let client of clients"
-                  [value]="client.nom"
-                  >{{ client.nom }}</mat-option
-                >
-              </mat-select>
-              <mat-error *ngIf="f['client'].errors" class="text-danger">
-                <div *ngIf="f['client'].errors['required']">
-                  Le champ client est obligatoire !
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <mat-form-field
-              class="w-100 fs-16"
-              style="margin-right: 16px"
-              appearance="outline"
-            >
-              <mat-label>Numéro du bon de commande</mat-label>
-              <input
-                matInput
-                type="text"
-                placeholder="Veuillez entrer le numéro du bon de commande"
-                formControlName="num_bc"
-                [(ngModel)]="facture.num_bc"
-                required
-                [ngClass]="{ 'is-invalid': f['num_bc'].errors }"
-              />
-              <mat-error *ngIf="f['num_bc'].errors" class="text-danger">
-                <div *ngIf="f['num_bc'].errors['required']">
-                  Le champ numéro de bon de commande est obligatoire !
-                </div>
-                <div *ngIf="f['num_bc'].errors['pattern']">
-                  Le numéro de bon de commande saisi est invalide !
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <mat-form-field
-              class="w-100 fs-16"
-              appearance="outline"
-              style="margin-right: 16px"
-            >
-              <mat-label>Date de facturation</mat-label>
-              <input
-                matInput
-                [matDatepicker]="dp"
-                formControlName="date_facturation"
-                [ngClass]="{
-                  'is-invalid': submitted && f['date_facturation'].errors
-                }"
-                [(ngModel)]="facture.date_facturation"
-              />
-              <mat-hint>{{ getDateFormatString() }}</mat-hint>
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="dp"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #dp></mat-datepicker>
-              <mat-error
-                *ngIf="f['date_facturation'].errors"
-                class="text-danger"
-              >
-                <div *ngIf="f['date_facturation'].errors['required']">
-                  Le champ date de facturation est obligatoire !
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <mat-form-field
-              class="w-100 fs-16"
-              appearance="outline"
-              style="margin-right: 16px"
-            >
-              <mat-label>Date d'échéance</mat-label>
-              <input
-                matInput
-                [matDatepicker]="dpEch"
-                formControlName="date_echeance"
-                [ngClass]="{
-                  'is-invalid': submitted && f['date_echeance'].errors
-                }"
-                [(ngModel)]="facture.date_echeance"
-              />
-              <mat-hint>{{ getDateFormatString() }}</mat-hint>
-              <mat-datepicker-toggle
-                matSuffix
-                [for]="dpEch"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #dpEch></mat-datepicker>
-              <mat-error *ngIf="f['date_echeance'].errors" class="text-danger">
-                <div *ngIf="f['date_echeance'].errors['required']">
-                  Le champ date d'échéance est obligatoire !
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <mat-form-field
-              class="w-100 fs-16"
-              appearance="outline"
-              style="margin-right: 16px"
-            >
-              <mat-label>Num compte bancaire de la société</mat-label>
-              <mat-select
-                placeholder="Selectionnez une devise"
-                required
-                [(ngModel)]="facture.num_compte"
-                formControlName="num_compte"
-                [ngClass]="{ 'is-invalid': f['num_compte'].errors }"
-              >
-                <mat-option
-                  *ngFor="let comptebancaire of comptesbancaires"
-                  [value]="comptebancaire"
-                  >{{ comptebancaire.num_compte }}</mat-option
-                >
-              </mat-select>
-              <mat-error *ngIf="f['num_compte'].errors" class="text-danger">
-                <div *ngIf="f['num_compte'].errors['required']">
-                  Le champ numéro de compte bancaire est obligatoire !
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-          <mat-grid-tile>
-            <mat-form-field
-              class="w-100 fs-16"
-              appearance="outline"
-              style="margin-right: 16px"
-            >
-              <mat-label>Devise</mat-label>
-              <mat-select
-                [(value)]="selectedDevise"
-                placeholder="Selectionnez une devise"
-                required
-                [(ngModel)]="facture.nom_devise"
-                (ngModelChange)="changeDeviseValue($event)"
-                formControlName="devise"
-                [ngClass]="{ 'is-invalid': f['devise'].errors }"
-              >
-                <mat-option
-                  *ngFor="let devise of devises"
-                  [value]="devise.nom"
-                  >{{ devise.nom }}</mat-option
-                >
-              </mat-select>
-              <mat-error *ngIf="f['devise'].errors" class="text-danger">
-                <div *ngIf="f['devise'].errors['required']">
-                  Le champ devise est obligatoire !
-                </div>
-              </mat-error>
-            </mat-form-field>
-          </mat-grid-tile>
-        </mat-grid-list>
-      </form>
-      <mat-card class="w-100">
-        <mat-card-content>
-          <h4 class="mb-56">Ligne de facture</h4>
-
-          <div class="table-responsive">
-            <table
-              mat-table
-              [dataSource]="dataSource"
-              class="text-nowrap w-100"
-            >
-              <!-- Nom article Column -->
-              <ng-container matColumnDef="nom">
-                <th mat-header-cell *matHeaderCellDef>Nom Article</th>
-                <td mat-cell class="fw-medium" *matCellDef="let element">
-                  {{ element.nom_article }}
-                </td>
-              </ng-container>
-
-              <!-- Quantité Column -->
-              <ng-container matColumnDef="quantite">
-                <th mat-header-cell *matHeaderCellDef>Quantité</th>
-                <td mat-cell *matCellDef="let element">
-                  <p class="mb-0 fw-medium">{{ element.quantite }}</p>
-                </td>
-              </ng-container>
-
-              <!-- Prix Column -->
-              <ng-container matColumnDef="prix">
-                <th mat-header-cell *matHeaderCellDef>Prix</th>
-                <td mat-cell *matCellDef="let element">
-                  <p class="mb-0 fw-medium ">{{ element.prix }}</p>
-                </td>
-              </ng-container>
-
-                <!-- sous-total HT Column -->
-                <ng-container matColumnDef="soustotal_ht">
-                  <th mat-header-cell *matHeaderCellDef>Sous-total HT</th>
-                  <td mat-cell *matCellDef="let element">
-                    <p class="mb-0 fw-medium">{{ element.soustotal_ht }}</p>
-                  </td>
-                </ng-container>
-
-              <!-- taxe Column -->
-              <ng-container matColumnDef="taxe">
-                <th mat-header-cell *matHeaderCellDef>Taxe</th>
-                <td mat-cell *matCellDef="let element">
-                  {{ element.taxe }}
-                </td>
-              </ng-container>
-              <ng-container matColumnDef="sous_total">
-                <th mat-header-cell *matHeaderCellDef>Sous-total TTC</th>
-                <td mat-cell *matCellDef="let element">
-                  <p class="mb-0 fw-medium">{{ element.sous_totalttc }}</p>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
-            <div class="add">
-              <mat-icon style="font-size: 14px"
-                >add<a class="link" (click)="openDialog()"
-                  >Ajouter un article</a
-                ></mat-icon
-              >
-            </div>
-            <div>
-              <p style="float: right;  margin-top: 15px">
-                <strong>Total TTC :</strong> {{ totalttc | number: "0.0-4" }}dt
-              </p>
-            </div>
-            <br>
-            <div>
-              <p style="float: right;  margin-top: 15px">
-                <strong>Total HT :</strong> {{ totalht | number: "0.0-4" }}dt
-              </p>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <div style="margin-top: -10px; margin-right: 43px">
-        <button
-          mat-button
-          class="btn btn-danger fw-normal mt-4"
-          type="submit"
-          style="float: right; margin-left: 0.3%"
-        >
-          Annuler
-        </button>
-        <button
-          mat-button
-          class="btn btn-success fw-normal mt-4"
-          type="submit"
-          style="float: right"
-        >
-          Sauvegarder
-        </button>
-        <a routerLink="/print-facture"
-          ><button
-            mat-button
-            class="btn btn-primary fw-normal  mt-4"
-            style="margin-left: 5px"
-            (click)="saveFacture()"
+    <div style="margin-top: 15px">
+      <h3>Facture client</h3>
+    </div>
+    <form [formGroup]="factureForm" (ngSubmit)="onSubmit()">
+      <mat-grid-list cols="2" rowHeight="5:1">
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            appearance="outline"
+            style="margin-right: 16px"
           >
-            Envoyer et imprimer
-          </button></a
-        >
-      </div>
+            <mat-label>Client</mat-label>
+            <mat-select
+              [(ngModel)]="facture.id_client"
+              formControlName="client"
+              [ngClass]="{ 'is-invalid': f['client'].errors }"
+              required
+            >
+              <mat-option *ngFor="let client of clients" [value]="client.id">{{
+                client.nom
+              }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['client'].errors" class="text-danger">
+              <div *ngIf="f['client'].errors['required']">
+                Le champ client est obligatoire !
+              </div>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            style="margin-right: 16px"
+            appearance="outline"
+          >
+            <mat-label>Numéro du bon de commande</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Veuillez entrer le numéro du bon de commande"
+              formControlName="num_bc"
+              [(ngModel)]="facture.num_bc"
+              required
+              [ngClass]="{ 'is-invalid': f['num_bc'].errors }"
+            />
+            <mat-error *ngIf="f['num_bc'].errors" class="text-danger">
+              <div *ngIf="f['num_bc'].errors['required']">
+                Le champ numéro de bon de commande est obligatoire !
+              </div>
+              <div *ngIf="f['num_bc'].errors['pattern']">
+                Le numéro de bon de commande saisi est invalide !
+              </div>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            appearance="outline"
+            style="margin-right: 16px"
+          >
+            <mat-label>Date de facturation</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dp"
+              formControlName="date_facturation"
+              [ngClass]="{
+                'is-invalid': submitted && f['date_facturation'].errors
+              }"
+              [(ngModel)]="facture.date_facturation"
+            />
+            <mat-hint>{{ getDateFormatString() }}</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp></mat-datepicker>
+            <mat-error *ngIf="f['date_facturation'].errors" class="text-danger">
+              <div *ngIf="f['date_facturation'].errors['required']">
+                Le champ date de facturation est obligatoire !
+              </div>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            appearance="outline"
+            style="margin-right: 16px"
+          >
+            <mat-label>Date d'échéance</mat-label>
+            <input
+              matInput
+              [matDatepicker]="dpEch"
+              formControlName="date_echeance"
+              [ngClass]="{
+                'is-invalid': submitted && f['date_echeance'].errors
+              }"
+              [(ngModel)]="facture.date_echeance"
+            />
+            <mat-hint>{{ getDateFormatString() }}</mat-hint>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="dpEch"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dpEch></mat-datepicker>
+            <mat-error *ngIf="f['date_echeance'].errors" class="text-danger">
+              <div *ngIf="f['date_echeance'].errors['required']">
+                Le champ date d'échéance est obligatoire !
+              </div>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            appearance="outline"
+            style="margin-right: 16px"
+          >
+            <mat-label>Num compte bancaire de la société</mat-label>
+            <mat-select
+              required
+              [(ngModel)]="facture.num_compte"
+              formControlName="num_compte"
+              [ngClass]="{ 'is-invalid': f['num_compte'].errors }"
+            >
+              <mat-option
+                *ngFor="let comptebancaire of comptesbancaires"
+                [value]="comptebancaire.num_compte"
+                >{{ comptebancaire.num_compte }}</mat-option
+              >
+            </mat-select>
+            <mat-error *ngIf="f['num_compte'].errors" class="text-danger">
+              <div *ngIf="f['num_compte'].errors['required']">
+                Le champ numéro de compte bancaire est obligatoire !
+              </div>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field
+            class="w-100 fs-16"
+            appearance="outline"
+            style="margin-right: 16px"
+          >
+            <mat-label>Devise</mat-label>
+            <mat-select
+              [(value)]="selectedDevise"
+              placeholder="Selectionnez une devise"
+              required
+              [(ngModel)]="facture.nom_devise"
+              formControlName="devise"
+              [ngClass]="{ 'is-invalid': f['devise'].errors }"
+            >
+              <mat-option *ngFor="let devise of devises" [value]="devise.nom">{{
+                devise.nom
+              }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="f['devise'].errors" class="text-danger">
+              <div *ngIf="f['devise'].errors['required']">
+                Le champ devise est obligatoire !
+              </div>
+            </mat-error>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </form>
+    <mat-card class="w-100">
+      <mat-card-content>
+        <h4 class="mb-56">Ligne de facture</h4>
+
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+            <!-- Nom article Column -->
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef>Nom Article</th>
+              <td mat-cell class="fw-medium" *matCellDef="let element">
+                {{ element.nom_article }}
+              </td>
+            </ng-container>
+
+            <!-- Quantité Column -->
+            <ng-container matColumnDef="quantite">
+              <th mat-header-cell *matHeaderCellDef>Quantité</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.quantite }}</p>
+              </td>
+            </ng-container>
+
+            <!-- Prix Column -->
+            <ng-container matColumnDef="prix">
+              <th mat-header-cell *matHeaderCellDef>Prix</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.prix }}</p>
+              </td>
+            </ng-container>
+
+            <!-- sous-total HT Column -->
+            <ng-container matColumnDef="soustotal_ht">
+              <th mat-header-cell *matHeaderCellDef>Sous-total HT</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">
+                  {{ element.soustotal_ht | number: "0.0-4" }}
+                </p>
+              </td>
+            </ng-container>
+
+            <!-- taxe Column -->
+            <ng-container matColumnDef="taxe">
+              <th mat-header-cell *matHeaderCellDef>Taxe</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.taxe }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="sous_total">
+              <th mat-header-cell *matHeaderCellDef>Sous-total TTC</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">
+                  {{ element.sous_totalttc | number: "0.0-4" }}
+                </p>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <div class="add">
+            <mat-icon style="font-size: 14px"
+              >add<a class="link" (click)="openDialog()"
+                >Ajouter un article</a
+              ></mat-icon
+            >
+          </div>
+          <div style="margin-top: -10px; margin-right: 43px">
+            <div *ngIf="deviseSymbol !== ''">
+              <p style="float: right; margin-left: 10px">
+                <strong>Total en {{ selectedDevise }} :</strong>
+                {{
+                  totalConverti | currency: deviseSymbol:"symbol":"0.0-4":"fr"
+                }}
+              </p>
+            </div>
+            <p style="float: right; margin-left: 10px">
+              <strong>Total TTC :</strong>
+              {{ totalttc | currency: "TND":"symbol":"0.0-4":"fr" }}
+            </p>
+            <p style="float: right">
+              <strong>Total HT :</strong>
+              {{ totalht | currency: "TND":"symbol":"0.0-4":"fr" }}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div style="margin-top: -10px; margin-right: 43px">
+      <button
+        mat-button
+        class="btn btn-danger fw-normal mt-4"
+        type="submit"
+        style="float: right; margin-left: 0.3%"
+      >
+        Annuler
+      </button>
+      <button
+        mat-button
+        class="btn btn-success fw-normal mt-4"
+        type="submit"
+        style="float: right"
+        (click)="saveFacture()"
+      >
+        Sauvegarder
+      </button>
+    </div>
   </div>
 </div>

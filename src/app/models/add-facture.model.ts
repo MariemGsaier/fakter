@@ -11,6 +11,6 @@ export class AddFacture {
     total_devise?: number;
     nom_devise?: string;
     id_user?: number;
-    nom_client?: string;
+    id_client?: number;
     num_compte?: string;
 }

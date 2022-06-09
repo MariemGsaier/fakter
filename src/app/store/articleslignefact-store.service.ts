@@ -6,12 +6,12 @@ import { cloneDeep } from 'lodash';
 })
 export class ArticleslignefactStoreService {
 
-  articlesLigneFact: Array<object> = []
-  private articlesLigneFactStore = new BehaviorSubject <Array<object>>(this.articlesLigneFact);
+  articlesLigneFact: Array<any> = []
+  private articlesLigneFactStore = new BehaviorSubject <Array<any>>(this.articlesLigneFact);
 
   constructor() { }
 
-  public setArticlesInStore(newData : Partial<Array<object>>):void {
+  public setArticlesInStore(newData : Partial<Array<any>>):void {
     const oldData=this.getArticlesFromStore();
     const newArticle= oldData.concat(newData);
       
@@ -22,7 +22,7 @@ export class ArticleslignefactStoreService {
     this.articlesLigneFactStore.next([]);
   }
 
-   public getArticlesFromStore(): Array<object>{
+   public getArticlesFromStore(): Array<any>{
    return cloneDeep(this.articlesLigneFactStore.getValue());
 
    }
