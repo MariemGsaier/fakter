@@ -320,12 +320,13 @@ export class AddFactureComponent implements OnInit {
       num_compte: this.facture.num_compte,
       num_boncommande: this.facture.num_bc,
     };
-    console.log(data);
 
     console.log(this.factureForm.valid);
-
-    if (this.factureForm.valid) {
-      this.factureService.create(data).subscribe({
+    console.log(data);
+    
+    if ((this.factureForm.valid)) {
+      this.factureService.create(data)
+      .subscribe({
         next: (res) => {
           this.updateFacture(res);
           this.factureStore.setFactureInStore(res);
@@ -378,5 +379,57 @@ export class AddFactureComponent implements OnInit {
   newFacture(): void {
     this.submitted = false;
     window.location.reload();
+  }
+
+  ajoutCompteBancaire(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-account"]);
+      }
+    });
+  }
+  ajoutDevise(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-devise"]);
+      }
+    });
+  }
+  ajoutClient(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-client"]);
+      }
+    });
   }
 }

@@ -17,18 +17,21 @@ exports.create = (req, res) => {
     bic: req.body.bic,
     iban: req.body.iban,
     nom_banque: req.body.nom_banque,
-    nom_devise : req.body.nom_devise,
+    nom_devise: req.body.nom_devise,
     id_societe : 1
   };
   comptebancaire.findOne({
     where: {
       num_compte: req.body.num_compte,
+      rib: req.body.rib,
+      bic: req.body.bic,
+      iban: req.body.iban,
     },
   })
   .then((comptebancaire) => {
     if (comptebancaire) {
       res.status(400).send({
-        message: "Echec! le numéro de compte entré existe déjà !"
+        message: "Echec! les informations du compte entrées existent déjà !"
       });
       return;
 
@@ -38,7 +41,7 @@ exports.create = (req, res) => {
     .create(compteb)
     .then((data) => {
       res.send(data);
-      // console.log("ajout avec succés");
+      console.log("ajout avec succés");
     })
     .catch((err) => {
       res.status(500).send({
@@ -66,7 +69,7 @@ exports.findAll = (req, res) => {
 
 // Modifier un compte bancaire
 exports.update = (req, res) => {
-  const num_compte = req.params.num_compte;
+  const num_compte = req.body.num_compte;
   comptebancaire
     .update(req.body, {
       where: { num_compte: num_compte },
@@ -84,7 +87,7 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Erreur de mise à jour du compte avec numCompte=" + num_compte,
+        message: "Erreur de mise à jour du compte avec numéro de compte=" + num_compte,
       });
     });
 };

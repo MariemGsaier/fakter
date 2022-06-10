@@ -63,7 +63,7 @@
           <h3 mat-subheader>Timbre fiscal</h3>
           <mat-list-item style="font-size: 17px;">
              <mat-icon mat-list-icon>gradient</mat-icon>
-             <h4 mat-line>{{ currentSociete.timbre_fiscale }}</h4>
+             <h4 mat-line>{{ currentSociete.timbre_fiscal }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
        </mat-list>
@@ -74,43 +74,54 @@
   
   <mat-card class="w-100" *ngIf="disabelModif">
     <mat-card-content>
-      <form>
+      <form [formGroup]="societeForm" (ngSubmit)="onSubmit()">
         <mat-form-field class="w-100 fs-16" appearance="outline">
           <mat-label>Nom de société</mat-label>
           <input
             matInput
             type="text"
             placeholder="Entrez le nom de la société"
+            formControlName="nom_societe"
             id="nom_societe"
+            [ngClass]="{ 'is-invalid': submitted && f['nom_societe'].errors }"
             [(ngModel)]="currentSociete.nom_societe"
-            [ngModelOptions]="{ standalone: true }"
           />
-        </mat-form-field>
-  
-        <mat-form-field class="w-100 fs-16" appearance="outline">
-          <mat-label>Logo</mat-label>
-          <input
-            matInput
-            type="text"
-            placeholder="Entrez le logo"
-            required
-            id="logo"
-            [(ngModel)]="currentSociete.logo"
-            [ngModelOptions]="{ standalone: true }"
-          />
+          <mat-error *ngIf="f['nom_societe'].errors" class="text-danger">
+            <div *ngIf="f['nom_societe'].errors['required']">
+              Le champ nom est obligatoire !
+            </div>
+            <span *ngIf="f['nom_societe'].errors['pattern']"
+              >Le nom saisi est invalide !</span
+            >
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Numéro téléphone</mat-label>
             <input
               matInput
-              type="text"
+              type="number"
               placeholder="Entrez le logo"
+              formControlName="numtel"
               required
               id="numtel"
+              [ngClass]="{ 'is-invalid': submitted && f['numtel'].errors }"
               [(ngModel)]="currentSociete.numtel"
-              [ngModelOptions]="{ standalone: true }"
             />
+            <mat-error *ngIf="f['numtel'].errors" class="text-danger">
+              <div *ngIf="f['numtel'].errors['required']">
+                Le champ numéro de téléphone est obligatoire !
+              </div>
+              <span *ngIf="f['numtel'].errors['pattern']"
+                >Le numéro saisi est invalide !</span
+              >
+              <span *ngIf="f['numtel'].errors['maxlength']"
+                >Vous avez dépassé la longueur minimale !</span
+              >
+              <span *ngIf="f['numtel'].errors['minlength']"
+                >Une longueur minimale est requise !</span
+              >
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -119,11 +130,20 @@
               matInput
               type="text"
               placeholder="Entrez l'adresse'"
+              formControlName="adresse"
               required
               id="adresse"
+              [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }"
               [(ngModel)]="currentSociete.adresse"
-              [ngModelOptions]="{ standalone: true }"
             />
+            <mat-error *ngIf="f['adresse'].errors" class="text-danger">
+              <div *ngIf="f['adresse'].errors['required']">
+                Le champ adresse est obligatoire !
+              </div>
+              <span *ngIf="f['adresse'].errors['pattern']"
+                >L'adresse saisi est invalide !</span
+              >
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -132,11 +152,20 @@
               matInput
               type="email"
               placeholder="Entrez le courriel"
+              formControlName="courriel"
               required
               id="courriel"
+              [ngClass]="{ 'is-invalid': submitted && f['courriel'].errors }"
               [(ngModel)]="currentSociete.courriel"
-              [ngModelOptions]="{ standalone: true }"
             />
+            <mat-error *ngIf="f['courriel'].errors" class="text-danger">
+              <div *ngIf="f['courriel'].errors['required']">
+                Le champ courriel de téléphone est obligatoire !
+              </div>
+              <span *ngIf="f['courriel'].errors['pattern']"
+                >Le courriel saisi est invalide !</span
+              >
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -145,11 +174,20 @@
               matInput
               type="text"
               placeholder="Entrez le siteweb"
+              formControlName="siteweb"
               required
               id="siteweb"
+              [ngClass]="{ 'is-invalid': submitted && f['siteweb'].errors }"
               [(ngModel)]="currentSociete.siteweb"
-              [ngModelOptions]="{ standalone: true }"
             />
+            <mat-error *ngIf="f['siteweb'].errors" class="text-danger">
+              <div *ngIf="f['siteweb'].errors['required']">
+                Le champ siteweb est obligatoire !
+              </div>
+              <span *ngIf="f['siteweb'].errors['pattern']"
+                >Le siteweb saisi est invalide !</span
+              >
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -158,11 +196,20 @@
               matInput
               type="text"
               placeholder="Entrez le type de société"
+              formControlName="type_societe"
               required
               id="type_societe"
+              [ngClass]="{ 'is-invalid': submitted && f['type_societe'].errors }"
               [(ngModel)]="currentSociete.type_societe"
-              [ngModelOptions]="{ standalone: true }"
             />
+            <mat-error *ngIf="f['type_societe'].errors" class="text-danger">
+              <div *ngIf="f['type_societe'].errors['required']">
+                Le champ type de société est obligatoire !
+              </div>
+              <span *ngIf="f['type_societe'].errors['pattern']"
+                >Le type saisi est invalide !</span
+              >
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="w-100 fs-16" appearance="outline">
@@ -171,24 +218,42 @@
               matInput
               type="text"
               placeholder="Entrez le numéro RCS"
+              formControlName="num_rcs"
               required
               id="num_rcs"
+              [ngClass]="{ 'is-invalid': submitted && f['num_rcs'].errors }"
               [(ngModel)]="currentSociete.num_rcs"
-              [ngModelOptions]="{ standalone: true }"
             />
+            <mat-error *ngIf="f['num_rcs'].errors" class="text-danger">
+              <div *ngIf="f['num_rcs'].errors['required']">
+                Le champ numéro RCS est obligatoire !
+              </div>
+              <span *ngIf="f['num_rcs'].errors['pattern']"
+                >Le numéro RCS saisi est invalide !</span
+              >
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Timbre fiscale</mat-label>
+            <mat-label>Timbre fiscal</mat-label>
             <input
               matInput
               type="number"
               placeholder="Entrez le logo"
+              formControlName="timbre_fiscal"
               required
-              id="timbre_fiscale"
-              [(ngModel)]="currentSociete.timbre_fiscale"
-              [ngModelOptions]="{ standalone: true }"
+              [ngClass]="{ 'is-invalid': submitted && f['timbre_fiscal'].errors }"
+              id="timbre_fiscal"
+              [(ngModel)]="currentSociete.timbre_fiscal"
             />
+            <mat-error *ngIf="f['timbre_fiscal'].errors" class="text-danger">
+              <div *ngIf="f['timbre_fiscal'].errors['required']">
+                Le champ timbre fiscal est obligatoire !
+              </div>
+              <span *ngIf="f['timbre_fiscal'].errors['pattern']"
+                >Le valeur saisi est invalide !</span
+              >
+            </mat-error>
           </mat-form-field>
   
         <div>

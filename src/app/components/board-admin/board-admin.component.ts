@@ -170,7 +170,7 @@ export class BoardAdminComponent implements OnInit {
   }
   updateUser(): void {
     console.log("test", this.userUpdateForm.invalid);
-    if (!this.userUpdateForm.invalid) {
+    if (this.userUpdateForm.valid) {
       Swal.fire({
         title: "Modification effectuée avec succés !",
         icon: "success",
@@ -198,28 +198,34 @@ export class BoardAdminComponent implements OnInit {
   }
 
   deleteUser(user: User): void {
-    this.gestUserService.delete(user.id).subscribe({
-      next: (response) => {
-        console.log(response);
-        this.disabelModif = false;
-        Swal.fire({
-          title: "Êtes-vous sûr de le supprimer ? ",
-          text: "Vous ne serez pas capable de le récupérer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.gestUserService.delete(user.id).subscribe({
+          next: (res) => {
+            console.log(res);
             this.refreshList();
-          }
+          },
+          error: (e) => {
+            console.error(e);
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression du client.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            });
+          },
         });
-      },
-      error: (error) => {
-        console.log(error);
-      },
+      }
     });
   }
 

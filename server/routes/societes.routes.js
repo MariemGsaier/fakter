@@ -19,9 +19,9 @@ module.exports = function (app) {
     controllerste.adminBoard
   );
 
-  // Create a new societe
-  // router.post("/create", [authJwt.verifyToken], controllerste.create);
-  // Retrieve a single societe with id
+  // Créer une société
+  router.post("/create", controllerste.create);
+  // fetch d'une société par id
   router.get("/:id", controllerste.findOne);
   // Update a societe with id
   router.put("/:id", controllerste.update);

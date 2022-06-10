@@ -1,11 +1,9 @@
-export class LignePrix {
+import { Prixarticle } from "./prixarticle.model";
+
+export interface LignePrix {
   nom_article?: string;
   type_article?: string;
   cout?: number;
   description?: string;
-  prix?: {
-    id?: any;
-    prix?: number;
-    date?: Date;
-  };
+  prix?:Prixarticle[];
 }

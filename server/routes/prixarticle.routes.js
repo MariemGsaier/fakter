@@ -9,13 +9,10 @@ module.exports = function (app) {
       );
       next();
     });
-    
-    
-      // Create 
+
+      // Créer prix article
        router.post("/create", controllerprx.create);
-       // fetch all devises with dates
-       router.get("/", controllerprx.findAll);
-      // // fetch all 
-      // router.get("/", controllerddev.findAll);
+    // Delete an article with id
+    router.delete("/:id", controllerprx.delete);
       app.use("/api/prix", router);
     };

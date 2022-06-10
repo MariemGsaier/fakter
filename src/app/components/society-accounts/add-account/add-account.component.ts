@@ -39,6 +39,7 @@ export class AddAccountComponent implements OnInit {
     bic: new FormControl(""),
     iban: new FormControl(""),
     nomBanque: new FormControl(""),
+    devise: new FormControl(""),
   });
 
   currentDevise: Devise = {
@@ -99,6 +100,8 @@ selectedDevise = "";
         ValidatorService.validateIban
       ],
       nomBanque: ["", [Validators.required,Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
+      
+      devise: ["", [Validators.required]],
     });
   }
   get f(): { [key: string]: AbstractControl } {
@@ -126,7 +129,9 @@ selectedDevise = "";
       nom_banque: this.BankAccount.nom_banque,
       nom_devise : this.BankAccount.nom_devise
     };
-    if (!this.bankAccForm.invalid){
+    console.log("msg",this.bankAccForm.valid);
+    
+    if (this.bankAccForm.valid){
       this.bankAccountService.create(data).subscribe({
         next: (res) => {
           console.log(res);
@@ -151,7 +156,7 @@ selectedDevise = "";
         error: (e) => {
           console.error(e);
           this.errorAddAccount=true;
-          this.errorMsg="Le numéro de compte entré existe déjà !"
+          this.errorMsg="Le numéro de compte ou RIB, ou le BIC ou IBAN saisi existe déjà !"
         }
       });
 

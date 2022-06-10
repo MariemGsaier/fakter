@@ -1,4 +1,4 @@
-export class Facture {
+export interface Facture {
   id?: any;
   reference?: string;
   date_facturation?: Date;

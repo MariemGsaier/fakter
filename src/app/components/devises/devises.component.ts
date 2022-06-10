@@ -15,10 +15,9 @@ import {
 import { DeviseService } from "src/app/services/devise.service";
 import { DatedeviseService } from "src/app/services/datedevise.service";
 import { LigneDevise } from "src/app/models/ligne-devise.model";
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-registerLocaleData(localeFr, 'fr');
-
+import { registerLocaleData } from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+registerLocaleData(localeFr, "fr");
 
 @Component({
   selector: "app-devises",
@@ -50,7 +49,11 @@ export class DevisesComponent implements OnInit {
   currentLigneDevise: LigneDevise = {
     nom: "",
     devise: "",
-    dates: [],
+    dates: [{
+      id: undefined,
+      date: new Date(),
+      valeur: undefined,
+    }],
   };
   message = "";
   devises?: LigneDevise[];
@@ -61,7 +64,6 @@ export class DevisesComponent implements OnInit {
   showObserverBoard = true;
   paginator?: MatPaginator;
   submitted = false;
-
 
   constructor(
     private deviseService: DeviseService,
@@ -130,25 +132,25 @@ export class DevisesComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
-      }
+      },
     });
   }
 
   refreshList(): void {
     this.fetchDevises();
-    this.currentLigneDevise = {dates: []};
+    this.currentLigneDevise = {dates:[]};
     this.currentIndex = -1;
   }
 
-  setActiveDevise(devise: LigneDevise, index: number): void {
-    this.currentLigneDevise = devise;
+  setActiveDateDevise(dateDevise: LigneDevise, index: number): void {
+    this.currentLigneDevise = dateDevise;
     this.updateDeviseForm.setValue({
-      date: devise.dates[0].date,
-      valeur: devise.dates[0].valeur,
-      nom: devise.nom,
-      devise: devise.devise,
+      date: dateDevise.dates[0].date,
+      valeur: dateDevise.dates[0].valeur,
+      nom: dateDevise.nom,
+      devise: dateDevise.devise,
     });
-    console.log(devise);
+    console.log(dateDevise);
     this.currentIndex = index;
     this.disabelModif = true;
   }
@@ -190,43 +192,30 @@ export class DevisesComponent implements OnInit {
     });
   }
 
-  deleteDevise(dateDevise: Datedevise): void {
-    console.log(this.currentDateDevise.id);
-    this.deviseService.delete(this.currentLigneDevise.nom).subscribe({
-      next: (res) => {
-        console.log(res);
-    this.dateDeviseService.delete(this.currentLigneDevise.dates[0].id).subscribe({
-      next: (res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Êtes-vous sûr de le supprimer ? ",
-          text: "Vous ne serez pas capable de le récupérer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
+  deleteDateDevise(dateDevise: LigneDevise): void {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dateDevise = this.currentLigneDevise.dates[0].id;
+        console.log("!!", this.currentLigneDevise);
+        this.dateDeviseService.delete(dateDevise).subscribe({
+          next: (res) => {
+            console.log(res);
             this.refreshList();
-          }
+          },
+          error: (e) => console.error(e),
         });
-      },
-      error: (e) => {
-        console.error(e);
-        Swal.fire({
-          title: "Echec de supression !",
-          text: "Une erreur est survenue lors de la supression de la devise.",
-          icon: "warning",
-          confirmButtonColor: "#00c292",
-          confirmButtonText: "Ok",
-        });
-      },
+      }
     });
-  },
-});
-}
+  }
 
   filterData($event: any) {
     $event.target.value.trim();

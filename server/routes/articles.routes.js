@@ -27,9 +27,9 @@ module.exports = function (app) {
      // fetch all articles with dates
      router.get("/prix", controllerart.findAllArticles);
     // Update an article with id
-    router.put("/:id", controllerart.update);
+    router.put("/:nom_article", controllerart.update);
     // Delete an article with id
-    router.delete("/:id", controllerart.delete);
+    router.delete("/:nom_article", controllerart.delete);
     // Create a new article
     router.delete("/", controllerart.deleteAll);
     app.use("/api/articles", router);

@@ -59,11 +59,11 @@ exports.findAll = (req, res) => {
       })
       .catch((err) => {
         res.status(500).send({
-          message: err.message || "une erreur est survenue lors de l'affichage.",
+          message: err.message || "une erreur est survenue lors de l'affichage de la liste des devises avec leur valeurs.",
         });
       });
   };
-
+// Supprimer une date devise avec le nom spécifié dans la requête
 exports.delete = (req, res) => {
   const id = req.params.id;
   dateDevise
@@ -77,17 +77,17 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression de la date devise avec id=${id}. Peut être qu'elle est inexistante !`,
+          message: `Echec de suppression de la date devise avec nom = ${nom}. Peut être qu'elle est inexistante !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Echec de suppression de la date devise avec id=" + id,
+        message: "Echec de suppression de la date devise avec nom = " + nom,
       });
     });
 };
-// Delete all devises from the database.
+// Supprimer toutes les dates devise de la base de données
 exports.deleteAll = (req, res) => {
   dateDevise
     .destroy({
