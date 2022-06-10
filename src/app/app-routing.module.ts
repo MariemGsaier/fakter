@@ -47,6 +47,7 @@ import { HistoriqueDevisesComponent } from "./components/devises/historique-devi
 import { LoginGardGuard } from "./gard/login-gard.guard";
 import { AdminGuard } from "./gard/admin.guard";
 import { PaidFactureComponent } from "./components/factures/paid-facture/paid-facture.component";
+import { ArchiveFactureComponent } from "./components/factures/archive-facture/archive-facture.component";
 
 const routes: Routes = [
   {
@@ -194,6 +195,11 @@ const routes: Routes = [
       {
         path: "facture-payée",
         component: PaidFactureComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "archive-factures",
+        component: ArchiveFactureComponent,
         canActivate: [LoginGardGuard],
       },
     ],

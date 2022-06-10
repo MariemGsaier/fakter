@@ -6,7 +6,7 @@ export interface Facture {
   etat_facture?: string;
   etat_echeance?: boolean;
   total_ht?: number;
-  total_ttc?: number;
+  total_ttc: number;
   total_devise?: number;
   nom_devise?: string;
   nom_user?: string;

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as apex from 'ng-apexcharts';
+import { Facture } from 'src/app/models/facture.model';
+import { FactureService } from "src/app/services/facture.service";
 
 @Component({
   selector: 'app-sales',
@@ -8,6 +10,23 @@ import * as apex from 'ng-apexcharts';
 
 })
 export class SalesComponent implements OnInit {
+
+  factures?: Facture[];
+  factures18 = [];
+  factures19 = [];
+  factures20 = [];
+  factures21 = [];
+  factures22 = [];
+  chiffAffTTC18 = 0;
+  chiffAffHT18=0;
+  chiffAffTTC19 = 0;
+  chiffAffHT19=0;
+  chiffAffTTC20 = 0;
+  chiffAffHT20=0;
+  chiffAffTTC21 = 0;
+  chiffAffHT21=0;
+  chiffAffTTC22 = 0;
+  chiffAffHT22=0;
 
   series!: apex.ApexAxisChartSeries;
   dataLabels!: apex.ApexDataLabels;
@@ -20,6 +39,10 @@ export class SalesComponent implements OnInit {
   fill!: apex.ApexFill;
   tooltip!: apex.ApexTooltip;
 
+  constructor(
+  private factureService : FactureService
+  ) {}
+
   ngOnInit(): void {
     this.initializeChartOptions();
   }
@@ -28,19 +51,19 @@ export class SalesComponent implements OnInit {
 
     this.series = [
       {
-        name: 'Ample Admin',
-        data: [355, 390, 300, 350, 390, 180, 355, 390, 300, 350, 390, 180],
+        name: 'Chiffre d"affaire TTC',
+        data: [355, 390, 300, 350],
         color: "#fb9678",
       },
       {
-        name: 'Pixel Admin',
-        data: [280, 250, 325, 215, 250, 310, 280, 250, 325, 215, 250, 310],
+        name: 'Chiffre d"affaire HT',
+        data: [280, 250, 325, 215],
         color: "#03c9d7",
       },
     ];
     
     this.xaxis = {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      categories: ['2018','2019', '2020', '2021', '2022'],
     };
     
     this.chart = {
@@ -81,6 +104,23 @@ export class SalesComponent implements OnInit {
         borderRadius: 6,
       },
     };
+  }
+  getChiffAff():void{
+    this.factureService
+    .getAllFactDetailed()
+
+    .subscribe(
+      {
+        next: (data) => {
+         
+          console.log(data);
+        },
+        error: (e) => {
+          console.error(e);
+        
+        }
+      }
+    );
   }
 
 

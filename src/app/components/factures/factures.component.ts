@@ -1,43 +1,80 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Facture } from 'src/app/models/facture.model';
-import { FactureService } from 'src/app/services/facture.service';
+import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Facture } from "src/app/models/facture.model";
+import { FactureService } from "src/app/services/facture.service";
 import { MatTableDataSource } from "@angular/material/table";
-import { TokenStorageService } from 'src/app/services/token-storage.service';
-import * as XLSX from 'xlsx';
-import { MatPaginator } from "@angular/material/paginator";
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-registerLocaleData(localeFr, 'fr');
+import { TokenStorageService } from "src/app/services/token-storage.service";
+import * as XLSX from "xlsx";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import { registerLocaleData } from "@angular/common";
+import localeFr from "@angular/common/locales/fr";
+import { Subject } from "rxjs";
+registerLocaleData(localeFr, "fr");
 
 
+@Injectable()
+export class MyCustomPaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  // For internationalization, the `$localize` function from
+  // the `@angular/localize` package can be used.
+  firstPageLabel = $localize`Première page`;
+  itemsPerPageLabel = $localize`Items par page:`;
+  lastPageLabel = $localize`Dernière page`;
+
+  // You can set labels to an arbitrary string too, or dynamically compute
+  // it through other third-party internationalization libraries.
+  nextPageLabel = 'Page suivante';
+  previousPageLabel = 'Page précédente';
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`Page 1 de 1`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`Page ${page + 1} de ${amountPages}`;
+  }
+}
 
 @Component({
-  selector: 'app-factures',
-  templateUrl: './factures.component.html',
-  styleUrls: ['./factures.component.scss']
+  selector: "app-factures",
+  templateUrl: "./factures.component.html",
+  styleUrls: ["./factures.component.scss"],
+  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}],
 })
 export class FacturesComponent implements OnInit {
-  fileName= "FacturesSheet.xlsx";
-  displayedColumns: string[] = ['référence','créé_par','client', 'date_facturation', 'date_echeance', 'etat_facture', 'etat_echeance', 'total_ht','total_ttc', 'total_devise', 'actions'];
+  fileName = "FacturesSheet.xlsx";
+  displayedColumns: string[] = [
+    "référence",
+    "créé_par",
+    "client",
+    "date_facturation",
+    "date_echeance",
+    "etat_facture",
+    "etat_echeance",
+    "total_ht",
+    "total_ttc",
+    "total_devise",
+    "nom_devise",
+    "actions",
+  ];
   dataSource = new MatTableDataSource<Facture>();
   currentFacture: Facture = {
     reference: "",
     date_facturation: new Date(),
-    date_echeance:new Date(),
+    date_echeance: new Date(),
     etat_facture: "",
     etat_echeance: false,
     total_ht: undefined,
-    total_ttc: undefined,
+    total_ttc: 0,
     total_devise: undefined,
     nom_devise: "",
     nom_user: "",
-    client :{
-      nom : ""
-
+    client: {
+      nom: "",
     },
   };
-  message = '';
+  message = "";
   factures?: Facture[];
   currentIndex = -1;
   disabelModif: boolean = false;
@@ -45,8 +82,15 @@ export class FacturesComponent implements OnInit {
   isLoggedIn = false;
   showObserverBoard = true;
   paginator?: MatPaginator;
+  searchTerm: any;
+  search: boolean = false;
 
-  constructor(private route: ActivatedRoute,private router: Router, private factureService: FactureService, private tokenStorageService: TokenStorageService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private factureService: FactureService,
+    private tokenStorageService: TokenStorageService
+  ) {}
 
   ngOnInit(): void {
     this.fetchFactures();
@@ -68,61 +112,63 @@ export class FacturesComponent implements OnInit {
   }
 
   fetchFactures(): void {
-    this.factureService.getAllFactDetailed()
-  
-    .subscribe(
-      data => {
-        this.factures = data;
-        this.dataSource.data = this.factures;
-        console.log(data);
-      },
-      error => {
-        console.log(error);
-      });}
+    this.factureService
+      .getAllFactDetailed()
 
-      refreshList(): void {
-        this.fetchFactures();
-        this.currentFacture = {};
-        this.currentIndex = -1;
-      }
+      .subscribe(
+        (data) => {
+          this.factures = data;
+          this.factures = data.filter(elm => elm.etat_facture !="archivé" );
+          this.dataSource.data = this.factures;
 
-      setActiveFacture(facture: Facture, index: number): void {
-        this.currentFacture = facture;
-        console.log(facture);
-        this.currentIndex = index;
-        this.disabelModif = true;
-        
-      }
+          console.log(data);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
 
-      updateFacture(): void {
-        this.message = '';
-        this.factureService.update(this.currentFacture.id, this.currentFacture)
-          .subscribe(
-            response => {
-              console.log(response);
-              this.disabelModif = false;
-              this.message = response.message ? response.message : 'This facture was updated successfully!';
-            },
-            error => {
-              console.log(error);
-            });
+  refreshList(): void {
+    this.fetchFactures();
+  }
+  archiveFacture(body:Facture){
+    body.etat_facture = "archivé";
+    this.factureService.update(body.id, body).subscribe({
+      next: (res) => {console.log(res)
+        this.refreshList()
       }
+    });
 
-      annuler(): void {
-        this.disabelModif = false;
-      }
-      exportexcel(): void
-  {
+  }
+
+  setActiveFacture(facture: Facture, index: number): void {
+    this.currentFacture = facture;
+    console.log(facture);
+    this.currentIndex = index;
+    this.disabelModif = true;
+  }
+
+
+  annuler(): void {
+    this.disabelModif = false;
+  }
+
+  filterData($event: any) {
+    $event.target.value.trim();
+    $event.target.value.toLowerCase();
+    this.dataSource.filter = $event.target.value;
+  }
+  exportexcel(): void {
     /* pass here the table id */
-    let element = document.getElementById('excel-table');
-    const ws: XLSX.WorkSheet =XLSX.utils.table_to_sheet(element);
- 
+    let element = document.getElementById("excel-table");
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
     /* generate workbook and add the worksheet */
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
- 
-    /* save to file */  
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    /* save to file */
     XLSX.writeFile(wb, this.fileName);
- 
   }
 }
