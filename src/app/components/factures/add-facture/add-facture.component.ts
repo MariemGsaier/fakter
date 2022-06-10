@@ -160,7 +160,7 @@ export class AddFactureComponent implements OnInit {
     this.factureForm = this.formBuilder.group({
       date_facturation: ["", Validators.required],
       date_echeance: ["", Validators.required],
-      num_bc: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
+      num_bc: ["", Validators.required],
       client: ["", Validators.required],
       num_compte: ["", Validators.required],
       devise: ["", Validators.required],

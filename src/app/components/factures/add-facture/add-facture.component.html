@@ -47,7 +47,7 @@
             <mat-label>Numéro du bon de commande</mat-label>
             <input
               matInput
-              type="text"
+              type="number"
               placeholder="Veuillez entrer le numéro du bon de commande"
               formControlName="num_bc"
               [(ngModel)]="facture.num_bc"
@@ -57,9 +57,6 @@
             <mat-error *ngIf="f['num_bc'].errors" class="text-danger">
               <div *ngIf="f['num_bc'].errors['required']">
                 Le champ numéro de bon de commande est obligatoire !
-              </div>
-              <div *ngIf="f['num_bc'].errors['pattern']">
-                Le numéro de bon de commande saisi est invalide !
               </div>
             </mat-error>
           </mat-form-field>

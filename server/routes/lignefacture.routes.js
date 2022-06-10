@@ -14,9 +14,5 @@ module.exports = function (app) {
 
 // créer une ligne facture
 router.post("/", controllerlignefct.create);
-  // fetch all societes
-  router.get("/", controllerlignefct.findAll);
-  // Update a societe with id
-  router.put("/:id", controllerlignefct.update);
   app.use("/api/lignefacture", router);
 };
