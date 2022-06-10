@@ -24,11 +24,11 @@ export class DialogBoxComponent implements OnInit {
     type_article: "",
     cout: undefined,
     description: "",
-    prix: {
+    prix: [{
       id: undefined,
       prix: undefined,
       date: new Date(),
-    },
+    }],
   };
   ligneArticleForm: FormGroup = new FormGroup({
     prix: new FormControl(""),

@@ -18,13 +18,10 @@ export class PrixarticleService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
-  // update(id: any, data: any): Observable<any> {
-  //   return this.http.put(`${baseUrl}/${id}`, data);
-  // }
-  // delete(id: any): Observable<any> {
-  //   return this.http.delete(`${baseUrl}/${id}`);
-  // }
-  // deleteAll(): Observable<any> {
-  //   return this.http.delete(baseUrl);
-  // }
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/${id}`);
+  }
+  deleteAll(): Observable<any> {
+    return this.http.delete(baseUrl);
+  }
 }

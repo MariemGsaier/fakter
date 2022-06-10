@@ -33,7 +33,7 @@
                                   </mat-error>
                             </mat-form-field>
                       
-                            <mat-form-field class="w-100 fs-16" appearance="outline">
+                            <mat-form-field class="w-100 fs-16" appearance="outline" [floatLabel]="getFloatLabelValue()">
                                 <mat-label>Numéro de téléphone</mat-label>
                                 <input matInput type="tel" placeholder="Ex : 23456789" [ng2TelInputOptions]="{initialCountry: 'tn', separateDialCode:true}" formControlName="phone" [ngClass]="{ 'is-invalid': submitted && f['phone'].errors }" [(ngModel)]="client.numtel"  ng2TelInput>
                                 <mat-error *ngIf="f['phone'].errors" class="text-danger">

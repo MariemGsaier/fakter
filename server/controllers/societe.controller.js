@@ -20,17 +20,17 @@ exports.create = (req, res) => {
     });
     return;
   }
-  // Create a societe
+  // Créer une societe
   const ste = {
+    id: req.body.id,
     nom_societe: req.body.nom_societe,
-    logo: req.body.logo,
     numtel: req.body.numtel,
     adresse: req.body.adresse,
     courriel: req.body.courriel,
     siteweb: req.body.siteweb,
     type_societe: req.body.type_societe,
     num_rcs: req.body.num_rcs,
-    timbre_fiscale: req.body.timbre_fiscale,
+    timbre_fiscal: req.body.timbre_fiscal,
   };
   // Save societe in the database
   societe
@@ -43,23 +43,6 @@ exports.create = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while creating the societe.",
-      });
-    });
-};
-// fetch all articles from the database.
-exports.findAll = (req, res) => {
-  const nom_societe = req.query.nom_societe;
-  var condition = nom_societe
-    ? { nom_societe: { [Op.iLike]: `%${nom_societe}%` } }
-    : null;
-  societe
-    .findAll({ where: condition })
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message || "Some error occurred while fetching societes.",
       });
     });
 };

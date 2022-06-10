@@ -28,10 +28,10 @@
                 >Le numéro de compte saisi est invalide</div
               >
               <div *ngIf="f['numcompte'].errors['maxlength']"
-                >Max 34</div
+                >Max 17</div
               >
               <div *ngIf="f['numcompte'].errors['minlength']"
-              >Min 14</div
+              >Min 5</div
             >
             </mat-error>
           </mat-form-field>
@@ -107,9 +107,18 @@
           </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>Devise</mat-label>
-            <mat-select placeholder="Selectionnez une devise" [ngModelOptions]="{standalone : true}" [(ngModel)]="BankAccount.nom_devise" >
+            <mat-select placeholder="Selectionnez une devise" formControlName="devise"
+            [ngClass]="{ 'is-invalid':  f['devise'].errors }" [(ngModel)]="BankAccount.nom_devise" >
               <mat-option *ngFor="let devise of devises;" [value]="devise.nom" >{{ devise.nom }}</mat-option>
             </mat-select>
+            <mat-error
+              *ngIf=" f['devise'].errors"
+              class="text-danger"
+            >
+              <div *ngIf="f['devise'].errors['required']">
+                Le champ devise est obligatoire
+              </div>
+            </mat-error>
           </mat-form-field>
           <mat-form-field class="w-100 fs-16" appearance="outline">
             <mat-label>IBAN </mat-label>

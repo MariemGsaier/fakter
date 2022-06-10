@@ -104,7 +104,7 @@ export class AddDatedevisesComponent implements OnInit {
       valeur: this.dateDevise.valeur,
       nom_devise: this.devise.nom
     };
-    if (!(this.dateDeviseForm.invalid)) {
+    if ((this.dateDeviseForm.valid)) {
     this.dateDeviseService.create(data)
     .subscribe({
       next: (res) => {

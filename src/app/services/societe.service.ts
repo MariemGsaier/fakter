@@ -12,9 +12,6 @@ export class SocieteService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<Societe[]> {
-    return this.http.get<Societe[]>(baseUrl);
-  }
   get(id: any): any {
     return this.http.get(`${baseUrl}/${id}`);
   }
@@ -23,11 +20,5 @@ export class SocieteService {
   }
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, data);
-  }
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
-  }
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
   }
 }

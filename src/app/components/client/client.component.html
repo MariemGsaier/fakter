@@ -1,25 +1,5 @@
 <mat-card class="w-100">
   <mat-card-content>
-    <div *ngIf="search" class="search-section d-flex align-items-center">
-      <mat-form-field class="w-100" color="primary" appearance="legacy">
-        <mat-label class="fs-16">Recherchez ici</mat-label>
-        <input
-          matInput
-          placeholder="Veuillez taper un mot clé"
-          autocomplete="off"
-          (keyup)="filterData($event)"
-        />
-      </mat-form-field>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"></li>
-      </ul>
-      <button mat-icon-button (click)="search = !search">
-        <i-feather
-          name="x-circle"
-          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
-        ></i-feather>
-      </button>
-    </div>
     <button
       mat-button
       class="btn btn-info fw-normal btnw"
@@ -69,6 +49,18 @@
     </button>
     <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les clients</h4>
     <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les clients</h4>
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input matInput
+        placeholder="Veuillez taper un mot clé"
+        autocomplete="off"
+        (keyup)="filterData($event)">
+      </mat-form-field>
+      <button mat-icon-button (click)="search=!search">
+        <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+      </button>
+    </div>  
 
     <div class="table-responsive">
       <table
@@ -167,49 +159,7 @@
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
-      <mat-form-field
-        class="w-100 fs-16"
-        style="margin-right: 16px"
-        appearance="outline"
-      >
-        <mat-label>Type du code d'identification </mat-label>
-        <mat-select
-          [(ngModel)]="selectedValue"
-          [ngModelOptions]="{ standalone: true }"
-          (ngModelChange)="changeCodeIdClient($event)"
-          required
-        >
-          <mat-option *ngFor="let codeId of codesId" [value]="codeId.id">
-            {{ codeId.value }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Code d'identification </mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer le code d'identification du client"
-          formControlName="codeid"
-          [ngClass]="{ 'is-invalid': submitted && f['codeid'].errors }"
-          [(ngModel)]="currentClient.code_identification"
-        />
-        <mat-error *ngIf="f['codeid'].errors" class="text-danger">
-          <div *ngIf="f['codeid'].errors['required']">
-            Le champ code d'identification est obligatoire !
-          </div>
-          <span *ngIf="f['codeid'].errors['pattern']"
-            >Le code d'identification saisi est invalide !</span
-          >
-          <span *ngIf="f['codeid'].errors['maxlength']"
-            >Vous avez dépassé la longueur minimale !</span
-          >
-          <span *ngIf="f['codeid'].errors['minlength']"
-            >Une longueur minimale est requise !</span
-          >
-        </mat-error>
-      </mat-form-field>
+      <h4 class="mb-56">Client avec le code d'identification: {{currentClient.code_identification}}</h4>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom </mat-label>
         <input

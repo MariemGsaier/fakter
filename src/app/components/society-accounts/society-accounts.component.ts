@@ -66,6 +66,7 @@ export class SocietyAccountsComponent implements OnInit {
   dataSource = new MatTableDataSource<BankaccountDevise>();
 
   currentBankAccount: BankaccountDevise = {
+    num_compte: "",
     rib: "",
     bic: "",
     iban: "",
@@ -108,8 +109,6 @@ export class SocietyAccountsComponent implements OnInit {
         this.devises = data.map((data: any) => {return { 
           nom : data.nom,
           devise: data.devise,
-      
-        
         }} );
         console.log(this.devises);
       },
@@ -176,7 +175,7 @@ export class SocietyAccountsComponent implements OnInit {
       next: (data) => {
         this.bankaccounts = data;
         this.dataSource.data = this.bankaccounts;
-        console.log(data);
+        console.log('!!',data);
       },
       error: (e) =>{
         console.error(e);

@@ -1,17 +1,5 @@
 <mat-card class="w-100">
   <mat-card-content>
-    <div *ngIf="search" class="search-section d-flex align-items-center">
-    <mat-form-field class="w-100" color="primary" appearance="legacy">
-      <mat-label class="fs-16">Recherchez ici</mat-label>
-      <input matInput
-      placeholder="Veuillez taper un mot clé"
-      autocomplete="off"
-      (keyup)="filterData($event)">
-    </mat-form-field>
-    <button mat-icon-button (click)="search=!search">
-      <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
-    </button>
-  </div>
     <div>
     <button
       mat-button
@@ -20,7 +8,7 @@
       style="float: right"
       *ngIf="!showObserverBoard"
       [matMenuTriggerFor]="menu"
-      matTooltip="Ajouter une devise"
+      matTooltip="Ajout"
       matTooltipPosition="above"
     >
       <mat-icon>add</mat-icon>
@@ -42,7 +30,7 @@
       style="float: right; margin-right: 0.142%"
       (click)="removeAllDevises()"
       *ngIf="!showObserverBoard"
-      matTooltip="Supprimer toutes les devises"
+      matTooltip="Supprimer tous les taux de changes"
       matTooltipPosition="above"
     >
       Supprimer Tout
@@ -56,7 +44,7 @@
       matTooltip="Consulter Historique d'insertion"
       matTooltipPosition="above"
     >
-      Historique
+    <mat-icon>history</mat-icon>
     </button>
     <button
       mat-icon-button
@@ -72,6 +60,19 @@
 
     <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les devises</h4>
     <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les devises</h4>
+    
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input matInput
+        placeholder="Veuillez taper un mot clé"
+        autocomplete="off"
+        (keyup)="filterData($event)">
+      </mat-form-field>
+      <button mat-icon-button (click)="search=!search">
+        <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+      </button>
+    </div>  
 
     <div class="table-responsive">
       <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
@@ -84,7 +85,7 @@
 
         <!-- Assigned Column -->
         <ng-container matColumnDef="devise">
-          <th mat-header-cell *matHeaderCellDef>Devise</th>
+          <th mat-header-cell *matHeaderCellDef>Code</th>
           <td mat-cell *matCellDef="let devise">
             <p class="mb-0 fw-medium">{{ devise.devise }}</p>
           </td>
@@ -110,8 +111,9 @@
           </th>
           <td
             mat-cell
-            *matCellDef="let devise; let i = index"
+            *matCellDef="let dateDevise; let i = index"
             [class.active]="i == currentIndex"
+            (click)="setActiveDateDevise(dateDevise, i)"
           >
             <button
               mat-button
@@ -119,8 +121,8 @@
               class="btn btn-danger fw-normal btnw"
               style="margin-right: 1%"
               type="submit"
-              (click)="deleteDevise(devise)"
-              matTooltip="Supprimer la devise"
+              (click)="deleteDateDevise(dateDevise)"
+              matTooltip="Supprimer le taux de change"
               matTooltipPosition="above"
             >
               <mat-icon>delete</mat-icon>

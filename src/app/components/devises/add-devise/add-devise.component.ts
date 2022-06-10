@@ -30,7 +30,6 @@ export class AddDeviseComponent implements OnInit {
   submitted = false;
 
   valeurs: devise[] = [
-    { value: "TND", viewValue: "TND" },
     { value: "EUR", viewValue: "EUR" },
     { value: "USD", viewValue: "USD" },
     { value: "CAD", viewValue: "CAD" },
@@ -75,7 +74,7 @@ export class AddDeviseComponent implements OnInit {
       devise: this.devise.devise,
     };
     
-    if (!(this.deviseForm.invalid)) {
+    if ((this.deviseForm.valid)) {
     this.deviseService.create(data)
     .subscribe({
       next: (res) => {

@@ -16,6 +16,7 @@ import {
 import * as XLSX from "xlsx";
 import { LignePrix } from "src/app/models/ligne-prix.model";
 import { PrixarticleService } from "src/app/services/prixarticle.service";
+import { Prixarticle } from "src/app/models/prixarticle.model";
 
 interface type {
   value: string;
@@ -70,7 +71,6 @@ export class ArticlesComponent implements OnInit {
     type_article: new FormControl(""),
     cout: new FormControl(""),
     description: new FormControl(""),
-    prix: new FormControl(""),
   });
   currentArticle: Article = {
     nom_article: "",
@@ -83,11 +83,11 @@ export class ArticlesComponent implements OnInit {
     type_article: "",
     cout: undefined,
     description: "",
-    prix: {
+    prix: [{
       id: undefined,
       prix: undefined,
       date: new Date(),
-    },
+    }],
   };
   message = "";
   articles?: LignePrix[];
@@ -98,6 +98,8 @@ export class ArticlesComponent implements OnInit {
   showObserverBoard = true;
   paginator?: MatPaginator;
   submitted = false;
+  errorUpdateArticle = false;
+  errorMsg = "";
 
   types: type[] = [
     { value: "Service", viewValue: "Service" },
@@ -108,6 +110,7 @@ export class ArticlesComponent implements OnInit {
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
     private formBuilder: FormBuilder,
+    private prixArticleService: PrixarticleService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -138,9 +141,8 @@ export class ArticlesComponent implements OnInit {
       cout: ["", Validators.required],
       description: [
         "",
-        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z0-9 ]+")],
+        [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$")],
       ],
-      prix: ["", Validators.required],
     });
   }
 
@@ -172,7 +174,7 @@ export class ArticlesComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
-      }
+      },
     });
   }
 
@@ -183,13 +185,15 @@ export class ArticlesComponent implements OnInit {
   }
 
   setActiveArticle(article: LignePrix, index: number): void {
+    console.log('11111', article);
+    
     this.currentPrixArticle = article;
     this.updateArticleForm.setValue({
       nom_article: article.nom_article,
       type_article: article.type_article,
       cout: article.cout,
       description: article.description,
-      prix: article.prix?.prix,
+      // prix: article.prix?.prix,
     });
     console.log(article);
     this.currentIndex = index;
@@ -197,42 +201,49 @@ export class ArticlesComponent implements OnInit {
   }
 
   removeAllArticles(): void {
-    this.articleService.deleteAll().subscribe({
-      next: (res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Êtes-vous sûr de tout supprimer ? ",
-          text: "Vous ne serez pas capable de restaurer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.articleService.deleteAll().subscribe({
+          next: (res) => {
+            console.log(res);
             this.refreshList();
-          }
+          },
+          error: (e) => {
+            console.error(e);
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression de l'article.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            });
+          },
         });
-      },
-      error: (e) => {
-        console.error(e);
-        Swal.fire({
-          title: "Echec de supression !",
-          text: "Une erreur est survenue lors de la supression des articles.",
-          icon: "warning",
-          confirmButtonColor: "#00c292",
-          confirmButtonText: "Ok",
-        });
-      },
+      }
     });
   }
 
   updateArticle(): void {
     this.message = "";
-    if (!this.updateArticleForm.invalid) {
+    
+    if (this.updateArticleForm.valid) {
+      const data = {
+        type_article: this.updateArticleForm.get("type_article")?.value,
+        cout: this.updateArticleForm.get("cout")?.value,
+        description: this.updateArticleForm.get("description")?.value,
+      };
+      
       this.articleService
-        .update(this.currentArticle.nom_article, this.currentArticle)
+        .update(this.currentPrixArticle.nom_article, data)
         .subscribe({
           next: (res) => {
             console.log(res);
@@ -246,44 +257,52 @@ export class ArticlesComponent implements OnInit {
                 this.fetchArticles();
               }
             });
-            this.message = res.message
-              ? res.message
-              : "This article was updated successfully!";
           },
-          error: (e) => console.error(e),
+          error: (e) => {
+            console.error(e);
+            this.errorUpdateArticle = true;
+            this.errorMsg =
+              "Une erreur est survenue lors de la mise à jour de l'article !";
+          },
         });
     }
   }
 
-  deleteArticle(article: Article): void {
-    this.articleService.delete(article.nom_article).subscribe({
-      next: (res) => {
-        console.log(res);
-        Swal.fire({
-          title: "Êtes-vous sûr de le supprimer ? ",
-          text: "Vous ne serez pas capable de le récupérer !",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#00c292",
-          cancelButtonColor: "#e46a76",
-          confirmButtonText: "Oui",
-          cancelButtonText: "Annuler",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.refreshList();
-          }
-        });
-      },
-      error: (e) => {
-        console.error(e);
-        Swal.fire({
-          title: "Echec de supression !",
-          text: "Une erreur est survenue lors de la supression de l'article.",
-          icon: "warning",
-          confirmButtonColor: "#00c292",
-          confirmButtonText: "Ok",
-        });
-      },
+  deletePrixArticle(prixArt: LignePrix): void {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('??', this.currentPrixArticle);
+        
+        prixArt = this.currentPrixArticle;
+        
+            this.prixArticleService
+              .delete(prixArt)
+              .subscribe({
+                next: (res) => {
+                  console.log(res);
+                  this.refreshList();
+                },
+                error: (e) => {
+                  console.error(e);
+                  Swal.fire({
+                    title: "Echec de supression !",
+                    text: "Une erreur est survenue lors de la supression de l'article.",
+                    icon: "warning",
+                    confirmButtonColor: "#00c292",
+                    confirmButtonText: "Ok",
+                  });
+                },
+              });
+      }
     });
   }
 

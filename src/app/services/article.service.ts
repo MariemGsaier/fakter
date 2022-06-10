@@ -22,11 +22,11 @@ export class ArticleService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
-  update(id: any, data: any): Observable<any> {
-    return this.http.put(`${baseUrl}/${id}`, data);
+  update(nom_article: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl}/${nom_article}`, data);
   }
-  delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+  delete(nom_article: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/${nom_article}`);
   }
   deleteAll(): Observable<any> {
     return this.http.delete(baseUrl);
