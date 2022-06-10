@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Client } from "src/app/models/client.model";
 import { ClientService } from "src/app/services/client.service";
 import { MatTableDataSource } from "@angular/material/table";
 import Swal from "sweetalert2";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import {
   AbstractControl,
   FormBuilder,
@@ -14,16 +14,41 @@ import {
 } from "@angular/forms";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import * as XLSX from "xlsx";
+import { Subject } from "rxjs";
+
+
+@Injectable()
+export class MyCustomPaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  // For internationalization, the `$localize` function from
+  // the `@angular/localize` package can be used.
+  firstPageLabel = $localize`Première page`;
+  itemsPerPageLabel = $localize`Items par page:`;
+  lastPageLabel = $localize`Dernière page`;
+
+  // You can set labels to an arbitrary string too, or dynamically compute
+  // it through other third-party internationalization libraries.
+  nextPageLabel = 'Page suivante';
+  previousPageLabel = 'Page précédente';
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`Page 1 de 1`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`Page ${page + 1} de ${amountPages}`;
+  }
+}
 
 @Component({
   selector: "app-client",
   templateUrl: "./client.component.html",
   styleUrls: ["./client.component.scss"],
+  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}],
 })
 export class ClientComponent implements OnInit {
-  fileName = "ClientsSheet.xlsx";
-  searchTerm: any;
-  search: boolean = false;
+
   displayedColumns: string[] = [
     "code_identification",
     "nom",
@@ -43,10 +68,7 @@ export class ClientComponent implements OnInit {
     courriel: "",
     siteweb: "",
   };
-  disabelModif: boolean = false;
-  message = "";
-  clients?: Client[];
-  currentIndex = -1;
+
 
   clientForm: FormGroup = new FormGroup({
     email: new FormControl(""),
@@ -56,7 +78,6 @@ export class ClientComponent implements OnInit {
     adresse: new FormControl(""),
   });
 
-  selectedValue = "";
 
   codesId = [
     { id: 0, value: "cin" },
@@ -72,6 +93,14 @@ export class ClientComponent implements OnInit {
   showObserverBoard = true;
   errorUpdateUser = false;
   errorMsg = "";
+  selectedValue = "";
+  disabelModif: boolean = false;
+  message = "";
+  clients?: Client[];
+  currentIndex = -1;
+  fileName = "ClientsSheet.xlsx";
+  searchTerm: any;
+  search: boolean = false;
 
   constructor(
     private route: ActivatedRoute,

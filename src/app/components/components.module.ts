@@ -49,6 +49,7 @@ import { AddPrixarticleComponent } from './articles/add-prixarticle/add-prixarti
 import { AddPrixComponent } from './articles/add-prix/add-prix.component';
 import { HistoriqueDevisesComponent } from './devises/historique-devises/historique-devises.component';
 import { PaidFactureComponent } from './factures/paid-facture/paid-facture.component';
+import { ArchiveFactureComponent } from './factures/archive-facture/archive-facture.component';
 
 
 
@@ -102,6 +103,7 @@ import { PaidFactureComponent } from './factures/paid-facture/paid-facture.compo
     AddPrixComponent,
     HistoriqueDevisesComponent,
     PaidFactureComponent,
+    ArchiveFactureComponent,
  
 
   ],

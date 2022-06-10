@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
 import { MatTableDataSource } from "@angular/material/table";
 import { ActivatedRoute, Router } from "@angular/router";
 import {
@@ -12,18 +12,45 @@ import { User } from "../../models/user.model";
 import { GestUserService } from "../../services/gest-user.service";
 import { UserService } from "../../services/user.service";
 import Swal from "sweetalert2";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { TokenStorageService } from "src/app/services/token-storage.service";
+import { Subject } from "rxjs";
 
 interface role {
   value: string;
   viewValue: string;
 }
 
+
+@Injectable()
+export class MyCustomPaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  // For internationalization, the `$localize` function from
+  // the `@angular/localize` package can be used.
+  firstPageLabel = $localize`Première page`;
+  itemsPerPageLabel = $localize`Items par page:`;
+  lastPageLabel = $localize`Dernière page`;
+
+  // You can set labels to an arbitrary string too, or dynamically compute
+  // it through other third-party internationalization libraries.
+  nextPageLabel = 'Page suivante';
+  previousPageLabel = 'Page précédente';
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`Page 1 de 1`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`Page ${page + 1} de ${amountPages}`;
+  }
+}
+
 @Component({
   selector: "app-board-admin",
   templateUrl: "./board-admin.component.html",
   styleUrls: ["./board-admin.component.scss"],
+  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
 })
 export class BoardAdminComponent implements OnInit {
   searchTerm: any;

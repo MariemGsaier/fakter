@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
 import { Datedevise } from "src/app/models/datedevise.model";
 import { Devise } from "src/app/models/devise.model";
 import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
-import { MatPaginator } from "@angular/material/paginator";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import {
   AbstractControl,
   FormBuilder,
@@ -17,13 +17,41 @@ import { DatedeviseService } from "src/app/services/datedevise.service";
 import { LigneDevise } from "src/app/models/ligne-devise.model";
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { Subject } from "rxjs";
 registerLocaleData(localeFr, 'fr');
+
+
+@Injectable()
+export class MyCustomPaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  // For internationalization, the `$localize` function from
+  // the `@angular/localize` package can be used.
+  firstPageLabel = $localize`Première page`;
+  itemsPerPageLabel = $localize`Items par page:`;
+  lastPageLabel = $localize`Dernière page`;
+
+  // You can set labels to an arbitrary string too, or dynamically compute
+  // it through other third-party internationalization libraries.
+  nextPageLabel = 'Page suivante';
+  previousPageLabel = 'Page précédente';
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`Page 1 de 1`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`Page ${page + 1} de ${amountPages}`;
+  }
+}
 
 
 @Component({
   selector: "app-devises",
   templateUrl: "./devises.component.html",
   styleUrls: ["./devises.component.scss"],
+  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
+
 })
 export class DevisesComponent implements OnInit {
   searchTerm: any;

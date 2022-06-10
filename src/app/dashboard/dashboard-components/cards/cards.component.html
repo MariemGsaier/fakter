@@ -1,44 +1,75 @@
 <!-- Cards -->
 <div fxLayout="row wrap" fxLayoutGap="30px grid">
-  <div fxFlex.md="100%" fxFlex.lg="100%" fxFlex.xl="100%" style="display: flex;justify-content: center ; max-width: 100%;"  fxFlex.sm="100%" >
-          <mat-card class="overflow-hidden" style="margin-right: 1%;" >    
-            <mat-card-content>
-              <div>
-                <p class="fs-16 lh-lg fw-medium op-7">
-                  Factures par état de facture
-                </p>
-                <p class="fs-20">
-                  4
-                </p>
-            
-              </div>
-            </mat-card-content>
-          </mat-card>
-       <mat-card class="overflow-hidden" style="margin-right: 1%;">    
-          <mat-card-content>
-            <div>
-              <p class="fs-16 lh-lg op-7  fw-medium">
-                Factures par état d'échéance
-              </p>
-              <p class="fs-20">
-                12
-              </p>
-            </div>
-          </mat-card-content>
-        </mat-card>
-        <mat-card class="overflow-hidden" style="margin-right: 1%;">    
-          <mat-card-content>
-            <div>
-              <p class="fs-16 lh-lg fw-medium op-7" >
-                Factures par état d'échéance et facture
-              </p>
-              <p class="fs-20">
-                23
-              </p>
-              <div style="float: right;"><mat-icon style="color: #e46a76; font-size: 40px;">warning</mat-icon></div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+  <div fxFlex.md="100%" fxFlex.lg="100%" fxFlex.xl="100%" style="display: flex;align-items: center ; max-width: 100%;  justify-content: space-around;"  fxFlex.sm="100%" >
+
+      <mat-card class="overflow-hidden" style="margin-right: 1%; max-height: 70%;" >    
+        <mat-card-content>
+            <p class="fs-16 lh-lg fw-medium op-7">
+              Nombre Factures
+            </p>
+            <p class="fs-40" style="position: relative; top : 10px;">
+              4
+            </p>
+            <div style="float: right; bottom: 30px; right: 9px; position:relative"><mat-icon style="color: #fb9678; font-size: 40px;">file_copy</mat-icon></div>
+        </mat-card-content>
+      </mat-card>
+
+  <mat-card class="overflow-hidden" style="margin-right: 1%; max-height: 70%;" >    
+      <mat-card-content>
+          <p class="fs-16 lh-lg fw-medium op-7">
+           Nombre Clients
+          </p>
+          <p class="fs-40" style="position: relative; top : 10px;">
+            4
+          </p>
+          <div style="float: right; bottom: 30px; right: 9px; position:relative"><mat-icon style="color: #03c9d7; font-size: 40px;">people</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="overflow-hidden" style="margin-right: 1%; max-height: 70%;" >    
+      <mat-card-content>
+          <p class="fs-16 lh-lg fw-medium op-7">
+           Nombre Articles
+          </p>
+          <p class="fs-40" style="position: relative; top : 10px;">
+            4
+          </p>
+          <div style="float: right; bottom: 30px; right: 9px; position:relative"><mat-icon style="color: #00c292; font-size: 40px;">redeem</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="overflow-hidden card-kpi" style="margin-right: 1%;  max-height: 70%;">    
+      <mat-card-content>
+          <p class="fs-16 lh-lg fw-medium op-7" >
+            Factures/état de facture
+          </p>
+          <p class="fs-40">
+            23
+          </p>
+          <div style="float: right; bottom: 30px; right: 9px; position:relative"><mat-icon style="color: #fb9678; font-size: 40px;">linear_scale</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="overflow-hidden card-kpi" style="margin-right: 1%;  max-height: 70%;">    
+      <mat-card-content>
+          <p class="fs-16 lh-lg fw-medium op-7" >
+            Factures/état d'échéance
+          </p>
+          <p class="fs-40">
+            23
+          </p>
+          <div style="float: right; bottom: 30px; right: 9px; position:relative"><mat-icon style="color: #03c9d7; font-size: 40px;">timelapse</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="overflow-hidden card-kpi" style="margin-right: 1%;  max-height: 70%;">    
+      <mat-card-content>
+          <p class="fs-16 lh-lg fw-medium op-7" >
+            Factures échues non payées
+          </p>
+          <p class="fs-40">
+            23
+          </p>
+          <div style="float: right; bottom: 30px; right: 9px; position:relative"><mat-icon style="color: #e46a76; font-size: 40px;">timer_off</mat-icon></div>
+      </mat-card-content>
+    </mat-card>
+        
 
         
   </div>

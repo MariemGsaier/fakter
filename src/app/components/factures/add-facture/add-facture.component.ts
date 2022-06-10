@@ -175,14 +175,7 @@ export class AddFactureComponent implements OnInit {
     return "";
   }
 
-  changeDeviseValue(data: any) {
-    console.log(data)
-    this.convertirDevise();
-  }
-
-  changeClientValue(data: any) {
-    console.log(data);
-  }
+ 
 
   getDevises() {
     this.deviseService.getAllDevises().subscribe({
@@ -309,7 +302,7 @@ export class AddFactureComponent implements OnInit {
       reference: "FACT/" + new Date(),
       date_facturation: this.facture.date_facturation,
       date_echeance: this.facture.date_echeance,
-      etat_facture: "ouvert",
+      etat_facture: "non payé",
       etat_echeance: false,
       total_ht: this.totalht,
       total_ttc: this.totalttc,
