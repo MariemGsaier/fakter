@@ -34,7 +34,8 @@
         class="mt-n3 text-light-muted feather-base text-dark"
       ></i-feather>
     </button>
-    <h4 class="mb-56">Gérez vos comptes bancaires</h4>
+    <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les comptes bancaires</h4>
+    <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les comptes bancaires</h4>
     
     <div *ngIf="search" class="search-section d-flex align-items-center">
       <mat-form-field class="w-100" color="primary" appearance="legacy">
@@ -140,76 +141,7 @@
 <mat-card class="w-100" *ngIf="disabelModif">
   <mat-card-content>
     <form [formGroup]="bankAccForm" (ngSubmit)="onSubmit()">
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>RIB</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer votre modification"
-          required
-          id="adr"
-          [(ngModel)]="currentBankAccount.rib"
-          formControlName="rib"
-          [ngClass]="{ 'is-invalid': f['rib'].errors }"
-        />
-        <mat-error *ngIf="f['rib'].errors" class="text-danger">
-          <div *ngIf="f['rib'].errors['required']">
-            Le champ RIB est obligatoire
-          </div>
-          <div *ngIf="f['rib'].errors['pattern']">
-            Le RIB saisi est invalide
-          </div>
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>BIC</mat-label>
-        <input
-          matInput
-          type="email"
-          placeholder="Veuillez entrer votre modification"
-          required
-          id="cour"
-          [(ngModel)]="currentBankAccount.bic"
-          formControlName="bic"
-          [ngClass]="{ 'is-invalid': f['bic'].errors }"
-        />
-        <mat-error *ngIf="f['bic'].errors" class="text-danger">
-          <div *ngIf="f['bic'].errors['required']">
-            Le champ BIC est obligatoire
-          </div>
-          <div *ngIf="f['bic'].errors['pattern']">
-            Le BIC saisi est invalide
-          </div>
-          <div *ngIf="f['bic'].errors['maxlength']">
-            Le numéro de compte saisi doit avoir 8 caractères au minimum
-          </div>
-          <div *ngIf="f['bic'].errors['minlength']">
-            Le numéro de compte saisi peut avoir 11 caractères au maximum
-          </div>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>IBAN</mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Veuillez entrer votre modification"
-          required
-          id="siteweb"
-          [(ngModel)]="currentBankAccount.iban"
-          formControlName="iban"
-          [ngClass]="{ 'is-invalid': f['iban'].errors }"
-        />
-        <mat-error *ngIf="f['iban'].errors" class="text-danger">
-          <div *ngIf="f['iban'].errors['required']">
-            Le champ IBAN est obligatoire
-          </div>
-          <span *ngIf="f['iban'].errors['iban']"
-            >Le IBAN saisi est invalide</span
-          >
-        </mat-error>
-      </mat-form-field>
+      <h4 class="mb-56">Compte bancaire avec le numéro: {{currentBankAccount.num_compte}}</h4>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Nom de la banque</mat-label>
         <input

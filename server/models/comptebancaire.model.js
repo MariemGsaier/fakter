@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
       },
       bic: {
         type: Sequelize.STRING,
-        unique : true916a1ecf8
+        unique : true
       },
       iban: {
         type: Sequelize.STRING,

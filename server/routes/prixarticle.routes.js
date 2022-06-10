@@ -9,9 +9,10 @@ module.exports = function (app) {
       );
       next();
     });
-    
-    
+
       // Créer prix article
        router.post("/create", controllerprx.create);
+    // Delete an article with id
+    router.delete("/:id", controllerprx.delete);
       app.use("/api/prix", router);
     };

@@ -125,7 +125,7 @@ export class AddDateComponent implements OnInit {
             showCancelButton: true,
             confirmButtonColor: "#00c292",
             cancelButtonColor: "#e46a76",
-            confirmButtonText: "Ajouter une autre devise",
+            confirmButtonText: "Ajouter un autre taux de change",
             cancelButtonText: "Quitter",
           }).then((result) => {
             if (result.isConfirmed) {
@@ -138,5 +138,23 @@ export class AddDateComponent implements OnInit {
         error: (e) => console.error(e),
       });
     }
+  }
+
+  ajoutDevise(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-devise"]);
+      }
+    });
   }
 }

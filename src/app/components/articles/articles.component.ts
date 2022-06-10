@@ -15,6 +15,7 @@ import {
 import * as XLSX from "xlsx";
 import { LignePrix } from "src/app/models/ligne-prix.model";
 import { PrixarticleService } from "src/app/services/prixarticle.service";
+import { Prixarticle } from "src/app/models/prixarticle.model";
 
 interface type {
   value: string;
@@ -44,7 +45,6 @@ export class ArticlesComponent implements OnInit {
     type_article: new FormControl(""),
     cout: new FormControl(""),
     description: new FormControl(""),
-    prix: new FormControl(""),
   });
   currentArticle: Article = {
     nom_article: "",
@@ -57,11 +57,11 @@ export class ArticlesComponent implements OnInit {
     type_article: "",
     cout: undefined,
     description: "",
-    prix: {
+    prix: [{
       id: undefined,
       prix: undefined,
       date: new Date(),
-    },
+    }],
   };
   message = "";
   articles?: LignePrix[];
@@ -117,7 +117,6 @@ export class ArticlesComponent implements OnInit {
         "",
         [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$")],
       ],
-      prix: ["", Validators.required],
     });
   }
 
@@ -160,13 +159,15 @@ export class ArticlesComponent implements OnInit {
   }
 
   setActiveArticle(article: LignePrix, index: number): void {
+    console.log('11111', article);
+    
     this.currentPrixArticle = article;
     this.updateArticleForm.setValue({
       nom_article: article.nom_article,
       type_article: article.type_article,
       cout: article.cout,
       description: article.description,
-      prix: article.prix?.prix,
+      // prix: article.prix?.prix,
     });
     console.log(article);
     this.currentIndex = index;
@@ -207,9 +208,16 @@ export class ArticlesComponent implements OnInit {
 
   updateArticle(): void {
     this.message = "";
+    
     if (this.updateArticleForm.valid) {
+      const data = {
+        type_article: this.updateArticleForm.get("type_article")?.value,
+        cout: this.updateArticleForm.get("cout")?.value,
+        description: this.updateArticleForm.get("description")?.value,
+      };
+      
       this.articleService
-        .update(this.currentArticle.nom_article, this.currentArticle)
+        .update(this.currentPrixArticle.nom_article, data)
         .subscribe({
           next: (res) => {
             console.log(res);
@@ -234,7 +242,7 @@ export class ArticlesComponent implements OnInit {
     }
   }
 
-  deleteArticle(article: Article): void {
+  deletePrixArticle(prixArt: LignePrix): void {
     Swal.fire({
       title: "Êtes-vous sûr de le supprimer ? ",
       text: "Vous ne serez pas capable de le récupérer !",
@@ -246,11 +254,12 @@ export class ArticlesComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        this.articleService.delete(article.nom_article).subscribe({
-          next: (res) => {
-            console.log(res);
+        console.log('??', this.currentPrixArticle);
+        
+        prixArt = this.currentPrixArticle;
+        
             this.prixArticleService
-              .delete(this.currentPrixArticle.prix?.id)
+              .delete(prixArt)
               .subscribe({
                 next: (res) => {
                   console.log(res);
@@ -267,8 +276,6 @@ export class ArticlesComponent implements OnInit {
                   });
                 },
               });
-          },
-        });
       }
     });
   }

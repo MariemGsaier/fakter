@@ -380,4 +380,56 @@ export class AddFactureComponent implements OnInit {
     this.submitted = false;
     window.location.reload();
   }
+
+  ajoutCompteBancaire(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-account"]);
+      }
+    });
+  }
+  ajoutDevise(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-devise"]);
+      }
+    });
+  }
+  ajoutClient(): void {
+    Swal.fire({
+      title: "Attention !",
+      text: "Si vous cliquez sur continuer, vous allez perdre votre progression.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor : "#e46a76",
+      confirmButtonText: "Continuer",
+      cancelButtonText :"Quitter"
+      
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(["/add-client"]);
+      }
+    });
+  }
 }

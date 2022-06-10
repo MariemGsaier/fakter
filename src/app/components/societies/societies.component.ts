@@ -18,6 +18,7 @@ import { TokenStorageService } from "src/app/services/token-storage.service";
   styleUrls: ["./societies.component.scss"],
 })
 export class SocietiesComponent implements OnInit {
+  
   societeForm: FormGroup = new FormGroup({
     nom_societe: new FormControl(""),
     numtel: new FormControl(""),

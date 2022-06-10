@@ -21,6 +21,15 @@
               <mat-option *ngFor="let client of clients" [value]="client.id">{{
                 client.nom
               }}</mat-option>
+              <mat-option
+              >
+              <div class="add">
+                <mat-icon style="font-size: 14px"
+                  >add<a class="link" (click)="ajoutClient()"
+                    >Ajouter un client</a
+                  ></mat-icon
+                >
+              </div></mat-option>
             </mat-select>
             <mat-error *ngIf="f['client'].errors" class="text-danger">
               <div *ngIf="f['client'].errors['required']">
@@ -128,6 +137,15 @@
                 [value]="comptebancaire.num_compte"
                 >{{ comptebancaire.num_compte }}</mat-option
               >
+              <mat-option
+              >
+              <div class="add">
+                <mat-icon style="font-size: 14px"
+                  >add<a class="link" (click)="ajoutCompteBancaire()"
+                    >Ajouter un compte bancaire</a
+                  ></mat-icon
+                >
+              </div></mat-option>
             </mat-select>
             <mat-error *ngIf="f['num_compte'].errors" class="text-danger">
               <div *ngIf="f['num_compte'].errors['required']">
@@ -154,6 +172,15 @@
               <mat-option *ngFor="let devise of devises" [value]="devise.nom">{{
                 devise.nom
               }}</mat-option>
+              <mat-option
+              >
+              <div class="add">
+                <mat-icon style="font-size: 14px"
+                  >add<a class="link" (click)="ajoutDevise()"
+                    >Ajouter une devise</a
+                  ></mat-icon
+                >
+              </div></mat-option>
             </mat-select>
             <mat-error *ngIf="f['devise'].errors" class="text-danger">
               <div *ngIf="f['devise'].errors['required']">

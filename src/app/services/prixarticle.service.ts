@@ -18,8 +18,8 @@ export class PrixarticleService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
-  delete(nom_article: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${nom_article}`);
+  delete(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/${id}`);
   }
   deleteAll(): Observable<any> {
     return this.http.delete(baseUrl);

@@ -10,7 +10,8 @@ exports.adminBoard = (req, res) => {
 
 const db = require("../models");
 const article = db.article;
-const prixArticle = db.prixArticle;
+const facture = db.facture;
+const ligneFact = db.lignefacture;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new article

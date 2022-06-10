@@ -89,15 +89,15 @@
 
         <!-- Colonne Prix -->
         <ng-container matColumnDef="prix">
-          <th mat-header-cell *matHeaderCellDef>Prix de vente</th>
+          <th mat-header-cell *matHeaderCellDef>Prix de vente (DT)</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.prix[0].prix }}</p>
+            <p class="mb-0 fw-medium">{{ article.prix[0]?.prix }}</p>
           </td>
         </ng-container>
 
         <!-- Colonne Coût -->
         <ng-container matColumnDef="cout">
-          <th mat-header-cell *matHeaderCellDef>Coût</th>
+          <th mat-header-cell *matHeaderCellDef>Coût (DT)</th>
           <td mat-cell *matCellDef="let article">
             <p class="mb-0 fw-medium">{{ article.cout }}</p>
           </td>
@@ -139,7 +139,7 @@
               class="btn btn-danger fw-normal btnw disabled"
               style="margin-right: 1%"
               type="submit"
-              (click)="deleteArticle(article)"
+              (click)="deletePrixArticle(article)"
               matTooltip="Supprimer un article"
               matTooltipPosition="above"
             >
@@ -181,26 +181,6 @@
             <mat-error *ngIf="f['type_article'].errors" class="text-danger">
               <div *ngIf="f['type_article'].errors['required']">Le champ type est obligatoire</div>
             </mat-error>
-      </mat-form-field>
-
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Prix vente</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="Veuillez entrer votre modification"
-          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
-          formControlName="prix"
-          readonly
-          required
-          id="prix"
-          [value]="currentPrixArticle.prix?.prix"
-        />
-        <mat-error *ngIf="f['prix'].errors" class="text-danger">
-          <div *ngIf="f['prix'].errors['required']">
-            Le champ prix est obligatoire
-          </div>
-        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Coût</mat-label>

@@ -65,7 +65,7 @@ exports.delete = (req, res) => {
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "article was deleted successfully!",
+          message: "prix article a été supprimé avec succès!",
         });
       } else {
         res.send({
