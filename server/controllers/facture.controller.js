@@ -72,6 +72,20 @@ facture.findAll({
       });
     });
 };
+exports.findAllArticles = (req, res) => {
+
+  facture.findAll({
+      include: ["article"],
+    })
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message
+        });
+      });
+  };
 
 // Update a facture by the id in the request
 exports.update = (req, res) => {

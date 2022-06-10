@@ -18,17 +18,18 @@ import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-s
   styleUrls: ["./dialog-box.component.scss"],
 })
 export class DialogBoxComponent implements OnInit {
-
   currentPrixArticle: LignePrix = {
     nom_article: "",
     type_article: "",
     cout: undefined,
     description: "",
-    prix: [{
-      id: undefined,
-      prix: undefined,
-      date: new Date(),
-    }],
+    prix: [
+      {
+        id: undefined,
+        prix: undefined,
+        date: new Date(),
+      },
+    ],
   };
   ligneArticleForm: FormGroup = new FormGroup({
     prix: new FormControl(""),
@@ -93,10 +94,11 @@ export class DialogBoxComponent implements OnInit {
   }
 
   closeDialog(result?: any) {
-    if(this.ligneArticleForm.valid && this.qteArticleForm.valid){
-      this.dialogRef.close(result);
-    }
-   
+    if (result) {
+      if (this.ligneArticleForm.valid && this.qteArticleForm.valid) {
+        this.dialogRef.close(result);
+      }
+    } else this.dialogRef.close();
   }
 
   ngOnInit(): void {
@@ -136,10 +138,15 @@ export class DialogBoxComponent implements OnInit {
         prix: this.ligneArticleForm.get("prix")?.value,
         quantite: this.qteArticleForm.get("quantite")?.value,
         taxe: 19,
-        sous_totalttc: (this.ligneArticleForm.get("prix")?.value *((19/100)+1) )*this.qteArticleForm.get("quantite")?.value,
-        soustotal_ht : this.ligneArticleForm.get("prix")?.value *this.qteArticleForm.get("quantite")?.value
+        sous_totalttc:
+          this.ligneArticleForm.get("prix")?.value *
+          (19 / 100 + 1) *
+          this.qteArticleForm.get("quantite")?.value,
+        soustotal_ht:
+          this.ligneArticleForm.get("prix")?.value *
+          this.qteArticleForm.get("quantite")?.value,
       };
-      this.articlesLigneFact.push(articleLigneFact)
+      this.articlesLigneFact.push(articleLigneFact);
     }
     this.closeDialog(this.articlesLigneFact);
   }

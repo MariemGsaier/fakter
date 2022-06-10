@@ -15,6 +15,10 @@ export class FactureService {
   getAll(): Observable<Facture[]> {
     return this.http.get<Facture[]>(baseUrl);
   }
+  getAllArticles(): Observable<Facture[]> {
+    return this.http.get<Facture[]>(baseUrl + '/articles');
+  }
+ 
   getAllFactDetailed(): Observable<Facture[]> {
     return this.http.get<Facture[]>(baseUrl+'/detailed');
   }

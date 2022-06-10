@@ -22,5 +22,6 @@ router.post("/create", controllerfct.create);
   router.get("/detailed", controllerfct.findAllDetails);
   // Update a societe with id
   router.put("/:id", controllerfct.update);
+  router.get("/articles",controllerfct.findAllArticles)
   app.use("/api/factures", router);
 };
