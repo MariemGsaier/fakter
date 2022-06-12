@@ -12,6 +12,15 @@ export class FactureService {
 
   constructor(private http: HttpClient) { }
 
+  getDevise(nom: any): any {
+    return this.http.get(`${baseUrl + '/devise'}/${nom}`);
+  }
+  getAccount(num_compte: any): any {
+    return this.http.get(`${baseUrl + '/compte'}/${num_compte}`);
+  }
+  getClient(id: any): any {
+    return this.http.get(`${baseUrl + '/client'}/${id}`);
+  }
   getAll(): Observable<Facture[]> {
     return this.http.get<Facture[]>(baseUrl);
   }

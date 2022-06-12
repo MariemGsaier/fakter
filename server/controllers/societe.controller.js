@@ -30,7 +30,6 @@ exports.create = (req, res) => {
     siteweb: req.body.siteweb,
     type_societe: req.body.type_societe,
     num_rcs: req.body.num_rcs,
-    timbre_fiscal: req.body.timbre_fiscal,
   };
   // Save societe in the database
   societe
@@ -112,23 +111,6 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Could not delete societe with id=" + id,
-      });
-    });
-};
-// Delete all societes from the database.
-exports.deleteAll = (req, res) => {
-  societe
-    .destroy({
-      where: {},
-      truncate: false,
-    })
-    .then((nums) => {
-      res.send({ message: `${nums} societes were deleted successfully!` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while removing all societes.",
       });
     });
 };

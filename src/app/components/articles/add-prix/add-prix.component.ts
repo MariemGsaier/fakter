@@ -37,11 +37,13 @@ import 'moment/locale/fr';
 export class AddPrixComponent implements OnInit {
   prixArticleForm: FormGroup = new FormGroup({
     prix: new FormControl(''),
+    cout: new FormControl(''),
     date: new FormControl(''),
     nom_article: new FormControl('')
   });
   prixArticle: Prixarticle = {
     prix: undefined,
+    cout: undefined,
     date: new Date(),
     nom_article: ""
   };
@@ -79,6 +81,7 @@ export class AddPrixComponent implements OnInit {
     this.prixArticleForm = this.formBuilder.group(
       {
         prix: ['', [Validators.required]],
+        cout: ['', [Validators.required]],
         date: ['', [Validators.required]],
         nom_article: ['', [Validators.required]],
       }
@@ -109,13 +112,14 @@ export class AddPrixComponent implements OnInit {
   savePrixArticle(): void {
     const data = {
       prix: this.prixArticle.prix,
+      cout: this.prixArticle.cout,
       date: this.prixArticle.date,
       nom_article: this.prixArticle.nom_article,
     };
     console.log('??', data);
     
 
-    if (!this.prixArticleForm.invalid) {
+    if (this.prixArticleForm.valid) {
       this.prixArticleService.create(data).subscribe({
         next: (res) => {
           console.log(res);

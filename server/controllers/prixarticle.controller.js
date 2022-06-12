@@ -24,6 +24,7 @@ exports.create = (req, res) => {
   // Créer prix
   const prx = {
     prix: req.body.prix,
+    cout: req.body.cout,
     date: req.body.date,
     nom_article: req.body.nom_article,
   };
@@ -72,22 +73,6 @@ exports.delete = (req, res) => {
           message: `Cannot delete article with id = ${id}. Maybe article was not found!`,
         });
       }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message,
-      });
-    });
-};
-// Supprimer tous les prix articles de la base de données
-exports.deleteAll = (req, res) => {
-  article
-    .destroy({
-      where: {},
-      truncate: false,
-    })
-    .then((nums) => {
-      res.send({ message: `${nums} article were deleted successfully!` });
     })
     .catch((err) => {
       res.status(500).send({

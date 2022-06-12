@@ -67,7 +67,6 @@ export class PrintFactureComponent implements OnInit {
     siteweb: '',
     type_societe: '',
     num_rcs: '',
-    timbre_fiscal: 0
   };
 
   client: Client = {

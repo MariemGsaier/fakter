@@ -38,7 +38,6 @@ export class SocietiesComponent implements OnInit {
     siteweb: "",
     type_societe: "",
     num_rcs: "",
-    timbre_fiscal: undefined,
   };
   societe: Societe = {
     nom_societe: "",
@@ -48,7 +47,6 @@ export class SocietiesComponent implements OnInit {
     siteweb: "",
     type_societe: "",
     num_rcs: "",
-    timbre_fiscal: undefined,
   };
   societes?: Societe[];
   message = "";

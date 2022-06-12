@@ -30,8 +30,6 @@ module.exports = function (app) {
     router.put("/:nom_article", controllerart.update);
     // Delete an article with id
     router.delete("/:nom_article", controllerart.delete);
-    // Create a new article
-    router.delete("/", controllerart.deleteAll);
     app.use("/api/articles", router);
   };
   

@@ -6,4 +6,5 @@ export class Client {
   numtel?: number;
   courriel?: string;
   siteweb?: string;
+  archive?: boolean;
 }

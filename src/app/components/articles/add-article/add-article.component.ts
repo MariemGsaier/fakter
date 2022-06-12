@@ -20,16 +20,17 @@ export class AddArticleComponent implements OnInit {
   articleForm: FormGroup = new FormGroup({
     nom_article: new FormControl(''),
     type_article: new FormControl(''),
-    cout: new FormControl(''),
     description: new FormControl('')
   });
   article: Article = {
     nom_article: "",
     type_article: "",
-    cout: undefined,
     description: "",
+    archive: false
   };
   submitted = false;
+  errorAddArticle =false;
+  errorMsg =""
 
   types: type[] = [
     {value: 'Service', viewValue: 'Service'},
@@ -54,7 +55,6 @@ export class AddArticleComponent implements OnInit {
             Validators.required
           ]
         ],
-        cout: ['', Validators.required,],
         description: ['', [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$")]]
       }
     );
@@ -76,8 +76,8 @@ export class AddArticleComponent implements OnInit {
     const data = {
       nom_article: this.article.nom_article,
       type_article: this.article.type_article,
-      cout: this.article.cout,
       description: this.article.description,
+      archive: this.article.archive,
     };
     if ((this.articleForm.valid)) {
     this.articleService.create(data).subscribe({
@@ -97,7 +97,11 @@ export class AddArticleComponent implements OnInit {
           }
         });
       },
-      error: (e) => console.error(e),
+      error: (e) => {
+        console.error(e),
+        this.errorAddArticle=true
+        this.errorMsg = "le nom d'article entré existe déjà !";
+      }
     });
   }
 }

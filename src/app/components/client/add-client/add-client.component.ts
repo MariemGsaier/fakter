@@ -31,6 +31,7 @@ export class AddClientComponent implements OnInit {
     numtel: undefined,
     courriel: "",
     siteweb: "",
+    archive: false
   };
   floatLabelPhoneControl = new FormControl('always' as FloatLabelType);
   clientForm: FormGroup = new FormGroup({
@@ -48,8 +49,7 @@ export class AddClientComponent implements OnInit {
   codesId = [
     { id: 0, value: "Numéro CIN" },
     { id: 1, value: "Numéro Passeport" },
-    { id: 2, value: "Numéro RCS" },
-    { id: 3, value: "Identifiant Fiscal" },
+    { id: 2, value: "Identifiant Fiscal" },
   ];
 
   constructor(
@@ -99,9 +99,6 @@ export class AddClientComponent implements OnInit {
       case "Numéro Passeport":
         ctrl.setValidators([Validators.required,Validators.pattern("^(?!^0+$)[a-zA-Z0-9]{3,20}$")]);
         break;
-      case "Numéro RCS":
-        ctrl.setValidators([Validators.required,Validators.pattern("/^\w+((\-?| ?)\w+)? [a-bA-B] (\d{9}|((\d{3} ){2}\d{3}))$/gm")]);
-        break;
       case "Identifiant Fiscal":
         ctrl.setValidators([Validators.required,Validators.pattern("/[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]/")]);
         break;
@@ -134,6 +131,7 @@ export class AddClientComponent implements OnInit {
   }
 
   saveClient(): void {
+    
     const data = {
       code_identification: this.client.code_identification,
       nom: this.client.nom,
@@ -141,9 +139,12 @@ export class AddClientComponent implements OnInit {
       numtel: this.client.numtel,
       courriel: this.client.courriel,
       siteweb: this.client.siteweb,
+      archive: false,
     };
     console.log(data);
-    if (!this.clientForm.invalid) {
+    console.log(this.clientForm.valid);
+    
+    if (this.clientForm.valid) {
       this.clientService.create(data).subscribe({
         next: (res) => {
           console.log(res);

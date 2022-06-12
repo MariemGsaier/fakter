@@ -4,4 +4,5 @@ export class Bankaccount {
   bic?: string;
   iban?: string;
   nom_banque?: string;
+  archive?: boolean;
 }

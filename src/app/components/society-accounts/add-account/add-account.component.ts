@@ -126,6 +126,7 @@ selectedDevise = "";
       rib: this.BankAccount.rib,
       bic: this.BankAccount.bic,
       iban: this.BankAccount.iban,
+      archive: false,
       nom_banque: this.BankAccount.nom_banque,
       nom_devise : this.BankAccount.nom_devise
     };
@@ -149,7 +150,7 @@ selectedDevise = "";
             if (result.isConfirmed) {
               this.newBankAccount();
             } else {
-              this.router.navigate(["/bankaccounts"]);
+              this.router.navigate(["/societe"]);
             }
           });
         },

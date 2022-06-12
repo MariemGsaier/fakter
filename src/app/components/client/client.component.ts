@@ -15,7 +15,7 @@ import {
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import * as XLSX from "xlsx";
 import { Subject } from "rxjs";
-
+import { FactureService } from "src/app/services/facture.service";
 
 @Injectable()
 export class MyCustomPaginatorIntl implements MatPaginatorIntl {
@@ -29,8 +29,8 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
 
   // You can set labels to an arbitrary string too, or dynamically compute
   // it through other third-party internationalization libraries.
-  nextPageLabel = 'Page suivante';
-  previousPageLabel = 'Page précédente';
+  nextPageLabel = "Page suivante";
+  previousPageLabel = "Page précédente";
 
   getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0) {
@@ -45,10 +45,9 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
   selector: "app-client",
   templateUrl: "./client.component.html",
   styleUrls: ["./client.component.scss"],
-  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}],
+  providers: [{ provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl }],
 })
 export class ClientComponent implements OnInit {
-
   displayedColumns: string[] = [
     "code_identification",
     "nom",
@@ -68,7 +67,6 @@ export class ClientComponent implements OnInit {
     siteweb: "",
   };
 
-
   clientForm: FormGroup = new FormGroup({
     email: new FormControl(""),
     phone: new FormControl(""),
@@ -77,12 +75,10 @@ export class ClientComponent implements OnInit {
     adresse: new FormControl(""),
   });
 
-
   codesId = [
     { id: 0, value: "Numéro CIN" },
     { id: 1, value: "Numéro Passeport" },
-    { id: 2, value: "Numéro RCS" },
-    { id: 3, value: "Identifiant Fiscal" },
+    { id: 2, value: "Identifiant Fiscal" },
   ];
   submitted = false;
   paginator?: MatPaginator;
@@ -101,11 +97,10 @@ export class ClientComponent implements OnInit {
   search: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private clientService: ClientService,
     private tokenStorageService: TokenStorageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private factureService: FactureService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -187,22 +182,6 @@ export class ClientComponent implements OnInit {
           ),
         ]);
         break;
-      case "codeTva":
-        ctrl.setValidators([
-          Validators.required,
-          Validators.pattern(
-            "^((FR)?[0-9A-Z]{2}[0-9]{9} | (DE)?[0-9]{9} | (CZ)?[0-9]{8,10} | (DK)?[0-9]{8} | (BE)?0[0-9]{9} |)$"
-          ),
-        ]);
-        break;
-      case "numRcs":
-        ctrl.setValidators([
-          Validators.required,
-          Validators.pattern(
-            "/^w+((-?| ?)w+)? [a-bA-B] (d{9}|((d{3} ){2}d{3}))$/gm"
-          ),
-        ]);
-        break;
       case "matriculeFisc":
         ctrl.setValidators([
           Validators.required,
@@ -225,6 +204,7 @@ export class ClientComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.clients = data;
+          this.clients = data.filter((elm) => elm.archive == false);
           this.dataSource.data = this.clients;
           console.log(data);
         },
@@ -237,7 +217,7 @@ export class ClientComponent implements OnInit {
             confirmButtonColor: "#00c292",
             confirmButtonText: "Ok",
           });
-        }
+        },
       });
   }
 
@@ -246,42 +226,29 @@ export class ClientComponent implements OnInit {
     this.currentClient = {};
     this.currentIndex = -1;
   }
+
+  archiveClient(body: Client) {
+    body.archive = true;
+    this.clientService.update(body.id, body).subscribe({
+      next: (res) => {
+        console.log(res);
+        Swal.fire({
+          title: "Client archivé avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.refreshList();
+          }
+        });
+      },
+    });
+  }
   setActiveClient(client: Client, index: number): void {
     this.currentClient = client;
     console.log(client);
     this.currentIndex = index;
     this.disabelModif = true;
-  }
-  removeAllClients(): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de tout supprimer ? ",
-      text: "Vous ne serez pas capable de restaurer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.clientService.deleteAll().subscribe({
-          next: (res) => {
-            console.log(res);
-            this.refreshList();
-          },
-          error: (e) => {
-            console.error(e);
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression des clients.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            });
-          },
-        });
-      }
-    });
   }
 
   updateClient(): void {
@@ -306,37 +273,57 @@ export class ClientComponent implements OnInit {
         },
       });
   }
+
   deleteClient(client: Client): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.clientService.delete(client.id).subscribe({
-          next: (res) => {
-            console.log(res);
-            this.refreshList();
-          },
-          error: (e) => {
-            console.error(e);
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression du client.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            });
-          },
-        });
-      }
+    console.log(client.id);
+    
+    this.factureService.getClient(client.id).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.clientService.delete(client.id).subscribe({
+                next: (res) => {
+                  console.log(res);
+                  this.refreshList();
+                },
+                error: (e) => {
+                  console.error(e);
+                  Swal.fire({
+                    title: "Echec de supression !",
+                    text: "Une erreur est survenue lors de la supression du client.",
+                    icon: "warning",
+                    confirmButtonColor: "#00c292",
+                    confirmButtonText: "Ok",
+                  });
+                },
+              });
+            }
+          });
+        } else {
+          console.log("NON NULL");
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer ce client car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
+      },
     });
   }
+  
   filterData($event: any) {
     $event.target.value.trim();
     $event.target.value.toLowerCase();
@@ -358,6 +345,7 @@ export class ClientComponent implements OnInit {
   }
 
   annuler(): void {
-    this.disabelModif = true;
+    this.disabelModif = false;
+    this.fetchClients();
   }
 }

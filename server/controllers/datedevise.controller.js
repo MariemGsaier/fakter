@@ -48,7 +48,7 @@ exports.findAll = (req, res) => {
         });
       });
   };
-  // Lister les devises avec les dates et valeurs
+  // Lister les dates et valeurs avec les noms de devises
   exports.findAllDevises = (req, res) => {
     return dateDevise
       .findAll({
@@ -84,26 +84,6 @@ exports.delete = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Echec de suppression de la date devise avec nom = " + nom,
-      });
-    });
-};
-// Supprimer toutes les dates devise de la base de données
-exports.deleteAll = (req, res) => {
-  dateDevise
-    .destroy({
-      where: {},
-      truncate: false,
-    })
-    .then((nums) => {
-      res.send({
-        message: `${nums} Toutes les dates devises sont supprimés avec succés !`,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Une erreur est survenue lors de la suppression des dates devises.",
       });
     });
 };

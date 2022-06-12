@@ -2,70 +2,64 @@ const db = require("../models");
 const Client = db.client;
 const Op = db.Sequelize.Op;
 // Créer et enregistrer un client
-  exports.create = (req, res) => {
-    if (!req.body.code_identification) {
-      res.status(400).send({
-        message: "contenu vide !"
-      });
-      return;
-    }
+exports.create = (req, res) => {
+  if (!req.body.code_identification) {
+    res.status(400).send({
+      message: "contenu vide !",
+    });
+    return;
+  }
 
-    const clt = {
-      code_identification: req.body.code_identification,
-      nom: req.body.nom,
-      adresse: req.body.adresse,
-      numtel: req.body.numtel,
-      courriel: req.body.courriel ,
-      siteweb: req.body.siteweb 
-   };
-   Client.findOne({
+  const clt = {
+    type_identification: req.body.type_identification,
+    code_identification: req.body.code_identification,
+    nom: req.body.nom,
+    adresse: req.body.adresse,
+    numtel: req.body.numtel,
+    courriel: req.body.courriel,
+    siteweb: req.body.siteweb,
+    archive: req.body.archive,
+  };
+  Client.findOne({
     where: {
       code_identification: req.body.code_identification,
     },
-  })
-  .then((client) => {
+  }).then((client) => {
     if (client) {
       res.status(400).send({
-        message: "Echec! le code d'identification entré existe déjà !"
+        message: "Echec! le code d'identification entré existe déjà !",
       });
       return;
-
-    } else{
-      Client
-      .create(clt)
-        .then(data => {
+    } else {
+      Client.create(clt)
+        .then((data) => {
           res.send(data);
         })
-        .catch(err => {
+        .catch((err) => {
           res.status(500).send({
-            message:
-              err.message ||
-              "une erreur est survenue lors de la création du client.",
+            message: err.message,
           });
         });
-
     }
-   })
-
-
+  });
 };
 // Lister les clients
 exports.findAll = (req, res) => {
   //The req.query property is an object containing the property for each query string parameter in the route.
-  const  code_identification = req.query.code_identification;
-  var condition =  code_identification
-    ? {  code_identification: { [Op.iLike]: `%${ code_identification}%` } }
+  const code_identification = req.query.code_identification;
+  var condition = code_identification
+    ? { code_identification: { [Op.iLike]: `%${code_identification}%` } }
     : null;
-  Client
-    .findAll({ where: condition })
+  Client.findAll({ where: condition })
     .then((data) => {
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message ||
-        "une erreur est survenue lors de l'affichage de la liste des clients.",
-    });
+        message:
+          err.message ||
+          "une erreur est survenue lors de l'affichage de la liste des clients.",
+      });
     });
 };
 
@@ -73,34 +67,32 @@ exports.findAll = (req, res) => {
 exports.update = (req, res) => {
   //The req.query property is an object containing the property for each query string parameter in the route.
   const id = req.params.id;
-  Client
-    .update(req.body, {
-      where: {id: id },
-    })
+  Client.update(req.body, {
+    where: { id: id },
+  })
     .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Le client est mis à jour avec succés." 
+          message: "Le client est mis à jour avec succés.",
         });
       } else {
         res.send({
-          message: `erreur de mise à jour du client avec id=${id }. peut être le client est inexistant  ou le corps de la requête est vide!`,
+          message: `erreur de mise à jour du client avec id=${id}. peut être le client est inexistant  ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Erreur  de mise à jour du client  avec id=" + id ,
+        message: "Erreur  de mise à jour du client  avec id=" + id,
       });
     });
 };
 // Supprimer un client avec l'id spécifié dans la requête
 exports.delete = (req, res) => {
   const id = req.params.id;
-  Client
-    .destroy({
-      where: { id: id  },
-    })
+  Client.destroy({
+    where: { id: id },
+  })
     .then((num) => {
       if (num == 1) {
         res.send({
@@ -108,33 +100,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression du client  avec id=${id }. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression du client  avec id=${id}. Peut être qu'il est inexistant !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "échec de suppression du client avec id=" + id ,
+        message: "échec de suppression du client avec id=" + id,
       });
     });
 };
-// Supprimer tous les clients de la base de données
-exports.deleteAll = (req, res) => {
-
-  Client
-    .destroy({
-      where: {},
-      // truncate is set to true to ignore the where option
-      truncate: false,
-    })
-    .then((nums) => {
-      res.send({ message: `${nums} Tous les clients sont supprimés avec succés !` });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message 
-      });
-    });
-};
-

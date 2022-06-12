@@ -61,12 +61,6 @@ export class FullComponent implements OnInit {
       
     },
     {
-      link: "/factures",
-      icon: "file_copy",
-      menu: "Factures",
-      
-    },
-    {
       link: "/devises",
       icon: "money",
       menu: "Devises",

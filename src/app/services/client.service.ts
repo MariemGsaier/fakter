@@ -22,9 +22,6 @@ export class ClientService {
   delete(id: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`);
   }
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
-  }
   
 }
 

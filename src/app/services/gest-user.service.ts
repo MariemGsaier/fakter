@@ -20,6 +20,12 @@ export class GestUserService {
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, data);
   }
+  disableUser(id: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl + '/disable-user'}/${id}`, data);
+  }
+  enableUser(id: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl + '/enable-user'}/${id}`, data);
+  }
   updatePassword(id: any, data: any): Observable <any> {
     return this.http.put(`${passUrl}/${id}`, data);
   }

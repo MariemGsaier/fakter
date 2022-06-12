@@ -20,6 +20,12 @@ router.post("/create", controllerfct.create);
   router.get("/", controllerfct.findAll);
   // fetch detailed factures
   router.get("/detailed", controllerfct.findAllDetails);
+  // fetch facture of client
+  router.get("/client/:id_client", controllerfct.findOneArticle);
+  // fetch facture of account
+  router.get("/compte/:num_compte", controllerfct.findOneAccount);
+  // fetch facture of account
+  router.get("/devise/:nom_devise", controllerfct.findOneDevise);
   // Update a societe with id
   router.put("/:id", controllerfct.update);
   app.use("/api/factures", router);

@@ -1,0 +1,114 @@
+<mat-card class="w-100">
+    <mat-card-content>
+      <button
+        mat-button
+        class="btn btn-primary fw-normal"
+        matTooltip="Exporter en Excel"
+        matTooltipPosition="above"
+        style="float: right; margin-right: 0.142%"
+        (click)="exportexcel()"
+      >
+        <mat-icon>save_alt</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        class="ms-4 me-4"
+        style="float: right"
+        (click)="search = !search"
+      >
+        <i-feather
+          name="search"
+          class="mt-n3 text-light-muted feather-base text-dark"
+        ></i-feather>
+      </button>
+      <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez l'archive des comptes bancaires</h4>
+      <h4 class="mb-56" *ngIf="showObserverBoard">Consultez l'archive des comptes bancaires</h4>
+      <div *ngIf="search" class="search-section d-flex align-items-center">
+        <mat-form-field class="w-100" color="primary" appearance="legacy">
+          <mat-label class="fs-16">Recherchez ici</mat-label>
+          <input matInput
+          placeholder="Veuillez taper un mot clé"
+          autocomplete="off"
+          (keyup)="filterData($event)">
+        </mat-form-field>
+        <button mat-icon-button (click)="search=!search">
+          <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+        </button>
+      </div>  
+  
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+            <ng-container matColumnDef="numcompte">
+              <th mat-header-cell *matHeaderCellDef>Numéro de compte</th>
+              <td mat-cell *matCellDef="let account">
+                <p class="mb-0 fw-medium">{{ account.num_compte }}</p>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="rib">
+              <th mat-header-cell *matHeaderCellDef>RIB</th>
+              <td mat-cell *matCellDef="let account">
+                <p class="mb-0 fw-medium">{{ account.rib }}</p>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="bic">
+              <th mat-header-cell *matHeaderCellDef>BIC</th>
+              <td mat-cell *matCellDef="let account">
+                <p class="mb-0 fw-medium">{{ account.bic }}</p>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="nombanque">
+              <th mat-header-cell *matHeaderCellDef>Nom de la banque</th>
+              <td mat-cell *matCellDef="let account">
+                <p class="mb-0 fw-medium">{{ account.nom_banque }}</p>
+              </td>
+            </ng-container>
+    
+            <ng-container matColumnDef="iban">
+              <th mat-header-cell *matHeaderCellDef>IBAN</th>
+              <td mat-cell *matCellDef="let account">
+                <p class="mb-0 fw-medium">{{ account.iban }}</p>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="nomdevise">
+              <th mat-header-cell *matHeaderCellDef>Devise</th>
+              <td mat-cell *matCellDef="let account">
+                <p class="mb-0 fw-medium">{{ account.nom_devise }}</p>
+              </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="actions" stickyEnd>
+              <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">Actions</th>
+              <td
+                mat-cell
+                *matCellDef="let account; let i = index"
+                [class.active]="i == currentIndex"
+              >
+              <button
+                mat-button
+                class="btn btn-secondary fw-normal btnw"
+                style="margin-right: 1%"
+                matTooltip="restaurer le compte bancaire"
+                matTooltipPosition="above"
+                type="submit"
+                (click)="unarchiveBankAccount(account)"
+              >
+                <mat-icon>restore</mat-icon>
+              </button>
+              </td>
+            </ng-container>
+    
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        <mat-paginator
+          #paginator
+          [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
+        >
+        </mat-paginator>
+      </div>
+    </mat-card-content>
+  </mat-card>

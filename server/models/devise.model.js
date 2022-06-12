@@ -6,6 +6,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       devise: {
         type: Sequelize.STRING,
+      },
+      archive: {
+        type: Sequelize.BOOLEAN,
       }
     });
     return Devise;

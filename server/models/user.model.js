@@ -13,6 +13,9 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING,
+    },
+    etat_user: {
+      type: Sequelize.BOOLEAN,
     }
   });
   return User;

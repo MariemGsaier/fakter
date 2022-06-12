@@ -1,7 +1,11 @@
 module.exports = (sequelize, Sequelize) => {
     const Client = sequelize.define("client", {
+      type_identification:{
+        type: Sequelize.ENUM,
+        values: ['Numéro CIN', 'Numéro Passeport', 'Identifiant Fiscal'],
+      },
       code_identification:{
-        type: Sequelize.STRING,
+        type: Sequelize.BIGINT,
         unique : true
       },
       nom: {
@@ -18,6 +22,9 @@ module.exports = (sequelize, Sequelize) => {
       },
       siteweb: {
         type: Sequelize.STRING,
+      },
+      archive: {
+        type: Sequelize.BOOLEAN,
       }
     });
     return Client;

@@ -21,26 +21,31 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message 
+        message: err.message,
       });
     });
 };
 
-// fetch all factures from the database.
-exports.findAll = (req, res) => {
-  const id = req.query.id;
-  var condition = id
-    ? { id: { [Op.iLike]: `%${id}%` } }
-    : null;
-    lignefacture
-    .findAll({ where: condition })
+// Find a single ligne facture with an id
+exports.findOne = (req, res) => {
+  const nom_article = req.params.nom_article;
+  lignefacture
+    .findOne({
+      where: { nom_article: nom_article },
+    })
     .then((data) => {
-      res.send(data);
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(201).send({
+          message: `Cannot find ligne facture with nom =${nom_article}.`,
+          status : 201
+        });
+      }
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message
+        message: "Error retrieving ligne facture with =" + nom_article,
       });
     });
 };
@@ -65,36 +70,32 @@ exports.update = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message
+        message: err.message,
       });
     });
 };
 
 // delete a row from ligne facture
 exports.delete = (req, res) => {
-    const id = req.params.id;
-    lignefacture
-      .destroy({
-        where: { id: id }
-      })
-      .then((num) => {
-        if (num == 1) {
-          res.send({
-            message: "la ligne  est supprimée avec succés!",
-          });
-        } else {
-          res.send({
-            message: `Echec de suppression de la ligne avec id=${id}. Peut être qu'elle est inexistante !`,
-          });
-        }
-      })
-      .catch((err) => {
-        res.status(500).send({
-          message: err.message 
+  const id = req.params.id;
+  lignefacture
+    .destroy({
+      where: { id: id },
+    })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "la ligne  est supprimée avec succés!",
         });
+      } else {
+        res.send({
+          message: `Echec de suppression de la ligne avec id=${id}. Peut être qu'elle est inexistante !`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message,
       });
-  };
-
-
-
-
+    });
+};

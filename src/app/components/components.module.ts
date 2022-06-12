@@ -50,6 +50,12 @@ import { AddPrixComponent } from './articles/add-prix/add-prix.component';
 import { HistoriqueDevisesComponent } from './devises/historique-devises/historique-devises.component';
 import { PaidFactureComponent } from './factures/paid-facture/paid-facture.component';
 import { ArchiveFactureComponent } from './factures/archive-facture/archive-facture.component';
+import { ArchiveArticlesComponent } from './articles/archive-articles/archive-articles.component';
+import { ArchiveClientsComponent } from './client/archive-clients/archive-clients.component';
+import { ArchiveDevisesComponent } from './devises/archive-devises/archive-devises.component';
+import { ArchiveAccountsComponent } from './society-accounts/archive-accounts/archive-accounts.component';
+import { ArchiveUsersComponent } from './board-admin/archive-users/archive-users.component';
+import { HistoriqueArticlesComponent } from './articles/historique-articles/historique-articles.component';
 
 
 
@@ -104,6 +110,12 @@ import { ArchiveFactureComponent } from './factures/archive-facture/archive-fact
     HistoriqueDevisesComponent,
     PaidFactureComponent,
     ArchiveFactureComponent,
+    ArchiveArticlesComponent,
+    ArchiveClientsComponent,
+    ArchiveDevisesComponent,
+    ArchiveAccountsComponent,
+    ArchiveUsersComponent,
+    HistoriqueArticlesComponent,
  
 
   ],

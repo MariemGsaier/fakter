@@ -18,6 +18,7 @@ import { LigneDevise } from "src/app/models/ligne-devise.model";
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { Subject } from "rxjs";
+import { FactureService } from "src/app/services/facture.service";
 registerLocaleData(localeFr, 'fr');
 
 
@@ -60,13 +61,6 @@ export class DevisesComponent implements OnInit {
   displayedColumns: string[] = ["nom", "devise", "valeur", "date", "actions"];
   dataSource = new MatTableDataSource<LigneDevise>();
 
-  updateDeviseForm: FormGroup = new FormGroup({
-    valeur: new FormControl(""),
-    date: new FormControl(""),
-    nom: new FormControl(""),
-    devise: new FormControl(""),
-  });
-
   currentDevise: Devise = {
     nom: "",
     devise: "",
@@ -79,6 +73,7 @@ export class DevisesComponent implements OnInit {
   currentLigneDevise: LigneDevise = {
     nom: "",
     devise: "",
+    archive: false,
     dates: [{
       id: undefined,
       date: new Date(),
@@ -99,7 +94,8 @@ export class DevisesComponent implements OnInit {
     private deviseService: DeviseService,
     private dateDeviseService: DatedeviseService,
     private tokenStorageService: TokenStorageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private factureService: FactureService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -120,36 +116,13 @@ export class DevisesComponent implements OnInit {
       this.roles = user.role;
       this.showObserverBoard = this.roles.includes("Observateur");
     }
-
-    this.updateDeviseForm = this.formBuilder.group({
-      date: ["", Validators.required],
-      valeur: ["", Validators.required],
-      nom: [
-        "",
-        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]+$/)],
-      ],
-      devise: [
-        "",
-        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z ]+$/)],
-      ],
-    });
-  }
-
-  get f(): { [key: string]: AbstractControl } {
-    return this.updateDeviseForm.controls;
-  }
-
-  onSubmit(): void {
-    this.submitted = true;
-    if (this.updateDeviseForm.invalid) {
-      return;
-    }
   }
 
   fetchDevises(): void {
     this.deviseService.getAllRecent().subscribe({
       next: (data) => {
         this.devises = data;
+        this.devises = data.filter(elm => elm.archive == false );
         this.dataSource.data = this.devises;
         console.log(data);
       },
@@ -174,52 +147,28 @@ export class DevisesComponent implements OnInit {
 
   setActiveDateDevise(dateDevise: LigneDevise, index: number): void {
     this.currentLigneDevise = dateDevise;
-    this.updateDeviseForm.setValue({
-      date: dateDevise.dates[0].date,
-      valeur: dateDevise.dates[0].valeur,
-      nom: dateDevise.nom,
-      devise: dateDevise.devise,
-    });
     console.log(dateDevise);
     this.currentIndex = index;
     this.disabelModif = true;
   }
-
-  removeAllDevises(): void {
-    this.dateDeviseService.deleteAll().subscribe({
+  
+  archiveDevise(body:Devise){
+    body.archive = true;
+    this.deviseService.update(body.nom, body).subscribe({
       next: (res) => {
-        console.log(res);
-        this.deviseService.deleteAll().subscribe({
-          next: (res) => {
-            console.log(res);
-            Swal.fire({
-              title: "Êtes-vous sûr de tout supprimer ? ",
-              text: "Vous ne serez pas capable de restaurer !",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#00c292",
-              cancelButtonColor: "#e46a76",
-              confirmButtonText: "Oui",
-              cancelButtonText: "Annuler",
-            }).then((result) => {
-              if (result.isConfirmed) {
-                this.refreshList();
-              }
-            });
-          },
-          error: (e) => {
-            console.error(e);
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression des devises.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            });
-          },
+        console.log(res)
+        Swal.fire({
+          title: "Devise archivée avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.refreshList()
+          }
         });
-      },
+      }
     });
+
   }
 
   deleteDateDevise(dateDevise: LigneDevise): void {
@@ -246,6 +195,48 @@ export class DevisesComponent implements OnInit {
       }
     });
   }
+
+  deleteDevise(dateDevise: LigneDevise): void {
+    this.factureService.getDevise(dateDevise.nom).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              dateDevise = this.currentLigneDevise.dates[0].id;
+              console.log("!!", this.currentLigneDevise);
+              this.dateDeviseService.delete(dateDevise).subscribe({
+                next: (res) => {
+                  console.log(res);
+                  this.refreshList();
+                },
+                error: (e) => console.error(e),
+              });
+            }
+          });
+        } else {
+          console.log("NON NULL");
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer ce client car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
+      },
+    });
+  }
+
 
   filterData($event: any) {
     $event.target.value.trim();

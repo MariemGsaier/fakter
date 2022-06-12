@@ -2,10 +2,10 @@ import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
 import { Article } from "src/app/models/article.model";
 import { ArticleService } from "src/app/services/article.service";
 import { MatTableDataSource } from "@angular/material/table";
-import { Subject } from 'rxjs';
+import { Subject } from "rxjs";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
-import { MatPaginator,MatPaginatorIntl } from "@angular/material/paginator";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import {
   AbstractControl,
   FormBuilder,
@@ -17,6 +17,7 @@ import * as XLSX from "xlsx";
 import { LignePrix } from "src/app/models/ligne-prix.model";
 import { PrixarticleService } from "src/app/services/prixarticle.service";
 import { Prixarticle } from "src/app/models/prixarticle.model";
+import { LigneFactureService } from "src/app/services/ligne-facture.service";
 
 interface type {
   value: string;
@@ -35,8 +36,8 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
 
   // You can set labels to an arbitrary string too, or dynamically compute
   // it through other third-party internationalization libraries.
-  nextPageLabel = 'Page suivante';
-  previousPageLabel = 'Page précédente';
+  nextPageLabel = "Page suivante";
+  previousPageLabel = "Page précédente";
 
   getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0) {
@@ -51,7 +52,7 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
   selector: "app-articles",
   templateUrl: "./articles.component.html",
   styleUrls: ["./articles.component.scss"],
-  providers : [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}],
+  providers: [{ provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl }],
 })
 export class ArticlesComponent implements OnInit {
   fileName = "ArticlesSheet.xlsx";
@@ -75,19 +76,21 @@ export class ArticlesComponent implements OnInit {
   currentArticle: Article = {
     nom_article: "",
     type_article: "",
-    cout: undefined,
     description: "",
   };
   currentPrixArticle: LignePrix = {
     nom_article: "",
     type_article: "",
-    cout: undefined,
     description: "",
-    prix: [{
-      id: undefined,
-      prix: undefined,
-      date: new Date(),
-    }],
+    archive: false,
+    prix: [
+      {
+        id: undefined,
+        prix: undefined,
+        cout: undefined,
+        date: new Date(),
+      },
+    ],
   };
   message = "";
   articles?: LignePrix[];
@@ -110,7 +113,8 @@ export class ArticlesComponent implements OnInit {
     private articleService: ArticleService,
     private tokenStorageService: TokenStorageService,
     private formBuilder: FormBuilder,
-    private prixArticleService: PrixarticleService
+    private prixArticleService: PrixarticleService,
+    private ligneFacture: LigneFactureService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -124,7 +128,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchArticles()
+    this.fetchArticles();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -141,7 +145,12 @@ export class ArticlesComponent implements OnInit {
       cout: ["", Validators.required],
       description: [
         "",
-        [Validators.required, Validators.pattern("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$")],
+        [
+          Validators.required,
+          Validators.pattern(
+            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,24}+$"
+          ),
+        ],
       ],
     });
   }
@@ -161,15 +170,15 @@ export class ArticlesComponent implements OnInit {
     this.articleService.getAllPrix().subscribe({
       next: (data) => {
         this.articles = data;
+        this.articles = data.filter((elm) => elm.archive == false);
         this.dataSource.data = this.articles;
         console.log(data);
-        
       },
       error: (e) => {
         console.error(e);
         Swal.fire({
           title: "Echec d'affichage des articles !",
-          text: "Une erreur est survenue lors du chargement de la liste des articles.",
+          text: "Une erreur est survenue lors du chargement de la liste des devises.",
           icon: "warning",
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
@@ -184,14 +193,31 @@ export class ArticlesComponent implements OnInit {
     this.currentIndex = -1;
   }
 
+  archiveArticle(body: Article) {
+    body.archive = true;
+    this.articleService.update(body.nom_article, body).subscribe({
+      next: (res) => {
+        console.log(res);
+        Swal.fire({
+          title: "Article archivé avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.refreshList();
+          }
+        });
+      },
+    });
+  }
+
   setActiveArticle(article: LignePrix, index: number): void {
-    console.log('11111', article);
-    
+    console.log("11111", article);
+
     this.currentPrixArticle = article;
     this.updateArticleForm.setValue({
       nom_article: article.nom_article,
       type_article: article.type_article,
-      cout: article.cout,
       description: article.description,
       // prix: article.prix?.prix,
     });
@@ -200,48 +226,16 @@ export class ArticlesComponent implements OnInit {
     this.disabelModif = true;
   }
 
-  removeAllArticles(): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.articleService.deleteAll().subscribe({
-          next: (res) => {
-            console.log(res);
-            this.refreshList();
-          },
-          error: (e) => {
-            console.error(e);
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression de l'article.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            });
-          },
-        });
-      }
-    });
-  }
-
   updateArticle(): void {
     this.message = "";
-    
+
     if (this.updateArticleForm.valid) {
       const data = {
         type_article: this.updateArticleForm.get("type_article")?.value,
         cout: this.updateArticleForm.get("cout")?.value,
         description: this.updateArticleForm.get("description")?.value,
       };
-      
+
       this.articleService
         .update(this.currentPrixArticle.nom_article, data)
         .subscribe({
@@ -268,25 +262,25 @@ export class ArticlesComponent implements OnInit {
     }
   }
 
-  deletePrixArticle(prixArt: LignePrix): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log('??', this.currentPrixArticle);
-        
-        prixArt = this.currentPrixArticle;
-        
-            this.prixArticleService
-              .delete(prixArt)
-              .subscribe({
+  deleteArticle(article: Article): void {
+    this.ligneFacture.get(article.nom_article).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.status == 201) {
+          console.log('NULL');
+          
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.articleService.delete(article.nom_article).subscribe({
                 next: (res) => {
                   console.log(res);
                   this.refreshList();
@@ -302,6 +296,54 @@ export class ArticlesComponent implements OnInit {
                   });
                 },
               });
+            }
+          });
+        } else {
+          console.log('NON NULL');
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer cet article car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
+      },
+    });
+  }
+
+  deletePrixArticle(prixArt: LignePrix): void {
+    Swal.fire({
+      title: "Êtes-vous sûr de le supprimer ? ",
+      text: "Vous ne serez pas capable de le récupérer !",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#00c292",
+      cancelButtonColor: "#e46a76",
+      confirmButtonText: "Oui",
+      cancelButtonText: "Annuler",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("??", this.currentPrixArticle);
+
+        prixArt = this.currentPrixArticle;
+
+        this.prixArticleService.delete(prixArt).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.refreshList();
+          },
+          error: (e) => {
+            console.error(e);
+            Swal.fire({
+              title: "Echec de supression !",
+              text: "Une erreur est survenue lors de la supression de l'article.",
+              icon: "warning",
+              confirmButtonColor: "#00c292",
+              confirmButtonText: "Ok",
+            });
+          },
+        });
       }
     });
   }

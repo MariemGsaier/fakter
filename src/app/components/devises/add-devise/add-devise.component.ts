@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
 import { AbstractControl, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Devise } from 'src/app/models/devise.model';
@@ -25,9 +25,12 @@ export class AddDeviseComponent implements OnInit {
 
   devise: Devise = {
     nom: "",
-    devise: ""
+    devise: "",
+    archive: false
   };
   submitted = false;
+  errorAddDevise =false;
+  errorMsg =""
 
   valeurs: devise[] = [
     { value: "EUR", viewValue: "EUR" },
@@ -39,7 +42,7 @@ export class AddDeviseComponent implements OnInit {
     { value: "AED", viewValue: "AED" },
   ];
 
-  constructor(private route: ActivatedRoute,
+  constructor(
     private router: Router,
     private deviseService: DeviseService,
     private formBuilder: FormBuilder,
@@ -72,6 +75,7 @@ export class AddDeviseComponent implements OnInit {
     const data = {
       nom: this.devise.nom,
       devise: this.devise.devise,
+      archive: false,
     };
     
     if ((this.deviseForm.valid)) {
@@ -94,7 +98,11 @@ export class AddDeviseComponent implements OnInit {
           }
         })
       },
-      error: (e) => console.error(e)
+      error: (e) => {
+        console.error(e);
+        this.errorAddDevise=true
+        this.errorMsg = "le nom de la devise entré existe déjà !";
+      }
     } );
 
 }
