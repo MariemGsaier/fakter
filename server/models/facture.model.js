@@ -14,8 +14,11 @@ module.exports = (sequelize, Sequelize) => {
     date_echeance: {
       type: Sequelize.DATE,
     },
+    date_paiement : {
+      type : Sequelize.DATE
+    },
     etat_facture: {
-      type: Sequelize.STRING,
+      type: Sequelize.BOOLEAN,
     },
     etat_echeance: {
       type: Sequelize.BOOLEAN,
@@ -28,7 +31,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     total_devise: {
       type: Sequelize.FLOAT,
-    }
+    },
+    archive: {
+      type: Sequelize.BOOLEAN,
+    },
   });
   return Facture;
 };

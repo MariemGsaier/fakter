@@ -21,10 +21,17 @@
 
 
     </div>
-    <div class="client-parag" ><p>{{facture.id_client}}</p><br></div>
+
+    <div class="client-parag" ><p>{{facture.code_identification}}</p><br></div>
+    <div class="client-parag" ><p>{{facture.nom_client}}</p><br></div>
+    <div class="client-parag" ><p>{{facture.adresse}}</p><br></div>
       <p style="font-size: 20px ; margin-left: 21px"><strong>{{facture.reference}}</strong></p>
-      <div style=" display: flex; justify-content: left; margin-left: 21px"><p>Date facturation :{{ facture.date_facturation }}</p></div>
-      <div class="client-parag" style="margin-top: -25px ;margin-left: 21px"><p>Date d'écheance :{{ facture.date_echeance }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Numéro de bon de commande :</strong>{{ facture.num_boncommande }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Numéro de compte bancaire :</strong>{{ facture.num_compte }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>RIB :</strong>{{ facture.rib }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>IBAN :</strong> {{ facture.iban }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Date facturation :</strong>{{ facture.date_facturation }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Date d'écheance :</strong>{{ facture.date_echeance }}</p></div>
     
     <mat-card class="w-100">
       <mat-card-content>

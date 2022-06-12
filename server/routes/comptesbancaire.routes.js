@@ -14,6 +14,8 @@ module.exports = function (app) {
      router.post("/create", controllercb.create);
     // fetch all 
     router.get("/", controllercb.findAll);
+    // fetch all 
+    router.get("/:num_compte", controllercb.findOneCompte);
     // Update  with id
     router.put("/:id", controllercb.update);
     // Delete  with id

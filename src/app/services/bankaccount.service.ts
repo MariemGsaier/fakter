@@ -13,6 +13,10 @@ export class BankaccountService {
 
   constructor(private http: HttpClient) { }
 
+  getOne(num_compte : any): any {
+    return this.http.get(`${baseUrl}/${num_compte}`);
+  }
+
   getAll(): Observable<BankaccountDevise[]> {
     return this.http.get<Bankaccount[]>(baseUrl);
   }

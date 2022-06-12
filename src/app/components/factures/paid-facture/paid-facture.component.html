@@ -1,0 +1,133 @@
+<div *ngIf="facture.etat_facture">
+  <button
+  mat-button
+  class="btn btn-danger"
+  (click)="exportToPDF()"
+  fw-normal
+  style="float: right"
+>
+  <mat-icon>picture_as_pdf</mat-icon> Exporter en PDF
+</button>
+</div>
+<div id="facture">
+  <div style="margin-top: 15px">
+    <p>Facture client</p>
+    <h3>{{ facture.reference }}</h3>
+  </div>
+  <div>
+    <p><strong>Client : </strong>{{ facture.client?.nom }}</p>
+    <p>
+      <strong>Numéro du bon de commande : </strong
+      ><span>{{ facture.num_boncommande }}</span>
+    </p>
+    <p><strong>Date de facturation : </strong></p>
+    <span class="regulate-pos">{{ facture.date_facturation }}</span
+    ><br />
+    <p><strong>Date d'échéance : </strong></p>
+    <span class="regulate-pos">{{ facture.date_echeance }}</span
+    ><br />
+    <p><strong>Numéro du compte bancaire associé : </strong></p>
+    <span class="regulate-pos">{{ facture.compte?.num_compte }}</span>
+    <p><strong>Nom de devise : </strong></p>
+    <span class="regulate-pos">{{ facture.devise?.nom }}</span
+    ><br />
+
+    <div *ngIf="!facture.etat_facture">
+      <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px; width: 30%"
+      >
+        <mat-label>Date de paiement</mat-label>
+        <input
+          matInput
+          [matDatepicker]="dp"
+          [(ngModel)]="facture.date_paiement"
+        />
+        <mat-hint>{{ getDateFormatString() }}</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker #dp></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div *ngIf="facture.etat_facture">
+      <p><strong>Date de paiement : </strong></p>
+      <span class="regulate-pos">{{ facture.date_paiement }}</span
+      ><br />
+    </div>
+  </div>
+
+  <mat-card class="w-100">
+    <mat-card-content>
+      <h4 class="mb-56">Ligne de facture</h4>
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+          <!-- Id Column -->
+          <ng-container matColumnDef="nom">
+            <th mat-header-cell *matHeaderCellDef>Article</th>
+            <td mat-cell class="fw-medium" *matCellDef="let element">
+              {{ element.nom_article }}
+            </td>
+          </ng-container>
+          <!-- Assigned Column -->
+          <ng-container matColumnDef="quantite">
+            <th mat-header-cell *matHeaderCellDef>Quantité</th>
+            <td mat-cell *matCellDef="let element">
+              <p class="mb-0 fw-medium">{{ element.quantite }}</p>
+            </td>
+          </ng-container>
+          <!-- Project Column -->
+          <ng-container matColumnDef="prix">
+            <th mat-header-cell *matHeaderCellDef>Prix</th>
+            <td mat-cell *matCellDef="let element">
+              <p class="mb-0 fw-medium ">{{ element.prix }}</p>
+            </td>
+          </ng-container>
+          <!-- Priority Column -->
+          <ng-container matColumnDef="taxe">
+            <th mat-header-cell *matHeaderCellDef>Taxe</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.taxe }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+       
+          <div>
+            <p style="float: right; margin-left: 10px;position: relative; top: 10px;">
+              <strong>Total en {{ facture.devise?.nom }} : </strong> {{facture.total_devise | number: "0.0-4"}}
+              
+            </p>
+          </div>
+          <p style="float: right; margin-left: 10px; position: relative; top: 10px;">
+            <strong>Total TTC :</strong>
+            {{ facture.total_ttc | currency: "TND":"symbol":"0.0-4":"fr" }}
+          </p>
+          <p style="float: right;position: relative; top: 10px;">
+            <strong>Total HT :</strong>
+            {{ facture.total_ht | currency: "TND":"symbol":"0.0-4":"fr" }}
+          </p>
+        </div>
+ 
+    </mat-card-content>
+  </mat-card>
+</div>
+<div style="margin-top: -10px; margin-right: 43px">
+  <button
+    mat-button
+    class="btn btn-danger fw-normal"
+    type="submit"
+    style="float: right; margin-left: 0.3%"
+  >
+    Annuler
+  </button>
+  <button
+    mat-button
+    class="btn btn-success fw-normal"
+    style="float: right; margin-left: 25px"
+    (click)="confirmpaiement()"
+  >
+    Enregistrer paiement
+  </button>
+</div>

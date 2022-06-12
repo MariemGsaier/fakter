@@ -15,7 +15,9 @@ exports.create = (req, res) => {
     num_boncommande : req.body.num_boncommande,
     date_facturation: req.body.date_facturation,
     date_echeance: req.body.date_echeance,
+    date_paiement : req.body.date_paiement,
     etat_facture: req.body.etat_facture,
+    archive: req.body.archive,
     etat_echeance: req.body.etat_echeance,
     total_ht: req.body.total_ht,
     total_ttc: req.body.total_ttc,
@@ -25,6 +27,20 @@ exports.create = (req, res) => {
     id_user : req.body.id_user,
     nom_devise : req.body.nom_devise,
   };
+
+  facture.findOne({
+    where: {
+      num_boncommande: req.body.num_boncommande,
+    },
+  })
+  .then((data) => {
+    if (data) {
+      res.status(400).send({
+        message: "Echec! le numéro de bon de commande existe déjà !"
+      });
+      return;
+
+    } })
 
   facture
     .create(fact)
@@ -61,7 +77,7 @@ exports.findAll = (req, res) => {
 exports.findAllDetails = (req, res) => {
 
 facture.findAll({
-    include: ["user","client"],
+    include: ["user","client","compte","article","devise"],
   })
     .then((data) => {
       res.send(data);

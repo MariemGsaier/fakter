@@ -48,7 +48,7 @@ export class ArchiveFactureComponent implements OnInit {
   }
 
   unarchiveFacture(body:Facture){
-    body.etat_facture = "archivé";
+    body.archive = false;
     this.factureService.update(body.id, body).subscribe({
       next: (res) => {console.log(res)
         this.fetchFactures()
@@ -64,7 +64,7 @@ export class ArchiveFactureComponent implements OnInit {
       .subscribe(
         (data) => {
           this.factures = data;
-          this.factures = data.filter(elm => elm.etat_facture ==="archivé" );
+          this.factures = data.filter(elm => elm.archive ==true );
           this.dataSource.data = this.factures;
 
           console.log(data);

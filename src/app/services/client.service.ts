@@ -13,6 +13,9 @@ export class ClientService {
   getAll(): Observable<Client[]> {
     return this.http.get<Client[]>(baseUrl);
   }
+  getOne(id: any): any {
+    return this.http.get(`${baseUrl}/${id}`);
+  }
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }

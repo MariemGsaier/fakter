@@ -35,6 +35,8 @@ import { LigneFactureService } from "src/app/services/ligne-facture.service";
 import { LigneDevise } from "src/app/models/ligne-devise.model";
 import { FactureStoreService } from "src/app/store/facture-store.service";
 import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-store.service";
+import { Client } from "src/app/models/client.model";
+import { Bankaccount } from "src/app/models/bankaccount.model";
 
 
 export interface Element {
@@ -76,8 +78,9 @@ export class AddFactureComponent implements OnInit {
     "taxe",
     "sous_total",
     "soustotal_ht",
+    "actions"
   ];
-
+  currentIndex=-1;
   totalttc = 0;
   totalht = 0;
   tauxChangeDevise: any = 0;
@@ -92,6 +95,7 @@ export class AddFactureComponent implements OnInit {
     id_client: undefined,
     num_compte: "",
     num_bc: "",
+    date_paiement : undefined
   };
 
   factureForm: FormGroup = new FormGroup({
@@ -102,6 +106,9 @@ export class AddFactureComponent implements OnInit {
     num_compte: new FormControl(""),
     devise: new FormControl(""),
   });
+
+  errorAddFacture=false;
+  errorMsg=""
   nbref = 0;
   submitted = false;
   isEditable = false;
@@ -187,7 +194,6 @@ export class AddFactureComponent implements OnInit {
             devise: data.devise,
           };
         });
-        console.log(this.devises);
       },
     });
   }
@@ -206,7 +212,6 @@ export class AddFactureComponent implements OnInit {
             siteweb: data.siteweb,
           };
         });
-        console.log(this.clients);
       },
     });
   }
@@ -223,7 +228,7 @@ export class AddFactureComponent implements OnInit {
             nom_banque: data.nom_banque,
           };
         });
-        console.log(this.devises);
+       
       },
     });
   }
@@ -254,7 +259,7 @@ export class AddFactureComponent implements OnInit {
       soustotalhttab.forEach((element) => {
         this.totalht = this.totalht + element;
       });
-      console.log(this.totalht);
+     
       let soustotalttctab = this.articles_added.map((res) => {
         return res.sous_totalttc;
       });
@@ -265,7 +270,23 @@ export class AddFactureComponent implements OnInit {
       this.convertirDevise();
       this.dataSource = new MatTableDataSource<Element>(this.articles_added);
       this.ligneFactStore.setArticlesInStore(this.articles_added);
+      
+      
+  
     });
+  }
+
+  setActiveFacture(article: Element, index: number): void {
+  
+    console.log(article);
+    this.currentIndex = index;
+ 
+  }
+
+  removeFromLigneFact() : void {
+    this.articles_added.shift();
+    this.dataSource = new MatTableDataSource<Element>(this.articles_added);
+    
   }
   convertirDevise(): void {
     this.deviseService.getAllRecent().subscribe({
@@ -277,16 +298,11 @@ export class AddFactureComponent implements OnInit {
             data[i].dates.length != 0
           ) {
             this.tauxChangeDevise = data[i].dates[0].valeur;
-            console.log("ttc", this.totalttc);
             this.totalConverti = this.tauxChangeDevise * this.totalttc;
             this.deviseSymbol = data[i]?.devise;
-            console.log(this.deviseSymbol);
           }
         }
-        console.log(this.tauxChangeDevise);
-        console.log(this.totalConverti);
         this.devisesRecent = data;
-        console.log("tabbb", this.devisesRecent);
       },
       error: (e) => console.error(e),
     });
@@ -302,8 +318,10 @@ export class AddFactureComponent implements OnInit {
       reference: "FACT/" + new Date(),
       date_facturation: this.facture.date_facturation,
       date_echeance: this.facture.date_echeance,
-      etat_facture: "non payé",
+      date_paiement : this.facture.date_paiement,
+      etat_facture: false,
       etat_echeance: false,
+      archive : false,
       total_ht: this.totalht,
       total_ttc: this.totalttc,
       total_devise: this.totalConverti,
@@ -314,15 +332,44 @@ export class AddFactureComponent implements OnInit {
       num_boncommande: this.facture.num_bc,
     };
 
-    console.log(this.factureForm.valid);
-    console.log(data);
     
     if ((this.factureForm.valid)) {
       this.factureService.create(data)
       .subscribe({
         next: (res) => {
           this.updateFacture(res);
-          this.factureStore.setFactureInStore(res);
+          this.clientService.getOne(this.facture.id_client).subscribe({
+            next: (client: Client)  => {
+              this.bankAccountService.getOne(this.facture.num_compte).subscribe({
+                next : (bankacc : Bankaccount) => {
+                  const printData = {
+                    reference: res.reference,
+                    date_facturation: this.facture.date_facturation,
+                    date_echeance: this.facture.date_echeance,
+                    total_ht: this.totalht,
+                    total_ttc: this.totalttc,
+                    nom_client: client.nom,
+                    adresse : client.adresse,
+                    courriel : client.courriel,
+                    code_identification : client.code_identification,
+                    num_compte: this.facture.num_compte,
+                    rib : bankacc.rib,
+                    iban : bankacc.iban,
+                    num_boncommande: this.facture.num_bc,
+                  };
+                  this.factureStore.setFactureInStore(printData);
+
+                }
+              })
+
+
+          }
+
+
+          })
+         
+          
+         
           for (let i = 0; i < this.articles_added.length; i++) {
             const ligneFactData = {
               id_facture: res.id,
@@ -337,8 +384,6 @@ export class AddFactureComponent implements OnInit {
               error: (e) => console.error(e),
             });
           }
-
-          console.log(res);
           this.submitted = true;
           Swal.fire({
             title: "Ajout avec succés !",
@@ -364,7 +409,10 @@ export class AddFactureComponent implements OnInit {
             }
           });
         },
-        error: (e) => console.error(e),
+        error: (e) => {console.error(e)
+          this.errorAddFacture=true
+          this.errorMsg = "le numéro de bon de commande entré existe déjà !";
+        }
       });
     }
   }
