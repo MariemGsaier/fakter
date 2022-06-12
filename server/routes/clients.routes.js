@@ -20,8 +20,6 @@ module.exports = function (app) {
     router.put("/:id", controllerclt.update);
     // Delete a client with id
     router.delete("/:id", controllerclt.delete);
-    // Delete all clients
-    router.delete("/", controllerclt.deleteAll);
     app.use("/api/clients", router);
   };
   

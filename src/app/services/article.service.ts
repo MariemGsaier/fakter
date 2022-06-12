@@ -28,7 +28,4 @@ export class ArticleService {
   delete(nom_article: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${nom_article}`);
   }
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
-  }
 }

@@ -10,9 +10,8 @@ import {
   Validators,
 } from "@angular/forms";
 import { Validation } from "src/app/validation/validation";
-import { UserService } from "src/app/services/user.service";
-import { Observable } from "rxjs";
 import Swal from "sweetalert2";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-profile",
@@ -45,12 +44,14 @@ export class ProfileComponent implements OnInit {
   disabelModifPassword: boolean = false;
   submitted = false;
   currentPassword?: string;
+  errorUpdateUser =false;
+  errorMsg =""
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService,
     private gestUserService: GestUserService,
-    private token: TokenStorageService
+    private token: TokenStorageService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -59,7 +60,7 @@ export class ProfileComponent implements OnInit {
     this.form1 = this.formBuilder.group({
       username: [
         "",
-        [Validators.required, Validators.pattern("/^[a-zA-Z][a-zA-Z0-9 ]+$/")],
+        [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)],
       ],
       email: [
         "",
@@ -78,7 +79,7 @@ export class ProfileComponent implements OnInit {
           [
             Validators.required,
             Validators.minLength(6),
-            Validators.pattern("/^[a-zA-Z0-9!@#$%^&*()]+$/"),
+            Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/),
           ],
         ],
         confirmPassword: ["", Validators.required],
@@ -123,43 +124,14 @@ export class ProfileComponent implements OnInit {
   updateUser(): void {
     this.message = "";
 
-    if (!this.form1.invalid) {
-      Swal.fire({
-        title: "Modification effectuée avec succés !",
-        icon: "success",
-        confirmButtonColor: "#00c292",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          this.token.saveUser(this.currentUser);
-          this.gestUserService
-            .update(this.currentUser.id, this.currentUser)
-            .subscribe(
-              (response) => {
-                console.log(response);
-                this.disabelModifDetails = true;
-                this.reloadPage();
-                this.message = response.message
-                  ? response.message
-                  : "Your profile is updated successfully!";
-              },
-              (error) => {
-                console.log(error);
-              }
-            );
-        }
-      });
-    }
-  }
-
-  updatePassword(): void {
-    this.message = "";
-    if (!this.form2.invalid) {
+    if (this.form1.valid) {
+      this.token.saveUser(this.currentUser);
       this.gestUserService
-        .updatePassword(this.currentUser.id, this.form2.value)
-        .subscribe({
-          next: (response) => {
+        .update(this.currentUser.id, this.currentUser)
+        .subscribe(
+          (response) => {
             console.log(response);
-            this.disabelModifPassword = true;
+            this.disabelModifDetails = true;
             Swal.fire({
               title: "Modification effectuée avec succés !",
               icon: "success",
@@ -171,11 +143,45 @@ export class ProfileComponent implements OnInit {
             });
             this.message = response.message
               ? response.message
+              : "Your profile is updated successfully!";
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    }
+  }
+
+  updatePassword(): void {
+    this.message = "";
+    if (this.form2.valid) {      
+      this.gestUserService
+        .updatePassword(this.currentUser.id, this.form2.value)
+        .subscribe({
+          next: (response) => {
+            console.log(response);
+            this.disabelModifPassword = true;
+            Swal.fire({
+              title: "Modification effectuée avec succés !",
+              text: "Vous devez vous-reconncter. Vous allez être redirigé vers la page de Login",
+              icon: "success",
+              confirmButtonColor: "#00c292",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.token.signOut();
+                this.router.navigate(['/login'])
+              }
+            });
+            this.message = response.message
+              ? response.message
               : "Your password is updated successfully!";
           },
-          error: (e) => console.error(e),
-          });
-      }
+          error: (e) => {console.error(e);
+            this.errorUpdateUser=true
+            this.errorMsg = "le code d'identification entré existe déjà !";
+          }
+        });
+    }
   }
 
   annulerDetails(): void {

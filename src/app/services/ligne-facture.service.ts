@@ -13,6 +13,9 @@ export class LigneFactureService {
   create(data: any): Observable<any> {
     return this.http.post(baseUrl, data);
   }
+  getArticle(id: any): any {
+    return this.http.get(`${baseUrl}/${id}`);
+  }
 
   getAll(): Observable<LigneFacture[]> {
     return this.http.get<LigneFacture[]>(baseUrl);

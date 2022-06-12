@@ -21,9 +21,6 @@ module.exports = (sequelize, Sequelize) => {
       num_rcs: {
         type: Sequelize.STRING,
       },
-      timbre_fiscal: {
-          type: Sequelize.FLOAT,
-        },
     });
     return Societe;
   };

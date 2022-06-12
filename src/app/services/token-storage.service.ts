@@ -13,6 +13,9 @@ export class TokenStorageService {
     window.sessionStorage.removeItem(TOKEN_KEY);
     window.sessionStorage.setItem(TOKEN_KEY, token);
   }
+  public removeToken(): void {
+    window.sessionStorage.removeItem(USER_KEY);
+  }
   public getToken(): string | null {
     return window.sessionStorage.getItem(TOKEN_KEY);
   }

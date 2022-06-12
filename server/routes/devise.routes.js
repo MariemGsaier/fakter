@@ -15,9 +15,9 @@ module.exports = function (app) {
   router.get("/valeur", controllerdev.findAllDevises);
     // Create 
      router.post("/create", controllerdev.create);
+     // Update an devise with id
+     router.put("/:nom", controllerdev.update);
     // Delete  with nom
     router.delete("/:nom", controllerdev.delete);
-    // Delete all 
-    router.delete("/", controllerdev.deleteAll);
     app.use("/api/devises", router);
   };

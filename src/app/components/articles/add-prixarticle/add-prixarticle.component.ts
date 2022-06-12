@@ -33,10 +33,12 @@ import { ArticleStoreService } from 'src/app/store/article-store.service';
 export class AddPrixarticleComponent implements OnInit {
   prixArticleForm: FormGroup = new FormGroup({
     prix: new FormControl(''),
+    cout: new FormControl(''),
     date: new FormControl('')
   });
   prixArticle: Prixarticle = {
     prix: undefined,
+    cout: undefined,
     date: new Date(),
     nom_article: ""
   };
@@ -82,6 +84,7 @@ export class AddPrixarticleComponent implements OnInit {
     this.prixArticleForm = this.formBuilder.group(
       {
         prix: ['', [Validators.required]],
+        cout: ['', [Validators.required]],
         date: ['', [Validators.required]],
       }
     );
@@ -111,10 +114,13 @@ export class AddPrixarticleComponent implements OnInit {
   savePrixArticle(): void {
     const data = {
       prix: this.prixArticle.prix,
+      cout: this.prixArticle.cout,
       date: this.prixArticle.date,
       nom_article: this.article.nom_article,
     };  
-    if (!this.prixArticleForm.invalid) {
+    console.log('cout ?', this.prixArticle.cout);
+    
+    if (this.prixArticleForm.valid) {
       this.prixArticleService.create(data).subscribe({
         next: (res) => {
           console.log(res);

@@ -103,6 +103,78 @@ exports.findAllArticles = (req, res) => {
       });
   };
 
+// Find a single ligne facture of client with an id
+exports.findOneArticle = (req, res) => {
+  const id_client = req.params.id_client;
+  facture
+    .findOne({
+      where: { id_client: id_client },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(201).send({
+          message: `Cannot find client with nom =${id_client}.`,
+          status : 201
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving client with id =" + id_client,
+      });
+    });
+};
+// Find a single ligne facture of bank account with an id
+exports.findOneAccount = (req, res) => {
+  const num_compte = req.params.num_compte;
+  facture
+    .findOne({
+      where: { num_compte: num_compte },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(201).send({
+          message: `Cannot find account with numéro =${num_compte}.`,
+          status : 201
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving account with numéro =" + num_compte,
+      });
+    });
+};
+
+
+// Find a single ligne facture of devise with an id
+exports.findOneDevise = (req, res) => {
+  const nom_devise = req.params.nom_devise;
+  facture
+    .findOne({
+      where: { nom_devise: nom_devise },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(201).send({
+          message: `Cannot find devise with nom =${nom_devise}.`,
+          status : 201
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving devise with nom =" + nom_devise,
+      });
+    });
+};
+
 // Update a facture by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;

@@ -14,14 +14,14 @@
     </button>
     <button
       mat-button
-      class="btn btn-danger fw-normal"
-      style="float: right; margin-right: 0.142%"
-      (click)="removeAllBankAccounts()"
-      *ngIf="!showObserverBoard"
-      matTooltip="Supprimer tous les comptes bancaires"
+      class="btn btn-secondary fw-normal btnw"
+      routerLink="/archive-accounts"
+      type="submit"
+      matTooltip="Consulter  l'archive"
       matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
     >
-      Supprimer Tout
+      Archive
     </button>
     <button
       mat-icon-button
@@ -99,30 +99,35 @@
             *matCellDef="let account; let i = index"
             [class.active]="i == currentIndex"
           >
+          <button mat-icon-button [matMenuTriggerFor]="menu4">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu4="matMenu">
             <button
-              mat-button
-              class="btn btn-success fw-normal btnw"
-              style="margin-right: 1%"
-              type="submit"
+              mat-menu-item
+              *ngIf="!showObserverBoard"
+              (click)="archiveBankAccount(account)"
+            >
+              <mat-icon>archive</mat-icon>
+              <span>Archiver</span>
+            </button>
+            <button
+              mat-menu-item
               (click)="setActiveBankAccount(account, i)"
               *ngIf="!showObserverBoard"
-              matTooltip="Modifier un compte bancaire"
-              matTooltipPosition="above"
             >
               <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
             </button>
             <button
-              mat-button
-              class="btn btn-danger fw-normal btnw"
-              style="margin-right: 1%"
-              type="submit"
+              mat-menu-item
               (click)="deleteBankAccount(account)"
               *ngIf="!showObserverBoard"
-              matTooltip="Supprimer un compte bancaire"
-              matTooltipPosition="above"
             >
               <mat-icon>delete</mat-icon>
+              <span>Supprimer</span>
             </button>
+          </mat-menu>
           </td>
         </ng-container>
 

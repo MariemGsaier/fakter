@@ -27,8 +27,8 @@ exports.create = (req, res) => {
   const art = {
     nom_article: req.body.nom_article,
     type_article: req.body.type_article,
-    cout: req.body.cout,
     description: req.body.description,
+    archive: req.body.archive,
   };
   article
     .findOne({
@@ -36,26 +36,27 @@ exports.create = (req, res) => {
         nom_article: req.body.nom_article,
       },
     })
-    .then((article) => {
-      if (article) {
+    .then((Article) => {
+      if (Article) {
         res.status(400).send({
-          message: "Echec! le nom de l'article existe déjà !",
+          message: "Echec! la nom de l'article entré existe déjà !",
         });
         return;
+      } else {
+        // Save article in the database
+        article
+          .create(art)
+          .then((data) => {
+            res.send(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "une erreur est survenue lors de la création de l'article.",
+            });
+          });
       }
-    });
-
-  // Save article in the database
-  article
-    .create(art)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message ||
-        "une erreur est survenue lors de la création de l'article.",
-    });
     });
 };
 // Lister les articles
@@ -68,8 +69,9 @@ exports.findAll = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message ||
-        "une erreur est survenue lors de l'affichage de la liste des articles.",
+        message:
+          err.message ||
+          "une erreur est survenue lors de l'affichage de la liste des articles.",
       });
     });
 };
@@ -79,9 +81,9 @@ exports.findAllArticles = (req, res) => {
   article
     .findAll({include: ["prix"] })
     .then((result) => {
-      data = result.map(el => el.get({ plain: true }))
+      data = result.map((el) => el.get({ plain: true }));
       for (i = 0; i < data.length; i++) {
-        if (data[i].prix.length == 0) continue
+        if (data[i].prix.length == 0) continue;
         var indice = 0;
         for (j = 1; j < data[i].prix.length; j++) {
           if (data[i].prix[indice].date < data[i].prix[j].date) {
@@ -91,15 +93,16 @@ exports.findAllArticles = (req, res) => {
         var latestPrix = new Array();
         latestPrix.push(data[i].prix[indice]);
         data[i].prix = [];
-        latestPrix_obj = {...latestPrix}
+        latestPrix_obj = { ...latestPrix };
         data[i].prix = latestPrix_obj;
       }
       res.send(data);
     })
     .catch((err) => {
       res.status(500).send({
-        message: err.message ||
-        "une erreur est survenue lors de l'affichage de la liste des articles.",
+        message:
+          err.message ||
+          "une erreur est survenue lors de l'affichage de la liste des articles.",
       });
     });
 };
@@ -118,13 +121,15 @@ exports.update = (req, res) => {
         });
       } else {
         res.send({
-          message: `erreur de mise à jour de l'article avec nom = ${nom_article }. peut être l'article est inexistant ou le corps de la requête est vide!`,
+          message: `erreur de mise à jour de l'article avec nom = ${nom_article}. peut être l'article est inexistant ou le corps de la requête est vide!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Erreur  de mise à jour de l'article  avec nom_article = " + nom_article,
+        message:
+          "Erreur  de mise à jour de l'article  avec nom_article = " +
+          nom_article,
       });
     });
 };
@@ -142,25 +147,9 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression de l'article  avec nom_article = ${nom_article }. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression de l'article  avec nom_article = ${nom_article}. Peut être qu'il est inexistant !`,
         });
       }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message,
-      });
-    });
-};
-// Supprimer tous les articles de la base de données
-exports.deleteAll = (req, res) => {
-  article
-    .destroy({
-      where: {},
-      truncate: false,
-    })
-    .then((nums) => {
-      res.send({ message: `${nums} Tous les articles sont supprimés avec succés !` });
     })
     .catch((err) => {
       res.status(500).send({

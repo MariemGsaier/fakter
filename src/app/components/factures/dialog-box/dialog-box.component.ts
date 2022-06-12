@@ -21,8 +21,8 @@ export class DialogBoxComponent implements OnInit {
   currentPrixArticle: LignePrix = {
     nom_article: "",
     type_article: "",
-    cout: undefined,
     description: "",
+
     prix: [
       {
         id: undefined,

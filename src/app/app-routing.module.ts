@@ -48,6 +48,11 @@ import { LoginGardGuard } from "./gard/login-gard.guard";
 import { AdminGuard } from "./gard/admin.guard";
 import { PaidFactureComponent } from "./components/factures/paid-facture/paid-facture.component";
 import { ArchiveFactureComponent } from "./components/factures/archive-facture/archive-facture.component";
+import { ArchiveArticlesComponent } from "./components/articles/archive-articles/archive-articles.component";
+import { ArchiveClientsComponent } from "./components/client/archive-clients/archive-clients.component";
+import { ArchiveDevisesComponent } from "./components/devises/archive-devises/archive-devises.component";
+import { ArchiveAccountsComponent } from "./components/society-accounts/archive-accounts/archive-accounts.component";
+import { ArchiveUsersComponent } from "./components/board-admin/archive-users/archive-users.component";
 
 const routes: Routes = [
   {
@@ -200,6 +205,31 @@ const routes: Routes = [
       {
         path: "archive-factures",
         component: ArchiveFactureComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "archive-articles",
+        component: ArchiveArticlesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "archive-clients",
+        component: ArchiveClientsComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "archive-devises",
+        component: ArchiveDevisesComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "archive-accounts",
+        component: ArchiveAccountsComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "archive-users",
+        component: ArchiveUsersComponent,
         canActivate: [LoginGardGuard],
       },
     ],

@@ -20,8 +20,6 @@ module.exports = function (app) {
     router.put("/:id", controllercb.update);
     // Delete  with id
     router.delete("/:id", controllercb.delete);
-    // Create 
-    router.delete("/", controllercb.deleteAll);
     app.use("/api/bankaccounts", router);
   };
   

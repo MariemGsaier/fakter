@@ -19,6 +19,9 @@ module.exports = (sequelize, Sequelize) => {
       nom_banque: {
         type: Sequelize.STRING,
       },
+      archive: {
+        type: Sequelize.BOOLEAN,
+      }
     });
     return Comptebanc;
   };

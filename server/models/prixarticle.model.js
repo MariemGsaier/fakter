@@ -3,6 +3,9 @@ module.exports = (sequelize, Sequelize) => {
       prix: {
         type: Sequelize.FLOAT
       },
+      cout: {
+        type: Sequelize.FLOAT
+      },
       date: {
         type: Sequelize.DATE
       }
