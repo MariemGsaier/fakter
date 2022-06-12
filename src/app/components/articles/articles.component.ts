@@ -263,7 +263,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   deleteArticle(article: Article): void {
-    this.ligneFacture.get(article.nom_article).subscribe({
+    this.ligneFacture.getArticle(article.nom_article).subscribe({
       next: (res: any) => {
         console.log(res);
         if (res.status == 201) {
