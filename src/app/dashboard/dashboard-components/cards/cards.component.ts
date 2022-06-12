@@ -37,13 +37,13 @@ export class CardsComponent implements OnInit {
           else {
             this.nbNonEch++
           }
-          if(data[i].etat_facture =="payé"){
+          if(data[i].etat_facture ==true){
             this.nbPaid++;
           }
           else {
             this.nbNonPaid++
           }
-          if(data[i].etat_echeance==true && data[i].etat_facture=="non payé"){
+          if(data[i].etat_echeance==true && data[i].etat_facture== false){
             this.nbEchNonPaid++;
           }
          

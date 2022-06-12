@@ -25,6 +25,9 @@ export class FactureService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
+  sendEmail(data: any): Observable<any> {
+    return this.http.post(baseUrl+"/sendemail", data);
+  }
   update(id: any, data: any): Observable<any> {
     return this.http.put(`${baseUrl}/${id}`, data);
   }

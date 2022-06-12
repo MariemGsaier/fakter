@@ -1,12 +1,13 @@
+
 import { Injectable } from '@angular/core';
 import {BehaviorSubject} from 'rxjs';
 import { cloneDeep } from 'lodash';
-import { AddFacture } from '../models/add-facture.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FactureStoreService {
+export class PaidfactureStoreService {
+
 
   facture : any = {};
   private factureStore = new BehaviorSubject <any>(this.facture);

@@ -14,7 +14,7 @@ import { LigneFactureService } from 'src/app/services/ligne-facture.service';
 })
 export class SalesComponent implements OnInit {
 
-  factures?: Facture[];
+
   clients = new Array()
   dates = new Array()
   articles = new Array()
@@ -76,8 +76,6 @@ export class SalesComponent implements OnInit {
   ngOnInit(): void {
     
     this.getChiffAff();
-
-  
   }
 
   getUnique(array: any[]){
@@ -104,56 +102,50 @@ export class SalesComponent implements OnInit {
 
       }
     })
+
     this.articleService.getAll().subscribe({
       next : (data) => {
+        console.log("articlessss",data);
+        
         this.articles = data.map((res) => {
           return res.nom_article
         })
 
-      }
+        for(let i=0; i< data.length;i++){
 
-    })
-
-    this.factureService.getAllArticles().subscribe({
-      next : (data) => {
-        console.log("ligne",data);
-       
-
-        for(let i=0; i< this.articles.length;i++){
-        
-          
-
-          let articlesAff = data.filter(elm => elm.article?.nom_article == this.articles[i])
-          console.log("filtertab",articlesAff);
-          
-
-          let chiffAffArtHt = articlesAff.map((res) => {
-            return res.total_ht;
-          });
-          let chiffAffArtHT = 0
-          chiffAffArtHt.forEach((element : any) => {
+          let chiffAffArtHt = data[i].facture?.map((res) => {
+            return res.total_ht
+          })
+            let chiffAffArtHT = 0
+          chiffAffArtHt?.forEach((element : any) => {
             chiffAffArtHT= chiffAffArtHT + element;
           });
-          console.log("chifff",chiffAffArtHT);
-         
+   
+          this.chiffAffHTArt.push(chiffAffArtHT);
+          console.log("chiffAffArtH",this.chiffAffHTArt);
           
-          let chiffAffArtTtc = articlesAff.map((res) => {
-            return res.total_ttc;
-          });
-         let chiffAffArtTTC = 0
-         chiffAffArtTtc.forEach((element : any) => {
+
+          let chiffAffArtTtc = data[i].facture?.map((res) => {
+            return res.total_ttc
+          })
+          let chiffAffArtTTC = 0
+          chiffAffArtTtc?.forEach((element : any) => {
             chiffAffArtTTC= chiffAffArtTTC + element;
           });
-          this.chiffAffHTArt.push(chiffAffArtHT);
-          this.chiffAffTTCArt.push(chiffAffArtTTC);
        
+          this.chiffAffTTCArt.push(chiffAffArtTTC);
+          console.log("chiffTTCAff",this.chiffAffTTCArt);
+          this.initializeChartOptionsChiffAffArticle();
           
-        }
-        this.initializeChartOptionsChiffAffArticle();
 
-        
+     
+        }
+      
       }
+      
+
     })
+
     this.factureService
     .getAllFactDetailed().subscribe(
       {
@@ -170,7 +162,7 @@ export class SalesComponent implements OnInit {
           
          
           
-          let factures18= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[0]) && (elm.etat_facture=="payé"));
+          let factures18= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[0]) && (elm.etat_facture==true));
           let chiffAffHt18 = factures18.map((res) => {
             return res.total_ht;
           });
@@ -186,7 +178,7 @@ export class SalesComponent implements OnInit {
 
 
 
-          let factures19= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[1]) && (elm.etat_facture=="payé"));
+          let factures19= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[1]) && (elm.etat_facture==true));
           let chiffAffHt19 = factures19.map((res) => {
             return res.total_ht;
           });
@@ -202,7 +194,7 @@ export class SalesComponent implements OnInit {
 
 
 
-          let factures20= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[2]) && (elm.etat_facture=="payé"));
+          let factures20= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[2]) && (elm.etat_facture==true));
           let chiffAffHt20 = factures20.map((res) => {
             return res.total_ht;
           });
@@ -217,7 +209,7 @@ export class SalesComponent implements OnInit {
           });
 
 
-          let factures21= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[3]) && (elm.etat_facture=="payé"));
+          let factures21= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[3]) && (elm.etat_facture==true));
           let chiffAffHt21= factures21.map((res) => {
             return res.total_ht;
           });
@@ -232,7 +224,7 @@ export class SalesComponent implements OnInit {
           });
 
 
-          let factures22= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[4]) && (elm.etat_facture=="payé"));
+          let factures22= data.filter(elm => (new Date(elm.date_echeance).getFullYear()== this.dates[4]) && (elm.etat_facture==true));
           let chiffAffHt22 = factures22.map((res) => {
             return res.total_ht;
           });
@@ -291,6 +283,7 @@ export class SalesComponent implements OnInit {
 
 
   private initializeChartOptionsChiffAffYear(): void{
+     this.dates
 
      this.series = [
       {
@@ -306,7 +299,7 @@ export class SalesComponent implements OnInit {
     ];
     
     this.xaxis = {
-      categories: [this.dates[0],this.dates[1], this.dates[2], this.dates[3], this.dates[4]],
+      categories: this.dates
       
     };
     
@@ -366,14 +359,9 @@ export class SalesComponent implements OnInit {
        color: "#00c292",
      },
    ];
-   console.log(this.clients.length);
    
    this.xaxisClt = {
-     categories: this.clients,
-     max: this.clients.length+1,
-      min :  this.clients.length,
-      range: this.clients.length,
-      tickAmount: this.clients.length,
+     categories: this.clients
    };
    
    this.chartClt = {
@@ -419,61 +407,65 @@ export class SalesComponent implements OnInit {
 
  private initializeChartOptionsChiffAffArticle(): void{
 
+  
+  
+
   this.seriesArt = [
-   {
-     name: "Chiffre d'affaire TTC",
-     data: this.chiffAffTTCArt,
-     color: "#fb9678",
-   },
-   {
-     name: "Chiffre d'affaire HT",
-     data: this.chiffAffHTArt,
-     color: "#03c9d7",
-   },
- ];
- 
- this.xaxisArt = {
-   categories:this.articles,
- };
- 
- this.chartArt = {
-   toolbar: {
-     show: false,
-   },
-   type: 'bar',
-   height: 300,
-   
- };
- 
- 
- this.legendArt = {
-   show: false,
- };
- 
- this.tooltipClt = {
-   theme: "dark"
- };
- 
- this.gridArt = {
-   show: false,
- };
+    {
+      name: "Chiffre d'affaire TTC",
+      data: this.chiffAffTTCArt,
+      color: "#03c9d7",
+    },
+    {
+      name: "Chiffre d'affaire HT",
+      data: this.chiffAffHTArt,
+      color: "#00c292",
+    },
+  ];
+  
+  this.xaxisArt = {
+    categories: this.articles
+  };
+  
+  this.chartArt = {
+    toolbar: {
+      show: true,
+    },
+    type: 'bar',
+    height: 300,
+    
+  };
+  
+  
+  this.legendArt = {
+    show: true,
+  };
+  
+  this.tooltipArt = {
+    theme: "dark"
+  };
+  
+  
+  this.gridArt = {
+    show: true,
+  };
 
- this.dataLabelsArt = {
-   enabled: false,
- };
+  this.dataLabelsArt = {
+    enabled: false,
+  };
 
- this.strokeArt = {
-   show: true,
-   width: 5,
-   colors: ['none']
- };
+  this.strokeArt = {
+    show: true,
+    width: 6,
+    colors: ['none']
+  };
 
- this.plotOptionsArt = {
-   bar: {
-     columnWidth: '45%',
-     borderRadius: 6,
-   },
- };
+  this.plotOptionsArt = {
+    bar: {
+      columnWidth: '45%',
+      borderRadius: 6,
+    },
+  };
 }
 
 }
