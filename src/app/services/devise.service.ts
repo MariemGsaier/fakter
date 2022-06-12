@@ -22,10 +22,10 @@ export class DeviseService {
   create(data: any): Observable<any> {
     return this.http.post(createUrl, data);
   }
+  update(nom: any, data: any): Observable<any> {
+    return this.http.put(`${baseUrl}/${nom}`, data);
+  }
   delete(nom: any): Observable<any> {
     return this.http.delete(`${baseUrl}/${nom}`);
-  }
-  deleteAll(): Observable<any> {
-    return this.http.delete(baseUrl);
   }
 }

@@ -17,6 +17,7 @@ exports.create = (req, res) => {
     bic: req.body.bic,
     iban: req.body.iban,
     nom_banque: req.body.nom_banque,
+    archive: req.body.archive,
     nom_devise: req.body.nom_devise,
     id_societe : 1
   };
@@ -132,26 +133,6 @@ exports.delete = (req, res) => {
       res.status(500).send({
         message: err.message
         
-      });
-    });
-};
-// Supprimer Tout
-exports.deleteAll = (req, res) => {
-  comptebancaire
-    .destroy({
-      where: {},
-      truncate: false,
-    })
-    .then((nums) => {
-      res.send({
-        message: `${nums} Tous les comptes bancaires sont supprimés avec succés !`,
-      });
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message ||
-          "Une erreur est survenue lors de la suppression des comptes bancaires",
       });
     });
 };

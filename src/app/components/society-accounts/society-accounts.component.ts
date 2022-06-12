@@ -17,8 +17,7 @@ import { TokenStorageService } from "src/app/services/token-storage.service";
 import { BankaccountDevise } from "src/app/models/bankaccount-devise.model";
 import { DeviseService } from "src/app/services/devise.service";
 import { Subject } from "rxjs";
-
-
+import { FactureService } from "src/app/services/facture.service";
 
 @Injectable()
 export class MyCustomPaginatorIntl implements MatPaginatorIntl {
@@ -32,8 +31,8 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
 
   // You can set labels to an arbitrary string too, or dynamically compute
   // it through other third-party internationalization libraries.
-  nextPageLabel = 'Page suivante';
-  previousPageLabel = 'Page précédente';
+  nextPageLabel = "Page suivante";
+  previousPageLabel = "Page précédente";
 
   getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0) {
@@ -44,12 +43,11 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
   }
 }
 
-
 @Component({
   selector: "app-society-accounts",
   templateUrl: "./society-accounts.component.html",
   styleUrls: ["./society-accounts.component.scss"],
-  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
+  providers: [{ provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl }],
 })
 export class SocietyAccountsComponent implements OnInit {
   displayedColumns: string[] = [
@@ -62,7 +60,6 @@ export class SocietyAccountsComponent implements OnInit {
     "actions",
   ];
 
-
   dataSource = new MatTableDataSource<BankaccountDevise>();
 
   currentBankAccount: BankaccountDevise = {
@@ -70,8 +67,9 @@ export class SocietyAccountsComponent implements OnInit {
     rib: "",
     bic: "",
     iban: "",
+    archive: false,
     nom_banque: "",
-    nom_devise : ""
+    nom_devise: "",
   };
 
   bankAccForm: FormGroup = new FormGroup({
@@ -82,8 +80,8 @@ export class SocietyAccountsComponent implements OnInit {
   });
 
   submitted = false;
-  errorUpdateAccount=false;
-  errorMsg=""
+  errorUpdateAccount = false;
+  errorMsg = "";
 
   disabelModif: boolean = false;
   message = "";
@@ -98,21 +96,23 @@ export class SocietyAccountsComponent implements OnInit {
   devises = [
     {
       nom: "",
-      devise: ""
-    }
+      devise: "",
+    },
   ];
 
   getDevises() {
     this.deviseService.getAllDevises().subscribe({
       next: (data) => {
         console.log(data);
-        this.devises = data.map((data: any) => {return { 
-          nom : data.nom,
-          devise: data.devise,
-        }} );
+        this.devises = data.map((data: any) => {
+          return {
+            nom: data.nom,
+            devise: data.devise,
+          };
+        });
         console.log(this.devises);
       },
-    })
+    });
   }
 
   constructor(
@@ -120,8 +120,9 @@ export class SocietyAccountsComponent implements OnInit {
     private router: Router,
     private BankaccountService: BankaccountService,
     private formBuilder: FormBuilder,
-    private tokenStorageService: TokenStorageService, 
-    private deviseService : DeviseService
+    private tokenStorageService: TokenStorageService,
+    private deviseService: DeviseService,
+    private factureService: FactureService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -135,7 +136,7 @@ export class SocietyAccountsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDevises()
+    this.getDevises();
     this.fetchBankAccounts();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
@@ -145,17 +146,24 @@ export class SocietyAccountsComponent implements OnInit {
     }
     this.bankAccForm = this.formBuilder.group({
       rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
-      bic: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$"),Validators.minLength(8),Validators.maxLength(11)]],
-      iban: [
-        Validators.required,
-        ValidatorService.validateIban
+      bic: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("^[a-zA-Z0-9]+$"),
+          Validators.minLength(8),
+          Validators.maxLength(11),
+        ],
       ],
-      nomBanque: ["", [Validators.required,Validators.pattern("[a-zA-Z][a-zA-Z ]+")]],
+      iban: [Validators.required, ValidatorService.validateIban],
+      nomBanque: [
+        "",
+        [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
+      ],
     });
   }
 
   get f(): { [key: string]: AbstractControl } {
-
     return this.bankAccForm.controls;
   }
 
@@ -174,10 +182,11 @@ export class SocietyAccountsComponent implements OnInit {
     this.BankaccountService.getAll().subscribe({
       next: (data) => {
         this.bankaccounts = data;
+        this.bankaccounts = data.filter((elm) => elm.archive == false);
         this.dataSource.data = this.bankaccounts;
-        console.log('!!',data);
+        console.log("!!", data);
       },
-      error: (e) =>{
+      error: (e) => {
         console.error(e);
         Swal.fire({
           title: "Echec d'affichage des comptes bancaires !",
@@ -186,7 +195,7 @@ export class SocietyAccountsComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
-      }
+      },
     });
   }
   refreshList(): void {
@@ -198,6 +207,24 @@ export class SocietyAccountsComponent implements OnInit {
     this.currentBankAccount = bankaccount;
     this.currentIndex = index;
     this.disabelModif = true;
+  }
+
+  archiveBankAccount(body: Bankaccount) {
+    body.archive = true;
+    this.BankaccountService.update(body.num_compte, body).subscribe({
+      next: (res) => {
+        console.log(res);
+        Swal.fire({
+          title: "Compte bancaire archivé avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.refreshList();
+          }
+        });
+      },
+    });
   }
 
   updateBankAccount(): void {
@@ -213,69 +240,59 @@ export class SocietyAccountsComponent implements OnInit {
           icon: "success",
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
-        })
+        });
       },
       error: (e) => {
         console.error(e);
-        this.errorUpdateAccount=true;
-        this.errorMsg="Une erreur est survenue lors de la mise à jour du compte bancaire !"
-      }
-    });
-
-   
-  }
-
-  removeAllBankAccounts(): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de tout supprimer ? ",
-      text: "Vous ne serez pas capable de restaurer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.BankaccountService.deleteAll().subscribe({
-          next: (res) => {
-            console.log(res);
-            this.message = res.message
-              ? res.message
-              : "all bank accounts were deleted successfully!";
-            this.refreshList();
-          },
-          error: (e) => console.error(e),
-        });
-      }
+        this.errorUpdateAccount = true;
+        this.errorMsg =
+          "Une erreur est survenue lors de la mise à jour du compte bancaire !";
+      },
     });
   }
 
   deleteBankAccount(bankaccount: BankaccountDevise): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.BankaccountService.delete(bankaccount.num_compte).subscribe({
-          next: (res) => {
-            console.log(res);
-            this.message = res.message
-              ? res.message
-              : "This bank account was deleted successfully!";
-            this.refreshList();
-          },
-          error: (e) => console.error(e),
-        });
-      }
+    this.factureService.getAccount(bankaccount.num_compte).subscribe({
+      next: (res: any) => {
+        console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.BankaccountService.delete(bankaccount.num_compte).subscribe({
+                next: (res) => {
+                  console.log(res);
+                  this.message = res.message
+                    ? res.message
+                    : "This bank account was deleted successfully!";
+                  this.refreshList();
+                },
+                error: (e) => console.error(e),
+              });
+            }
+          });
+        } else {
+          console.log("NON NULL");
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer ce client car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
+      },
     });
   }
+
   filterData($event: any) {
     $event.target.value.trim();
     $event.target.value.toLowerCase();

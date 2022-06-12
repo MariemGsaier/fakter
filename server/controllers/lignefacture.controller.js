@@ -23,8 +23,31 @@ exports.create = (req, res) => {
     })
     .catch((err) => {
       res.status(500).send({
-        message:
-          err.message 
+        message: err.message,
+      });
+    });
+};
+
+// Find a single ligne facture with an id
+exports.findOne = (req, res) => {
+  const nom_article = req.params.nom_article;
+  lignefacture
+    .findOne({
+      where: { nom_article: nom_article },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(201).send({
+          message: `Cannot find ligne facture with nom =${nom_article}.`,
+          status : 201
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving ligne facture with =" + nom_article,
       });
     });
 };
@@ -39,11 +62,6 @@ exports.findAll = (req, res) => {
         res.status(500).send({
           message: err.message
         });
-      });
-  };
-
-
-
-
-
+    });
+};
 

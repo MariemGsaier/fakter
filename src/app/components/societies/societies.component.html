@@ -60,12 +60,6 @@
              <h4 mat-line>{{ currentSociete.num_rcs }}</h4>
              <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
-          <h3 mat-subheader>Timbre fiscal</h3>
-          <mat-list-item style="font-size: 17px;">
-             <mat-icon mat-list-icon>gradient</mat-icon>
-             <h4 mat-line>{{ currentSociete.timbre_fiscal }}</h4>
-             <mat-divider [inset]="true"></mat-divider>
-          </mat-list-item>
        </mat-list>
       </div>
       <ng-template #loggedOut> Veuillez vous connecter. </ng-template>
@@ -230,28 +224,6 @@
               </div>
               <span *ngIf="f['num_rcs'].errors['pattern']"
                 >Le numéro RCS saisi est invalide !</span
-              >
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="w-100 fs-16" appearance="outline">
-            <mat-label>Timbre fiscal</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le logo"
-              formControlName="timbre_fiscal"
-              required
-              [ngClass]="{ 'is-invalid': submitted && f['timbre_fiscal'].errors }"
-              id="timbre_fiscal"
-              [(ngModel)]="currentSociete.timbre_fiscal"
-            />
-            <mat-error *ngIf="f['timbre_fiscal'].errors" class="text-danger">
-              <div *ngIf="f['timbre_fiscal'].errors['required']">
-                Le champ timbre fiscal est obligatoire !
-              </div>
-              <span *ngIf="f['timbre_fiscal'].errors['pattern']"
-                >Le valeur saisi est invalide !</span
               >
             </mat-error>
           </mat-form-field>

@@ -22,7 +22,8 @@ export class AddUserComponent implements OnInit {
     username: '',
     email: '',
     role: '',
-    password: ''
+    password: '',
+    etat_user: false
   };
 errorMsg =""
   
@@ -52,7 +53,7 @@ errorMsg =""
         username: ['',[Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)]],
         email: ['', [Validators.required, Validators.pattern('[A-Za-z0-9._%-]+@[A-Za-z0-9._%-]+\\.[a-z]{2,3}')]],
         role: ['', Validators.required],
-        password: ['',[Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9!@#$%^&*() ]+$/)]],
+        password: ['',[Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9!@#$%^&*()]+$/)]],
         confirmPassword: ['', Validators.required]
       },
       {
@@ -83,7 +84,8 @@ errorMsg =""
       username: this.user.username,
       email: this.user.email,
       role: this.user.role,
-      password: this.user.password
+      password: this.user.password,
+      etat_user: true
     };
     if ((this.userForm.valid)) {
       this.gestUserService.create(data)

@@ -13,13 +13,14 @@
     </button>
     <button
       mat-button
-      class="btn btn-danger fw-normal"
-      style="float: right; margin-right: 0.142%"
-      (click)="removeAllUsers()"
-      matTooltip="Supprimer tous les utilisateurs"
+      class="btn btn-secondary fw-normal btnw"
+      routerLink="/archive-users"
+      type="submit"
+      matTooltip="Consulter  l'archive"
       matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
     >
-      Supprimer Tout
+      Archive
     </button>
     <button
       mat-icon-button
@@ -76,34 +77,26 @@
             *matCellDef="let user; let i = index"
             [class.active]="i == currentIndex"
           >
-            <span
-              ><button
-                mat-button
-                class="btn btn-success fw-normal btnw"
-                style="margin-right: 1%"
-                type="submit"
-                name="modifier"
-                (click)="setActiveUser(user, i)"
-                matTooltip="Modifier l'utilisateur "
-                matTooltipPosition="above"
-
-              >
-                <mat-icon>edit</mat-icon>
-              </button></span
-            >
-            <span
-              ><button
-                mat-button
-                class="btn btn-danger fw-normal btnw"
-                type="submit"
-                name="supprimer"
-                (click)="deleteUser(user)"
-                matTooltip="Supprimer l'utilisateur "
-                matTooltipPosition="above"
-              >
-                <mat-icon>delete</mat-icon>
-              </button></span
-            >
+          <button mat-icon-button [matMenuTriggerFor]="menu4">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu4="matMenu">
+            <button mat-menu-item
+            (click)="disableUser(user)">
+              <mat-icon>archive</mat-icon>
+              <span>Archiver</span>
+            </button>
+            <button mat-menu-item 
+            (click)="setActiveUser(user, i)">
+              <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
+            </button>
+            <button mat-menu-item
+            (click)="deleteUser(user)">
+              <mat-icon>delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
           </td>
         </ng-container>
 

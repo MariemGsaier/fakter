@@ -60,10 +60,18 @@ export class BoardAdminComponent implements OnInit {
   dataSource = new MatTableDataSource<User>();
 
   content?: string;
+  user: User = {
+    username: '',
+    email: '',
+    role: '',
+    password: '',
+    etat_user: false
+  };
   currentUser: User = {
     username: "",
     email: "",
     role: "",
+    etat_user: true
   };
   errorUpdate = false;
   errorMsg = "";
@@ -91,8 +99,6 @@ export class BoardAdminComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private gestUserService: GestUserService,
-    private route: ActivatedRoute,
-    private router: Router,
     private tokenStorage: TokenStorageService
   ) {}
 
@@ -154,7 +160,7 @@ export class BoardAdminComponent implements OnInit {
           this.hideAuthSupAdmin = true;
         }
         let userAuth= this.tokenStorage.getUser()
-        this.users = data.filter(elm => elm.id !== userAuth.id );
+        this.users = data.filter(elm => elm.id !== userAuth.id && elm.etat_user == true);
         this.dataSource.data = this.users;
         console.log(data);
       },
@@ -182,6 +188,26 @@ export class BoardAdminComponent implements OnInit {
     console.log(user);
     this.currentIndex = index;
     this.disabelModif = true;
+  }
+
+  disableUser(body:User){
+    body.etat_user = false;
+    body.password = Math.random().toString(36).slice(-8);
+    this.gestUserService.disableUser(body.id, body).subscribe({
+      next: (res) => {
+        console.log(res)
+        Swal.fire({
+          title: "Utilisateur désactivé avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.retrieveUsers()
+          }
+        });
+      }
+    });
+
   }
 
   removeAllUsers(): void {

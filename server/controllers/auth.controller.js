@@ -11,6 +11,7 @@ exports.createUser = (req, res) => {
     username: req.body.username,
     email: req.body.email,
     role: req.body.role,
+    etat_user: req.body.etat_user,
     // hashing the pw in the req on 8 salt rounds = cost factor
     //The cost factor controls how much time is needed to calculate a single BCrypt hash
     password: bcrypt.hashSync(req.body.password, 8),

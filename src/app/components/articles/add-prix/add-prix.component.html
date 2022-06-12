@@ -39,9 +39,23 @@
           <div *ngIf="f['prix'].errors['required']">
             Le champ prix est obligatoire
           </div>
-          <span *ngIf="f['prix'].errors['pattern']"
-            >Le prix saisi est invalide</span
-          >
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Coût vente</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Entrez le prix"
+          formControlName="cout"
+          [ngClass]="{ 'is-invalid': submitted && f['cout'].errors }"
+          required
+          [(ngModel)]="prixArticle.cout"
+        />
+        <mat-error *ngIf="f['cout'].errors" class="text-danger">
+          <div *ngIf="f['cout'].errors['required']">
+            Le champ coût est obligatoire
+          </div>
         </mat-error>
       </mat-form-field>
       <mat-form-field

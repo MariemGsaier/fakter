@@ -20,7 +20,7 @@
           Ajouter un article
         </button>
         <button mat-menu-item class="fs-16" routerLink="/add-prix">
-          Ajouter un prix pour un article
+          Ajouter un prix et un coût
         </button>
       </div>
     </mat-menu>
@@ -31,20 +31,19 @@
       matTooltipPosition="above"
       style="float: right; margin-right: 0.142%"
       (click)="exportexcel()"
-      *ngIf="!showObserverBoard"
     >
       <mat-icon>save_alt</mat-icon>
     </button>
     <button
       mat-button
-      class="btn btn-danger fw-normal disabled"
-      style="float: right; margin-right: 0.142%"
-      (click)="removeAllArticles()"
-      *ngIf="!showObserverBoard"
-      matTooltip="Supprimer tous les articles"
+      class="btn btn-secondary fw-normal btnw"
+      routerLink="/archive-articles"
+      type="submit"
+      matTooltip="Consulter  l'archive"
       matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
     >
-      Supprimer Tout
+      Archive
     </button>
     <button
       mat-icon-button
@@ -100,7 +99,7 @@
         <ng-container matColumnDef="cout">
           <th mat-header-cell *matHeaderCellDef>Coût (DT)</th>
           <td mat-cell *matCellDef="let article">
-            <p class="mb-0 fw-medium">{{ article.cout }}</p>
+            <p class="mb-0 fw-medium">{{ article.prix[0]?.cout }}</p>
           </td>
         </ng-container>
 
@@ -122,30 +121,35 @@
             *matCellDef="let article; let i = index"
             [class.active]="i == currentIndex"
           >
-            <button
-              mat-button
-              *ngIf="!showObserverBoard"
-              class="btn btn-success fw-normal btnw disabled"
-              style="margin-right: 1%"
-              type="submit"
-              (click)="setActiveArticle(article, i)"
-              matTooltip="Modifier un article"
-              matTooltipPosition="above"
-            >
+          <button mat-icon-button [matMenuTriggerFor]="menu4">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu4="matMenu">
+            <button mat-menu-item
+            *ngIf="!showObserverBoard"
+            (click)="archiveArticle(article)">
+              <mat-icon>archive</mat-icon>
+              <span>Archiver</span>
+            </button>
+            <button mat-menu-item 
+            (click)="setActiveArticle(article, i)"
+            *ngIf="!showObserverBoard">
               <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
             </button>
-            <button
-              mat-button
-              *ngIf="!showObserverBoard"
-              class="btn btn-danger fw-normal btnw disabled"
-              style="margin-right: 1%"
-              type="submit"
-              (click)="deletePrixArticle(article)"
-              matTooltip="Supprimer un article"
-              matTooltipPosition="above"
-            >
+            <button mat-menu-item
+            (click)="deleteArticle(article)"
+            *ngIf="!showObserverBoard">
               <mat-icon>delete</mat-icon>
+              <span>Supprimer article</span>
             </button>
+            <button mat-menu-item
+            (click)="deletePrixArticle(article)"
+            *ngIf="!showObserverBoard">
+              <mat-icon>delete</mat-icon>
+              <span>Supprimer prix article</span>
+            </button>
+          </mat-menu>
           </td>
         </ng-container>
 
@@ -182,24 +186,6 @@
             <mat-error *ngIf="f['type_article'].errors" class="text-danger">
               <div *ngIf="f['type_article'].errors['required']">Le champ type est obligatoire</div>
             </mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Coût</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="Veuillez entrer votre modification"
-          formControlName="cout"
-          [ngClass]="{ 'is-invalid': submitted && f['cout'].errors }"
-          required
-          id="cout"
-          [value]="currentPrixArticle.cout"
-        />
-        <mat-error *ngIf="f['cout'].errors" class="text-danger">
-          <div *ngIf="f['cout'].errors['required']">
-            Le champ coût est obligatoire
-          </div>
-        </mat-error>
       </mat-form-field>
       <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Description</mat-label>

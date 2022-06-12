@@ -25,17 +25,6 @@
       </mat-menu>
     </div>
       <button
-        mat-button
-        class="btn btn-danger fw-normal"
-        style="float: right; margin-right: 0.142%"
-        matTooltip="Supprimer tous les taux de changes"
-        matTooltipPosition="above"
-        (click)="removeAllDevises()"
-        *ngIf="!showObserverBoard"
-      >
-        Supprimer Tout
-      </button>
-      <button
         mat-icon-button
         class="ms-4 me-4"
         style="float: right"
@@ -47,8 +36,8 @@
         ></i-feather>
       </button>
   
-      <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les devises</h4>
-      <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les devises</h4>
+      <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez l'historique des insertions de taux de change</h4>
+      <h4 class="mb-56" *ngIf="showObserverBoard">Consultez l'historique des insertions de taux de change</h4>
       
     <div *ngIf="search" class="search-section d-flex align-items-center">
       <mat-form-field class="w-100" color="primary" appearance="legacy">
@@ -104,18 +93,17 @@
               [class.active]="i == currentIndex"
               (click)="setActiveDevise(devise, i)"
             >
-              <button
-                mat-button
-                *ngIf="!showObserverBoard"
-                class="btn btn-danger fw-normal btnw"
-                style="margin-right: 1%"
-                type="submit"
-                matTooltip="Supprimer le taux de change"
-                matTooltipPosition="above"
-                (click)="deleteDevise(devise)"
-              >
+            <button mat-icon-button [matMenuTriggerFor]="menu4">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu4="matMenu">
+              <button mat-menu-item
+              (click)="deleteDateDevise(devise)"
+              *ngIf="!showObserverBoard">
                 <mat-icon>delete</mat-icon>
+                <span>Supprimer taux de change</span>
               </button>
+            </mat-menu>
             </td>
           </ng-container>
   

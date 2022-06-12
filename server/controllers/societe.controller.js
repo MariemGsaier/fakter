@@ -30,7 +30,6 @@ exports.create = (req, res) => {
     siteweb: req.body.siteweb,
     type_societe: req.body.type_societe,
     num_rcs: req.body.num_rcs,
-    timbre_fiscal: req.body.timbre_fiscal,
   };
   // Save societe in the database
   societe
@@ -91,5 +90,3 @@ exports.update = (req, res) => {
       });
     });
 };
-
-

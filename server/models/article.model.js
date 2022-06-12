@@ -8,11 +8,11 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.ENUM,
       values: ['Service', 'Consommable'] 
     },
-    cout: {
-      type: Sequelize.FLOAT
-    },
     description: {
       type: Sequelize.STRING
+    },
+    archive: {
+      type: Sequelize.BOOLEAN,
     },
   });
   return Article;

@@ -51,26 +51,6 @@
             appearance="outline"
             style="margin-right: 16px"
           >
-            <mat-label>Coût</mat-label>
-            <input
-              matInput
-              type="number"
-              placeholder="Entrez le coût"
-              formControlName="cout"
-              required
-              [(ngModel)]="article.cout"
-            />
-            <mat-error *ngIf="f['cout'].errors" class="text-danger">
-              <div *ngIf="f['cout'].errors['required']">
-                Le champ coût est obligatoire
-              </div>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field
-            class="w-100 fs-16"
-            appearance="outline"
-            style="margin-right: 16px"
-          >
             <mat-label>Description</mat-label>
             <textarea
               matInput
@@ -98,6 +78,18 @@
       >
         Confirmer
       </button>
+      <div
+            class="alert alert-danger alert-text-danger d-flex fs-14"
+            style="width: 354px"
+            role="alert"
+            *ngIf="errorAddArticle"
+          >
+            <i-feather
+              name="alert-circle"
+              class="text-danger feather-base me-12"
+            ></i-feather>
+            {{ errorMsg }}
+          </div>
     </form>
   </div>
 </div>

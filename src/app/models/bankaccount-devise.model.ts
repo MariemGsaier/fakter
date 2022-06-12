@@ -3,6 +3,7 @@ export class BankaccountDevise {
         rib?: string;
         bic?: string;
         iban?: string;
+        archive?: boolean;
         nom_banque?: string;
         nom_devise?: string;
 }
