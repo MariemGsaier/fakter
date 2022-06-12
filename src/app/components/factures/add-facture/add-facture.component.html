@@ -232,7 +232,7 @@
             <ng-container matColumnDef="taxe">
               <th mat-header-cell *matHeaderCellDef>Taxe</th>
               <td mat-cell *matCellDef="let element">
-                {{ element.taxe }}
+                {{ element.taxe | percent }}
               </td>
             </ng-container>
             <ng-container matColumnDef="sous_total">

@@ -137,10 +137,10 @@ export class DialogBoxComponent implements OnInit {
         nom_article: this.currentPrixArticle.nom_article,
         prix: this.ligneArticleForm.get("prix")?.value,
         quantite: this.qteArticleForm.get("quantite")?.value,
-        taxe: 19,
+        taxe: 0.19,
         sous_totalttc:
           this.ligneArticleForm.get("prix")?.value *
-          (19 / 100 + 1) *
+          (0.19+ 1) *
           this.qteArticleForm.get("quantite")?.value,
         soustotal_ht:
           this.ligneArticleForm.get("prix")?.value *

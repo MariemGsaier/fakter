@@ -209,7 +209,7 @@ export class FacturesComponent implements OnInit {
                     nom_article : data[i].nom_article,
                     quantite : data[i].quantite,
                     prix : this.articles[j].prix,
-                    taxe : 19,
+                    taxe : 0.19,
                   }
                 }
               }

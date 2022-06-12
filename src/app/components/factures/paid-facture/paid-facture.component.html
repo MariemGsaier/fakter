@@ -9,9 +9,8 @@
   <mat-icon>picture_as_pdf</mat-icon> Exporter en PDF
 </button>
 </div>
-<div id="facture">
+<div  style="margin-left:2% ;" id="facture">
   <div style="margin-top: 15px">
-    <p>Facture client</p>
     <h3>{{ facture.reference }}</h3>
   </div>
   <div>
@@ -86,7 +85,7 @@
           <ng-container matColumnDef="taxe">
             <th mat-header-cell *matHeaderCellDef>Taxe</th>
             <td mat-cell *matCellDef="let element">
-              {{ element.taxe }}
+              {{ element.taxe | percent}}
             </td>
           </ng-container>
 
