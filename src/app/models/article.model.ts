@@ -3,4 +3,8 @@ export class Article {
   type_article?: string;
   description?: string;
   archive?: boolean;
+  facture?: [{
+    total_ht : number;
+    total_ttc: number;
+  }]
 }

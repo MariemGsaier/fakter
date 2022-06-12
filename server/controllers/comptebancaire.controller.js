@@ -52,6 +52,25 @@ exports.create = (req, res) => {
       });
     });
 };
+
+
+
+exports.findOneCompte = (req, res) => {
+  comptebancaire.findOne({
+    where: {
+      num_compte: req.params.num_compte,
+    },
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving compte bancaire."
+      });
+    });
+};
 // Lister les comptes bancaires
 exports.findAll = (req, res) => {
   comptebancaire

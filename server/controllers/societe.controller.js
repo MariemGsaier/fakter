@@ -61,7 +61,7 @@ exports.findOne = (req, res) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: "Error retrieving societe with id=" + id
+        message: err.message
       });
     });
 };
@@ -87,30 +87,6 @@ exports.update = (req, res) => {
     .catch((err) => {
       res.status(500).send({
         message: "Error updating societe with id=" + id,
-      });
-    });
-};
-// Delete a societe with the specified id in the request
-exports.delete = (req, res) => {
-  const id = req.params.id;
-  societe
-    .destroy({
-      where: { id: id },
-    })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "societe was deleted successfully!",
-        });
-      } else {
-        res.send({
-          message: `Cannot delete societe with id=${id}. Maybe societe was not found!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Could not delete societe with id=" + id,
       });
     });
 };

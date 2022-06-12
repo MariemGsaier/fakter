@@ -107,13 +107,14 @@
             >
             <button
             mat-button
-            class="btn btn-danger fw-normal btnw"
+            class="btn btn-secondary fw-normal btnw"
             style="margin-right: 1%"
-            matTooltip="Supprimer la facture"
+            matTooltip="Restaurer la facture"
             matTooltipPosition="above"
             type="submit"
+            (click)="unarchiveFacture(facture)"
           >
-            <mat-icon>delete</mat-icon>
+            <mat-icon>restore</mat-icon>
           </button>
             </td>
           </ng-container>

@@ -8,16 +8,8 @@ import { FactureStoreService } from 'src/app/store/facture-store.service';
 import { AddFacture } from 'src/app/models/add-facture.model';
 import { ArticleslignefactStoreService } from 'src/app/store/articleslignefact-store.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { FactureService } from 'src/app/services/facture.service';
 
-export interface PeriodicElement {
-  id: number;
-  name: string;
-  work: string;
-  project: string;
-  priority: string;
-  badge: string;
-  budget: string;
-}
 export interface Element {
   nom_article: string;
   quantite: number;
@@ -27,12 +19,7 @@ export interface Element {
   soustotal_ht: number;
 }
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, name: 'Deep Javiya', work: 'Frontend Devloper', project: 'Flexy Angular', priority: 'Low', badge: 'badge-info', budget: '$3.9k' },
-  { id: 2, name: 'Nirav Joshi', work: 'Project Manager', project: 'Hosting Press HTML', priority: 'Medium', badge: 'badge-primary', budget: '$24.5k' },
-  { id: 3, name: 'Sunil Joshi', work: 'Web Designer', project: 'Elite Admin', priority: 'High', badge: 'badge-danger', budget: '$12.8k' },
-  { id: 4, name: 'Maruti Makwana', work: 'Backend Devloper', project: 'Material Pro', priority: 'Critical', badge: 'badge-success', budget: '$2.4k' },
-];
+
 
 @Component({
   selector: 'app-print-facture',
@@ -77,7 +64,7 @@ export class PrintFactureComponent implements OnInit {
     courriel: "",
     siteweb: ""
   };
-  facture: AddFacture = {};
+  facture: any = {};
   ligneFact: Element[] = [];;
   dataSource = new MatTableDataSource<Element>();
 
@@ -85,7 +72,7 @@ export class PrintFactureComponent implements OnInit {
 
  
 
-  constructor(private societeService: SocieteService,private factureStore : FactureStoreService,private ligneFactStore : ArticleslignefactStoreService) { }
+  constructor(private societeService: SocieteService,private factureService : FactureService ,private factureStore : FactureStoreService,private ligneFactStore : ArticleslignefactStoreService) { }
 
 
 
@@ -93,6 +80,8 @@ export class PrintFactureComponent implements OnInit {
     this.facture= this.factureStore.getFactureFromStore();
     this.ligneFact=this.ligneFactStore.getArticlesFromStore();
     this.dataSource = new MatTableDataSource<Element>(this.ligneFact);
+    
+    
 
     console.log(this.facture)
 
@@ -114,6 +103,13 @@ export class PrintFactureComponent implements OnInit {
           
           doc.save('FacturePdf.pdf');
       });
+
+      this.factureService.sendEmail(this.factureStore.getFactureFromStore()).subscribe({
+        next : (data) => {
+          console.log("email",data);
+          
+        }
+      })
   }
 
 

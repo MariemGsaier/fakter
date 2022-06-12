@@ -1,6 +1,8 @@
+const { facture } = require("../models");
 const db = require("../models");
 const Op = db.Sequelize.Op;
 const lignefacture = db.lignefacture;
+
 exports.create = (req, res) => {
   if (!req.body.quantite) {
     res.status(400).send({
@@ -50,52 +52,16 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a facture by the id in the request
-exports.update = (req, res) => {
-  const id = req.params.id;
-  lignefacture
-    .update(req.body.quantite, {
-      where: { id: id },
-    })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "facture was updated successfully.",
+exports.findAll = (req, res) => {
+
+  lignefacture.findAll({})
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message
         });
-      } else {
-        res.send({
-          message: `Cannot update facture with id=${id}. Maybe facture was not found or req.body is empty!`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message,
-      });
     });
 };
 
-// delete a row from ligne facture
-exports.delete = (req, res) => {
-  const id = req.params.id;
-  lignefacture
-    .destroy({
-      where: { id: id },
-    })
-    .then((num) => {
-      if (num == 1) {
-        res.send({
-          message: "la ligne  est supprimée avec succés!",
-        });
-      } else {
-        res.send({
-          message: `Echec de suppression de la ligne avec id=${id}. Peut être qu'elle est inexistante !`,
-        });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: err.message,
-      });
-    });
-};

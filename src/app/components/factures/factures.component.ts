@@ -9,6 +9,14 @@ import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
 import { Subject } from "rxjs";
+import { FactureStoreService } from "src/app/store/facture-store.service";
+import { PaidfactureStoreService } from "src/app/store/paidfacture-store.service";
+import { LigneFactureService } from "src/app/services/ligne-facture.service";
+import { ArticleService } from "src/app/services/article.service";
+import { I } from "@angular/cdk/keycodes";
+import { BankaccountService } from "src/app/services/bankaccount.service";
+import { Bankaccount } from "src/app/models/bankaccount.model";
+import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-store.service";
 registerLocaleData(localeFr, "fr");
 
 
@@ -43,6 +51,7 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
   providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}],
 })
 export class FacturesComponent implements OnInit {
+  ligneFactPaid: any[] = [];
   fileName = "FacturesSheet.xlsx";
   displayedColumns: string[] = [
     "référence",
@@ -63,17 +72,37 @@ export class FacturesComponent implements OnInit {
     reference: "",
     date_facturation: new Date(),
     date_echeance: new Date(),
-    etat_facture: "",
+    etat_facture: false,
     etat_echeance: false,
     total_ht: undefined,
     total_ttc: 0,
     total_devise: undefined,
-    nom_devise: "",
+    devise: {
+      nom : "",
+      devise : ""
+
+    },
     nom_user: "",
+    compte: {
+      num_compte: "",
+      iban: "",
+      rib: "",
+    },
     client: {
       nom: "",
     },
+    article: {
+      nom_article: "",
+      prix : undefined
+    },
   };
+  articleLigne : any = {}
+  articles = [
+    {
+      nom_article: "",
+      prix: undefined,
+    },
+  ];
   message = "";
   factures?: Facture[];
   currentIndex = -1;
@@ -84,16 +113,25 @@ export class FacturesComponent implements OnInit {
   paginator?: MatPaginator;
   searchTerm: any;
   search: boolean = false;
+  ligneFact: Element[] = [];
+
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private factureService: FactureService,
-    private tokenStorageService: TokenStorageService
+    private factureStore : PaidfactureStoreService ,
+    private tokenStorageService: TokenStorageService,
+    private ligneFactService : LigneFactureService,
+    private  articleService : ArticleService,
+    private ligneFactStore : ArticleslignefactStoreService
+
   ) {}
 
   ngOnInit(): void {
     this.fetchFactures();
+    this.factureStore.resetFactureStore();
+    this.ligneFactStore.resetArticleStore();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -111,6 +149,8 @@ export class FacturesComponent implements OnInit {
     }
   }
 
+
+
   fetchFactures(): void {
     this.factureService
       .getAllFactDetailed()
@@ -118,7 +158,7 @@ export class FacturesComponent implements OnInit {
       .subscribe(
         (data) => {
           this.factures = data;
-          this.factures = data.filter(elm => elm.etat_facture !="archivé" );
+          this.factures = data.filter(elm => elm.archive == false );
           this.dataSource.data = this.factures;
 
           console.log(data);
@@ -132,8 +172,10 @@ export class FacturesComponent implements OnInit {
   refreshList(): void {
     this.fetchFactures();
   }
+
+
   archiveFacture(body:Facture){
-    body.etat_facture = "archivé";
+    body.archive = true;
     this.factureService.update(body.id, body).subscribe({
       next: (res) => {console.log(res)
         this.refreshList()
@@ -146,7 +188,49 @@ export class FacturesComponent implements OnInit {
     this.currentFacture = facture;
     console.log(facture);
     this.currentIndex = index;
-    this.disabelModif = true;
+  
+    this.ligneFactService.getAll().subscribe({
+      next : (data) => {
+        console.log("ligneeee",data);
+       for(let i=0; i<data.length;i++){
+        if(data[i].id_facture == this.currentFacture.id){
+
+          this.articleService.getAllPrix().subscribe({
+            next: (art) => {
+              this.articles = art.map((res: any) => {return { 
+                nom_article : res.nom_article,
+                prix : res.prix[0].prix
+              }} );
+
+              for(let j=0; j<this.articles.length;j++){
+                if(data[i].nom_article == this.articles[j].nom_article){
+
+                  this.articleLigne = {
+                    nom_article : data[i].nom_article,
+                    quantite : data[i].quantite,
+                    prix : this.articles[j].prix,
+                    taxe : 19,
+                  }
+                }
+              }
+              this.ligneFactStore.setArticlesInStore(this.articleLigne);
+              this.disabelModif = true;
+              this.factureStore.setFactureInStore(this.currentFacture);
+              this.router.navigate(['/facture-payée'])
+
+            },
+          })
+        }
+        
+       }
+      
+       
+      }
+    });
+ 
+       
+    
+
   }
 
 

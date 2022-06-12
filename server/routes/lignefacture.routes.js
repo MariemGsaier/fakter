@@ -16,7 +16,6 @@ module.exports = function (app) {
 router.post("/", controllerlignefct.create);
   // fetch all societes
   router.get("/:nom_article", controllerlignefct.findOne);
-  // Update a societe with id
-  router.put("/:id", controllerlignefct.update);
-  app.use("/api/lignefacture", router);
+router.get("/", controllerlignefct.findAll);
+app.use("/api/lignefacture", router);
 };

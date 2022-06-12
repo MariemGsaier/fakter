@@ -13,7 +13,7 @@ module.exports = function (app) {
   });
 
 //envoyer  facture 
-router.post("sendemail", controllerfct.factureEmail);
+router.post("/sendemail", controllerfct.factureEmail);
 // créer facture
 router.post("/create", controllerfct.create);
   // fetch all factures
@@ -28,5 +28,6 @@ router.post("/create", controllerfct.create);
   router.get("/devise/:nom_devise", controllerfct.findOneDevise);
   // Update a societe with id
   router.put("/:id", controllerfct.update);
+  router.get("/articles",controllerfct.findAllArticles)
   app.use("/api/factures", router);
 };

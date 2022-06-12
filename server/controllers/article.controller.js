@@ -61,12 +61,9 @@ exports.create = (req, res) => {
 };
 // Lister les articles
 exports.findAll = (req, res) => {
-  const nom_article = req.query.nom_article;
-  var condition = nom_article
-    ? { nom_article: { [Op.iLike]: `%${nom_article}%` } }
-    : null;
+ 
   article
-    .findAll({ where: condition })
+    .findAll({ include : ["facture"]})
     .then((data) => {
       res.send(data);
     })
@@ -81,12 +78,8 @@ exports.findAll = (req, res) => {
 
 // Lister les articles avec prix et dates
 exports.findAllArticles = (req, res) => {
-  const nom_article = req.query.nom_article;
-  var condition = nom_article
-    ? { nom_article: { [Op.iLike]: `%${nom_article}%` } }
-    : null;
   article
-    .findAll({ where: condition, include: ["prix"] })
+    .findAll({include: ["prix"] })
     .then((result) => {
       data = result.map((el) => el.get({ plain: true }));
       for (i = 0; i < data.length; i++) {

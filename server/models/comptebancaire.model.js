@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
         primaryKey : true
       },
       rib: {
-        type: Sequelize.STRING,
+        type: Sequelize.BIGINT,
         unique : true
       },
       bic: {

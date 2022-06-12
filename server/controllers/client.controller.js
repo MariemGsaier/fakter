@@ -43,6 +43,27 @@ exports.create = (req, res) => {
     }
   });
 };
+
+
+// lister un seul client 
+exports.findOneClient = (req, res) => {
+  const id = req.params.id;
+  Client.findByPk(id)
+    .then(data => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(404).send({
+          message: `Cannot find client with id=${id}.`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: err.message
+      });
+    });
+};
 // Lister les clients
 exports.findAll = (req, res) => {
   //The req.query property is an object containing the property for each query string parameter in the route.
@@ -62,6 +83,8 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+
 
 // Modifier un client
 exports.update = (req, res) => {

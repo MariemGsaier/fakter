@@ -14,6 +14,8 @@ module.exports = function (app) {
      router.post("/create", controllerclt.create);
     // fetch all clients
     router.get("/", controllerclt.findAll);
+    // fetch a client
+    router.get("/:id", controllerclt.findOneClient);
     // Update a client with id
     router.put("/:id", controllerclt.update);
     // Delete a client with id
