@@ -63,8 +63,8 @@ export class SocietyAccountsComponent implements OnInit {
   dataSource = new MatTableDataSource<BankaccountDevise>();
 
   currentBankAccount: BankaccountDevise = {
-    num_compte: "",
-    rib: "",
+    num_compte: undefined,
+    rib: undefined,
     bic: "",
     iban: "",
     archive: false,
@@ -77,6 +77,7 @@ export class SocietyAccountsComponent implements OnInit {
     bic: new FormControl(""),
     iban: new FormControl(""),
     nomBanque: new FormControl(""),
+    numCompte : new FormControl("")
   });
 
   submitted = false;
@@ -103,26 +104,24 @@ export class SocietyAccountsComponent implements OnInit {
   getDevises() {
     this.deviseService.getAllDevises().subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.devises = data.map((data: any) => {
           return {
             nom: data.nom,
             devise: data.devise,
           };
         });
-        console.log(this.devises);
+        // console.log(this.devises);
       },
     });
   }
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
     private BankaccountService: BankaccountService,
+    private factureService: FactureService,
     private formBuilder: FormBuilder,
     private tokenStorageService: TokenStorageService,
     private deviseService: DeviseService,
-    private factureService: FactureService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -184,7 +183,7 @@ export class SocietyAccountsComponent implements OnInit {
         this.bankaccounts = data;
         this.bankaccounts = data.filter((elm) => elm.archive == false);
         this.dataSource.data = this.bankaccounts;
-        console.log("!!", data);
+        // console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -213,7 +212,7 @@ export class SocietyAccountsComponent implements OnInit {
     body.archive = true;
     this.BankaccountService.update(body.num_compte, body).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Compte bancaire archivé avec succés !",
           icon: "success",
@@ -233,7 +232,7 @@ export class SocietyAccountsComponent implements OnInit {
       this.currentBankAccount
     ).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         this.disabelModif = false;
         Swal.fire({
           title: "Le compte bancaire est mis à jour avec succés ! ",
@@ -254,7 +253,7 @@ export class SocietyAccountsComponent implements OnInit {
   deleteBankAccount(bankaccount: BankaccountDevise): void {
     this.factureService.getAccount(bankaccount.num_compte).subscribe({
       next: (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 201) {
           Swal.fire({
             title: "Êtes-vous sûr de le supprimer ? ",
@@ -269,7 +268,7 @@ export class SocietyAccountsComponent implements OnInit {
             if (result.isConfirmed) {
               this.BankaccountService.delete(bankaccount.num_compte).subscribe({
                 next: (res) => {
-                  console.log(res);
+                  // console.log(res);
                   this.message = res.message
                     ? res.message
                     : "This bank account was deleted successfully!";
@@ -280,10 +279,9 @@ export class SocietyAccountsComponent implements OnInit {
             }
           });
         } else {
-          console.log("NON NULL");
           Swal.fire({
             title: "Echec de supression !",
-            text: "Vous ne pouvez pas supprimer ce client car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            text: "Vous ne pouvez pas supprimer ce compte bancaire car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
             icon: "warning",
             confirmButtonColor: "#00c292",
             confirmButtonText: "Ok",

@@ -11,6 +11,11 @@ interface devise {
   viewValue: string;
 }
 
+interface nomDevise {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-add-devise',
   templateUrl: './add-devise.component.html',
@@ -42,6 +47,16 @@ export class AddDeviseComponent implements OnInit {
     { value: "AED", viewValue: "AED" },
   ];
 
+  noms: nomDevise[] = [
+    { value: "euro", viewValue: "euro" },
+    { value: "Dollar américain", viewValue: "Dollar américain" },
+    { value: "Dollar canadien", viewValue: "Dollar canadien" },
+    { value: "Dollar australien", viewValue: "Dollar australien" },
+    { value: "Lire turque", viewValue: "Lire turque" },
+    { value: "Livre égyptienne", viewValue: "Livre égyptienne" },
+    { value: "Dirham des Émirats Arabes Unis", viewValue: "Dirham des Émirats Arabes Unis" },
+  ];
+
   constructor(
     private router: Router,
     private deviseService: DeviseService,
@@ -53,8 +68,8 @@ export class AddDeviseComponent implements OnInit {
     this.deviseStore.resetDeviseStore();
     this.deviseForm = this.formBuilder.group(
       {
-        nom: ['', [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)]],
-        devise: ['', [Validators.required, Validators.pattern(/^[a-zA-Z][a-zA-Z0-9 ]+$/)]]
+        nom: ['', [Validators.required]],
+        devise: ['', [Validators.required]]
       }
     );
   }
@@ -82,7 +97,7 @@ export class AddDeviseComponent implements OnInit {
     this.deviseService.create(data)
     .subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         this.submitted = true;
         Swal.fire({
           title: "Ajout avec succés !",
@@ -93,7 +108,7 @@ export class AddDeviseComponent implements OnInit {
         .then((result) => {
           if (result.isConfirmed) {
             this.deviseStore.setDeviseInStore(data);
-            console.log(this.deviseStore.getDeviseFromStore());
+            // console.log(this.deviseStore.getDeviseFromStore());
             this.router.navigate(['/add-datedevise'])
           }
         })

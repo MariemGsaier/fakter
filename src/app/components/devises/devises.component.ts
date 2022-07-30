@@ -5,6 +5,7 @@ import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
+import {MatSort} from '@angular/material/sort';
 import {
   AbstractControl,
   FormBuilder,
@@ -108,6 +109,9 @@ export class DevisesComponent implements OnInit {
     }
   }
 
+  @ViewChild(MatSort, {static: false})
+  sort: MatSort = new MatSort;
+
   ngOnInit(): void {
     this.fetchDevises();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -124,7 +128,8 @@ export class DevisesComponent implements OnInit {
         this.devises = data;
         this.devises = data.filter(elm => elm.archive == false );
         this.dataSource.data = this.devises;
-        console.log(data);
+        this.dataSource.sort = this.sort;
+        // console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -147,7 +152,7 @@ export class DevisesComponent implements OnInit {
 
   setActiveDateDevise(dateDevise: LigneDevise, index: number): void {
     this.currentLigneDevise = dateDevise;
-    console.log(dateDevise);
+    // console.log(dateDevise);
     this.currentIndex = index;
     this.disabelModif = true;
   }
@@ -156,7 +161,7 @@ export class DevisesComponent implements OnInit {
     body.archive = true;
     this.deviseService.update(body.nom, body).subscribe({
       next: (res) => {
-        console.log(res)
+        // console.log(res)
         Swal.fire({
           title: "Devise archivée avec succés !",
           icon: "success",
@@ -184,10 +189,10 @@ export class DevisesComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         dateDevise = this.currentLigneDevise.dates[0].id;
-        console.log("!!", this.currentLigneDevise);
+        // console.log("currentLigneDevise", this.currentLigneDevise);
         this.dateDeviseService.delete(dateDevise).subscribe({
           next: (res) => {
-            console.log(res);
+            // console.log(res);
             this.refreshList();
           },
           error: (e) => console.error(e),
@@ -199,7 +204,7 @@ export class DevisesComponent implements OnInit {
   deleteDevise(dateDevise: LigneDevise): void {
     this.factureService.getDevise(dateDevise.nom).subscribe({
       next: (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 201) {
           Swal.fire({
             title: "Êtes-vous sûr de le supprimer ? ",
@@ -213,10 +218,10 @@ export class DevisesComponent implements OnInit {
           }).then((result) => {
             if (result.isConfirmed) {
               dateDevise = this.currentLigneDevise.dates[0].id;
-              console.log("!!", this.currentLigneDevise);
+              // console.log("currentLigneDevise", this.currentLigneDevise);
               this.dateDeviseService.delete(dateDevise).subscribe({
                 next: (res) => {
-                  console.log(res);
+                  // console.log(res);
                   this.refreshList();
                 },
                 error: (e) => console.error(e),
@@ -224,7 +229,6 @@ export class DevisesComponent implements OnInit {
             }
           });
         } else {
-          console.log("NON NULL");
           Swal.fire({
             title: "Echec de supression !",
             text: "Vous ne pouvez pas supprimer ce client car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",

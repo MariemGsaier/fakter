@@ -80,7 +80,7 @@ export class FullComponent implements OnInit {
       this.societeService.get(1).subscribe(
         (data: any) => {
           this.nom_societe = data.nom_societe;
-          console.log(data);
+          // console.log(data);
         },
         (error: any) => {
           console.log(error);

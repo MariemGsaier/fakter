@@ -132,7 +132,7 @@ export class SocietiesComponent implements OnInit {
     this.societeService.get(1).subscribe(
       (data: Societe) => {
         this.currentSociete = data;
-        console.log(data);
+        // console.log(data);
       },
       (error: any) => {
         console.error(error);
@@ -152,12 +152,12 @@ export class SocietiesComponent implements OnInit {
     this.societeService
       .update(this.currentSociete.id, this.currentSociete)
       .subscribe(
-        (response) => {
-          console.log(response);
+        (res) => {
+          // console.log(res);
           this.disabelModif = false;
           this.reloadPage();
-          this.message = response.message
-            ? response.message
+          this.message = res.message
+            ? res.message
             : "Your societe is updated successfully!";
         },
         (error) => {

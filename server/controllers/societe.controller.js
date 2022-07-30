@@ -1,16 +1,6 @@
-
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to // console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
 const db = require("../models");
 const societe = db.societe;
-const Op = db.Sequelize.Op;
+
 // Create and Save a new societe
 exports.create = (req, res) => {
   // Validate request

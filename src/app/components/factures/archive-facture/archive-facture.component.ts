@@ -3,6 +3,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Facture } from 'src/app/models/facture.model';
 import { FactureService } from 'src/app/services/facture.service';
+import { TokenStorageService } from 'src/app/services/token-storage.service';
+import Swal from 'sweetalert2';
 import * as XLSX from "xlsx";
 
 @Component({
@@ -30,11 +32,20 @@ export class ArchiveFactureComponent implements OnInit {
   dataSource = new MatTableDataSource<Facture>();
   factures?: Facture[];
   paginator?: MatPaginator;
+  private roles: string[] = [];
+  isLoggedIn = false;
+  showObserverBoard = true;
 
-  constructor(private factureService: FactureService) { }
+  constructor(private factureService: FactureService,  private tokenStorageService: TokenStorageService,) { }
 
   ngOnInit(): void {
-    this.fetchFactures()
+    this.fetchFactures();
+    this.isLoggedIn = !!this.tokenStorageService.getToken();
+    if (this.isLoggedIn) {
+      const user = this.tokenStorageService.getUser();
+      this.roles = user.role;
+      this.showObserverBoard = this.roles.includes("Observateur");
+    }
   }
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -50,8 +61,18 @@ export class ArchiveFactureComponent implements OnInit {
   unarchiveFacture(body:Facture){
     body.archive = false;
     this.factureService.update(body.id, body).subscribe({
-      next: (res) => {console.log(res)
-        this.fetchFactures()
+      next: (res) => {
+        // console.log(res)
+       
+        Swal.fire({
+          title: "Facture restaurée avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+           this.fetchFactures();
+          }
+        });
       }
     });
 
@@ -67,7 +88,7 @@ export class ArchiveFactureComponent implements OnInit {
           this.factures = data.filter(elm => elm.archive ==true );
           this.dataSource.data = this.factures;
 
-          console.log(data);
+          // console.log(data);
         },
         (error) => {
           console.log(error);

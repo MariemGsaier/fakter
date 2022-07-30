@@ -11,7 +11,16 @@ import {
   Validators,
 } from "@angular/forms";
 import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-store.service";
-
+import Swal from "sweetalert2";
+import { LogIn } from "angular-feather/icons";
+interface Element {
+  nom_article?: string;
+  prix: number;
+  quantite: number;
+  taxe: 0.19,
+  sous_totalttc: number;
+  soustotal_ht: number;
+}
 @Component({
   selector: "app-dialog-box",
   templateUrl: "./dialog-box.component.html",
@@ -22,7 +31,6 @@ export class DialogBoxComponent implements OnInit {
     nom_article: "",
     type_article: "",
     description: "",
-
     prix: [
       {
         id: undefined,
@@ -38,6 +46,7 @@ export class DialogBoxComponent implements OnInit {
   qteArticleForm: FormGroup = new FormGroup({
     quantite: new FormControl(""),
   });
+  trouve = false;
 
   currentIndex = -1;
   disabelModif: boolean = false;
@@ -46,7 +55,8 @@ export class DialogBoxComponent implements OnInit {
   articles = [
     {
       nom_article: "",
-      prix: undefined,
+      archive: false,
+      prix: [{}],
     },
   ];
 
@@ -56,7 +66,7 @@ export class DialogBoxComponent implements OnInit {
     },
   ];
   selectedArticle = this.selected;
-  articlesLigneFact: Array<object> = [];
+  articlesLigneFact: Array<Element> = [];
 
   constructor(
     private articleService: ArticleService,
@@ -71,16 +81,13 @@ export class DialogBoxComponent implements OnInit {
         this.articles = data.map((data: any) => {
           return {
             nom_article: data.nom_article,
+            archive: data.archive,
             prix: data.prix[0].prix,
           };
-        });
-        console.log(this.articles);
+        }).filter(elm => elm.archive == false );
+        // console.log(this.articles);
       },
     });
-  }
-
-  changeArticleName(data: any) {
-    console.log(data);
   }
 
   setActiveArticle(ligneArticle: LignePrix, index: number): void {
@@ -133,7 +140,7 @@ export class DialogBoxComponent implements OnInit {
 
   ajouterArticleLigneFact(): void {
     if (this.ligneArticleForm.valid) {
-      const articleLigneFact = {
+      const articleLigneFact : Element = {
         nom_article: this.currentPrixArticle.nom_article,
         prix: this.ligneArticleForm.get("prix")?.value,
         quantite: this.qteArticleForm.get("quantite")?.value,
@@ -146,7 +153,42 @@ export class DialogBoxComponent implements OnInit {
           this.ligneArticleForm.get("prix")?.value *
           this.qteArticleForm.get("quantite")?.value,
       };
-      this.articlesLigneFact.push(articleLigneFact);
+      for(let i=0; i<this.articlesLigneFact.length;i++){
+       
+          console.log("jhkj",this.articlesLigneFact[i].nom_article);
+          
+          this.articles.filter(elem=> elem.nom_article !== this.articlesLigneFact[i].nom_article)
+          console.log("fgh",this.articles);
+      }
+      this.articlesLigneFact.push(articleLigneFact)
+    
+      // if(this.articlesLigneFact.length == 0){
+      //   this.articlesLigneFact.push(articleLigneFact)
+      // }
+      // else {
+      //   for(let i=0;i<this.articlesLigneFact.length;i++){
+  
+      //     if(this.articlesLigneFact[i].nom_article == articleLigneFact.nom_article){
+      //       console.log(this.trouve);
+            
+      //       this.trouve=true  
+      //     }
+      //       if(this.trouve==true){
+      //         Swal.fire({
+      //           title: "Cet article existe déjà  !",
+      //           icon: "warning",
+      //           confirmButtonColor: "#00c292",
+      //         })
+      //       }
+      //       else {
+      //         this.articlesLigneFact.push(articleLigneFact)
+              
+      //       }
+  
+      //   }
+
+      // }
+  
     }
     this.closeDialog(this.articlesLigneFact);
   }

@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { Validation } from 'src/app/validation/validation';
 import { User } from 'src/app/models/user.model';
 import Swal from "sweetalert2";
+import { I } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-change-pw',
@@ -53,8 +54,9 @@ export class ChangePwComponent implements OnInit {
   }
 
   changeFirstPw(): void {
+    if(this.changePwForm.valid){
 
-        this.authService
+      this.authService
         .changeFirstPw(this.user)
         .subscribe({
           next: (res) => {
@@ -66,7 +68,7 @@ export class ChangePwComponent implements OnInit {
               confirmButtonText: "Ok"
             }) .then((result) => {
               if (result.isConfirmed) {
-                console.log(res); 
+                // console.log(res); 
                 this.router.navigate(['/login'])
               }
             })
@@ -74,12 +76,7 @@ export class ChangePwComponent implements OnInit {
                   },
           error: (e) => console.error(e),
         });
-
-      
-
-    
-    
-      
+    }
       }
     
     }

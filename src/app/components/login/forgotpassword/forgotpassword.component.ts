@@ -61,9 +61,9 @@ export class ForgotpasswordComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok"
         }) 
-        // console.log(data);
+        // // console.log(data);
         this.userStore.setUserInStore(data);
-        console.log(this.userStore.getUserFromStore());
+        // console.log(this.userStore.getUserFromStore());
         window.location.reload();
               },
       error: (e) => console.error(e),

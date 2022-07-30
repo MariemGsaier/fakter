@@ -9,6 +9,7 @@ import { AddFacture } from 'src/app/models/add-facture.model';
 import { ArticleslignefactStoreService } from 'src/app/store/articleslignefact-store.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FactureService } from 'src/app/services/facture.service';
+import Swal from "sweetalert2";
 
 export interface Element {
   nom_article: string;
@@ -83,7 +84,7 @@ export class PrintFactureComponent implements OnInit {
     
     
 
-    console.log(this.facture)
+    // console.log(this.facture)
 
     this.getSociete();
   }
@@ -101,15 +102,22 @@ export class PrintFactureComponent implements OnInit {
           let position = 0;
           doc.addImage(contentDataURL, 'PNG', 0, position, docWidth, docHeight)
           
-          doc.save('FacturePdf.pdf');
+          doc.save('Facture'+ this.facture.reference+'.pdf');
       });
+  }
 
-      this.factureService.sendEmail(this.factureStore.getFactureFromStore()).subscribe({
-        next : (data) => {
-          console.log("email",data);
-          
-        }
-      })
+  public sendEmail(){
+    
+    this.factureService.sendEmail(this.factureStore.getFactureFromStore()).subscribe({
+      next : (data) => {
+        // console.log("email",data);
+        Swal.fire({
+          title: "Email envoyé avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        });
+      }
+    })
   }
 
 
@@ -119,7 +127,7 @@ export class PrintFactureComponent implements OnInit {
       .subscribe(
         (data: Societe) => {
           this.societe = data;
-          console.log(data);
+          // console.log(data);
         },
         (error: any) => {
           console.log(error);

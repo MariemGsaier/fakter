@@ -8,6 +8,7 @@ import { MatPaginator } from "@angular/material/paginator";
 import { DatedeviseService } from "src/app/services/datedevise.service";
 import { HistoriqueLigneDevise } from "src/app/models/historique-ligne-devise.model";
 import { registerLocaleData } from "@angular/common";
+import { MatSort } from '@angular/material/sort';
 import localeFr from "@angular/common/locales/fr";
 registerLocaleData(localeFr, "fr");
 
@@ -19,12 +20,13 @@ registerLocaleData(localeFr, "fr");
 export class HistoriqueDevisesComponent implements OnInit {
   searchTerm: any;
   search: boolean = false;
-  displayedColumns: string[] = ["nom", "devise", "valeur", "date", "actions"];
+  displayedColumns: string[] = ["nom", "devise", "valeur", "date", "archive"];
   dataSource = new MatTableDataSource<HistoriqueLigneDevise>();
 
   currentDevise: Devise = {
     nom: "",
     devise: "",
+    archive: false
   };
   currentDateDevise: Datedevise = {
     id: undefined,
@@ -38,6 +40,7 @@ export class HistoriqueDevisesComponent implements OnInit {
     devises: {
       nom: "",
       devise: "",
+      archive: false
     },
   };
   message = "";
@@ -52,7 +55,7 @@ export class HistoriqueDevisesComponent implements OnInit {
 
   constructor(
     private dateDeviseService: DatedeviseService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -64,6 +67,10 @@ export class HistoriqueDevisesComponent implements OnInit {
       this.dataSource.paginator = paginator;
     }
   }
+
+  @ViewChild(MatSort, {static: false})
+  sort: MatSort = new MatSort;
+
 
   ngOnInit(): void {
     this.fetchDevises();
@@ -80,7 +87,9 @@ export class HistoriqueDevisesComponent implements OnInit {
       next: (data) => {
         this.devises = data;
         this.dataSource.data = this.devises;
-        console.log(data);
+        this.dataSource.sort = this.sort;
+        
+        // console.log(data);
       },
       error: (e) => console.error(e),
     });
@@ -94,7 +103,7 @@ export class HistoriqueDevisesComponent implements OnInit {
 
   setActiveDevise(devise: HistoriqueLigneDevise, index: number): void {
     this.currentLigneDevise = devise;
-    console.log(devise);
+    // console.log(devise);
     this.currentIndex = index;
     this.disabelModif = true;
   }
@@ -113,7 +122,7 @@ export class HistoriqueDevisesComponent implements OnInit {
       if (result.isConfirmed) {
         this.dateDeviseService.delete(dateDevise.id).subscribe({
           next: (res) => {
-            console.log(res);
+            // console.log(res);
             this.refreshList();
           },
           error: (e) => console.error(e),

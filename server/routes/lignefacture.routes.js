@@ -1,8 +1,5 @@
-const { facture } = require("../models");
-
 module.exports = function (app) {
-  const controllerlignefct = require("../controllers/lignefacture.controller");
-  const { authJwt } = require("../middleware");
+const controllerlignefct = require("../controllers/lignefacture.controller");
   var router = require("express").Router();
   app.use(function (req, res, next) {
     res.header(

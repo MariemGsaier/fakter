@@ -59,7 +59,7 @@ exports.findAll = (req, res) => {
       })
       .catch((err) => {
         res.status(500).send({
-          message: err.message || "une erreur est survenue lors de l'affichage de la liste des devises avec leur valeurs.",
+          message: err.message || "une erreur est survenue lors de l'affichage de la liste des devises avec leurs valeurs.",
         });
       });
   };
@@ -77,13 +77,13 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression de la date devise avec nom = ${nom}. Peut être qu'elle est inexistante !`,
+          message: `Echec de suppression de la date devise avec id = ${id}. Peut être qu'elle est inexistante !`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
-        message: "Echec de suppression de la date devise avec nom = " + nom,
+        message: "Echec de suppression de la date devise avec id = " + id,
       });
     });
 };

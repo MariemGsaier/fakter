@@ -5,23 +5,6 @@
     </h4>
     <form [formGroup]="prixArticleForm" (ngSubmit)="onSubmit()">
       <mat-form-field class="w-100 fs-16" appearance="outline">
-        <mat-label>Prix vente</mat-label>
-        <input
-          matInput
-          type="number"
-          placeholder="Entrez le prix"
-          formControlName="prix"
-          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
-          required
-          [(ngModel)]="prixArticle.prix"
-        />
-        <mat-error *ngIf="f['prix'].errors" class="text-danger">
-          <div *ngIf="f['prix'].errors['required']">
-            Le champ prix est obligatoire
-          </div>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="w-100 fs-16" appearance="outline">
         <mat-label>Coût vente</mat-label>
         <input
           matInput
@@ -35,6 +18,23 @@
         <mat-error *ngIf="f['cout'].errors" class="text-danger">
           <div *ngIf="f['cout'].errors['required']">
             Le champ coût est obligatoire
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Prix vente</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Entrez le prix"
+          formControlName="prix"
+          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
+          required
+          [(ngModel)]="prixArticle.prix"
+        />
+        <mat-error *ngIf="f['prix'].errors" class="text-danger">
+          <div *ngIf="f['prix'].errors['required']">
+            Le champ prix est obligatoire
           </div>
         </mat-error>
       </mat-form-field>
@@ -54,7 +54,6 @@
           readonly
           required
         />
-        <mat-hint>{{ getDateFormatString() }}</mat-hint>
         <mat-datepicker #dp></mat-datepicker>
         <mat-error *ngIf="f['date'].errors" class="text-danger">
           <div *ngIf="f['date'].errors['required']">

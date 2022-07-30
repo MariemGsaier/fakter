@@ -11,12 +11,6 @@ import { Prixarticle } from 'src/app/models/prixarticle.model';
 import { ArticleService } from 'src/app/services/article.service';
 import { PrixarticleService } from 'src/app/services/prixarticle.service';
 import Swal from "sweetalert2";
-import {
-  MAT_MOMENT_DATE_FORMATS,
-  MomentDateAdapter,
-  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
-} from '@angular/material-moment-adapter';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import 'moment/locale/ja';
 import 'moment/locale/fr';
 
@@ -24,15 +18,6 @@ import 'moment/locale/fr';
   selector: 'app-add-prix',
   templateUrl: './add-prix.component.html',
   styleUrls: ['./add-prix.component.scss'],
-  providers: [
-    {provide: MAT_DATE_LOCALE, useValue: 'ja-JP'},
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-    {provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS},
-  ],
 })
 export class AddPrixComponent implements OnInit {
   prixArticleForm: FormGroup = new FormGroup({
@@ -49,33 +34,18 @@ export class AddPrixComponent implements OnInit {
   };
   articles = [
     {
-      nom_article: ''
+      nom_article: '',
+      archive: false
     }
   ];
   submitted = false;
   
   constructor(
-    private _adapter: DateAdapter<any>,
-    @Inject(MAT_DATE_LOCALE) private _locale: string,
-    private route: ActivatedRoute,
     private router: Router,
     private prixArticleService: PrixarticleService,
     private formBuilder: FormBuilder,
     private articleService: ArticleService) { }
-
-    french() {
-      this._locale = 'fr';
-      this._adapter.setLocale(this._locale);
-    }
   
-    getDateFormatString(): string {
-      if (this._locale === 'ja-JP') {
-        return 'YYYY/MM/DD';
-      } else if (this._locale === 'fr') {
-        return 'DD/MM/YYYY';
-      }
-      return '';
-    }
 
   ngOnInit(): void {this.getArticles();
     this.prixArticleForm = this.formBuilder.group(
@@ -102,9 +72,10 @@ export class AddPrixComponent implements OnInit {
     this.articleService.getAll().subscribe({
       next: (data) => {
         this.articles = data.map((data: any) => {return { 
-          nom_article : data.nom_article
-        }} );
-        console.log('!!!', this.articles);
+          nom_article : data.nom_article,
+          archive : data.archive
+        }} ).filter(elm => elm.archive == false );
+       
       },
     })
   }
@@ -116,13 +87,13 @@ export class AddPrixComponent implements OnInit {
       date: this.prixArticle.date,
       nom_article: this.prixArticle.nom_article,
     };
-    console.log('??', data);
+    // // console.log(data);
     
 
     if (this.prixArticleForm.valid) {
       this.prixArticleService.create(data).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.submitted = true;
           Swal.fire({
             title: "Ajout avec succés !",
@@ -135,7 +106,7 @@ export class AddPrixComponent implements OnInit {
             cancelButtonText: "Quitter",
           }).then((result) => {
             if (result.isConfirmed) {
-              this.router.navigate(["/add-article"]);
+              this.router.navigate(["/add-prix"]);
             } else if (!result.isConfirmed) {
               this.router.navigate(["/articles"]);
             }

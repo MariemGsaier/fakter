@@ -24,8 +24,8 @@ import { BankaccountDevise } from "src/app/models/bankaccount-devise.model";
 })
 export class AddAccountComponent implements OnInit {
   BankAccount: BankaccountDevise = {
-    num_compte: "",
-    rib: "",
+    num_compte: undefined,
+    rib: undefined,
     bic: "",
     iban: "",
     nom_banque: "",
@@ -70,11 +70,11 @@ selectedDevise = "";
   getDevises() {
     this.deviseService.getAllDevises().subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.devises = data.map((data: any) => {return { 
           nom : data.nom
         }} );
-        console.log(this.devises);
+        // console.log(this.devises);
       },
     })
   }
@@ -84,12 +84,11 @@ selectedDevise = "";
   ngOnInit(): void {
     this.getDevises();
     this.bankAccForm = this.formBuilder.group({
-      rib: ["", [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]],
+      rib: ["", Validators.required],
       numcompte: [
         "",
         [
           Validators.required,
-          Validators.pattern("^[a-zA-Z0-9]+$"),
           Validators.minLength(5),
           Validators.maxLength(17),
         ],
@@ -120,7 +119,7 @@ selectedDevise = "";
   }
 
   saveBankAccount(): void {
-    console.log(this.BankAccount);
+    // console.log(this.BankAccount);
     const data = {
       num_compte: this.BankAccount.num_compte,
       rib: this.BankAccount.rib,
@@ -130,12 +129,12 @@ selectedDevise = "";
       nom_banque: this.BankAccount.nom_banque,
       nom_devise : this.BankAccount.nom_devise
     };
-    console.log("msg",this.bankAccForm.valid);
+    // console.log("validité",this.bankAccForm.valid);
     
     if (this.bankAccForm.valid){
       this.bankAccountService.create(data).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.submitted = true;
           Swal.fire({
             title: "Ajout avec succés !",

@@ -9,14 +9,12 @@ import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
 import { Subject } from "rxjs";
-import { FactureStoreService } from "src/app/store/facture-store.service";
 import { PaidfactureStoreService } from "src/app/store/paidfacture-store.service";
 import { LigneFactureService } from "src/app/services/ligne-facture.service";
 import { ArticleService } from "src/app/services/article.service";
-import { I } from "@angular/cdk/keycodes";
-import { BankaccountService } from "src/app/services/bankaccount.service";
-import { Bankaccount } from "src/app/models/bankaccount.model";
 import { ArticleslignefactStoreService } from "src/app/store/articleslignefact-store.service";
+import { MatSort } from '@angular/material/sort';
+import Swal from "sweetalert2";
 registerLocaleData(localeFr, "fr");
 
 
@@ -55,16 +53,18 @@ export class FacturesComponent implements OnInit {
   fileName = "FacturesSheet.xlsx";
   displayedColumns: string[] = [
     "référence",
-    "créé_par",
+    "num_bc",
     "client",
     "date_facturation",
     "date_echeance",
+    "date_paiement",
     "etat_facture",
     "etat_echeance",
     "total_ht",
     "total_ttc",
     "total_devise",
     "nom_devise",
+    "créé_par",
     "actions",
   ];
   dataSource = new MatTableDataSource<Facture>();
@@ -72,9 +72,11 @@ export class FacturesComponent implements OnInit {
     reference: "",
     date_facturation: new Date(),
     date_echeance: new Date(),
+    date_paiement : new Date(),
     etat_facture: false,
     etat_echeance: false,
-    total_ht: undefined,
+    num_boncommande : undefined,
+    total_ht: 0,
     total_ttc: 0,
     total_devise: undefined,
     devise: {
@@ -111,8 +113,6 @@ export class FacturesComponent implements OnInit {
   isLoggedIn = false;
   showObserverBoard = true;
   paginator?: MatPaginator;
-  searchTerm: any;
-  search: boolean = false;
   ligneFact: Element[] = [];
 
 
@@ -148,20 +148,36 @@ export class FacturesComponent implements OnInit {
       this.dataSource.paginator = paginator;
     }
   }
-
+  @ViewChild(MatSort, {static: false})
+  sort: MatSort = new MatSort;
 
 
   fetchFactures(): void {
+    let currentDate = new Date();
+    console.log(currentDate);
+    
     this.factureService
       .getAllFactDetailed()
-
       .subscribe(
         (data) => {
           this.factures = data;
           this.factures = data.filter(elm => elm.archive == false );
-          this.dataSource.data = this.factures;
+          this.factures= this.factures.map(elem => {
+            if((new Date(elem.date_echeance)<currentDate) && (elem.date_paiement == null)){
+              elem.etat_echeance=true;
+              // console.log(elem);
+              this.factureService.update(elem.id, elem).subscribe({
+                next: (res) => console.log(res)
+              });
 
-          console.log(data);
+            }
+            return elem
+          })
+         this.dataSource.data = this.factures;
+         this.dataSource.sort = this.sort;
+          // console.log(data);
+         
+          
         },
         (error) => {
           console.log(error);
@@ -169,16 +185,21 @@ export class FacturesComponent implements OnInit {
       );
   }
 
-  refreshList(): void {
-    this.fetchFactures();
-  }
-
 
   archiveFacture(body:Facture){
     body.archive = true;
     this.factureService.update(body.id, body).subscribe({
-      next: (res) => {console.log(res)
-        this.refreshList()
+      next: (res) => {
+        // console.log(res)
+        Swal.fire({
+          title: "Facture archivée avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.fetchFactures();
+          }
+        });
       }
     });
 
@@ -186,12 +207,12 @@ export class FacturesComponent implements OnInit {
 
   setActiveFacture(facture: Facture, index: number): void {
     this.currentFacture = facture;
-    console.log(facture);
+    // console.log(facture);
     this.currentIndex = index;
   
     this.ligneFactService.getAll().subscribe({
       next : (data) => {
-        console.log("ligneeee",data);
+        // console.log("ligne",data);
        for(let i=0; i<data.length;i++){
         if(data[i].id_facture == this.currentFacture.id){
 
@@ -237,12 +258,7 @@ export class FacturesComponent implements OnInit {
   annuler(): void {
     this.disabelModif = false;
   }
-
-  filterData($event: any) {
-    $event.target.value.trim();
-    $event.target.value.toLowerCase();
-    this.dataSource.filter = $event.target.value;
-  }
+  
   exportexcel(): void {
     /* pass here the table id */
     let element = document.getElementById("excel-table");
@@ -254,5 +270,16 @@ export class FacturesComponent implements OnInit {
 
     /* save to file */
     XLSX.writeFile(wb, this.fileName);
+  }
+  deleteFacture(facture : Facture) : void {
+    this.factureService.deleteFacture(facture.id).subscribe({
+      next : (data) => {
+        console.log(data);
+        this.fetchFactures();
+       
+        
+      }
+
+    })
   }
 }

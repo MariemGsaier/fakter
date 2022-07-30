@@ -91,11 +91,11 @@ errorMsg =""
       this.gestUserService.create(data)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
             this.submitted = true;
             Swal.fire({
-              title: "Ajout avec succés !",
-              text: "Vous pouvez ajouter un autre utilisateur ou quitter.",
+              title: "utilisateur ajouté avec succés !",
+              text: "Un email lui a été envoyé. Vous pouvez ajouter un autre utilisateur ou quitter.",
               icon: "success",
               showCancelButton: true,
               confirmButtonColor: "#00c292",

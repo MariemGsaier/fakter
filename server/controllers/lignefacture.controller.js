@@ -1,6 +1,4 @@
-const { facture } = require("../models");
 const db = require("../models");
-const Op = db.Sequelize.Op;
 const lignefacture = db.lignefacture;
 
 exports.create = (req, res) => {

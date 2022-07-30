@@ -1,16 +1,6 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to // console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
 const db = require("../models");
 const prixArticle = db.prixArticle;
-const Op = db.Sequelize.Op;
+
 
 // Créer et sauvegarder un nouveau prix article
 exports.create = (req, res) => {
@@ -28,20 +18,6 @@ exports.create = (req, res) => {
     date: req.body.date,
     nom_article: req.body.nom_article,
   };
-  prixArticle
-    .findOne({
-      where: {
-        prix: req.body.prix,
-      },
-    })
-    .then((prix) => {
-      if (prix) {
-        res.status(400).send({
-          message: "Echec! le prix de l'article existe déjà !",
-        });
-        return;
-      }
-    });
 
   // Sauvegarder prix article dans la base de données
   prixArticle
@@ -56,10 +32,25 @@ exports.create = (req, res) => {
     });
 };
 
+exports.findAllArticles = (req, res) => {
+  return prixArticle
+    .findAll({
+      include: ["articles"],
+    })
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err.message || "une erreur est survenue lors de l'affichage de la liste des articles avec leurs prix.",
+      });
+    });
+};
+
 // Supprimer un prix article avec l'id spécifié dans la requête
 exports.delete = (req, res) => {
   const id = req.params.id;
-  article
+  prixArticle
     .destroy({
       where: { id: id },
     })

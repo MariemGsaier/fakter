@@ -8,15 +8,16 @@
               style="margin-right: 16px"
             >
               <mat-label>Nom devise</mat-label>
-              <input
-                matInput
-                type="text"
+              <mat-select
+                name="nom"
                 formControlName="nom"
-                placeholder="Entrez le nom de la devise"
                 [ngClass]="{ 'is-invalid': submitted && f['nom'].errors }"
-                required
                 [(ngModel)]="devise.nom"
-              />
+              >
+                <mat-option *ngFor="let nom of noms" [value]="nom.value">
+                  {{ nom.viewValue }}
+                </mat-option>
+              </mat-select>
               <mat-error *ngIf="f['nom'].errors" class="text-danger">
                 <div *ngIf="f['nom'].errors['required']">
                   Le champ nom est obligatoire !
@@ -29,7 +30,7 @@
             <mat-form-field class="w-100 fs-16" appearance="outline">
               <mat-label>Code</mat-label>
               <mat-select
-                name="role"
+                name="code"
                 formControlName="devise"
                 [ngClass]="{ 'is-invalid': submitted && f['devise'].errors }"
                 [(ngModel)]="devise.devise"

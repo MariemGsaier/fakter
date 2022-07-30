@@ -5,7 +5,7 @@ module.exports = (sequelize, Sequelize) => {
       unique : true
     },
     num_boncommande :{
-      type: Sequelize.STRING,
+      type: Sequelize.BIGINT,
       unique : true
     },
     date_facturation: {

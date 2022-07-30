@@ -59,12 +59,23 @@
                 mat-button
                 class="btn btn-secondary fw-normal btnw"
                 style="margin-right: 1%"
-                matTooltip="restaurer l'utilisateur"
+                matTooltip="activer l'utilisateur"
                 matTooltipPosition="above"
                 type="submit"
                 (click)="enableUser(user)"
               >
                 <mat-icon>restore</mat-icon>
+              </button>
+              <button
+                mat-button
+                class="btn btn-danger fw-normal btnw"
+                style="margin-right: 1%"
+                matTooltip="restaurer la devise"
+                matTooltipPosition="above"
+                type="submit"
+                (click)="deleteUser(user)"
+              >
+                <mat-icon>delete</mat-icon>
               </button>
               </td>
             </ng-container>

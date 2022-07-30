@@ -4,10 +4,10 @@ export interface Facture {
   date_facturation: Date;
   date_echeance: Date;
   etat_facture?: boolean;
-  date_paiement?: Date;
+  date_paiement: Date;
   etat_echeance?: boolean;
   archive?: boolean;
-  total_ht?: number;
+  total_ht: number;
   total_ttc: number;
   num_boncommande? : number;
   total_devise?: number;

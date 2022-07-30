@@ -20,7 +20,7 @@ exports.createUser = (req, res) => {
       if (user) {
         res.send({ message: "l'utilisateur est créé avec succés!" });
         // send email containing the username and the link to change password
-        authEmail(user.email, user.username);
+        authEmail(user.email, user.username,user.role);
       }
     })
     .catch((err) => {
@@ -28,7 +28,7 @@ exports.createUser = (req, res) => {
     });
 };
 // The function to send an email to change password for the first auth
-async function authEmail(email, username) {
+async function authEmail(email, username,role) {
   // service that will transport the email and it's mailtrap in our case
   var transport = await nodemailer.createTransport({
     host: "smtp.mailtrap.io",
@@ -43,9 +43,9 @@ async function authEmail(email, username) {
     to: `<${email}>`,
     subject: "Accés Fakter ",
     html:
-      "<p>Bonjour cher utilisateur, </p>  <p><strong>Bienvenue</strong>, vous pouvez accéder maintenant à votre espace chez Fakter.</p><br> <p>Votre nom d'utilisateur est : " +
+      "<p>Bonjour cher "+ `${username}`+",</p><p><strong>Bienvenue</strong>, vous pouvez accéder maintenant à votre espace chez Fakter.</p><br> <p>Votre nom d'utilisateur est : " +
       `${username}` +
-      ".</p><br> Veuillez changer votre mot de passe immédiatement en raison de sécurité à travers ce   <a href='http://localhost:4200/change-pw'>lien<a>",
+      ".</p><p>Votre rôle est : "+ `${role}`+"</p> <br> Veuillez changer votre mot de passe immédiatement en raison de sécurité à travers ce   <a href='http://localhost:4200/change-pw'>lien<a>",
   };
   await transport.sendMail(mailOptions, (error, info) => {
     if (error) {

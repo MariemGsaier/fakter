@@ -1,16 +1,6 @@
 <mat-card class="w-100">
     <mat-card-content>
       <button
-        mat-button
-        class="btn btn-primary fw-normal"
-        matTooltip="Exporter en Excel"
-        matTooltipPosition="above"
-        style="float: right; margin-right: 0.142%"
-        (click)="exportexcel()"
-      >
-        <mat-icon>save_alt</mat-icon>
-      </button>
-      <button
         mat-icon-button
         class="ms-4 me-4"
         style="float: right"
@@ -93,9 +83,22 @@
                 matTooltip="restaurer le compte bancaire"
                 matTooltipPosition="above"
                 type="submit"
+                *ngIf="!showObserverBoard"
                 (click)="unarchiveBankAccount(account)"
               >
                 <mat-icon>restore</mat-icon>
+              </button>
+              <button
+                mat-button
+                class="btn btn-danger fw-normal btnw"
+                style="margin-right: 1%"
+                matTooltip="supprimer la devise"
+                matTooltipPosition="above"
+                type="submit"
+                (click)="deleteBankAccount(account)"
+                *ngIf="!showObserverBoard"
+              >
+                <mat-icon>delete</mat-icon>
               </button>
               </td>
             </ng-container>

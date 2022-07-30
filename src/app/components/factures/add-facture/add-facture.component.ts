@@ -53,7 +53,7 @@ export interface Element {
   templateUrl: "./add-facture.component.html",
   styleUrls: ["./add-facture.component.scss"],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: "ja-JP" },
+    { provide: MAT_DATE_LOCALE, useValue: 'fr' },
     {
       provide: LOCALE_ID,
       useValue: "fr",
@@ -87,15 +87,15 @@ export class AddFactureComponent implements OnInit {
   dataSource = new MatTableDataSource<Element>();
 
   facture: AddFacture = {
-    date_facturation: undefined,
-    date_echeance: undefined,
     total_devise: undefined,
     nom_devise: "",
     id_user: this.userStorageService.getUser().id,
     id_client: undefined,
     num_compte: "",
-    num_bc: "",
-    date_paiement : undefined
+    num_bc: undefined,
+    date_paiement: new Date(""),
+    date_facturation: new Date(""),
+    date_echeance: new Date("")
   };
 
   factureForm: FormGroup = new FormGroup({
@@ -115,11 +115,14 @@ export class AddFactureComponent implements OnInit {
   selectedDevise = "";
   totalConverti = 0;
   deviseSymbol? = "";
+  dateCntrl = false;
   devisesRecent?: LigneDevise[];
+  errorDate = ""
   devises = [
     {
       nom: "",
       devise: "",
+      archive: false
     },
   ];
   clients = [
@@ -131,6 +134,7 @@ export class AddFactureComponent implements OnInit {
       numtel: undefined,
       courriel: "",
       siteweb: "",
+      archive: false
     },
   ];
 
@@ -141,6 +145,7 @@ export class AddFactureComponent implements OnInit {
       rib: "",
       iban: "",
       nom_banque: "",
+      archive: false
     },
   ];
 
@@ -173,34 +178,28 @@ export class AddFactureComponent implements OnInit {
       devise: ["", Validators.required],
     });
   }
-  getDateFormatString(): string {
-    if (this._locale === "ja-JP") {
-      return "YYYY/MM/DD";
-    } else if (this._locale === "fr") {
-      return "DD/MM/YYYY";
-    }
-    return "";
-  }
+
 
  
 
   getDevises() {
     this.deviseService.getAllDevises().subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.devises = data.map((data: any) => {
           return {
             nom: data.nom,
             devise: data.devise,
+            archive: data.archive
           };
-        });
+        }).filter(elm => elm.archive == false );
       },
     });
   }
   getclients() {
     this.clientService.getAll().subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.clients = data.map((data: any) => {
           return {
             id: data.id,
@@ -210,15 +209,16 @@ export class AddFactureComponent implements OnInit {
             numtel: data.numtel,
             courriel: data.courriel,
             siteweb: data.siteweb,
+            archive: data.archive
           };
-        });
+        }).filter(elm => elm.archive == false );
       },
     });
   }
   getComptes() {
     this.bankAccountService.getAll().subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.comptesbancaires = data.map((data: any) => {
           return {
             num_compte: data.num_compte,
@@ -226,8 +226,9 @@ export class AddFactureComponent implements OnInit {
             rib: data.rib,
             iban: data.iban,
             nom_banque: data.nom_banque,
+            archive: data.archive
           };
-        });
+        }).filter(elm => elm.archive == false );
        
       },
     });
@@ -278,14 +279,16 @@ export class AddFactureComponent implements OnInit {
 
   setActiveFacture(article: Element, index: number): void {
   
-    console.log(article);
+    // console.log(article);
     this.currentIndex = index;
  
   }
 
-  removeFromLigneFact() : void {
-    this.articles_added.shift();
+  removeFromLigneFact(item : any) : void {
+    this.articles_added= this.articles_added.filter(elem => elem.nom_article !== item.nom_article);
     this.dataSource = new MatTableDataSource<Element>(this.articles_added);
+    this.ligneFactStore.resetArticleStore();
+    this.ligneFactStore.setArticlesInStore(this.articles_added);
     
   }
   convertirDevise(): void {
@@ -308,11 +311,13 @@ export class AddFactureComponent implements OnInit {
     });
   }
   updateFacture(body: Facture) {
-    body.reference = "FACT/" + new Date().getFullYear() + "/" + body.id;
+    body.reference = "FACT/" +new Date(body.date_facturation).getFullYear() + "/" + body.id;
     this.factureService.update(body.id, body).subscribe({
       next: (res) => console.log(res),
     });
   }
+ 
+  
   saveFacture(): void {
     const data = {
       reference: "FACT/" + new Date(),
@@ -332,88 +337,95 @@ export class AddFactureComponent implements OnInit {
       num_boncommande: this.facture.num_bc,
     };
 
-    
+    console.log(this.factureForm.valid);
     if ((this.factureForm.valid)) {
-      this.factureService.create(data)
-      .subscribe({
-        next: (res) => {
-          this.updateFacture(res);
-          this.clientService.getOne(this.facture.id_client).subscribe({
-            next: (client: Client)  => {
-              this.bankAccountService.getOne(this.facture.num_compte).subscribe({
-                next : (bankacc : Bankaccount) => {
-                  const printData = {
-                    reference: res.reference,
-                    date_facturation: this.facture.date_facturation,
-                    date_echeance: this.facture.date_echeance,
-                    total_ht: this.totalht,
-                    total_ttc: this.totalttc,
-                    nom_client: client.nom,
-                    adresse : client.adresse,
-                    courriel : client.courriel,
-                    code_identification : client.code_identification,
-                    num_compte: this.facture.num_compte,
-                    rib : bankacc.rib,
-                    iban : bankacc.iban,
-                    num_boncommande: this.facture.num_bc,
-                  };
-                  this.factureStore.setFactureInStore(printData);
-
-                }
-              })
-
-
-          }
-
-
-          })
-         
-          
-         
-          for (let i = 0; i < this.articles_added.length; i++) {
-            const ligneFactData = {
-              id_facture: res.id,
-              nom_article: this.articles_added[i].nom_article,
-              quantite: this.articles_added[i].quantite,
-            };
-            this.ligneFactureService.create(ligneFactData).subscribe({
-              next: (res) => {
-                console.log(res);
-               
-              },
-              error: (e) => console.error(e),
-            });
-          }
-          this.submitted = true;
-          Swal.fire({
-            title: "Ajout avec succés !",
-            text: "Vous pouvez ajouter une autre facture ou quitter.",
-            icon: "success",
-            showCancelButton: true,
-            showDenyButton: true,
-            confirmButtonColor: "#00c292",
-            denyButtonColor: "#fb9678",
-            cancelButtonColor : "#e46a76",
-            confirmButtonText: "Ajouter une autre facture",
-            denyButtonText: "Envoyer et imprimer facture",
-            cancelButtonText :"Quitter"
+      if ((new Date(this.facture.date_echeance).valueOf() - new Date(this.facture.date_facturation).valueOf()) <= 0 ){
+        this.dateCntrl = true;
+        this.errorDate = "La date d'échéance saisie doit être supérieur à la date de facturation !"
+      }
+      else {
+        this.factureService.create(data)
+        .subscribe({
+          next: (res) => {
+            this.updateFacture(res);
+            // console.log(this.updateFacture(res));
             
-          }).then((result) => {
-            if (result.isConfirmed) {
-              this.newFacture();
-            } else if(result.isDenied) {
-              this.router.navigate(["/print-facture"]);
+            this.clientService.getOne(this.facture.id_client).subscribe({
+              next: (client: Client)  => {
+                this.bankAccountService.getOne(this.facture.num_compte).subscribe({
+                  next : (bankacc : Bankaccount) => {
+                    const printData = {
+                      reference: res.reference,
+                      date_facturation: this.facture.date_facturation,
+                      date_echeance: this.facture.date_echeance,
+                      total_ht: this.totalht,
+                      total_ttc: this.totalttc,
+                      total_devise : this.totalConverti,
+                      nom_devise : this.facture.nom_devise,
+                      nom_client : client.nom,
+                      adresse : client.adresse,
+                      courriel : client.courriel,
+                      code_identification : client.code_identification,
+                      num_compte: this.facture.num_compte,
+                      rib : bankacc.rib,
+                      iban : bankacc.iban,
+                      num_boncommande: this.facture.num_bc,
+                    };
+                    this.factureStore.setFactureInStore(printData);
+  
+                  }
+                })
             }
-            else {
-              this.router.navigate(["/factures"]);
+  
+            })
+            for (let i = 0; i < this.articles_added.length; i++) {
+              const ligneFactData = {
+                id_facture: res.id,
+                nom_article: this.articles_added[i].nom_article,
+                quantite: this.articles_added[i].quantite,
+              };
+             
+              
+              this.ligneFactureService.create(ligneFactData).subscribe({
+                next: (res) => {
+                  // console.log(res);
+                },
+                error: (e) => console.error(e),
+              });
             }
-          });
-        },
-        error: (e) => {console.error(e)
-          this.errorAddFacture=true
-          this.errorMsg = "le numéro de bon de commande entré existe déjà !";
-        }
-      });
+            this.submitted = true;
+            Swal.fire({
+              title: "Ajout avec succés !",
+              text: "Vous pouvez ajouter une autre facture ou quitter.",
+              icon: "success",
+              showCancelButton: true,
+              showDenyButton: true,
+              confirmButtonColor: "#00c292",
+              denyButtonColor: "#fb9678",
+              cancelButtonColor : "#e46a76",
+              confirmButtonText: "Ajouter une autre facture",
+              denyButtonText: "Envoyer et exporter facture en PDF",
+              cancelButtonText :"Quitter"
+              
+            }).then((result) => {
+              if (result.isConfirmed) {
+                this.newFacture();
+              } else if(result.isDenied) {
+                this.router.navigate(["/print-facture"]);
+              }
+              else {
+                this.router.navigate(["/factures"]);
+              }
+            });
+          },
+          error: (e) => {console.error(e)
+            this.errorAddFacture=true
+            this.errorMsg = "le numéro de bon de commande entré existe déjà !";
+          }
+        });
+
+      }
+
     }
   }
 

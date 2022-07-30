@@ -11,7 +11,9 @@ const createUrl= 'http://localhost:8080/api/factures/create'
 export class FactureService {
 
   constructor(private http: HttpClient) { }
-
+  getUser(id: any): any {
+    return this.http.get(`${baseUrl + '/user'}/${id}`);
+  }
   getDevise(nom: any): any {
     return this.http.get(`${baseUrl + '/devise'}/${nom}`);
   }
@@ -20,6 +22,9 @@ export class FactureService {
   }
   getClient(id: any): any {
     return this.http.get(`${baseUrl + '/client'}/${id}`);
+  }
+  deleteFacture(id: any): Observable<any> {
+    return this.http.delete(`${baseUrl}/${id}`);
   }
   getAll(): Observable<Facture[]> {
     return this.http.get<Facture[]>(baseUrl);

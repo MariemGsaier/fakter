@@ -9,7 +9,9 @@
   <mat-icon>picture_as_pdf</mat-icon> Exporter en PDF
 </button>
 </div>
-<div  style="margin-left:2% ;" id="facture">
+<div  style="margin-left: 21px ;" id="facture">
+  <div class="mb-20 "><img src="assets\images\logowimbee.png" style="float: left ; margin-left: 10px; margin-top: 7px;" width="115px"  /><br></div>
+    <mat-divider></mat-divider>
   <div style="margin-top: 15px">
     <h3>{{ facture.reference }}</h3>
   </div>
@@ -31,26 +33,32 @@
     <span class="regulate-pos">{{ facture.devise?.nom }}</span
     ><br />
 
-    <div *ngIf="!facture.etat_facture">
-      <mat-form-field
-        class="w-100 fs-16"
-        appearance="outline"
-        style="margin-right: 16px; width: 30%"
-      >
-        <mat-label>Date de paiement</mat-label>
-        <input
-          matInput
-          [matDatepicker]="dp"
-          [(ngModel)]="facture.date_paiement"
-        />
-        <mat-hint>{{ getDateFormatString() }}</mat-hint>
-        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-        <mat-datepicker #dp></mat-datepicker>
-      </mat-form-field>
-    </div>
+    <form [formGroup]="factureForm">
+      <div *ngIf="!facture.etat_facture">
+        <mat-form-field
+          class="w-100 fs-16"
+          appearance="outline"
+          style="margin-right: 16px; width: 30%"
+        >
+          <mat-label>Date de paiement</mat-label>
+          <input
+            matInput
+            formControlName="date_paiement"
+            [matDatepicker]="dp"
+            [(ngModel)]="facture.date_paiement"
+            
+          />
+          <mat-hint>{{ getDateFormatString() }}</mat-hint>
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+
+
     <div *ngIf="facture.etat_facture">
       <p><strong>Date de paiement : </strong></p>
-      <span class="regulate-pos">{{ facture.date_paiement }}</span
+      <span class="regulate-pos">{{ facture.date_paiement | date: "longDate":"+0200":"fr" }}</span
       ><br />
     </div>
   </div>
@@ -118,10 +126,12 @@
     class="btn btn-danger fw-normal"
     type="submit"
     style="float: right; margin-left: 0.3%"
+    routerLink="/factures"
   >
-    Annuler
+    Retour
   </button>
-  <button
+  <div *ngIf="!facture.etat_facture">
+    <button
     mat-button
     class="btn btn-success fw-normal"
     style="float: right; margin-left: 25px"
@@ -129,4 +139,6 @@
   >
     Enregistrer paiement
   </button>
+  </div>
+  
 </div>

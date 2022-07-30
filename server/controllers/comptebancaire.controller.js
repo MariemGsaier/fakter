@@ -1,6 +1,5 @@
 const db = require("../models");
 const comptebancaire = db.comptebancaire;
-const Op = db.Sequelize.Op;
 // Créer et enregistrer un compte bancaire
 exports.create = (req, res) => {
   // console.log(req.body);
@@ -113,10 +112,11 @@ exports.update = (req, res) => {
 };
 // Supprimer un compte bancaire
 exports.delete = (req, res) => {
-  const numCompte = req.params.numCompte;
+  const num_compte = req.params.num_compte;
+  console.log('???????',num_compte);
   comptebancaire
     .destroy({
-      where: { numCompte: numCompte },
+      where: { num_compte: num_compte },
     })
     .then((num) => {
       if (num == 1) {
@@ -125,7 +125,7 @@ exports.delete = (req, res) => {
         });
       } else {
         res.send({
-          message: `Echec de suppression du compte bancaire avec numCompte=${numCompte}. Peut être qu'il est inexistant !`,
+          message: `Echec de suppression du compte bancaire avec numCompte=${num_compte}. Peut être qu'il est inexistant !`,
         });
       }
     })

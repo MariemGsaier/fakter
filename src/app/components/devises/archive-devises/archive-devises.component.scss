@@ -15,11 +15,11 @@ td.mat-footer-cell:first-of-type {
 
 th.mat-header-cell {
     padding: 16px;
-    text-align: center;
 }
 
 .mat-header-cell {
     font-size: 14px;
+    text-align: center;
 }
 .mat-icon{
     font-size: 20px;
@@ -37,3 +37,7 @@ th.mat-header-cell {
 html {  
     scroll-behavior: smooth;  
 }
+.mat-row:hover {
+    background-color: #E8EAF6;
+  }
+  

@@ -160,7 +160,7 @@ export class ClientComponent implements OnInit {
   }
 
   changeCodeIdClient(data: any) {
-    console.log(this.codesId[data].value);
+    // console.log(this.codesId[data].value);
     const ctrl = this.clientForm.controls["codeid"];
     // const ctrl = this.clientForm.get("codeid");
 
@@ -183,12 +183,9 @@ export class ClientComponent implements OnInit {
         ]);
         break;
       case "matriculeFisc":
-        ctrl.setValidators([
-          Validators.required,
-          Validators.pattern(
-            "/[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]/"
-          ),
-        ]);
+        ctrl.setValidators(
+          Validators.required
+        );
         break;
 
       default:
@@ -206,7 +203,7 @@ export class ClientComponent implements OnInit {
           this.clients = data;
           this.clients = data.filter((elm) => elm.archive == false);
           this.dataSource.data = this.clients;
-          console.log(data);
+          // // console.log(data);
         },
         error: (e) => {
           console.error(e);
@@ -231,7 +228,7 @@ export class ClientComponent implements OnInit {
     body.archive = true;
     this.clientService.update(body.id, body).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Client archivé avec succés !",
           icon: "success",
@@ -246,7 +243,7 @@ export class ClientComponent implements OnInit {
   }
   setActiveClient(client: Client, index: number): void {
     this.currentClient = client;
-    console.log(client);
+    // console.log(client);
     this.currentIndex = index;
     this.disabelModif = true;
   }
@@ -256,7 +253,7 @@ export class ClientComponent implements OnInit {
       .update(this.currentClient.id, this.currentClient)
       .subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.disabelModif = false;
           Swal.fire({
             title: "Le client  est mis à jour avec succés ! ",
@@ -275,11 +272,11 @@ export class ClientComponent implements OnInit {
   }
 
   deleteClient(client: Client): void {
-    console.log(client.id);
+    // console.log(client.id);
     
     this.factureService.getClient(client.id).subscribe({
       next: (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 201) {
           Swal.fire({
             title: "Êtes-vous sûr de le supprimer ? ",
@@ -294,7 +291,7 @@ export class ClientComponent implements OnInit {
             if (result.isConfirmed) {
               this.clientService.delete(client.id).subscribe({
                 next: (res) => {
-                  console.log(res);
+                  // console.log(res);
                   this.refreshList();
                 },
                 error: (e) => {
@@ -311,10 +308,9 @@ export class ClientComponent implements OnInit {
             }
           });
         } else {
-          console.log("NON NULL");
           Swal.fire({
             title: "Echec de supression !",
-            text: "Vous ne pouvez pas supprimer ce client car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            text: "Vous ne pouvez pas supprimer ce client car il admet une facture existante. Vous pouvez opter pour l'archivage !",
             icon: "warning",
             confirmButtonColor: "#00c292",
             confirmButtonText: "Ok",

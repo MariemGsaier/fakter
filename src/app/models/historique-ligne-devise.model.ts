@@ -5,5 +5,6 @@ export class HistoriqueLigneDevise {
   devises?: {
     nom?: string;
     devise?: string;
+    archive?: boolean;
   };
 }

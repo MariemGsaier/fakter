@@ -82,7 +82,7 @@ export class AddArticleComponent implements OnInit {
     if ((this.articleForm.valid)) {
     this.articleService.create(data).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         this.submitted = true;
         Swal.fire({
           title: "Ajout avec succés !",

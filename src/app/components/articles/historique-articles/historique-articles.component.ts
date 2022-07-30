@@ -5,26 +5,22 @@ import { MatTableDataSource } from "@angular/material/table";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import { MatPaginator } from "@angular/material/paginator";
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  FormControl,
-  Validators,
-} from "@angular/forms";
 import { PrixarticleService } from "src/app/services/prixarticle.service";
 import { HistoriqueLignePrix } from "src/app/models/historique-ligne-prix.model";
 import { registerLocaleData } from "@angular/common";
 import localeFr from "@angular/common/locales/fr";
-import { LignePrix } from "src/app/models/ligne-prix.model";
+import {MatSort} from '@angular/material/sort';
+import { ArticleService } from "src/app/services/article.service";
+import * as XLSX from "xlsx";
 registerLocaleData(localeFr, "fr");
 
 @Component({
-  selector: 'app-historique-articles',
-  templateUrl: './historique-articles.component.html',
-  styleUrls: ['./historique-articles.component.scss']
+  selector: "app-historique-articles",
+  templateUrl: "./historique-articles.component.html",
+  styleUrls: ["./historique-articles.component.scss"],
 })
 export class HistoriqueArticlesComponent implements OnInit {
+  fileName = "HistoriqueArticlesSheet.xlsx";
   searchTerm: any;
   search: boolean = false;
   displayedColumns: string[] = [
@@ -32,14 +28,16 @@ export class HistoriqueArticlesComponent implements OnInit {
     "type_article",
     "prix",
     "cout",
+    "date",
+    "archive",
     "description",
-    "actions",
   ];
   dataSource = new MatTableDataSource<HistoriqueLignePrix>();
   currentArticle: Article = {
     nom_article: "",
     type_article: "",
     description: "",
+    archive: false,
   };
   currentPrixArticle: Prixarticle = {
     id: undefined,
@@ -48,7 +46,7 @@ export class HistoriqueArticlesComponent implements OnInit {
     date: new Date(),
   };
   message = "";
-  articles?: LignePrix[];
+  articles?: HistoriqueLignePrix[];
   currentIndex = -1;
   disabelModif: boolean = false;
   private roles: string[] = [];
@@ -59,10 +57,12 @@ export class HistoriqueArticlesComponent implements OnInit {
   errorUpdateArticle = false;
   errorMsg = "";
 
-  constructor(private prixArticleService: PrixarticleService,
-    private tokenStorageService: TokenStorageService) { }
+  constructor(
+    private prixArticleService: PrixarticleService,
+    private tokenStorageService: TokenStorageService,
+    private articleService: ArticleService
+  ) {}
 
-    
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
     paginator: MatPaginator
   ) {
@@ -73,8 +73,11 @@ export class HistoriqueArticlesComponent implements OnInit {
     }
   }
 
+  @ViewChild(MatSort, {static: false})
+  sort: MatSort = new MatSort;
+
   ngOnInit(): void {
-    // this.fetchArticles();
+    this.fetchArticles();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
     if (this.isLoggedIn) {
       const user = this.tokenStorageService.getUser();
@@ -82,26 +85,62 @@ export class HistoriqueArticlesComponent implements OnInit {
       this.showObserverBoard = this.roles.includes("Observateur");
     }
   }
+  archiveArticle(body: Article) {
+    body.archive = true;
+    this.articleService.update(body.nom_article, body).subscribe({
+      next: (res) => {
+        // console.log(res);
+        Swal.fire({
+          title: "Article archivé avec succés !",
+          icon: "success",
+          confirmButtonColor: "#00c292",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.fetchArticles();
+          }
+        });
+      },
+    });
+  }
+  fetchArticles(): void {
+    this.prixArticleService.getAllArticles().subscribe({
+      next: (data) => {
+        this.articles = data;
+        this.articles = data.filter((elm) => elm.articles?.archive == false);
+        this.dataSource.data = this.articles;
+        this.dataSource.sort = this.sort;
+        // // console.log(data);
+      },
+      error: (e) => {
+        console.error(e);
+        Swal.fire({
+          title: "Echec d'affichage des articles !",
+          text: "Une erreur est survenue lors du chargement de la liste des devises.",
+          icon: "warning",
+          confirmButtonColor: "#00c292",
+          confirmButtonText: "Ok",
+        });
+      },
+    });
+  }
 
-  // fetchArticles(): void {
-  //   this.articleService.getAllPrix().subscribe({
-  //     next: (data) => {
-  //       this.articles = data;
-  //       this.articles = data.filter((elm) => elm.archive == false);
-  //       this.dataSource.data = this.articles;
-  //       console.log(data);
-  //     },
-  //     error: (e) => {
-  //       console.error(e);
-  //       Swal.fire({
-  //         title: "Echec d'affichage des articles !",
-  //         text: "Une erreur est survenue lors du chargement de la liste des devises.",
-  //         icon: "warning",
-  //         confirmButtonColor: "#00c292",
-  //         confirmButtonText: "Ok",
-  //       });
-  //     },
-  //   });
-  // }
+  
+  filterData($event: any) {
+    $event.target.value.trim();
+    $event.target.value.toLowerCase();
+    this.dataSource.filter = $event.target.value;
+  }
 
+  exportexcel(): void {
+    /* pass here the table id */
+    let element = document.getElementById("excel-table");
+    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
+
+    /* generate workbook and add the worksheet */
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+    /* save to file */
+    XLSX.writeFile(wb, this.fileName);
+  }
 }

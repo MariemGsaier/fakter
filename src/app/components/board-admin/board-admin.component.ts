@@ -15,12 +15,12 @@ import Swal from "sweetalert2";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import { Subject } from "rxjs";
+import { FactureService } from "src/app/services/facture.service";
 
 interface role {
   value: string;
   viewValue: string;
 }
-
 
 @Injectable()
 export class MyCustomPaginatorIntl implements MatPaginatorIntl {
@@ -34,8 +34,8 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
 
   // You can set labels to an arbitrary string too, or dynamically compute
   // it through other third-party internationalization libraries.
-  nextPageLabel = 'Page suivante';
-  previousPageLabel = 'Page précédente';
+  nextPageLabel = "Page suivante";
+  previousPageLabel = "Page précédente";
 
   getRangeLabel(page: number, pageSize: number, length: number): string {
     if (length === 0) {
@@ -50,7 +50,7 @@ export class MyCustomPaginatorIntl implements MatPaginatorIntl {
   selector: "app-board-admin",
   templateUrl: "./board-admin.component.html",
   styleUrls: ["./board-admin.component.scss"],
-  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
+  providers: [{ provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl }],
 })
 export class BoardAdminComponent implements OnInit {
   searchTerm: any;
@@ -61,17 +61,17 @@ export class BoardAdminComponent implements OnInit {
 
   content?: string;
   user: User = {
-    username: '',
-    email: '',
-    role: '',
-    password: '',
-    etat_user: false
+    username: "",
+    email: "",
+    role: "",
+    password: "",
+    etat_user: false,
   };
   currentUser: User = {
     username: "",
     email: "",
     role: "",
-    etat_user: true
+    etat_user: true,
   };
   errorUpdate = false;
   errorMsg = "";
@@ -99,7 +99,8 @@ export class BoardAdminComponent implements OnInit {
     private userService: UserService,
     private formBuilder: FormBuilder,
     private gestUserService: GestUserService,
-    private tokenStorage: TokenStorageService
+    private tokenStorage: TokenStorageService,
+    private factureService: FactureService
   ) {}
 
   @ViewChild(MatPaginator, { static: false }) set matPaginator(
@@ -159,10 +160,12 @@ export class BoardAdminComponent implements OnInit {
         ) {
           this.hideAuthSupAdmin = true;
         }
-        let userAuth= this.tokenStorage.getUser()
-        this.users = data.filter(elm => elm.id !== userAuth.id && elm.etat_user == true);
+        let userAuth = this.tokenStorage.getUser();
+        this.users = data.filter(
+          (elm) => elm.id !== userAuth.id && elm.etat_user == true
+        );
         this.dataSource.data = this.users;
-        console.log(data);
+        // // console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -173,7 +176,7 @@ export class BoardAdminComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
-      }
+      },
     });
   }
 
@@ -185,35 +188,34 @@ export class BoardAdminComponent implements OnInit {
 
   setActiveUser(user: any, index: number): void {
     this.currentUser = user;
-    console.log(user);
+    // console.log(user);
     this.currentIndex = index;
     this.disabelModif = true;
   }
 
-  disableUser(body:User){
+  disableUser(body: User) {
     body.etat_user = false;
     body.password = Math.random().toString(36).slice(-8);
     this.gestUserService.disableUser(body.id, body).subscribe({
       next: (res) => {
-        console.log(res)
+        // console.log(res);
         Swal.fire({
           title: "Utilisateur désactivé avec succés !",
           icon: "success",
           confirmButtonColor: "#00c292",
         }).then((result) => {
           if (result.isConfirmed) {
-            this.retrieveUsers()
+            this.retrieveUsers();
           }
         });
-      }
+      },
     });
-
   }
 
   removeAllUsers(): void {
     this.gestUserService.deleteAll().subscribe(
-      (response) => {
-        console.log(response);
+      (res) => {
+        // console.log(res);
         this.refreshList();
       },
       (error) => {
@@ -222,7 +224,7 @@ export class BoardAdminComponent implements OnInit {
     );
   }
   updateUser(): void {
-    console.log("test", this.userUpdateForm.invalid);
+    // console.log("test", this.userUpdateForm.invalid);
     if (this.userUpdateForm.valid) {
       Swal.fire({
         title: "Modification effectuée avec succés !",
@@ -234,7 +236,7 @@ export class BoardAdminComponent implements OnInit {
             .update(this.currentUser.id, this.currentUser)
             .subscribe({
               next: (res) => {
-                console.log(res);
+                // console.log(res);
                 this.disabelModif = false;
                 this.retrieveUsers();
               },
@@ -251,34 +253,49 @@ export class BoardAdminComponent implements OnInit {
   }
 
   deleteUser(user: User): void {
-    Swal.fire({
-      title: "Êtes-vous sûr de le supprimer ? ",
-      text: "Vous ne serez pas capable de le récupérer !",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#00c292",
-      cancelButtonColor: "#e46a76",
-      confirmButtonText: "Oui",
-      cancelButtonText: "Annuler",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.gestUserService.delete(user.id).subscribe({
-          next: (res) => {
-            console.log(res);
-            this.refreshList();
-          },
-          error: (e) => {
-            console.error(e);
-            Swal.fire({
-              title: "Echec de supression !",
-              text: "Une erreur est survenue lors de la supression du client.",
-              icon: "warning",
-              confirmButtonColor: "#00c292",
-              confirmButtonText: "Ok",
-            });
-          },
-        });
-      }
+    this.factureService.getUser(user.id).subscribe({
+      next: (res: any) => {
+        // console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.gestUserService.delete(user.id).subscribe({
+                next: (res) => {
+                  // console.log(res);
+                  this.refreshList();
+                },
+                error: (e) => {
+                  console.error(e);
+                  Swal.fire({
+                    title: "Echec de supression !",
+                    text: "Une erreur est survenue lors de la supression de l'utilisateur.",
+                    icon: "warning",
+                    confirmButtonColor: "#00c292",
+                    confirmButtonText: "Ok",
+                  });
+                },
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer cet utilisateur car il a créé une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
+      },
     });
   }
 

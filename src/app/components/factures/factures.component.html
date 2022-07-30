@@ -1,25 +1,5 @@
 <mat-card class="w-100">
   <mat-card-content>
-    <div *ngIf="search" class="search-section d-flex align-items-center">
-      <mat-form-field class="w-100" color="primary" appearance="legacy">
-        <mat-label class="fs-16">Recherchez ici</mat-label>
-        <input
-          matInput
-          placeholder="Veuillez taper un mot clé"
-          autocomplete="on"
-          (keyup)="filterData($event)"
-        />
-      </mat-form-field>
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item"></li>
-      </ul>
-      <button mat-icon-button (click)="search = !search">
-        <i-feather
-          name="x-circle"
-          class="mt-n3 text-light-muted feather-base text-dark cancel-btn"
-        ></i-feather>
-      </button>
-    </div>
     <button
       mat-button
       class="btn btn-info fw-normal btnw"
@@ -58,13 +38,14 @@
 
     <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les factures</h4>
     <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les factures</h4>
-
+    
     <div class="table-responsive">
       <table
         mat-table
         [dataSource]="dataSource"
         id="excel-table"
         class="text-nowrap w-100"
+        matSort
       >
         <!-- Id Column -->
         <ng-container matColumnDef="référence">
@@ -74,15 +55,15 @@
           </td>
         </ng-container>
 
-        <!-- Assigned Column -->
-        <ng-container matColumnDef="créé_par">
-          <th mat-header-cell *matHeaderCellDef>Créé par</th>
+        <ng-container matColumnDef="num_bc">
+          <th mat-header-cell *matHeaderCellDef> Numéro bon de commande</th>
           <td mat-cell *matCellDef="let facture">
-            <p class="mb-0 fw-medium">{{ facture.user.username }}</p>
+            <p class="mb-0 fw-medium">{{ facture.num_boncommande }}</p>
           </td>
         </ng-container>
+        <!-- Assigned Column -->
         <ng-container matColumnDef="client">
-          <th mat-header-cell *matHeaderCellDef>Client</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
           <td mat-cell *matCellDef="let facture">
             <p class="mb-0 fw-medium">{{ facture.client.nom }}</p>
           </td>
@@ -90,17 +71,24 @@
 
         <!-- Priority Column -->
         <ng-container matColumnDef="date_facturation">
-          <th mat-header-cell *matHeaderCellDef>Date facturation</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date facturation</th>
           <td mat-cell *matCellDef="let facture">
-            <p class="mb-0 fw-medium">{{ facture.date_facturation }}</p>
+            <p class="mb-0 fw-medium">{{ facture.date_facturation | date: "longDate":"+0200":"fr" }}</p>
           </td>
         </ng-container>
 
         <!-- Budget Column -->
         <ng-container matColumnDef="date_echeance">
-          <th mat-header-cell *matHeaderCellDef>Date échéance</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date échéance</th>
           <td mat-cell *matCellDef="let facture">
-            <p class="mb-0 fw-medium">{{ facture.date_echeance }}</p>
+            <p class="mb-0 fw-medium">{{ facture.date_echeance | date: "longDate":"+0200":"fr" }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="date_paiement">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de paiement</th>
+          <td mat-cell *matCellDef="let facture">
+            <p *ngIf="facture.date_paiement!= null" class="mb-0 fw-medium">{{ facture.date_paiement | date: "longDate":"+0200":"fr" }}</p>
+            <p *ngIf="facture.date_paiement== null" class="mb-0 fw-medium">-</p>
           </td>
         </ng-container>
         <ng-container matColumnDef="etat_facture">
@@ -143,7 +131,7 @@
           <th mat-header-cell *matHeaderCellDef>Total HT/TND</th>
           <td mat-cell *matCellDef="let facture">
             <p class="mb-0 fw-medium">
-              {{ facture.total_ht | number: "0.0-4" }}
+              {{ facture.total_ht | number: "0.0-3" }}
             </p>
           </td>
         </ng-container>
@@ -151,7 +139,7 @@
           <th mat-header-cell *matHeaderCellDef>Total TTC/TND</th>
           <td mat-cell *matCellDef="let facture">
             <p class="mb-0 fw-medium">
-              {{ facture.total_ttc | number: "0.0-4" }}
+              {{ facture.total_ttc | number: "0.0-3" }}
             </p>
           </td>
         </ng-container>
@@ -159,7 +147,7 @@
           <th mat-header-cell *matHeaderCellDef>Total en devise</th>
           <td mat-cell *matCellDef="let facture">
             <p class="mb-0 fw-medium">
-              {{ facture.total_devise | number: "0.0-4" }}
+              {{ facture.total_devise | number: "0.0-3" }}
             </p>
           </td>
         </ng-container>
@@ -167,6 +155,12 @@
           <th mat-header-cell *matHeaderCellDef>Devise</th>
           <td mat-cell *matCellDef="let facture">
             <p class="mb-0 fw-medium">{{ facture.nom_devise }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="créé_par">
+          <th mat-header-cell *matHeaderCellDef>Créé par</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.user.username }}</p>
           </td>
         </ng-container>
         <ng-container matColumnDef="actions" stickyEnd>
@@ -203,7 +197,6 @@
               >
                 <mat-icon>done_all</mat-icon><mat-icon>remove_red_eye</mat-icon>
               </button>
-         
           </td>
         </ng-container>
 

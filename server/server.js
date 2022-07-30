@@ -2,7 +2,6 @@ const express = require("express");
 require('dotenv').config()
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const nodemailer = require("nodemailer");
 var corsOptions = {
   origin: "http://localhost:4200",
 };

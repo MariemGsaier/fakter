@@ -80,7 +80,7 @@
             <mat-label>Numéro de téléphone</mat-label>
             <input
               matInput
-              type="tel"
+              type="text"
               placeholder="Ex : 23456789"
               [ng2TelInputOptions]="{
                 initialCountry: 'tn',
@@ -95,7 +95,17 @@
               <div *ngIf="f['phone'].errors['required']">
                 Le champ numéro de téléphone est obligatoire !
               </div>
+              <div *ngIf="f['phone'].errors['pattern']">
+                Le numéro de téléphone est invalide !
+              </div>
+              <div *ngIf="f['phone'].errors['minlength']">
+                La longueur minimale est de 5 chiffres !
+              </div>
+              <div *ngIf="f['phone'].errors['maxlength']">
+                Vous avez dépassé la longueur maximale !
+              </div>
             </mat-error>
+           
           </mat-form-field>
 
           <mat-form-field
@@ -126,7 +136,6 @@
             <mat-label>Courriel</mat-label>
             <input
               matInput
-              type="email"
               placeholder="Ex : mariemgsaier@gmail.com"
               formControlName="email"
               [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
@@ -137,10 +146,10 @@
               class="text-danger"
             >
               <div *ngIf="f['email'].errors['required']">
-                Le champ courriel est obligatoire
+                Le champ courriel est obligatoire !
               </div>
-              <span *ngIf="f['email'].errors['email']"
-                >Le courriel saisi est invalide</span
+              <span *ngIf="f['email'].errors['pattern']"
+                >Le courriel saisi est invalide !</span
               >
             </mat-error>
           </mat-form-field>
@@ -161,7 +170,7 @@
             />
             <mat-error *ngIf="f['website'].errors" class="text-danger">
               <div *ngIf="f['website'].errors['pattern']">
-                le site web saisi est invalide
+                le site web saisi est invalide !
               </div>
             </mat-error>
           </mat-form-field>

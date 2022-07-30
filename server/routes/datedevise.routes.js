@@ -1,6 +1,5 @@
 module.exports = function (app) {
-  const controllerddev = require("../controllers/datedevise.controller")
-  const { authJwt } = require("../middleware");
+  const controllerdev = require("../controllers/datedevise.controller");
   var router = require("express").Router();
   app.use(function (req, res, next) {
     res.header(
@@ -9,15 +8,12 @@ module.exports = function (app) {
     );
     next();
   });
-  
-  
-    // Create 
-     router.post("/create", controllerddev.create);
-     // fetch all devises with dates
-     router.get("/", controllerddev.findAllDevises);
-    // // fetch all 
-    // router.get("/", controllerddev.findAll);
-    // Delete  with id
-    router.delete("/:id", controllerddev.delete);
-    app.use("/api/datedevises", router);
-  };
+
+  // Create
+  router.post("/create", controllerdev.create);
+  // fetch all devises with dates
+  router.get("/", controllerdev.findAllDevises);
+  // Delete  with id
+  router.delete("/:id", controllerdev.delete);
+  app.use("/api/datedevises", router);
+};

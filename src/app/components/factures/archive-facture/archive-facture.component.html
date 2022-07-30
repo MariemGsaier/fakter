@@ -10,7 +10,8 @@
       >
         <mat-icon>save_alt</mat-icon>
       </button>
-      <h4 class="mb-56" >Archive des factures</h4>
+      <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez l'archive des factures</h4>
+      <h4 class="mb-56" *ngIf="showObserverBoard">Consultez l'archive des  factures</h4>
   
       <div class="table-responsive">
         <table
@@ -113,6 +114,7 @@
             matTooltipPosition="above"
             type="submit"
             (click)="unarchiveFacture(facture)"
+            *ngIf="!showObserverBoard"
           >
             <mat-icon>restore</mat-icon>
           </button>

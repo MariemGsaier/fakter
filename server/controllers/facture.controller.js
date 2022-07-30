@@ -38,21 +38,27 @@ exports.create = (req, res) => {
       res.status(400).send({
         message: "Echec! le numéro de bon de commande existe déjà !"
       });
-      return;
 
-    } })
+    } 
 
-  facture
-    .create(fact)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message:
-          err.message 
+    else {
+      facture
+      .create(fact)
+      .then((data) => {
+        res.send(data);
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message:
+            err.message 
+        });
       });
-    });
+    }
+  
+  })
+   
+
+
 };
 
 // fetch all factures from the database.
@@ -175,6 +181,30 @@ exports.findOneDevise = (req, res) => {
     });
 };
 
+// Find a single user with an id
+exports.findOneUser = (req, res) => {
+  const id_user = req.params.id_user;
+  facture
+    .findOne({
+      where: { id_user: id_user },
+    })
+    .then((data) => {
+      if (data) {
+        res.send(data);
+      } else {
+        res.status(201).send({
+          message: `Cannot find user with id =${id_user}.`,
+          status : 201
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error retrieving user with id =" + id_user,
+      });
+    });
+};
+
 // Update a facture by the id in the request
 exports.update = (req, res) => {
   const id = req.params.id;
@@ -209,7 +239,7 @@ exports.factureEmail= (req, res) => {
   })
   .then((client)  => {
     if(client){
-      res.status(200).send({ message: "le courrriel existed !" });
+      res.status(200).send({ message: "le courrriel existe !" });
       var transport =  nodemailer.createTransport({
         host: "smtp.mailtrap.io",
         port: 2525,
@@ -221,10 +251,8 @@ exports.factureEmail= (req, res) => {
       var mailOptions = {
       from: `"Omar Elloumi", "noreply@fakter.com"`,
       to: `<${courriel}>`,
-      subject: "Mot de passe oublié ",
-      html: "<p>Bonjour cher"+ `<${client.nom}>` +" ,<br><br> Une réinitialisation du mot de passe a été demandée pour le compte Fakter lié à cet e-mail.<br><br> Vous pouvez changer votre mot de passe en suivant <a href='http://localhost:4200/forgot-pw'>ce lien<a>. <br><br>Note : Si vous ne vous attendez pas à cela, vous pouvez ignorer cet e-mail.</p>",
-          
-        
+      subject: "Facture Amel Karouia (Ref FACT/2022/52) ",
+      html: "<p>Chère "+ `Amel Karouia` +" ,<br><br> Vous trouverez ci-joint  votre facture avec tous les détails nécessaires.<br> Merci de procéder au paiement dès que possible.</p>",  
     };
      transport.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -241,5 +269,28 @@ exports.factureEmail= (req, res) => {
    
   } )
 }
+exports.delete = (req, res) => {
+  const id = req.params.id;
+  facture
+    .destroy({
+      where: { id: id },
+    })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "la facture est supprimée avec succés!",
+        });
+      } else {
+        res.send({
+          message: `Echec de suppression de la facture avec id=${id}. Peut être qu'elle est inexistante !`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Echec de suppression de la facture avec id=" + id,
+      }); 
+    });
+};
 
 

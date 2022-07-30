@@ -76,7 +76,7 @@ export class AddDatedevisesComponent implements OnInit {
     
     
     this.storeddevise = this.deviseStore.getDeviseFromStore();
-    console.log('!!!!',this.storeddevise);
+    // console.log('store',this.storeddevise);
     this.devise.nom = this.storeddevise.nom;
     this.dateDeviseForm = this.formBuilder.group(
       {
@@ -108,7 +108,7 @@ export class AddDatedevisesComponent implements OnInit {
     this.dateDeviseService.create(data)
     .subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         this.submitted = true;
         Swal.fire({
           title: "Ajout avec succés !",

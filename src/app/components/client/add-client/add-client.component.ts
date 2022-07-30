@@ -13,10 +13,7 @@ import {
 import { __values } from "tslib";
 import { FloatLabelType } from "@angular/material/form-field";
 
-interface CodeId {
-  value: string;
-  viewValue: string;
-}
+
 
 @Component({
   selector: "app-add-client",
@@ -52,6 +49,8 @@ export class AddClientComponent implements OnInit {
     { id: 2, value: "Identifiant Fiscal" },
   ];
 
+ 
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -71,8 +70,7 @@ export class AddClientComponent implements OnInit {
       ],
       phone: [
         "",
-          Validators.required,
-         
+          [Validators.required , Validators.pattern("^[0-9]*$"),Validators.maxLength(19),Validators.minLength(5)]
       ],
       website: [
         "",
@@ -88,7 +86,7 @@ export class AddClientComponent implements OnInit {
     });
   }
   changeCodeIdClient(data: any) {
-    console.log(this.codesId[data].value);
+    // console.log(this.codesId[data].value);
     const ctrl=this.clientForm.controls["codeid"]
 
     ctrl.enable();
@@ -97,10 +95,10 @@ export class AddClientComponent implements OnInit {
         ctrl.setValidators([Validators.required,Validators.pattern("^[0-9]*$"),Validators.maxLength(8),Validators.minLength(8)]);
         break;
       case "Numéro Passeport":
-        ctrl.setValidators([Validators.required,Validators.pattern("^(?!^0+$)[a-zA-Z0-9]{3,20}$")]);
+        ctrl.setValidators([Validators.required,Validators.pattern("^[a-zA-Z0-9]{3,20}$")]);
         break;
       case "Identifiant Fiscal":
-        ctrl.setValidators([Validators.required,Validators.pattern("/[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]/")]);
+        ctrl.setValidators([Validators.required, Validators.pattern("^[a-zA-Z0-9 /]*$")]);
         break;
 
       default:
@@ -141,13 +139,13 @@ export class AddClientComponent implements OnInit {
       siteweb: this.client.siteweb,
       archive: false,
     };
-    console.log(data);
-    console.log(this.clientForm.valid);
+    // // console.log(data);
+    // console.log(this.clientForm.valid);
     
     if (this.clientForm.valid) {
       this.clientService.create(data).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.submitted = true;
           Swal.fire({
             title: "Ajout avec succés !",

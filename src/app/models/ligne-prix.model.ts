@@ -5,5 +5,5 @@ export interface LignePrix {
   type_article?: string;
   description?: string;
   archive?: boolean;
-  prix?:Prixarticle[];
+  prix:Prixarticle[];
 }

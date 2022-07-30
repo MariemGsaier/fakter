@@ -1,20 +1,45 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
+import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { BankaccountDevise } from "src/app/models/bankaccount-devise.model";
 import { Bankaccount } from "src/app/models/bankaccount.model";
 import { BankaccountService } from "src/app/services/bankaccount.service";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
-import * as XLSX from "xlsx";
+import { Subject } from "rxjs";
+import { FactureService } from "src/app/services/facture.service";
+
+@Injectable()
+export class MyCustomPaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  // For internationalization, the `$localize` function from
+  // the `@angular/localize` package can be used.
+  firstPageLabel = $localize`Première page`;
+  itemsPerPageLabel = $localize`Items par page:`;
+  lastPageLabel = $localize`Dernière page`;
+
+  // You can set labels to an arbitrary string too, or dynamically compute
+  // it through other third-party internationalization libraries.
+  nextPageLabel = 'Page suivante';
+  previousPageLabel = 'Page précédente';
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`Page 1 de 1`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`Page ${page + 1} de ${amountPages}`;
+  }
+}
 
 @Component({
   selector: 'app-archive-accounts',
   templateUrl: './archive-accounts.component.html',
-  styleUrls: ['./archive-accounts.component.scss']
+  styleUrls: ['./archive-accounts.component.scss'],
+  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
 })
 export class ArchiveAccountsComponent implements OnInit {
-  fileName = "ComptesBancairesArchivéSheet.xlsx";
   searchTerm: any;
   search: boolean = false;
   displayedColumns: string[] = [
@@ -32,8 +57,8 @@ export class ArchiveAccountsComponent implements OnInit {
   isLoggedIn = false;
   showObserverBoard = true;
   currentBankAccount: BankaccountDevise = {
-    num_compte: "",
-    rib: "",
+    num_compte: 0,
+    rib: undefined,
     bic: "",
     iban: "",
     archive : false,
@@ -44,7 +69,9 @@ export class ArchiveAccountsComponent implements OnInit {
   currentIndex = -1;
   disabelModif: boolean = false;
   constructor(private bankAccountService: BankaccountService,
-    private tokenStorageService: TokenStorageService) { }
+    private tokenStorageService: TokenStorageService,
+    private BankaccountService: BankaccountService,
+    private factureService: FactureService,) { }
 
   ngOnInit(): void {
     this.fetchBankAccounts();
@@ -77,7 +104,7 @@ export class ArchiveAccountsComponent implements OnInit {
     body.archive = false;
     this.bankAccountService.update(body.num_compte, body).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Client restauré avec succés !",
           icon: "success",
@@ -95,9 +122,9 @@ export class ArchiveAccountsComponent implements OnInit {
     this.bankAccountService.getAll().subscribe({
       next: (data) => {
         this.bankaccounts = data;
-        this.bankaccounts = data.filter((elm) => elm.archive == false);
+        this.bankaccounts = data.filter((elm) => elm.archive == true);
         this.dataSource.data = this.bankaccounts;
-        console.log('!!',data);
+        // console.log(data);
       },
       error: (e) =>{
         console.error(e);
@@ -111,23 +138,47 @@ export class ArchiveAccountsComponent implements OnInit {
       }
     });
   }
+  deleteBankAccount(bankaccount: BankaccountDevise): void {
+    this.factureService.getAccount(bankaccount.num_compte).subscribe({
+      next: (res: any) => {
+        // console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.BankaccountService.delete(bankaccount.num_compte).subscribe({
+                next: (res) => {
+                  // console.log(res);
+                  this.fetchBankAccounts();
+                },
+                error: (e) => console.error(e),
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer ce compte bancaire car il correspond à une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
+      },
+    });
+  }
 
   filterData($event: any) {
     $event.target.value.trim();
     $event.target.value.toLowerCase();
     this.dataSource.filter = $event.target.value;
-  }
-
-  exportexcel(): void {
-    /* pass here the table id */
-    let element = document.getElementById("excel-table");
-    const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element);
-
-    /* generate workbook and add the worksheet */
-    const wb: XLSX.WorkBook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-
-    /* save to file */
-    XLSX.writeFile(wb, this.fileName);
   }
 }

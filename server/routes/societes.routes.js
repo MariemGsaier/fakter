@@ -1,8 +1,5 @@
-const { societe } = require("../models");
-
 module.exports = function (app) {
   const controllerste = require("../controllers/societe.controller");
-  const { authJwt } = require("../middleware");
   var router = require("express").Router();
   app.use(function (req, res, next) {
     res.header(
@@ -11,13 +8,6 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/test/all", controllerste.allAccess);
-  app.get("/api/test/user", [authJwt.verifyToken], controllerste.userBoard);
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controllerste.adminBoard
-  );
 
   // Créer une société
   router.post("/create", controllerste.create);

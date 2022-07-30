@@ -83,7 +83,7 @@ export class AddDateComponent implements OnInit {
   }
 
   changeDeviseValue(data: any){
-    console.log(data);
+    // console.log(data);
   }
 
   onSubmit(): void {
@@ -101,13 +101,12 @@ export class AddDateComponent implements OnInit {
             nom: data.nom,
           };
         });
-        console.log("!!!", this.devises);
+        // console.log(this.devises);
       },
     });
   }
 
   saveDateDevise(): void {
-    console.log(this.dateDevise);
     const data = {
       date: this.dateDevise.date,
       valeur: this.dateDevise.valeur,
@@ -116,7 +115,7 @@ export class AddDateComponent implements OnInit {
     if (this.dateDeviseForm.valid) {
       this.dateDeviseService.create(data).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           this.submitted = true;
           Swal.fire({
             title: "Ajout avec succés !",

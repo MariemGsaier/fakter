@@ -13,8 +13,7 @@ module.exports = (sequelize, Sequelize) => {
         unique : true
       },
       iban: {
-        type: Sequelize.STRING,
-        unique : true
+        type: Sequelize.STRING
       },
       nom_banque: {
         type: Sequelize.STRING,

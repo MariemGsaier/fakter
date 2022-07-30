@@ -1,18 +1,6 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to // console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
 const db = require("../models");
 const article = db.article;
-const facture = db.facture;
-const ligneFact = db.lignefacture;
-const Op = db.Sequelize.Op;
+
 
 // Create and Save a new article
 exports.create = (req, res) => {
@@ -59,7 +47,7 @@ exports.create = (req, res) => {
       }
     });
 };
-// Lister les articles
+// Lister les articles et les factures qui leur correspondent
 exports.findAll = (req, res) => {
  
   article
@@ -76,7 +64,24 @@ exports.findAll = (req, res) => {
     });
 };
 
-// Lister les articles avec prix et dates
+// Lister les articles et tous les prix qui leur correspondent
+exports.findAllArticlesPrix = (req, res) => {
+ 
+  article
+    .findAll({ include : ["prix"]})
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message:
+          err.message ||
+          "une erreur est survenue lors de l'affichage de la liste des articles.",
+      });
+    });
+};
+
+// Lister les articles avec prix et dates les plus récents
 exports.findAllArticles = (req, res) => {
   article
     .findAll({include: ["prix"] })

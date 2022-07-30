@@ -2,28 +2,13 @@ import { Component, NgModule, SimpleChange } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { BoardAdminComponent } from "./components/board-admin/board-admin.component";
 import { AddUserComponent } from "./components/board-admin/add-user/add-user.component";
-import { AlertsComponent } from "./components/alerts/alerts.component";
 import { AddArticleComponent } from "./components/articles/add-article/add-article.component";
 import { ArticlesComponent } from "./components/articles/articles.component";
 import { ClientComponent } from "./components/client/client.component";
 import { AddClientComponent } from "./components/client/add-client/add-client.component";
-import { ButtonsComponent } from "./components/buttons/buttons.component";
-import { ChipsComponent } from "./components/chips/chips.component";
-import { ExpansionComponent } from "./components/expansion/expansion.component";
-import { FormsComponent } from "./components/forms/forms.component";
-import { GridListComponent } from "./components/grid-list/grid-list.component";
 import { LoginComponent } from "./components/login/login.component";
-import { MenuComponent } from "./components/menu/menu.component";
 import { ProfileComponent } from "./components/profile/profile.component";
-import { ProgressSnipperComponent } from "./components/progress-snipper/progress-snipper.component";
-import { ProgressComponent } from "./components/progress/progress.component";
-import { SlideToggleComponent } from "./components/slide-toggle/slide-toggle.component";
-import { SliderComponent } from "./components/slider/slider.component";
-import { SnackbarComponent } from "./components/snackbar/snackbar.component";
-import { TabsComponent } from "./components/tabs/tabs.component";
-import { ToolbarComponent } from "./components/toolbar/toolbar.component";
-import { TooltipsComponent } from "./components/tooltips/tooltips.component";
-import { ProductComponent } from "./dashboard/dashboard-components/product/product.component";
+import { FacturesDashComponent } from "./dashboard/dashboard-components/factures-dash/factures-dash.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { FullComponent } from "./layouts/full/full.component";
 import { SimpleComponent } from "./layouts/simple/simple.component";
@@ -31,7 +16,6 @@ import { AddAccountComponent } from "./components/society-accounts/add-account/a
 import { SocietyAccountsComponent } from "./components/society-accounts/society-accounts.component";
 import { FacturesComponent } from "./components/factures/factures.component";
 import { AddFactureComponent } from "./components/factures/add-facture/add-facture.component";
-import { AddSocietyComponent } from "./components/societies/add-society/add-society.component";
 import { SocietiesComponent } from "./components/societies/societies.component";
 import { DevisesComponent } from "./components/devises/devises.component";
 import { AddDeviseComponent } from "./components/devises/add-devise/add-devise.component";
@@ -53,6 +37,8 @@ import { ArchiveClientsComponent } from "./components/client/archive-clients/arc
 import { ArchiveDevisesComponent } from "./components/devises/archive-devises/archive-devises.component";
 import { ArchiveAccountsComponent } from "./components/society-accounts/archive-accounts/archive-accounts.component";
 import { ArchiveUsersComponent } from "./components/board-admin/archive-users/archive-users.component";
+import { HistoriqueArticlesComponent } from "./components/articles/historique-articles/historique-articles.component";
+import { FactureGuard } from "./gard/facture.guard";
 
 const routes: Routes = [
   {
@@ -76,22 +62,7 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [LoginGardGuard],
       },
-      { path: "alerts", component: AlertsComponent },
-      { path: "forms", component: FormsComponent },
-      { path: "table", component: ProductComponent },
-      { path: "grid-list", component: GridListComponent },
-      { path: "menu", component: MenuComponent },
-      { path: "tabs", component: TabsComponent },
-      { path: "expansion", component: ExpansionComponent },
-      { path: "chips", component: ChipsComponent },
-      { path: "progress", component: ProgressComponent },
-      { path: "toolbar", component: ToolbarComponent },
-      { path: "progress-snipper", component: ProgressSnipperComponent },
-      { path: "snackbar", component: SnackbarComponent },
-      { path: "slider", component: SliderComponent },
-      { path: "slide-toggle", component: SlideToggleComponent },
-      { path: "tooltip", component: TooltipsComponent },
-      { path: "button", component: ButtonsComponent },
+      { path: "table", component: FacturesDashComponent },
       {
         path: "profile",
         component: ProfileComponent,
@@ -140,7 +111,7 @@ const routes: Routes = [
       {
         path: "factures",
         component: FacturesComponent,
-        canActivate: [LoginGardGuard],
+        canActivate: [LoginGardGuard, FactureGuard],
       },
       {
         path: "add-facture",
@@ -150,11 +121,6 @@ const routes: Routes = [
       {
         path: "societe",
         component: SocietiesComponent,
-        canActivate: [LoginGardGuard],
-      },
-      {
-        path: "add-societe",
-        component: AddSocietyComponent,
         canActivate: [LoginGardGuard],
       },
       {
@@ -230,6 +196,11 @@ const routes: Routes = [
       {
         path: "archive-users",
         component: ArchiveUsersComponent,
+        canActivate: [LoginGardGuard],
+      },
+      {
+        path: "historique-articles",
+        component: HistoriqueArticlesComponent,
         canActivate: [LoginGardGuard],
       },
     ],

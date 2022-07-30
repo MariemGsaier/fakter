@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import { Subject } from "rxjs";
+import { FactureService } from "src/app/services/facture.service";
 
 @Injectable()
 export class MyCustomPaginatorIntl implements MatPaginatorIntl {
@@ -43,8 +44,6 @@ export class ArchiveUsersComponent implements OnInit {
   dataSource = new MatTableDataSource<User>();
   users?: User[];
   paginator?: MatPaginator;
-  isLoggedIn = false;
-  showObserverBoard = true;
   currentUser: User = {
     username: "",
     email: "",
@@ -56,7 +55,8 @@ export class ArchiveUsersComponent implements OnInit {
 
   constructor(
     private gestUserService: GestUserService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private factureService: FactureService
   ) {}
 
   ngOnInit(): void {
@@ -73,9 +73,15 @@ export class ArchiveUsersComponent implements OnInit {
     }
   }
 
+  refreshList(): void {
+    this.retrieveUsers();
+    this.currentUser = {};
+    this.currentIndex = -1;
+  }
+
   setActiveUser(user: any, index: number): void {
     this.currentUser = user;
-    console.log(user);
+    // console.log(user);
     this.currentIndex = index;
   }
 
@@ -83,7 +89,7 @@ export class ArchiveUsersComponent implements OnInit {
     body.etat_user = true;
     this.gestUserService.enableUser(body.id, body).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Utilisateur activé avec succés !",
           icon: "success",
@@ -109,7 +115,7 @@ export class ArchiveUsersComponent implements OnInit {
         let userAuth = this.tokenStorageService.getUser();
         this.users = data.filter((elm) => elm.id !== userAuth.id && elm.etat_user == false);
         this.dataSource.data = this.users;
-        console.log(data);
+        // // console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -120,6 +126,53 @@ export class ArchiveUsersComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
+      },
+    });
+  }
+
+  deleteUser(user: User): void {
+    this.factureService.getUser(user.id).subscribe({
+      next: (res: any) => {
+        // console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.gestUserService.delete(user.id).subscribe({
+                next: (res) => {
+                  // console.log(res);
+                  this.refreshList();
+                },
+                error: (e) => {
+                  console.error(e);
+                  Swal.fire({
+                    title: "Echec de supression !",
+                    text: "Une erreur est survenue lors de la supression de l'utilisateur.",
+                    icon: "warning",
+                    confirmButtonColor: "#00c292",
+                    confirmButtonText: "Ok",
+                  });
+                },
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer cet utilisateur car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
       },
     });
   }

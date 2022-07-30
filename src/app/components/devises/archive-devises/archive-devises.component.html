@@ -1,17 +1,6 @@
 <mat-card class="w-100">
     <mat-card-content>
       <button
-        mat-button
-        class="btn btn-primary fw-normal"
-        matTooltip="Exporter en Excel"
-        matTooltipPosition="above"
-        style="float: right; margin-right: 0.142%"
-        (click)="exportexcel()"
-        *ngIf="!showObserverBoard"
-      >
-        <mat-icon>save_alt</mat-icon>
-      </button>
-      <button
         mat-icon-button
         class="ms-4 me-4"
         style="float: right"
@@ -56,15 +45,17 @@
             <!-- Project Column -->
             <ng-container matColumnDef="valeur">
               <th mat-header-cell *matHeaderCellDef>Taux de change</th>
-              <td mat-cell *matCellDef="let devise">
-                <p class="mb-0 fw-medium">{{ devise.dates[0].valeur }}</p>
+              <td mat-cell *matCellDef="let devise;">
+                <p class="mb-0 fw-medium" [innerHtml]="devise.date_devise"></p>
               </td>
             </ng-container>
     
             <ng-container matColumnDef="date">
               <th mat-header-cell *matHeaderCellDef>Date d'insertion</th>
               <td mat-cell *matCellDef="let devise">
-                <p class="mb-0 fw-medium">{{devise.dates[0].date | date:'medium':'+0200':'fr'}}</p>
+                <div *ngFor="let valeur of devises; let i = index">
+                <p class="mb-0 fw-medium">{{ devise.dates[i]?.date | date:'medium':'+0200':'fr' }}</p>
+                </div>
               </td>
             </ng-container>
     
@@ -74,9 +65,8 @@
               </th>
               <td
                 mat-cell
-                *matCellDef="let dateDevise; let i = index"
+                *matCellDef="let devise; let i = index"
                 [class.active]="i == currentIndex"
-                (click)="setActiveDevise(dateDevise, i)"
               >
               <button
                 mat-button
@@ -86,9 +76,21 @@
                 matTooltipPosition="above"
                 type="submit"
                 *ngIf="!showObserverBoard"
-                (click)="unarchiveDevise(dateDevise)"
+                (click)="unarchiveDevise(devise)"
               >
                 <mat-icon>restore</mat-icon>
+              </button>
+              <button
+                mat-button
+                class="btn btn-danger fw-normal btnw"
+                style="margin-right: 1%"
+                matTooltip="supprimer la devise"
+                matTooltipPosition="above"
+                type="submit"
+                *ngIf="!showObserverBoard"
+                (click)="deleteDevise(devise)"
+              >
+                <mat-icon>delete</mat-icon>
               </button>
               </td>
             </ng-container>

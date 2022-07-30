@@ -16,8 +16,8 @@ import {
 import * as XLSX from "xlsx";
 import { LignePrix } from "src/app/models/ligne-prix.model";
 import { PrixarticleService } from "src/app/services/prixarticle.service";
-import { Prixarticle } from "src/app/models/prixarticle.model";
 import { LigneFactureService } from "src/app/services/ligne-facture.service";
+import { MatSort } from '@angular/material/sort';
 
 interface type {
   value: string;
@@ -63,6 +63,7 @@ export class ArticlesComponent implements OnInit {
     "type_article",
     "prix",
     "cout",
+    "date",
     "description",
     "actions",
   ];
@@ -70,7 +71,6 @@ export class ArticlesComponent implements OnInit {
   updateArticleForm: FormGroup = new FormGroup({
     nom_article: new FormControl(""),
     type_article: new FormControl(""),
-    cout: new FormControl(""),
     description: new FormControl(""),
   });
   currentArticle: Article = {
@@ -127,6 +127,9 @@ export class ArticlesComponent implements OnInit {
     }
   }
 
+  @ViewChild(MatSort, {static: false})
+  sort: MatSort = new MatSort;
+
   ngOnInit(): void {
     this.fetchArticles();
     this.isLoggedIn = !!this.tokenStorageService.getToken();
@@ -142,7 +145,6 @@ export class ArticlesComponent implements OnInit {
         [Validators.required, Validators.pattern("[a-zA-Z][a-zA-Z ]+")],
       ],
       type_article: ["", Validators.required],
-      cout: ["", Validators.required],
       description: [
         "",
         [
@@ -172,7 +174,8 @@ export class ArticlesComponent implements OnInit {
         this.articles = data;
         this.articles = data.filter((elm) => elm.archive == false);
         this.dataSource.data = this.articles;
-        console.log(data);
+        this.dataSource.sort = this.sort;
+        // // console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -197,14 +200,14 @@ export class ArticlesComponent implements OnInit {
     body.archive = true;
     this.articleService.update(body.nom_article, body).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Article archivé avec succés !",
           icon: "success",
           confirmButtonColor: "#00c292",
         }).then((result) => {
           if (result.isConfirmed) {
-            this.refreshList();
+            window.location.reload();
           }
         });
       },
@@ -212,17 +215,17 @@ export class ArticlesComponent implements OnInit {
   }
 
   setActiveArticle(article: LignePrix, index: number): void {
-    console.log("11111", article);
-
     this.currentPrixArticle = article;
     this.updateArticleForm.setValue({
       nom_article: article.nom_article,
       type_article: article.type_article,
       description: article.description,
-      // prix: article.prix?.prix,
     });
-    console.log(article);
+    // console.log(article);
     this.currentIndex = index;
+  }
+
+  setUpdateArticle() : void {
     this.disabelModif = true;
   }
 
@@ -240,7 +243,7 @@ export class ArticlesComponent implements OnInit {
         .update(this.currentPrixArticle.nom_article, data)
         .subscribe({
           next: (res) => {
-            console.log(res);
+            // console.log(res);
             this.disabelModif = false;
             Swal.fire({
               title: "Modification effectuée avec succés !",
@@ -248,7 +251,7 @@ export class ArticlesComponent implements OnInit {
               confirmButtonColor: "#00c292",
             }).then((result) => {
               if (result.isConfirmed) {
-                this.fetchArticles();
+               window.location.reload();
               }
             });
           },
@@ -265,10 +268,8 @@ export class ArticlesComponent implements OnInit {
   deleteArticle(article: Article): void {
     this.ligneFacture.getArticle(article.nom_article).subscribe({
       next: (res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 201) {
-          console.log('NULL');
-          
           Swal.fire({
             title: "Êtes-vous sûr de le supprimer ? ",
             text: "Vous ne serez pas capable de le récupérer !",
@@ -282,7 +283,7 @@ export class ArticlesComponent implements OnInit {
             if (result.isConfirmed) {
               this.articleService.delete(article.nom_article).subscribe({
                 next: (res) => {
-                  console.log(res);
+                  // console.log(res);
                   this.refreshList();
                 },
                 error: (e) => {
@@ -299,7 +300,6 @@ export class ArticlesComponent implements OnInit {
             }
           });
         } else {
-          console.log('NON NULL');
           Swal.fire({
             title: "Echec de supression !",
             text: "Vous ne pouvez pas supprimer cet article car il appartient à une facture existante. Vous pouvez opter pour l'archivage !",
@@ -324,13 +324,12 @@ export class ArticlesComponent implements OnInit {
       cancelButtonText: "Annuler",
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log("??", this.currentPrixArticle);
 
-        prixArt = this.currentPrixArticle;
+        prixArt = this.currentPrixArticle?.prix[0]?.id;
 
         this.prixArticleService.delete(prixArt).subscribe({
           next: (res) => {
-            console.log(res);
+            // console.log(res);
             this.refreshList();
           },
           error: (e) => {

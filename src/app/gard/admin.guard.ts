@@ -9,7 +9,7 @@ import {
 import { Observable } from "rxjs";
 import { TokenStorageService } from "../services/token-storage.service";
 import Swal from 'sweetalert2';
-const USER_KEY = "auth-user";
+// const USER_KEY = "auth-user";
 
 @Injectable({
   providedIn: "root",
@@ -20,8 +20,6 @@ export class AdminGuard implements CanActivate {
     private tokenService: TokenStorageService
   ) {}
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
   ):
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>

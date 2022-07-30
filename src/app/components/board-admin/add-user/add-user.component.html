@@ -18,11 +18,11 @@
         />
         <mat-error *ngIf="f['username'].errors" class="invalid-feedback">
           <div *ngIf="f['username'].errors['required']">
-            Le nom d'utilisateur est obligatoire
+            Le nom d'utilisateur est obligatoire !
           </div>
           <div *ngIf="f['username'].errors['pattern']">
             Le nom d'utilisateur ne peut contenir que des lettres et des
-            chiffres
+            chiffres !
           </div>
         </mat-error>
       </mat-form-field>
@@ -39,9 +39,9 @@
         />
         <mat-error *ngIf="f['email'].errors" class="invalid-feedback">
           <div *ngIf="f['email'].errors['required']">
-            L'email est obligatoire
+            L'email est obligatoire !
           </div>
-          <div *ngIf="f['email'].errors['email']">L'email est invalide</div>
+          <div *ngIf="f['email'].errors['pattern']">L'email est invalide !</div>
         </mat-error>
       </mat-form-field>
 
@@ -63,7 +63,7 @@
         </mat-select>
         <mat-error *ngIf="f['role'].errors" class="invalid-feedback">
           <div *ngIf="f['role'].errors['required']">
-            Le role est obligatoire
+            Le champ rôle est obligatoire !
           </div>
         </mat-error>
       </mat-form-field>
@@ -80,14 +80,14 @@
         />
         <mat-error *ngIf="f['password'].errors" class="invalid-feedback">
           <div *ngIf="f['password'].errors['required']">
-            Le mot de passe est obligatoire
+            Le mot de passe est obligatoire !
           </div>
           <div *ngIf="f['password'].errors['minlength']">
-            Le mot de passe doit avoir au moins 6 caractères
+            Le mot de passe doit avoir au moins 6 caractères !
           </div>
           <div *ngIf="f['password'].errors['pattern']">
             Le mot de passe doit contenir des miniscule, des majuscules des
-            chiffres, et des caractères spéciaux
+            chiffres, et des caractères spéciaux !
           </div>
         </mat-error>
       </mat-form-field>
@@ -109,10 +109,10 @@
         />
         <mat-error *ngIf="f['confirmPassword'].errors" class="invalid-feedback">
           <div *ngIf="f['confirmPassword'].errors['required']">
-            La confirmation de mot de passe est obligatoire
+            La confirmation de mot de passe est obligatoire !
           </div>
           <div *ngIf="f['confirmPassword'].errors['matching']">
-            La confirmation mot de passe n'est pas compatible
+            La confirmation mot de passe n'est pas compatible !
           </div>
         </mat-error>
       </mat-form-field>

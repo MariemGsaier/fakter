@@ -47,7 +47,7 @@ exports.findAll = (req, res) => {
   const nom = req.query.nom;
   var condition = nom ? { nom: { [Op.iLike]: `%${nom}%` } } : null;
   devise
-    .findAll({ where: condition })
+    .findAll({ where: condition, include: ["dates"] })
     .then((data) => {
       res.send(data);
     })
@@ -95,6 +95,7 @@ exports.findAllDevises = (req, res) => {
 // Modifier une devise avec le nom spécifié dans la requête
 exports.update = (req, res) => {
   const nom = req.params.nom;
+  console.log('!!!!!!!!!!!!', req.body);
   devise
     .update(req.body, {
       where: { nom: nom },

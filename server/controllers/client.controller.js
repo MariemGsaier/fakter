@@ -11,7 +11,6 @@ exports.create = (req, res) => {
   }
 
   const clt = {
-    type_identification: req.body.type_identification,
     code_identification: req.body.code_identification,
     nom: req.body.nom,
     adresse: req.body.adresse,

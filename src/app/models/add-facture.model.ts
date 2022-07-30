@@ -1,9 +1,9 @@
-export class AddFacture {
+export interface AddFacture {
     id?: any;
     reference?: string;
-    num_bc?:string;
-    date_facturation?: Date;
-    date_echeance?: Date;
+    num_bc?:number;
+    date_facturation: Date;
+    date_echeance: Date;
     date_paiement?:Date;
     etat_facture?: boolean;
     etat_echeance?: boolean;

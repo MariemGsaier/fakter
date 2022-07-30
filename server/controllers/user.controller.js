@@ -1,13 +1,3 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content."); // try to modify it to // console.log()
-};
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
 const db = require("../models");
 const user = db.user;
 const Op = db.Sequelize.Op;
@@ -61,6 +51,9 @@ exports.update = (req, res) => {
 // Disable a user by the id in the request
 exports.disableUser = (req, res) => {
   const id = req.params.id;
+  const data = req.body;
+  const newPass = bcrypt.hashSync(data.password, 8);
+  req.body.password = newPass;
   user
     .update(req.body, {
       where: { id: id },
@@ -100,7 +93,8 @@ async function disabledEmail(email, username) {
     to: `<${email}>`,
     subject: "Changement de statut Fakter ",
     html:
-      "<p>Bonjour " + `${username},` +
+      "<p>Bonjour " +
+      `${username},` +
       "</p>  Cet email vous a été envoyé pour vous informer que votre compte chez Fakter est maintenant désactivé.<br>Vous ne pouvez plus y accéder.</p><br> S'il s'agit d'un comportement inhabituel, veuillez contacter votre super administrateur pour vérifier toute erreur commise.",
   };
   await transport.sendMail(mailOptions, (error, info) => {
@@ -153,9 +147,9 @@ async function enabledEmail(email, username) {
     to: `<${email}>`,
     subject: "Accés Fakter ",
     html:
-    "<p>Bonjour cher utilisateur, </p>  <p><strong>Bienvenue</strong>, votre compte est maintenant activé !</p><br><p> Vous pouvez accéder de nouveau à votre espace chez Fakter.</p><br> <p>Votre nom d'utilisateur est : " +
-    `${username}` +
-    ".</p><br> Veuillez changer votre mot de passe immédiatement en raison de sécurité à travers ce   <a href='http://localhost:4200/change-pw'>lien<a>",
+      "<p>Bonjour cher"+  `${username},` +", </p>  <p>Votre compte est maintenant activé !</p><br><p> Vous pouvez accéder de nouveau à votre espace chez Fakter.</p><br> <p>Votre nom d'utilisateur est : " +
+      `${username}` +
+      ".</p><br> Veuillez changer votre mot de passe immédiatement en raison de sécurité à travers ce   <a href='http://localhost:4200/change-pw'>lien<a>",
   };
   await transport.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -168,45 +162,46 @@ async function enabledEmail(email, username) {
 // Update a user's password by the id in the request
 exports.updatePassword = (req, res) => {
   const id = req.params.id;
-  const data = req.body
-  console.log(data)
-  user.findOne({
-    where: {
-      id: id,
-    },
-  })
+  const data = req.body;
+  // console.log(data);
+  user
+    .findOne({
+      where: {
+        id: id,
+      },
+    })
     .then((user) => {
       var passwordIsValid = bcrypt.compareSync(
         data.currentPassword,
         user.password
       );
 
-  if (passwordIsValid) {
-    const newPass = bcrypt.hashSync(data.password, 8)
-    const updatedPassword = {password : newPass}
+      if (passwordIsValid) {
+        const newPass = bcrypt.hashSync(data.password, 8);
+        const updatedPassword = { password: newPass };
 
-    user
-    .update(updatedPassword, {
-      where: { id: id },
-    })
-    .then((num) => {
-      if (num == 1) {
+        user
+          .update(updatedPassword, {
+            where: { id: id },
+          })
+          .then((num) => {
+            if (num == 1) {
+              res.send({
+                message: "user was updated successfully.",
+              });
+            }
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message: "Error updating user with id=" + id,
+            });
+          });
+      } else {
         res.send({
-          message: "user was updated successfully.",
+          message: `Cannot update user with id=${id}. Maybe user was not found or req.body is empty!`,
         });
       }
-    })
-    .catch((err) => {
-      res.status(500).send({
-        message: "Error updating user with id=" + id,
-      });
     });
-  } else {
-    res.send({
-      message: `Cannot update user with id=${id}. Maybe user was not found or req.body is empty!`,
-    });
-  }
-})
 };
 
 // Delete a user with the specified id in the request
@@ -249,8 +244,3 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
-
-
-
-
-

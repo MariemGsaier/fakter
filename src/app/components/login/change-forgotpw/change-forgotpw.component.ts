@@ -43,7 +43,7 @@ export class ChangeForgotpwComponent implements OnInit {
   ngOnInit(): void {
 
     this.storeduser=this.userStore.getUserFromStore();
-    console.log(this.storeduser);
+    // console.log(this.storeduser);
     this.user.email = this.storeduser.email;
     this.changeForgotPwForm = this.formBuilder.group(
       {
@@ -86,7 +86,7 @@ export class ChangeForgotpwComponent implements OnInit {
   }
 
   changeForgotPw(): void {
-    console.log(this.user);
+    // console.log(this.user);
     this.authService.changeForgtoPw(this.user).subscribe({
       next: (data) => {
         Swal.fire({
@@ -95,7 +95,7 @@ export class ChangeForgotpwComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
-        console.log(data);
+        // console.log(data);
         this.router.navigate(['/login']);
       },
       error: (e) => console.error(e),

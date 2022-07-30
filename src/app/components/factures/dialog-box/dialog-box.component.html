@@ -6,7 +6,7 @@
       <mat-select
         placeholder="Selectionnez un article"
         required
-        [(ngModel)]="currentPrixArticle.nom_article" [ngModelOptions]="{standalone: true}" (ngModelChange)="changeArticleName($event)"
+        [(ngModel)]="currentPrixArticle.nom_article" [ngModelOptions]="{standalone: true}" 
       >
         <mat-option
           *ngFor="let article of articles; let i = index"

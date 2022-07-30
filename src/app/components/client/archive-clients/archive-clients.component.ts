@@ -1,16 +1,43 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatPaginator } from "@angular/material/paginator";
+import { Component, Injectable, OnInit, ViewChild } from "@angular/core";
+import { MatPaginator, MatPaginatorIntl } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
 import { Client } from "src/app/models/client.model";
 import { ClientService } from "src/app/services/client.service";
 import { TokenStorageService } from "src/app/services/token-storage.service";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
+import { Subject } from "rxjs";
+import { FactureService } from "src/app/services/facture.service";
+
+@Injectable()
+export class MyCustomPaginatorIntl implements MatPaginatorIntl {
+  changes = new Subject<void>();
+
+  // For internationalization, the `$localize` function from
+  // the `@angular/localize` package can be used.
+  firstPageLabel = $localize`Première page`;
+  itemsPerPageLabel = $localize`Items par page:`;
+  lastPageLabel = $localize`Dernière page`;
+
+  // You can set labels to an arbitrary string too, or dynamically compute
+  // it through other third-party internationalization libraries.
+  nextPageLabel = 'Page suivante';
+  previousPageLabel = 'Page précédente';
+
+  getRangeLabel(page: number, pageSize: number, length: number): string {
+    if (length === 0) {
+      return $localize`Page 1 de 1`;
+    }
+    const amountPages = Math.ceil(length / pageSize);
+    return $localize`Page ${page + 1} de ${amountPages}`;
+  }
+}
 
 @Component({
   selector: "app-archive-clients",
   templateUrl: "./archive-clients.component.html",
   styleUrls: ["./archive-clients.component.scss"],
+  providers: [{provide: MatPaginatorIntl, useClass: MyCustomPaginatorIntl}]
 })
 export class ArchiveClientsComponent implements OnInit {
   fileName = "ClientsArchivéSheet.xlsx";
@@ -43,7 +70,8 @@ export class ArchiveClientsComponent implements OnInit {
   disabelModif: boolean = false;
   constructor(
     private clientService: ClientService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private factureService: FactureService
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +96,7 @@ export class ArchiveClientsComponent implements OnInit {
 
   setActiveClient(client: Client, index: number): void {
     this.currentClient = client;
-    console.log(client);
+    // console.log(client);
     this.currentIndex = index;
     this.disabelModif = true;
   }
@@ -77,7 +105,7 @@ export class ArchiveClientsComponent implements OnInit {
     body.archive = false;
     this.clientService.update(body.id, body).subscribe({
       next: (res) => {
-        console.log(res);
+        // console.log(res);
         Swal.fire({
           title: "Client restauré avec succés !",
           icon: "success",
@@ -97,7 +125,7 @@ export class ArchiveClientsComponent implements OnInit {
         this.clients = data;
         this.clients = data.filter((elm) => elm.archive == true);
         this.dataSource.data = this.clients;
-        console.log(data);
+        // // console.log(data);
       },
       error: (e) => {
         console.error(e);
@@ -108,6 +136,55 @@ export class ArchiveClientsComponent implements OnInit {
           confirmButtonColor: "#00c292",
           confirmButtonText: "Ok",
         });
+      },
+    });
+  }
+
+  deleteClient(client: Client): void {
+    // console.log(client.id);
+    
+    this.factureService.getClient(client.id).subscribe({
+      next: (res: any) => {
+        // console.log(res);
+        if (res.status == 201) {
+          Swal.fire({
+            title: "Êtes-vous sûr de le supprimer ? ",
+            text: "Vous ne serez pas capable de le récupérer !",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#00c292",
+            cancelButtonColor: "#e46a76",
+            confirmButtonText: "Oui",
+            cancelButtonText: "Annuler",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.clientService.delete(client.id).subscribe({
+                next: (res) => {
+                  // console.log(res);
+                  this.fetchClients();
+                },
+                error: (e) => {
+                  console.error(e);
+                  Swal.fire({
+                    title: "Echec de supression !",
+                    text: "Une erreur est survenue lors de la supression du client.",
+                    icon: "warning",
+                    confirmButtonColor: "#00c292",
+                    confirmButtonText: "Ok",
+                  });
+                },
+              });
+            }
+          });
+        } else {
+          Swal.fire({
+            title: "Echec de supression !",
+            text: "Vous ne pouvez pas supprimer ce client car il admet une facture existante. Vous pouvez opter pour l'archivage !",
+            icon: "warning",
+            confirmButtonColor: "#00c292",
+            confirmButtonText: "Ok",
+          });
+        }
       },
     });
   }

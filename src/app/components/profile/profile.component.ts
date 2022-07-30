@@ -129,8 +129,8 @@ export class ProfileComponent implements OnInit {
       this.gestUserService
         .update(this.currentUser.id, this.currentUser)
         .subscribe(
-          (response) => {
-            console.log(response);
+          (res) => {
+            // console.log(res);
             this.disabelModifDetails = true;
             Swal.fire({
               title: "Modification effectuée avec succés !",
@@ -141,8 +141,8 @@ export class ProfileComponent implements OnInit {
                 this.reloadPage();
               }
             });
-            this.message = response.message
-              ? response.message
+            this.message = res.message
+              ? res.message
               : "Your profile is updated successfully!";
           },
           (error) => {
@@ -158,27 +158,28 @@ export class ProfileComponent implements OnInit {
       this.gestUserService
         .updatePassword(this.currentUser.id, this.form2.value)
         .subscribe({
-          next: (response) => {
-            console.log(response);
+          next: (res) => {
+            console.log(res);
             this.disabelModifPassword = true;
             Swal.fire({
               title: "Modification effectuée avec succés !",
-              text: "Vous devez vous-reconncter. Vous allez être redirigé vers la page de Login",
+              text: "Vous devez vous-reconnecter. Vous allez être redirigé vers la page de Login",
               icon: "success",
               confirmButtonColor: "#00c292",
+              allowOutsideClick: false
             }).then((result) => {
               if (result.isConfirmed) {
                 this.token.signOut();
                 this.router.navigate(['/login'])
               }
             });
-            this.message = response.message
-              ? response.message
-              : "Your password is updated successfully!";
+            this.message = res.message
+              ? res.message
+              : "Votre mot de passe est modifié avec succès !";
           },
           error: (e) => {console.error(e);
             this.errorUpdateUser=true
-            this.errorMsg = "le code d'identification entré existe déjà !";
+            this.errorMsg = "Une erreur est survenue !";
           }
         });
     }

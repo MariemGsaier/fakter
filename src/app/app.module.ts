@@ -30,7 +30,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ComponentsModule } from './components/components.module';
 import { SimpleComponent } from './layouts/simple/simple.component';
 import { authInterceptorProviders } from 'src/helpers/auth.interceptor';
-import { SearchUser } from './pipes/search-user.pipe';
+
 
 
 
@@ -40,7 +40,6 @@ import { SearchUser } from './pipes/search-user.pipe';
     AppComponent,
     FullComponent,
     SimpleComponent,
-    SearchUser,
   ],
   imports: [
     BrowserModule,
