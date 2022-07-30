@@ -1,0 +1,214 @@
+<mat-card class="w-100">
+  <mat-card-content>
+    <button
+      mat-button
+      class="btn btn-info fw-normal btnw"
+      routerLink="/add-facture"
+      type="submit"
+      matTooltip="Ajouter une facture"
+      matTooltipPosition="above"
+      style="float: right"
+      *ngIf="!showObserverBoard"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button
+      mat-button
+      class="btn btn-primary fw-normal"
+      matTooltip="Exporter en Excel"
+      matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
+      (click)="exportexcel()"
+      *ngIf="!showObserverBoard"
+    >
+      <mat-icon>save_alt</mat-icon>
+    </button>
+
+    <button
+      mat-button
+      class="btn btn-secondary fw-normal btnw"
+      routerLink="/archive-factures"
+      type="submit"
+      matTooltip="Consulter  l'archive"
+      matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
+    >
+      Archive
+    </button>
+
+    <h4 class="mb-56" *ngIf="!showObserverBoard">Gérez les factures</h4>
+    <h4 class="mb-56" *ngIf="showObserverBoard">Consultez les factures</h4>
+    
+    <div class="table-responsive">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        id="excel-table"
+        class="text-nowrap w-100"
+        matSort
+      >
+        <!-- Id Column -->
+        <ng-container matColumnDef="référence">
+          <th mat-header-cell *matHeaderCellDef>Référence</th>
+          <td mat-cell class="fw-medium" *matCellDef="let facture">
+            {{ facture.reference }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="num_bc">
+          <th mat-header-cell *matHeaderCellDef> Numéro bon de commande</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.num_boncommande }}</p>
+          </td>
+        </ng-container>
+        <!-- Assigned Column -->
+        <ng-container matColumnDef="client">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Client</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.client.nom }}</p>
+          </td>
+        </ng-container>
+
+        <!-- Priority Column -->
+        <ng-container matColumnDef="date_facturation">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date facturation</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.date_facturation | date: "longDate":"+0200":"fr" }}</p>
+          </td>
+        </ng-container>
+
+        <!-- Budget Column -->
+        <ng-container matColumnDef="date_echeance">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date échéance</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.date_echeance | date: "longDate":"+0200":"fr" }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="date_paiement">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de paiement</th>
+          <td mat-cell *matCellDef="let facture">
+            <p *ngIf="facture.date_paiement!= null" class="mb-0 fw-medium">{{ facture.date_paiement | date: "longDate":"+0200":"fr" }}</p>
+            <p *ngIf="facture.date_paiement== null" class="mb-0 fw-medium">-</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="etat_facture">
+          <th mat-header-cell *matHeaderCellDef>Etat facture</th>
+          <td mat-cell *matCellDef="let facture">
+          <div [ngSwitch]="facture.etat_facture">
+            <div *ngSwitchCase="true">
+              <p class="mb-0 fw-medium">
+                <span class="badge badge-info rounded-pill">payée</span>
+              </p>
+            </div>
+            <div *ngSwitchCase="false">
+              <p class="mb-0 fw-medium">
+                <span class="badge badge-danger rounded-pill">non payée</span>
+              </p>
+            </div>
+          </div>
+          </td>
+        </ng-container>
+
+        <!-- Project Column -->
+        <ng-container matColumnDef="etat_echeance">
+          <th mat-header-cell *matHeaderCellDef>Etat échéance</th>
+          <td mat-cell *matCellDef="let facture">
+            <div [ngSwitch]="facture.etat_echeance">
+              <div *ngSwitchCase="true">
+                <p class="mb-0 fw-medium">
+                  <span class="badge badge-danger rounded-pill">échue</span>
+                </p>
+              </div>
+              <div *ngSwitchCase="false">
+                <p class="mb-0 fw-medium">
+                  <span class="badge badge-info rounded-pill">non échue</span>
+                </p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total_ht">
+          <th mat-header-cell *matHeaderCellDef>Total HT/TND</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">
+              {{ facture.total_ht | number: "0.0-3" }}
+            </p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total_ttc">
+          <th mat-header-cell *matHeaderCellDef>Total TTC/TND</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">
+              {{ facture.total_ttc | number: "0.0-3" }}
+            </p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total_devise">
+          <th mat-header-cell *matHeaderCellDef>Total en devise</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">
+              {{ facture.total_devise | number: "0.0-3" }}
+            </p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="nom_devise">
+          <th mat-header-cell *matHeaderCellDef>Devise</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.nom_devise }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="créé_par">
+          <th mat-header-cell *matHeaderCellDef>Créé par</th>
+          <td mat-cell *matCellDef="let facture">
+            <p class="mb-0 fw-medium">{{ facture.user.username }}</p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef [hidden]="showObserverBoard">
+            Actions
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let facture; let i = index"
+            [class.active]="i == currentIndex"
+          >
+            <button
+              mat-button
+              class="btn btn-secondary fw-normal btnw"
+              style="margin-right: 1%"
+              matTooltip="archiver la facture"
+              matTooltipPosition="above"
+              type="submit"
+              *ngIf="!showObserverBoard"
+              (click)="archiveFacture(facture)"
+            >
+              <mat-icon>archive</mat-icon>
+            </button>
+           
+              <button
+                mat-button
+                class="btn btn-success fw-normal btnw"
+                style="margin-right: 1%"
+                type="submit"
+                *ngIf="!showObserverBoard"
+                matTooltip="Confirmer paiement et consulter détails facture"
+                matTooltipPosition="above"
+                (click)=" setActiveFacture(facture,i)"
+              >
+                <mat-icon>done_all</mat-icon><mat-icon>remove_red_eye</mat-icon>
+              </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+    <mat-paginator
+      #paginator
+      [pageSize]="5"
+      [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
+    >
+    </mat-paginator>
+  </mat-card-content>
+</mat-card>

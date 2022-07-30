@@ -1,0 +1,259 @@
+<mat-card class="w-100">
+    <mat-card-content>
+      <div class="container" *ngIf="currentSociete.id">
+        <button
+        mat-button
+        class="btn btn-info fw-normal"
+        (click)="edit()"
+        type="submit"
+        style="float: right"
+        *ngIf="!showObserverBoard"
+        matTooltip="Vous trouverez le formulaire d'édition ci-dessous"
+        matTooltipPosition="above"
+      >
+      <mat-icon>edit</mat-icon>
+      </button>
+        <header class="jumbotron">
+          <h3>
+            Détails généraux
+          </h3>
+        </header>
+        <mat-list>
+          <h3 mat-subheader>Nom société</h3>
+          <mat-list-item style="font-size: 17px;">
+            <mat-icon mat-list-icon>business</mat-icon>
+             <h5 mat-line>{{ currentSociete.nom_societe }}</h5>
+             <p mat-line class="demo-2"> Tunsie </p>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Numéro de téléphone</h3>
+          <mat-list-item style="font-size: 17px;">
+            <mat-icon mat-list-icon>phone</mat-icon>
+             <h4 mat-line>{{ currentSociete.numtel }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Adresse</h3>
+          <mat-list-item style="font-size: 17px;">
+             <mat-icon mat-list-icon>note</mat-icon>
+             <h4 mat-line>{{ currentSociete.adresse }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Email</h3>
+          <mat-list-item style="font-size: 17px;">
+             <mat-icon mat-list-icon>email</mat-icon>
+             <h4 mat-line>{{ currentSociete.courriel }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Siteweb</h3>
+          <mat-list-item style="font-size: 17px;">
+             <mat-icon mat-list-icon>website</mat-icon>
+             <h4 mat-line>{{ currentSociete.siteweb }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Type société</h3>
+          <mat-list-item style="font-size: 17px;">
+             <mat-icon mat-list-icon>details</mat-icon>
+             <h4 mat-line>{{ currentSociete.type_societe }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+          <h3 mat-subheader>Numéro RCS</h3>
+          <mat-list-item style="font-size: 17px;">
+             <mat-icon mat-list-icon>account_balance</mat-icon>
+             <h4 mat-line>{{ currentSociete.num_rcs }}</h4>
+             <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+       </mat-list>
+      </div>
+      <ng-template #loggedOut> Veuillez vous connecter. </ng-template>
+    </mat-card-content>
+  </mat-card>
+  
+  <mat-card class="w-100" *ngIf="disabelModif">
+    <mat-card-content>
+      <form [formGroup]="societeForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Nom de société</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Entrez le nom de la société"
+            formControlName="nom_societe"
+            id="nom_societe"
+            [ngClass]="{ 'is-invalid': submitted && f['nom_societe'].errors }"
+            [(ngModel)]="currentSociete.nom_societe"
+          />
+          <mat-error *ngIf="f['nom_societe'].errors" class="text-danger">
+            <div *ngIf="f['nom_societe'].errors['required']">
+              Le champ nom est obligatoire !
+            </div>
+            <span *ngIf="f['nom_societe'].errors['pattern']"
+              >Le nom saisi est invalide !</span
+            >
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Numéro téléphone</mat-label>
+            <input
+              matInput
+              type="number"
+              placeholder="Entrez le logo"
+              formControlName="numtel"
+              required
+              id="numtel"
+              [ngClass]="{ 'is-invalid': submitted && f['numtel'].errors }"
+              [(ngModel)]="currentSociete.numtel"
+            />
+            <mat-error *ngIf="f['numtel'].errors" class="text-danger">
+              <div *ngIf="f['numtel'].errors['required']">
+                Le champ numéro de téléphone est obligatoire !
+              </div>
+              <span *ngIf="f['numtel'].errors['pattern']"
+                >Le numéro saisi est invalide !</span
+              >
+              <span *ngIf="f['numtel'].errors['maxlength']"
+                >Vous avez dépassé la longueur minimale !</span
+              >
+              <span *ngIf="f['numtel'].errors['minlength']"
+                >Une longueur minimale est requise !</span
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Adresse</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez l'adresse'"
+              formControlName="adresse"
+              required
+              id="adresse"
+              [ngClass]="{ 'is-invalid': submitted && f['adresse'].errors }"
+              [(ngModel)]="currentSociete.adresse"
+            />
+            <mat-error *ngIf="f['adresse'].errors" class="text-danger">
+              <div *ngIf="f['adresse'].errors['required']">
+                Le champ adresse est obligatoire !
+              </div>
+              <span *ngIf="f['adresse'].errors['pattern']"
+                >L'adresse saisi est invalide !</span
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Courriel</mat-label>
+            <input
+              matInput
+              type="email"
+              placeholder="Entrez le courriel"
+              formControlName="courriel"
+              required
+              id="courriel"
+              [ngClass]="{ 'is-invalid': submitted && f['courriel'].errors }"
+              [(ngModel)]="currentSociete.courriel"
+            />
+            <mat-error *ngIf="f['courriel'].errors" class="text-danger">
+              <div *ngIf="f['courriel'].errors['required']">
+                Le champ courriel de téléphone est obligatoire !
+              </div>
+              <span *ngIf="f['courriel'].errors['pattern']"
+                >Le courriel saisi est invalide !</span
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Siteweb</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le siteweb"
+              formControlName="siteweb"
+              required
+              id="siteweb"
+              [ngClass]="{ 'is-invalid': submitted && f['siteweb'].errors }"
+              [(ngModel)]="currentSociete.siteweb"
+            />
+            <mat-error *ngIf="f['siteweb'].errors" class="text-danger">
+              <div *ngIf="f['siteweb'].errors['required']">
+                Le champ siteweb est obligatoire !
+              </div>
+              <span *ngIf="f['siteweb'].errors['pattern']"
+                >Le siteweb saisi est invalide !</span
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Type de société</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le type de société"
+              formControlName="type_societe"
+              required
+              id="type_societe"
+              [ngClass]="{ 'is-invalid': submitted && f['type_societe'].errors }"
+              [(ngModel)]="currentSociete.type_societe"
+            />
+            <mat-error *ngIf="f['type_societe'].errors" class="text-danger">
+              <div *ngIf="f['type_societe'].errors['required']">
+                Le champ type de société est obligatoire !
+              </div>
+              <span *ngIf="f['type_societe'].errors['pattern']"
+                >Le type saisi est invalide !</span
+              >
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="w-100 fs-16" appearance="outline">
+            <mat-label>Numéro RCS</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Entrez le numéro RCS"
+              formControlName="num_rcs"
+              required
+              id="num_rcs"
+              [ngClass]="{ 'is-invalid': submitted && f['num_rcs'].errors }"
+              [(ngModel)]="currentSociete.num_rcs"
+            />
+            <mat-error *ngIf="f['num_rcs'].errors" class="text-danger">
+              <div *ngIf="f['num_rcs'].errors['required']">
+                Le champ numéro RCS est obligatoire !
+              </div>
+              <span *ngIf="f['num_rcs'].errors['pattern']"
+                >Le numéro RCS saisi est invalide !</span
+              >
+            </mat-error>
+          </mat-form-field>
+  
+        <div>
+          &nbsp;
+          <button
+            mat-button
+            class="btn btn-danger fw-normal"
+            (click)="annuler()"
+            type="submit"
+            style="float: right; margin-left: 0.3%;"
+          >
+            Annuler
+          </button>
+          <button
+            mat-button
+            class="btn btn-success fw-normal"
+            (click)="updateSociete()"
+            type="submit"
+            style="float: right"
+          >
+            Confirmer
+          </button>
+          
+          <p>{{ message }}</p>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+  <app-society-accounts></app-society-accounts>

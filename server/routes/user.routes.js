@@ -1,6 +1,6 @@
-const { authJwt } = require("../middleware");
-const controller = require("../controllers/user.controller");
 module.exports = function (app) {
+  const userController = require("../controllers/user.controller");
+  var router = require("express").Router();
   app.use(function (req, res, next) {
     res.header(
       "Access-Control-Allow-Headers",
@@ -8,11 +8,21 @@ module.exports = function (app) {
     );
     next();
   });
-  app.get("/api/test/all", controller.allAccess);
-  app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-  );
+// fetch all users
+router.get("/", userController.findAll);
+// Update a user with id
+router.put("/:id", userController.update);
+// Disable a user with id
+router.put("/disable-user/:id", userController.disableUser);
+// Enable a user with id
+router.put("/enable-user/:id", userController.EnableUser);
+// Update a User password with id
+router.put("/pass/:id", userController.updatePassword);
+// Delete a user with id
+router.delete("/:id", userController.delete);
+// delete all users
+router.delete("/", userController.deleteAll);
+
+// base url
+app.use("/api/users", router);
 };

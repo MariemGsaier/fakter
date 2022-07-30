@@ -1,0 +1,59 @@
+.mat-card-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background-color: #00c292
+}
+
+#card-container {
+    max-width: 70%;
+}
+
+#card-inside {
+    background-color: #ffffff;
+}
+
+.card-body {
+    text-align: center;
+    height: 400px;
+}
+
+.card-body-cnx {
+    text-align: center;
+    width : 300px;
+}
+.card-body-msg {
+    text-align: center;
+    width : 600px;
+}
+.center-pos{
+     display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.card-body-loggedin{
+    text-align: center;
+    height: 200px;
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+
+
+.card-body .mb-32 {
+    color: #ffffff;
+    vertical-align: middle;
+}
+
+#button {
+    background-color: #00c292;
+    margin-top : 15px;
+    margin-bottom: 10px;
+}
+.forgotmdp:hover{
+    color: #00c292;
+}

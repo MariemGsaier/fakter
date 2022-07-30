@@ -1,0 +1,107 @@
+<mat-card class="w-100">
+  <mat-card-content>
+    <button
+      mat-icon-button
+      class="ms-4 me-4"
+      style="float: right"
+      (click)="search = !search"
+    >
+      <i-feather
+        name="search"
+        class="mt-n3 text-light-muted feather-base text-dark"
+      ></i-feather>
+    </button>
+
+    <h4 class="mb-56" *ngIf="!showObserverBoard">
+      Gérez l'historique des insertions de taux de change
+    </h4>
+    <h4 class="mb-56" *ngIf="showObserverBoard">
+      Consultez l'historique des insertions de taux de change
+    </h4>
+
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input
+          matInput
+          placeholder="Veuillez taper un mot clé"
+          autocomplete="off"
+          (keyup)="filterData($event)"
+        />
+      </mat-form-field>
+      <button mat-icon-button (click)="search = !search">
+        <i-feather
+          name="x-circle"
+          class="mt-n3 text-light-muted feather-base text-dark"
+        ></i-feather>
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="text-nowrap w-100" matSort>
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef>Nom devise</th>
+          <td mat-cell class="fw-medium" *matCellDef="let devise">
+            {{ devise.devises?.nom }}
+          </td>
+        </ng-container>
+
+        <!-- Assigned Column -->
+        <ng-container matColumnDef="devise">
+          <th mat-header-cell *matHeaderCellDef>Code</th>
+          <td mat-cell *matCellDef="let devise">
+            <p class="mb-0 fw-medium">{{ devise.devises?.devise }}</p>
+          </td>
+        </ng-container>
+        <!-- Project Column -->
+        <ng-container matColumnDef="valeur">
+          <th mat-header-cell *matHeaderCellDef>Taux de change</th>
+          <td mat-cell *matCellDef="let devise">
+            <p class="mb-0 fw-medium">{{ devise.valeur }}</p>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Date d'insertion</th>
+          <td mat-cell *matCellDef="let devise">
+            <p class="mb-0 fw-medium">
+              {{ devise.date | date: "medium":"+0200":"fr" }}
+            </p>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="archive">
+          <th mat-header-cell *matHeaderCellDef>Etat devise</th>
+          <td mat-cell *matCellDef="let devise">
+            <div [ngSwitch]="devise.devises?.archive">
+              <div *ngSwitchCase="true">
+                <p class="mb-0 fw-medium">
+                  <span class="badge badge-info rounded-pill">Archivé</span>
+                </p>
+              </div>
+              <div *ngSwitchCase="false">
+                <p class="mb-0 fw-medium">
+                  <span class="badge badge-danger rounded-pill"
+                    >Non Archivé</span
+                  >
+                </p>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
+      >
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,176 @@
+<mat-card class="mat-card-container" *ngIf="!isLoggedIn">
+  <mat-card-content>
+    <div fxLayout="row" fxFlex="100" fxLayoutAlign="space-around center">
+      <div fxLayout="column" id="card-container">
+        <div class="card">
+          <div class="card-body card-body-msg ">
+            <div>
+              <img
+                src="\assets\images\logo-white.png"
+                fxFlex.md="40%"
+                fxFlex.lg="60%"
+                fxFlex.xl="80%"
+                fxFlex.sm="30%"
+                fxFlex.xs="20%"
+                style="float: left; margin-top: -28%; margin-left: -9%"
+                alt=""
+              />
+            </div>
+            <div>
+              <h4 class="mb-32">
+                Connectez-vous pour gérer vos factures plus facilement.
+              </h4>
+              
+            </div>
+            <div class="center-pos"><img
+              src="\assets\images\loginImg.png"
+              fxFlex.md="40%"
+              fxFlex.lg="60%"
+              fxFlex.xl="80%"
+              fxFlex.sm="30%"
+              fxFlex.xs="20%"
+             
+              alt=""
+            /></div>
+          </div>
+          <div fxFlex="100" >
+            <div >
+              <div class="card" id="card-inside" style="margin-bottom: 0;">
+                <div class="card-body">
+                  <h4 class="mb-31">Connectez-vous</h4>
+                  <form
+                    *ngIf="!isLoggedIn"
+                    name="form"
+                    (ngSubmit)="f.form.valid && onSubmit()"
+                    #f="ngForm"
+                    novalidate
+                  >
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                      <mat-label for="username">Nom d'utilisateur</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                     
+                        name="username"
+                        [(ngModel)]="form.username"
+                        required
+                        #username="ngModel"
+                        placeholder="Entrez votre nom d'utilisateur"
+                      />
+                      <mat-error
+                       
+                        *ngIf="username.errors && f.submitted"
+                      >
+                        Le champ nom d'utilisateur est obligatoire !
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-100 fs-16" appearance="outline">
+                      <mat-label for="password">Mot de passe</mat-label>
+                      <input
+                        matInput
+                        type="password"
+                        name="password"
+                        [(ngModel)]="form.password"
+                        required
+                        minlength="6"
+                        #password="ngModel"
+                        placeholder="Entrez votre mot de passe"
+                      />
+                      
+                      <mat-error
+                
+                        *ngIf="password.errors && f.submitted"
+                      >
+                        <div *ngIf="password?.errors?.['required']">
+                          Le champ mot de passe est obligatoire !
+                        </div>
+                        <div *ngIf="password?.errors?.['minlength']">
+                          Le mot de passe doit contenir au minimum 
+                        </div>
+                      </mat-error>
+                    </mat-form-field>
+                    <div class="forgotmdp">
+                      <a href="/forgot-pw">Mot de passe oublié ?</a>
+                    </div>
+                    
+
+                    <button
+                      mat-raised-button
+                      class="btn btn-info fw-normal"
+                      type="submit"
+                      id="button"
+                     
+                    >
+                      Se Connecter
+                    </button>
+                    <div 
+                    class="alert alert-danger alert-text-danger d-flex fs-14 align-items-center rounded"
+                    role="alert" *ngIf="f.submitted && isLoginFailed">
+                    <i-feather name="alert-circle" class="text-danger feather-base me-12"></i-feather>
+                    {{ errorMessage }}
+                  </div>
+                   
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+        <div style="text-align: center; margin-top: 100px;"><p class="text-center pb-24 fs-16">
+          © 2022 All rights reserved by Fakter
+        </p></div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card
+  class="mat-card-container"
+  style="text-align: center"
+  *ngIf="isLoggedIn"
+>
+  <mat-card-content>
+    <div fxFlex="100" fxLayoutAlign="space-around center">
+      <div id="card-container">
+        <div class="card">
+          <div class="card-body-loggedin">
+            <div  style="float: left; margin-top: -4%;">
+              <img
+                src="\assets\images\logo-white.png"
+                fxFlex.md="20%"
+                fxFlex.lg="15%"
+                fxFlex.xl="30%"
+                fxFlex.sm="20%"
+                fxFlex.xs="30%"
+               
+                alt=""
+              />
+            </div>
+            <div>
+            <h4 style="margin-top: -5px;">
+              <div>{{ username }}, vous êtes déjà connecté(e).</div>
+              <br />
+              <div>
+                Voulez-vous <strong><a routerLink="/login" (click)="logout()" style="text-decoration: underline">vous déconnecter</a></strong>,
+              ou retournez vers
+                <strong ><a routerLink="/dashboard" style="text-decoration: underline">le tableau de bord</a></strong> ?
+              </div>
+            </h4>
+          </div>
+          </div>
+        </div>
+        <div style="position: relative; margin-top: 100px; ">
+          <p class="text-center pb-24 fs-16">
+            © 2022 All rights reserved by Fakter
+          </p>
+  
+        </div>
+      </div>
+    </div>
+    
+  </mat-card-content>
+  
+</mat-card>
+

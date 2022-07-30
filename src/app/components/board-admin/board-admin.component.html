@@ -1,0 +1,207 @@
+<mat-card class="w-100">
+  <mat-card-content>
+    <button
+      mat-button
+      class="btn btn-info fw-normal"
+      routerLink="/add-user"
+      type="submit"
+      style="float: right"
+      matTooltip="Ajouter un utilisateur"
+      matTooltipPosition="above"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+    <button
+      mat-button
+      class="btn btn-secondary fw-normal btnw"
+      routerLink="/archive-users"
+      type="submit"
+      matTooltip="Consulter  l'archive"
+      matTooltipPosition="above"
+      style="float: right; margin-right: 0.142%"
+    >
+      Archive
+    </button>
+    <button
+      mat-icon-button
+      class="ms-4 me-4"
+      style="float: right"
+      (click)="search = !search"
+    >
+      <i-feather
+        name="search"
+        class="mt-n3 text-light-muted feather-base text-dark"
+      ></i-feather>
+    </button>
+    <h4 class="mb-56">Gérez vos utilisateurs</h4>
+    <div *ngIf="search" class="search-section d-flex align-items-center">
+      <mat-form-field class="w-100" color="primary" appearance="legacy">
+        <mat-label class="fs-16">Recherchez ici</mat-label>
+        <input matInput
+        placeholder="Veuillez taper un mot clé"
+        autocomplete="off"
+        (keyup)="filterData($event)">
+      </mat-form-field>
+      <button mat-icon-button (click)="search=!search">
+        <i-feather name="x-circle" class="mt-n3 text-light-muted feather-base text-dark"></i-feather>
+      </button>
+    </div>  
+
+    <div class="table-responsive">
+      <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef>Nom d'utilisateur</th>
+          <td mat-cell *matCellDef="let user" >
+            <p class="mb-0 fw-medium">{{ user.username }}</p>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let user">
+            <p class="mb-0 fw-medium">{{ user.email }}</p>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef>Rôle</th>
+          <td mat-cell *matCellDef="let user">
+            <span>{{ user.role }}</span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td
+            mat-cell
+            *matCellDef="let user; let i = index"
+            [class.active]="i == currentIndex"
+          >
+          <button mat-icon-button [matMenuTriggerFor]="menu4">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu4="matMenu">
+            <button mat-menu-item
+            (click)="disableUser(user)">
+              <mat-icon>archive</mat-icon>
+              <span>Désactiver</span>
+            </button>
+            <button mat-menu-item 
+            (click)="setActiveUser(user, i)">
+              <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
+            </button>
+            <button mat-menu-item
+            (click)="deleteUser(user)">
+              <mat-icon>delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        #paginator
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20, 30, 50, 100]"
+      >
+      </mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="w-100" *ngIf="disabelModif">
+  <mat-card-content>
+    <form [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Nom d'utilisateur</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Entrez le nom d'utilisateur"
+          formControlName="username"
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+          id="username"
+          [(ngModel)]="currentUser.username"
+        />
+        <mat-error *ngIf="f['username'].errors" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">
+            Le champ nom d'utilisateur est obligatoire
+          </div>
+          <div *ngIf="f['username'].errors['pattern']">
+            Le nom d'utilisateur est invalide
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          formControlName="email"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          placeholder="Entrez l'email"
+          id="email"
+          [(ngModel)]="currentUser.email"
+        />
+        <mat-error *ngIf="f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">
+            Le champ email est obligatoire
+          </div>
+          <div *ngIf="f['email'].errors['pattern']">L'email est invalide</div>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Rôle</mat-label>
+        <mat-select
+          name="role"
+          required
+          [(ngModel)]="currentUser.role"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <mat-option *ngFor="let role of roles" [value]="role.value">
+            {{ role.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div>
+        &nbsp;
+        <button
+          mat-button
+          class="btn btn-danger fw-normal"
+          (click)="annuler()"
+          type="submit"
+          style="float: right; margin-left: 0.3%"
+        >
+          Annuler
+        </button>
+        <button
+          mat-button
+          class="btn btn-success fw-normal"
+          (click)="updateUser()"
+          type="submit"
+          style="float: right"
+        >
+          Sauvegarder
+        </button>
+
+        <div
+          class="alert alert-danger alert-text-danger d-flex fs-14"
+          style="width: 45Opx"
+          role="alert"
+          *ngIf="errorUpdate"
+        >
+          <i-feather
+            name="alert-circle"
+            class="text-danger feather-base me-12"
+          ></i-feather>
+          {{ errorMsg }}
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

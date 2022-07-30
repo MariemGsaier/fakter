@@ -1,0 +1,81 @@
+<div class="card">
+    <div class="card-body">
+      <h4 class="mb-32">
+        Ajoutez un taux de change
+      </h4>
+      <form [formGroup]="dateDeviseForm" (ngSubmit)="onSubmit()">
+        <mat-form-field
+        class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px"
+      >
+        <mat-label>Nom devise</mat-label>
+        <mat-select
+          name="nom"
+          [(ngModel)]="dateDevise.nom_devise"
+          formControlName="nom"
+          [ngClass]="{ 'is-invalid': submitted && f['nom'].errors }"
+          (ngModelChange)="changeDeviseValue($event)" 
+        >
+          <mat-option *ngFor="let devise of devises" [value]="devise.nom">
+            {{ devise.nom }}
+          </mat-option>
+          <mat-option
+          >
+          <div class="add">
+            <mat-icon style="font-size: 14px"
+              >add<a class="link" (click)="ajoutDevise()"
+                >Ajouter une devise</a
+              ></mat-icon
+            >
+          </div></mat-option>
+        </mat-select>
+        <mat-error *ngIf="f['nom'].errors" class="text-danger">
+          <div *ngIf="f['nom'].errors['required']">
+            Le champ nom devise est obligatoire !
+          </div>
+         
+        </mat-error>
+      </mat-form-field>
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Taux de change</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Entrez le symbole de la devise"
+            formControlName="valeur"
+            [ngClass]="{ 'is-invalid': submitted && f['valeur'].errors }"
+            required
+            [(ngModel)]="dateDevise.valeur"
+          />
+          <mat-error *ngIf="f['valeur'].errors" class="text-danger">
+            <div *ngIf="f['valeur'].errors['required']">
+              Le champ taux de change est obligatoire !
+            </div>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="w-100 fs-16"
+        appearance="outline"
+        style="margin-right: 16px">
+          <mat-label>Date d'insertion</mat-label>
+          <input matInput  formControlName="date" [ngClass]="{ 'is-invalid': submitted && f['date'].errors }"  [(ngModel)]="dateDevise.date" readonly>
+          <mat-error *ngIf="f['date'].errors" class="text-danger">
+            <div *ngIf="f['date'].errors['required']">
+              Le champ date est obligatoire
+            </div>
+          </mat-error>
+        </mat-form-field>
+        &nbsp;
+        <button
+          mat-button
+          class="btn btn-success fw-normal"
+          style="float: right"
+          (click)="saveDateDevise()"
+          type="submit"
+        >
+          Confirmer
+        </button>
+      </form>
+    </div>
+  </div>
+  

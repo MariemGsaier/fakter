@@ -15,25 +15,102 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
-db.role = require("../models/role.model.js")(sequelize, Sequelize);
-db.refreshToken = require("../models/refreshToken.model.js")(sequelize, Sequelize);
-db.role.belongsToMany(db.user, {
-  through: "user_roles",
-  foreignKey: "roleId",
-  otherKey: "userId",
+db.client = require("../models/client.model.js")(sequelize, Sequelize);
+db.comptebancaire = require("../models/comptebancaire.model.js")(sequelize, Sequelize);
+db.societe = require("../models/societe.model.js")(sequelize, Sequelize);
+db.article = require("../models/article.model.js")(sequelize, Sequelize);
+db.facture = require("../models/facture.model")(sequelize, Sequelize);
+db.devise = require("../models/devise.model")(sequelize, Sequelize);
+db.dateDevise = require("../models/datedevise.model")(sequelize, Sequelize);
+db.prixArticle = require("../models/prixarticle.model")(sequelize, Sequelize);
+db.lignefacture = require("../models/lignefacture.model")(sequelize, Sequelize);
+
+db.prixArticle.belongsTo(db.article,{
+  foreignKey: "nom_article",
+  as: "articles"
+})
+db.article.hasMany(db.prixArticle,{
+  foreignKey: "nom_article",
+  as: "prix"
+})
+
+db.facture.belongsTo(db.client,{
+  foreignKey: "id_client",
+  as: "client"
+})
+db.client.hasMany(db.facture,{
+  foreignKey: "id_client",
+  as: "factures"
+})
+
+db.comptebancaire.belongsTo(db.societe, {
+  foreignKey: "id_societe",
+  as: "societe"
 });
-db.user.belongsToMany(db.role, {
-  through: "user_roles",
-  foreignKey: "userId",
-  otherKey: "roleId",
+db.societe.hasMany(db.comptebancaire, {
+  foreignKey: "id_societe",
+  as: "comptes"
 });
-db.refreshToken.belongsTo(db.user, {
-  foreignKey: "userId",
-  targetKey: "id",
+
+db.facture.belongsTo(db.user, {
+  foreignKey: "id_user",
+  as: "user"
 });
-db.user.hasOne(db.refreshToken, {
-  foreignKey: "userId",
-  targetKey: "id",
+db.user.hasMany(db.facture, {
+  foreignKey: "id_user",
+  as: "factures"
 });
-db.ROLES = ["user", "admin"];
+
+db.facture.belongsToMany(db.article, {
+  through: db.lignefacture,
+  as: "article",
+  foreignKey: "id_facture",
+});
+db.article.belongsToMany(db.facture, {
+  through: db.lignefacture,
+  as: "facture",
+  foreignKey: "nom_article",
+});
+
+
+db.facture.belongsTo(db.comptebancaire,{
+  foreignKey: "num_compte",
+  as: "compte"
+})
+
+db.comptebancaire.hasMany(db.facture,{
+  foreignKey: "num_compte",
+  as: "factures"
+})
+db.facture.belongsTo(db.devise,{
+  foreignKey: "nom_devise",
+  as: "devise"
+})
+db.devise.hasMany(db.facture,{
+  foreignKey: "nom_devise",
+  as: "factures"
+
+})
+db.comptebancaire.belongsTo(db.devise,{
+  foreignKey: "nom_devise",
+  as: "devise"
+})
+db.devise.hasMany(db.comptebancaire,{
+  foreignKey: "nom_devise",
+  as: "comptes bancaires"
+
+})
+
+db.dateDevise.belongsTo(db.devise, {
+  foreignKey: "nom_devise",
+  as: "devises",
+});
+
+db.devise.hasMany(db.dateDevise, {
+  foreignKey: "nom_devise",
+  as: "dates",
+
+});
+
+
 module.exports = db;

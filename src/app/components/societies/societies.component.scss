@@ -1,0 +1,40 @@
+.table-responsive {
+    overflow-x: auto;
+}
+
+td.mat-cell {
+    padding: 16px;
+    text-align: center;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+    padding: 16px;
+}
+
+th.mat-header-cell {
+    padding: 16px;
+    text-align: center;
+}
+
+.mat-header-cell {
+    font-size: 14px;
+}
+.mat-icon{
+    font-size: 20px;
+}
+.btnw {
+    min-width: 1%;
+}
+.mat-divider {
+   display: block;
+   margin: 0;
+   border-top-width: 1px;
+   border-top-style: solid;
+}
+
+.scroll{
+    height: 200px;
+    overflow: scroll;
+  }

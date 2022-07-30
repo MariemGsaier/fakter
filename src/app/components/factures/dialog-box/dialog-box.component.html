@@ -1,0 +1,80 @@
+<h4 class="mb-56" mat-dialog-title>Ajoutez un article dans la ligne facture</h4>
+<div mat-dialog-content>
+  <form [formGroup]="ligneArticleForm" (ngSubmit)="onSubmit()">
+    <mat-form-field class="w-100 fs-16" appearance="outline">
+      <mat-label>Nom article</mat-label>
+      <mat-select
+        placeholder="Selectionnez un article"
+        required
+        [(ngModel)]="currentPrixArticle.nom_article" [ngModelOptions]="{standalone: true}" 
+      >
+        <mat-option
+          *ngFor="let article of articles; let i = index"
+          [class.active]="i == currentIndex"
+          [value]="article.nom_article"
+          (click)="setActiveArticle(article, i)"
+          >{{ article.nom_article }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <div *ngIf="disabelModif">
+      <mat-form-field class="w-100 fs-16" appearance="outline">
+        <mat-label>Prix</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Veuillez entrer le prix"
+          formControlName="prix"
+          [value]="currentPrixArticle.prix"
+          [ngClass]="{ 'is-invalid': submitted && f['prix'].errors }"
+          readonly
+        />
+        <mat-error *ngIf="f['prix'].errors" class="invalid-feedback">
+          <div *ngIf="f['prix'].errors['required']">
+            Le champ prix est obligatoire !
+          </div>
+        </mat-error>
+      </mat-form-field>
+      <form [formGroup]="qteArticleForm" (ngSubmit)="onSubmitQte()">
+        <mat-form-field class="w-100 fs-16" appearance="outline">
+          <mat-label>Quantité</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Veuillez entrer la quantité"
+            formControlName="quantite"
+            [ngClass]="{ 'is-invalid': submitted && fQte['quantite'].errors }"
+          />
+          <mat-error *ngIf="fQte['quantite'].errors" class="invalid-feedback">
+            <div *ngIf="fQte['quantite'].errors['required']">
+              Le champ quantité est obligatoire !
+            </div>
+          </mat-error>
+        </mat-form-field>
+      </form>
+      
+
+      <button
+        mat-button
+        class="btn btn-success fw-normal btnw disabled"
+        style="float: right"
+        type="submit"
+        (click)="ajouterArticleLigneFact ()"
+      >
+        Ajouter
+      </button>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-button
+    style="float: right"
+    (click)="closeDialog()"
+    mat-flat-button
+    color="warn"
+  >
+    Quitter
+    
+  </button>
+</div>

@@ -1,0 +1,122 @@
+<div>
+  <div class="mb-20">
+    <button
+      mat-button
+      class="btn btn-danger"
+      (click)="exportHtmlToPDF()"
+      fw-normal
+      style="margin-right: 5px"
+    >
+      <mat-icon>picture_as_pdf</mat-icon> Exporter en PDF
+    </button>
+    <button
+      mat-button
+      class="btn btn-secondary"
+      (click)="sendEmail()"
+      fw-normal
+      style="margin-right: 5px"
+    >
+      <mat-icon>email</mat-icon> Envoyer par email
+    </button>
+  </div>
+  <div style = "margin-top : 60px"id="htmltable">
+    <div class="mb-20 "><img src="assets\images\logowimbee.png" style="float: left ; margin-left: 10px; margin-top: 7px;" width="115px"  /><br></div>
+    <mat-divider></mat-divider>
+    <div class="mt-20"  style="margin-left: 21px" >
+      <p>{{ societe.nom_societe }}</p>
+      <p>{{ societe.adresse }}</p>
+      <p>{{ societe.courriel }}</p>
+      <p>{{ societe.numtel }}</p>
+
+
+    </div>
+
+    <div class="client-parag" ><p>{{facture.code_identification}}</p><br></div>
+    <div class="client-parag" ><p>{{facture.nom_client}}</p><br></div>
+    <div class="client-parag" ><p>{{facture.adresse}}</p><br></div>
+      <p style="font-size: 20px ; margin-left: 21px"><strong>{{facture.reference}}</strong></p>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Numéro de bon de commande :</strong>{{ facture.num_boncommande }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Numéro de compte bancaire :</strong>{{ facture.num_compte }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>RIB :</strong>{{ facture.rib }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>IBAN :</strong> {{ facture.iban }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Date facturation :</strong>{{ facture.date_facturation | date: "longDate":"+0200":"fr" }}</p></div>
+      <div style=" display: flex; justify-content: left; margin-left: 21px"><p><strong>Date d'écheance :</strong>{{ facture.date_echeance | date: "longDate":"+0200":"fr" }}</p></div>
+    
+    <mat-card class="w-100">
+      <mat-card-content>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="dataSource" class="text-nowrap w-100">
+            <!-- Nom article Column -->
+            <ng-container matColumnDef="nom">
+              <th mat-header-cell *matHeaderCellDef>Nom Article</th>
+              <td mat-cell class="fw-medium" *matCellDef="let element">
+                {{ element.nom_article }}
+              </td>
+            </ng-container>
+
+            <!-- Quantité Column -->
+            <ng-container matColumnDef="quantite">
+              <th mat-header-cell *matHeaderCellDef>Quantité</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.quantite }}</p>
+              </td>
+            </ng-container>
+
+            <!-- Prix Column -->
+            <ng-container matColumnDef="prix">
+              <th mat-header-cell *matHeaderCellDef>Prix</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">{{ element.prix }}</p>
+              </td>
+            </ng-container>
+
+            <!-- sous-total HT Column -->
+            <ng-container matColumnDef="soustotal_ht">
+              <th mat-header-cell *matHeaderCellDef>Sous-total HT</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">
+                  {{ element.soustotal_ht | number: "0.0-4" }}
+                </p>
+              </td>
+            </ng-container>
+
+            <!-- taxe Column -->
+            <ng-container matColumnDef="taxe">
+              <th mat-header-cell *matHeaderCellDef>Taxe</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.taxe | percent }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="sous_total">
+              <th mat-header-cell *matHeaderCellDef>Sous-total TTC</th>
+              <td mat-cell *matCellDef="let element">
+                <p class="mb-0 fw-medium">
+                  {{ element.sous_totalttc | number: "0.0-4" }}
+                </p>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+          <div style="margin-top: -10px; margin-right: 43px">
+              <p style="float: right; margin-left: 10px;margin-top: 4%;">
+                <strong>Total en {{ facture.nom_devise }} :</strong>
+                {{
+                  facture.total_devise | number: "0.0-4"
+                }}
+              </p>
+            <p style="float: right; margin-left: 10px;margin-top: 4%;">
+              <strong>Total TTC :</strong>
+              {{ facture.total_ttc | currency: "DT":"symbol":"0.0-4":"fr" }}
+            </p>
+            <p style="float: right;margin-top: 4%;">
+              <strong>Total HT :</strong>
+              {{ facture.total_ht | currency: "DT":"symbol":"0.0-4":"fr" }}
+            </p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    <p style="margin-left: 21px">Merci d'utiliser la communication suivante pour votre paiement <strong>{{facture.reference}} </strong>!</p>
+  </div>
+</div>

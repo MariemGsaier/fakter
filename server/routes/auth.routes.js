@@ -7,15 +7,15 @@ module.exports = function (app) {
       "x-access-token, Origin, Content-Type, Accept"
     );
     next();
-  });
+  }); 
+  app.put ("/api/auth", controller.changeFirstPw);
+  app.post ("/api/auth", controller.forgotPw);
+  app.post("/api/auth/changeforgotpw", controller.changeForgotPw);
   app.post(
-    "/api/auth/signup",
+    "/api/auth/create",
     [
-      verifySignUp.checkDuplicateUsernameOrEmail,
-      verifySignUp.checkRolesExisted,
-    ],
-    controller.signup
-  );
+      verifySignUp.checkDuplicateUsernameOrEmail,controller.createUser
+
+    ],)
   app.post("/api/auth/signin", controller.signin);
-  app.post("/api/auth/refreshtoken", controller.refreshToken);
 };
